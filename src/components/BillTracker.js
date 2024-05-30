@@ -81,7 +81,7 @@ function BillTracker() {
         {value: 'rejected', label: 'Rejected'}
     ];
         
-    const [selectedViewOptions, setSelectedViewOptions] = useState(['events']);
+    const [selectedViewOptions, setSelectedViewOptions] = useState([]);
     const [selectedStatuses, setSelectedStatuses] = useState(['na', 'ncop', 'president']);
     const [showModal, setShowModal] = useState(false);
     const [selectedBill, setSelectedBill] = useState({});
@@ -305,8 +305,20 @@ function BillTracker() {
     const Tooltip = ({ event }) => {
         return (
             <div className="event-tooltip">
-                <div className="tooltip-title">
-                    {event.title}
+                <div className="tooltip-title">{event.title}</div>
+                <div className="tooltip-body mt-4">
+                    <Row>
+                        <Col xs="4">Date:</Col>
+                        <Col xs="8">{formatDate(event.date)}</Col>    
+                    </Row>
+                    <Row>
+                        <Col xs="4">House:</Col>
+                        <Col xs="8">{houses.find(h => h.house == event.house).name}</Col>
+                    </Row>
+                    <Row>
+                        <Col xs="4">Type:</Col>
+                        <Col xs="8">{event.type}</Col>
+                    </Row>
                 </div>
                 
             </div>
@@ -323,6 +335,15 @@ function BillTracker() {
             }
         });
     }
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+    
+        return `${day}-${month}-${year}`;
+    };
 
    
 
@@ -498,7 +519,7 @@ function BillTracker() {
                         </Col>
                     </Row>
                     <Row>
-                        <Col md={10}>
+                        <Col>
                             <div className="bill-tracker">
                                 <Scrollbars className="bills" style={{ height: 400 }}>
                                     
@@ -529,7 +550,7 @@ function BillTracker() {
                                                                                                     selectedViewOptions?.includes('events') && 
                                                                                                         bill.houses[index].map((event, index) => {
                                                                                                             return(
-                                                                                                                <div className="event" key={`event-${index}`} style={{ backgroundColor: houses.find(h => h.house == event.house).active_color}}>
+                                                                                                                <div className="event" key={`event-${index}`} style={{ backgroundColor: houses.find(h => h.house == event.house).active_color }}>
                                                                                                                     <Tooltip event={event} />
                                                                                                                 </div>
                                                                                                             )
@@ -583,7 +604,7 @@ function BillTracker() {
                             </div>
                         </Col>
 
-                        <Col></Col>
+                        
                     </Row>
                 </Container>
                 <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">

@@ -126,12 +126,14 @@ header .form-select {
                         border-radius: 50%;
 
                         .event-tooltip {
+                            // no mouse events
+                            pointer-events: none;
                             opacity: 0;
                             position: absolute;
                             background: #fff;
-                            padding: 0.5em;
+                            padding: 1em;
                             border-radius: 5px;
-                            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+                            box-shadow: 0 0 5px rgba(0,0,0,0.2);
                             top: 10px;
                             left: 0;
                             transform: translateX(-50%);
@@ -139,6 +141,25 @@ header .form-select {
                             width: 250px;
                             white-space: normal;
                             line-height: normal;
+
+                            .tooltip-title {
+                                font-weight: 600;
+                            }
+
+                            .tooltip-body .row {
+                                margin-bottom: 0.4em;
+                            }
+
+                            &::after {
+                                content: '';
+                                position: absolute;
+                                top: -10px;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                border: 5px solid transparent;
+                                border-bottom-color: #fff;
+                            }
+
                         }
 
 
