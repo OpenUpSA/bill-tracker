@@ -6,7 +6,10 @@
         "rejected": "Rejected",
         "withdrawn": "Withdrawn",
         "act-partly-commenced": "Partly commenced",
-        "act-commenced": "Commenced"
+        "act-commenced": "Commenced",
+        "lapsed": "Lapsed",
+        "draft": "Draft"
+
     },
     "parliaments": {
         "all": {

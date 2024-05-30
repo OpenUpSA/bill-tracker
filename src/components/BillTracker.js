@@ -8,8 +8,9 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Modal from 'react-bootstrap/Modal';
 
-import { MultiSelect } from 'react-multi-select-component';
+import ReactJson from '@microlink/react-json-view'
 
 import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -82,6 +83,8 @@ function BillTracker() {
         
     const [selectedViewOptions, setSelectedViewOptions] = useState(['events']);
     const [selectedStatuses, setSelectedStatuses] = useState(['na', 'ncop', 'president']);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedBill, setSelectedBill] = useState({});
     
     const [search, setSearch] = useState('');
     
@@ -510,7 +513,7 @@ function BillTracker() {
 
                                                                 return (
                                                                     <div className="bill-row" key={`bill-${index}`}>
-                                                                        <div className="bill-title-container" onClick={() => console.log(bill)} key={`bill-${index}`}>
+                                                                        <div className="bill-title-container"  onClick={() => {setSelectedBill(bill); setShowModal(true)}} key={`bill-${index}`}>
                                                                             <div className="bill-title">
                                                                                 {bill.title}
                                                                             </div>
@@ -583,6 +586,17 @@ function BillTracker() {
                         <Col></Col>
                     </Row>
                 </Container>
+                <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+                    <Modal.Header closeButton>
+                        <Modal.Title>{selectedBill.title}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <pre>
+                        {JSON.stringify(selectedBill, null, 1)}
+                        </pre>
+                    </Modal.Body>
+                    
+                </Modal>
             </section>
 
         </div>
