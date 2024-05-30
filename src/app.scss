@@ -1,0 +1,26 @@
+$primary: #094151;
+$control-grey: #DFE6E8;
+$theme-colors: ( 
+    "primary": $primary,
+    "control-grey": $control-grey,
+    "warning": #ffc107,
+    "light-grey": #f6f6f6,
+    "adh-orange": #ff6f47,
+    "adh-brown": #c2b59b,
+    "adh-red": #e51c23,
+);
+$border-radius: 6px;
+
+@import "bootstrap/scss/bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+html {
+    font-size: 0.8rem;
+}
+
+body {
+    background-color: rgb(255, 255, 255);
+    font-family: "Inter", sans-serif;
+    color: $primary;
+    
+}

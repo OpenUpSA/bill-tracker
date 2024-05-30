@@ -1,0 +1,26 @@
+{
+    "groupby": {
+        "na": "National Assembly",
+        "ncop": "National Council of Provinces",
+        "president": "President",
+        "rejected": "Rejected",
+        "withdrawn": "Withdrawn",
+        "act-partly-commenced": "Partly commenced",
+        "act-commenced": "Commenced"
+    },
+    "parliaments": {
+        "all": {
+            "name": "All Parliaments"
+        },
+        "6th-parliament": {
+            "name": "6th Parliament",
+            "start": "2014-05-21",
+            "end": "2019-05-07"
+        },
+        "5th-parliament": {
+            "name": "5th Parliament",
+            "start": "2009-05-06",
+            "end": "2014-05-21"
+        }
+    }
+}
