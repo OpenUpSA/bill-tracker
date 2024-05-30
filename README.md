@@ -1,6 +1,6 @@
-# React Starter
+# Bill Tracker
 
-A basic React Starter project with Parcel.
+
 
 ## Install
 
@@ -12,10 +12,4 @@ yarn
 
 ```
 yarn dev
-```
-
-## Useful starting packages
-
-```
-yarn add bootstrap react-bootstrap axios
 ```
