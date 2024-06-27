@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as d3 from 'd3';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -9,6 +8,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
+import Spinner from 'react-bootstrap/Spinner';
 
 import ReactJson from '@microlink/react-json-view'
 
@@ -397,7 +397,7 @@ function BillTracker() {
                             <div className="widget">
                                 <Row>
                                     <Col xs="auto">
-                                        <FontAwesomeIcon icon={faFileLines} />
+                                        <FontAwesomeIcon icon={faFileLines} size="3x"/>
                                     </Col>
                                     <Col>
                                         <h2>{getBillCount()} bills</h2>
@@ -410,11 +410,11 @@ function BillTracker() {
                             <div className="widget">
                                 <Row>
                                     <Col xs="auto">
-                                        <FontAwesomeIcon icon={faClock} />
+                                        <FontAwesomeIcon icon={faClock} size="3x"/>
                                     </Col>
                                     <Col>
                                         <h2>{getAvgDays()} days</h2>
-                                        <span>average time in parliament</span>
+                                        <span>avg time in parliament</span>
                                     </Col>
                                 </Row>
                             </div>
@@ -423,11 +423,11 @@ function BillTracker() {
                             <div className="widget">
                                 <Row>
                                     <Col xs="auto">
-                                        <FontAwesomeIcon icon={faComments} />
+                                        <FontAwesomeIcon icon={faComments} size="3x"/>
                                     </Col>
                                     <Col>
                                         <h2>{getAvgMeetings()} meetings</h2>
-                                        <span>average for current bills</span>
+                                        <span>avg for current bills</span>
                                     </Col>
                                 </Row>
                             </div>
@@ -436,11 +436,11 @@ function BillTracker() {
                             <div className="widget">
                                 <Row>
                                     <Col xs="auto">
-                                        <FontAwesomeIcon icon={faHandshakeSimple} />
+                                        <FontAwesomeIcon icon={faHandshakeSimple} size="3x"/>
                                     </Col>
                                     <Col>
                                         <h2>{getPublicParticipation()} sessions</h2>
-                                        <span>average public participation</span>
+                                        <span>avg public participation</span>
                                     </Col>
                                 </Row>
                             </div>
@@ -449,11 +449,11 @@ function BillTracker() {
                             <div className="widget">
                                 <Row>
                                     <Col xs="auto">
-                                        <FontAwesomeIcon icon={faPenToSquare} />
+                                        <FontAwesomeIcon icon={faPenToSquare} size="3x"/>
                                     </Col>
                                     <Col>
                                         <h2>{getRevisions()} revisions</h2>
-                                        <span>average for current bills</span>
+                                        <span>avg for current bills</span>
                                     </Col>
                                 </Row>
                             </div>
