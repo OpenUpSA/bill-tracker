@@ -81,12 +81,14 @@ function BillTracker() {
         {value: 'rejected', label: 'Rejected'}
     ];
         
-    const [selectedViewOptions, setSelectedViewOptions] = useState([]);
+    const [selectedViewOptions, setSelectedViewOptions] = useState(['events']);
     const [selectedStatuses, setSelectedStatuses] = useState(['na', 'ncop', 'president']);
     const [showModal, setShowModal] = useState(false);
     const [selectedBill, setSelectedBill] = useState({});
     
     const [search, setSearch] = useState('');
+
+    const svgRef = useRef();
     
 
     useEffect(() => {
@@ -147,22 +149,40 @@ function BillTracker() {
     const getMaxDays = () => {
 
         let max = 0;
-        bills.forEach(bill => {
-            let total = 0;
-            bill.houses_time.forEach(time => {
-                total += time;
+        
+        billGroups.forEach(group => {
+            group.bills.forEach(bill => {
+                let total = 0;
+                bill.houses_time.forEach(time => {
+                    total += time;
+                });
+                bill.total_days = total;
+                if (total > max) {
+                    max = total;
+                }
             });
-            bill.total_days = total;
-            if (total > max) {
-                max = total;
-            }
         });
+
         setMaxDays(max);
 
     }
 
     useEffect(() => {
     }, [maxDays]);
+
+    const getDateDifferenceInDays = (startDate, endDate) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    };
+
+    // Function to calculate event position
+    const getEventPosition = (eventDate, billStartDate, zoom) => {
+        const daysFromStart = getDateDifferenceInDays(billStartDate, eventDate);
+        return daysFromStart * zoom;
+    };
 
 
     const getBills = () => {
@@ -176,13 +196,7 @@ function BillTracker() {
             let lastHouse = null;
             bill.total_commitee_meetings = 0;
 
-            const getDateDifferenceInDays = (startDate, endDate) => {
-                const start = new Date(startDate);
-                const end = new Date(endDate);
-                const diffTime = Math.abs(end - start);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                return diffDays;
-            };
+            
 
             bill.events.forEach(event => {
                 if (event.house !== undefined) {
@@ -192,7 +206,6 @@ function BillTracker() {
                         // Push the current group to bill.houses
                         if (currentHouse.length > 0) {
                             bill.houses.push(currentHouse);
-                            // Calculate the days difference
                             const startDate = currentHouse[0].date;
                             const endDate = currentHouse[currentHouse.length - 1].date;
                             const daysInGroup = getDateDifferenceInDays(startDate, endDate);
@@ -213,15 +226,65 @@ function BillTracker() {
             if (currentHouse.length > 0) {
                 bill.houses.push(currentHouse);
                 const startDate = currentHouse[0].date;
-                const endDate = currentHouse[currentHouse.length - 1].date;
+                const current_date = new Date();
+                
+                currentHouse.push({
+                    "title": "Today",
+                    "date": current_date,
+                    
+                })
+
+                let endDate = currentHouse[currentHouse.length - 1].date;
+               
                 const daysInGroup = getDateDifferenceInDays(startDate, endDate);
                 bill.houses_time.push(daysInGroup);
+
+            } 
+
+                
+
+            if(currentHouse[0]?.house != lookup.house_status[bill.status]) {
+                if(bill.events.length > 0) {
+
+                    let startDate = bill.events[bill.events.length - 1].date;
+                    const today = new Date();
+
+                    bill.houses.push([
+                        {
+                            "title": "Dummy Start",
+                            "date": startDate,
+                            "type": "dummy",
+                            "house": lookup.house_status[bill.status]
+                           
+                        },
+                        {
+                            "title": "Dummy End",
+                            "date": today,
+                            "type": "dummy",
+                            "house": lookup.house_status[bill.status]
+                            
+                        }
+                    ])
+
+                    bill.houses_time.push(getDateDifferenceInDays(startDate, today));
+
+                }
+                
             }
+          
+
+            
+
         });
 
         setBills(filteredBills);
 
     }
+
+    useEffect(() => {
+        getMaxDays();
+        console.log(billGroups);
+    },[billGroups])
 
     const getBillCount = () => {
 
@@ -313,7 +376,7 @@ function BillTracker() {
                     </Row>
                     <Row>
                         <Col xs="4">House:</Col>
-                        <Col xs="8">{houses.find(h => h.house == event.house).name}</Col>
+                        <Col xs="8">{houses.find(h => h.house == event.house)?.name}</Col>
                     </Row>
                     <Row>
                         <Col xs="4">Type:</Col>
@@ -345,8 +408,7 @@ function BillTracker() {
         return `${day}-${month}-${year}`;
     };
 
-   
-
+    
 
     return (
         <div className="bill-tracker">
@@ -520,6 +582,10 @@ function BillTracker() {
                     </Row>
                     <Row>
                         <Col>
+
+
+
+
                             <div className="bill-tracker">
                                 <Scrollbars className="bills" style={{ height: 400 }}>
                                     
@@ -541,23 +607,22 @@ function BillTracker() {
                                                                         </div>
                                                                         <div className="bill-progress">
                                                                             {
-                                                                                bill.houses_time.map((house_group, index) => {
+                                                                                bill.houses.map((house_group, index) => {
+                                                                                    
                                                                                     return (
                                                                                         <div className="house-group" key={`house-group-${index}`}>
-                                                                                            <div className="house-group-bar" style={{ width: `${house_group * zoom}px`, backgroundColor: houses.find(h => h.house == bill.houses[index][0].house).color}}>
-                                                                                                
+                                                                                            <div className="house-group-bar" style={{ width: `${bill.houses_time[index] * zoom}px`, backgroundColor: houses.find(h => h.house == bill.houses[index][0].house)?.color}}>
                                                                                                 {
                                                                                                     selectedViewOptions?.includes('events') && 
                                                                                                         bill.houses[index].map((event, index) => {
+                                                                                                            const eventPosition = getEventPosition(event.date, house_group[0].date, zoom);
                                                                                                             return(
-                                                                                                                <div className="event" key={`event-${index}`} style={{ backgroundColor: houses.find(h => h.house == event.house).active_color }}>
+                                                                                                                <div className="event" key={`event-${index}`} style={{ left: `${eventPosition}px`, backgroundColor: houses.find(h => h.house == event.house)?.active_color }}>
                                                                                                                     <Tooltip event={event} />
                                                                                                                 </div>
                                                                                                             )
                                                                                                         })
-
                                                                                                 }
-                                                                                                
                                                                                             </div>
                                                                                         </div>
                                                                                     )
@@ -583,16 +648,14 @@ function BillTracker() {
                                                 {
                                                     Array.from({ length: maxDays }, (_, i) => i + 1).map((day, index) => {
                                                         return (
-
-                                                            <div className="tick" style={{ width: `${zoom}px` }} key={`day-${index}`}>
-                                                                {
                                                                     day % (zoom > 3 ? 10 : 50) == 0 && (
-                                                                        <div className="label">
-                                                                            {day}
+                                                                        <div className="tick" style={{ left: `${day * zoom}px` }} key={`day-${index}`}>
+                                                                            <div className="label">
+                                                                                {day}
+                                                                            </div>
                                                                         </div>
                                                                     )
-                                                                }
-                                                            </div>
+                                                           
 
                                                         )
                                                     })
