@@ -77,16 +77,16 @@ function BillTracker() {
     const statusOptions = [
         { value: 'na', label: 'National Assembly' },
         { value: 'ncop', label: 'National Council of Provinces' },
-        { value: 'president', label: 'President' }
-        // {value: '', label: '----'},
-        // {value: 'act-partly-commenced', label: 'Act Partly Commenced'},
-        // {value: 'act-commenced', label: 'Act Commenced'},
-        // {value: 'enacted', label: 'Enacted'},
-        // {value: 'draft', label: 'Draft'},
-        // {value: '', label: '----'},
-        // {value: 'lapsed', label: 'Lapsed'},
-        // {value: 'withdrawn', label: 'Withdrawn'},
-        // {value: 'rejected', label: 'Rejected'}
+        { value: 'president', label: 'President' },
+        {value: '', label: '----'},
+        {value: 'act-partly-commenced', label: 'Act Partly Commenced'},
+        {value: 'act-commenced', label: 'Act Commenced'},
+        {value: 'enacted', label: 'Enacted'},
+        {value: 'draft', label: 'Draft'},
+        {value: '', label: '----'},
+        {value: 'lapsed', label: 'Lapsed'},
+        {value: 'withdrawn', label: 'Withdrawn'},
+        {value: 'rejected', label: 'Rejected'}
     ];
 
     const [selectedViewOptions, setSelectedViewOptions] = useState(['bill-introduced', 'bill-passed', 'bill-updated', 'bill-signed']);
@@ -97,9 +97,13 @@ function BillTracker() {
     const [hoveredBill, setHoveredBill] = useState(null);
 
     const [search, setSearch] = useState('');
-
-    const svgRef = useRef();
-
+    const [analysis, setAnalysis] = useState({
+        'na': 0,
+        'ncop': 0,
+        'joint': 0,
+        'president': 0,
+    })
+    
 
     useEffect(() => {
 
@@ -203,8 +207,7 @@ function BillTracker() {
 
     }
 
-    useEffect(() => {
-    }, [maxDays]);
+    
 
     const getDateDifferenceInDays = (startDate, endDate) => {
         const start = new Date(startDate);
@@ -313,7 +316,13 @@ function BillTracker() {
 
     useEffect(() => {
         getMaxDays();
-        console.log(billGroups);
+
+      
+        billGroups.forEach(group => {
+            group.bills.forEach(bill => {
+
+            });
+        })
     }, [billGroups])
 
     const getBillCount = () => {
@@ -603,6 +612,7 @@ function BillTracker() {
                                 <div className="zoom-btn" onClick={() => daySizeinPx < 10 && setDaySizeinPx(daySizeinPx + 0.25)}>+</div>
                             </div> */}
                             <Form.Range
+                                className="mt-2"
                                 min={0.25}
                                 max={10}
                                 step={0.25}
@@ -665,7 +675,7 @@ function BillTracker() {
 
 
                             <div className="bill-tracker">
-                                <Scrollbars className="bills" style={{ height: 400 }}>
+                                
 
 
                                     {
@@ -679,7 +689,7 @@ function BillTracker() {
                                                             return (
                                                                 <div className="bill-row" key={`bill-${index}`}>
                                                                     <div className="bill-title-container" onClick={() => { setSelectedBill(bill); setShowModal(true) }} key={`bill-${index}`}>
-                                                                        <div className="bill-title">
+                                                                        <div className="bill-title" title={bill.title}>
                                                                             {bill.title}
                                                                         </div>
                                                                     </div>
@@ -758,13 +768,17 @@ function BillTracker() {
                                             </div>
                                         )
                                     }
-                                </Scrollbars>
+                                
 
                             </div>
                         </Col>
-                        <Col md={3}>
+                        {/* <Col md={3}>
+                            <div className="analysis">
+                                <h2>Where these bills have spent the most time</h2>
 
-                        </Col>
+                                <h2>Where meetings for these bills happened</h2>
+                            </div>
+                        </Col> */}
 
 
                     </Row>

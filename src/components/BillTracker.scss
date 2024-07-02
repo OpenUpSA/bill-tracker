@@ -61,7 +61,7 @@ header .form-select {
         margin: 0 0 2em 0;
 
         h2 {
-            font-size: 1.2em;
+            font-size: 1.1em;
             color: #000;
             font-weight: 600;
             margin: 0 0 1.5em 0;
@@ -70,8 +70,8 @@ header .form-select {
 
     .bill-row {
         position: relative;
-       
         margin: 0 0 0.5em 0;
+        
 
 
         .bill-title-container {
@@ -80,15 +80,14 @@ header .form-select {
             left: 0;
             top: 0;
 
+
             .bill-title {
-                
                 background: #fff;
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
                 width: 200px;
                 color: rgba(0,0,0,0.8);
-    
             }
 
 
@@ -233,4 +232,10 @@ header .form-select {
     &:hover {
         background-color: #ddd;
     }
+}
+
+.analysis h2 {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 0 0 1em 0;
 }
