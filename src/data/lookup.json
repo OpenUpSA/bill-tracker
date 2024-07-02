@@ -9,7 +9,6 @@
         "act-commenced": "Commenced",
         "lapsed": "Lapsed",
         "draft": "Draft"
-
     },
     "parliaments": {
         "all": {
@@ -24,6 +23,29 @@
             "name": "5th Parliament",
             "start": "2009-05-06",
             "end": "2014-05-21"
+        }
+    },
+    "attendance-states": {
+        "P": {
+            "group": "attended"
+        },
+        "U": {
+            "group": "unknown"
+        },
+        "A": {
+            "group": "missed"
+        },
+        "AP": {
+            "group": "missed"
+        },
+        "DE": {
+            "group": "attended"
+        },
+        "L": {
+            "group": "attended"
+        },
+        "LDE": {
+            "group": "attended"
         }
     }
 }

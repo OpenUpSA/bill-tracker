@@ -1,0 +1,310 @@
+{
+    "party-attendance": [
+        {
+            "party": "Democractic Alliance",
+            "member-count": 99,
+            "attendance": [
+                {
+                    "state": "P",
+                    "count": 533
+                },
+                {
+                    "state": "A",
+                    "count": 166
+                },
+                {
+                    "state": "AP",
+                    "count": 0
+                },
+                {
+                    "state": "DE",
+                    "count": 0
+                },
+                {
+                    "state": "L",
+                    "count": 0
+                },
+                {
+                    "state": "LDE",
+                    "count": 0
+                },
+                {
+                    "state": "U",
+                    "count": 0
+                }
+            ]
+        },
+        {
+            "party": "African National Congress",
+            "member-count": 99,
+            "attendance": [
+                {
+                    "state": "P",
+                    "count": 1679
+                },
+                {
+                    "state": "A",
+                    "count": 444
+                },
+                {
+                    "state": "AP",
+                    "count": 444
+                },
+                {
+                    "state": "DE",
+                    "count": 444
+                },
+                {
+                    "state": "L",
+                    "count": 444
+                },
+                {
+                    "state": "LDE",
+                    "count": 444
+                },
+                {
+                    "state": "U",
+                    "count": 444
+                }
+            ]
+        },
+        {
+            "party": "Economic Freedom Fighters",
+            "member-count": 99,
+            "attendance": [
+                {
+                    "state": "P",
+                    "count": 7739
+                },
+                {
+                    "state": "A",
+                    "count": 464
+                },
+                {
+                    "state": "AP",
+                    "count": 464
+                },
+                {
+                    "state": "DE",
+                    "count": 464
+                },
+                {
+                    "state": "L",
+                    "count": 464
+                },
+                {
+                    "state": "LDE",
+                    "count": 464
+                },
+                {
+                    "state": "U",
+                    "count": 464
+                }
+            ]
+        },
+        {
+            "party": "Inkatha Freedom Party",
+            "member-count": 99,
+            "attendance": [
+                {
+                    "state": "P",
+                    "count": 1673
+                },
+                {
+                    "state": "A",
+                    "count": 2464
+                },
+                {
+                    "state": "AP",
+                    "count": 2464
+                },
+                {
+                    "state": "DE",
+                    "count": 2464
+                },
+                {
+                    "state": "L",
+                    "count": 2464
+                },
+                {
+                    "state": "LDE",
+                    "count": 2464
+                },
+                {
+                    "state": "U",
+                    "count": 2464
+                }
+            ]
+        },
+        {
+            "party": "Freedom Front Plus",
+            "member-count": 99,
+            "attendance": [
+                {
+                    "state": "P",
+                    "count": 9739
+                },
+                {
+                    "state": "A",
+                    "count": 6464
+                },
+                {
+                    "state": "AP",
+                    "count": 6464
+                },
+                {
+                    "state": "DE",
+                    "count": 6464
+                },
+                {
+                    "state": "L",
+                    "count": 6464
+                },
+                {
+                    "state": "LDE",
+                    "count": 6464
+                },
+                {
+                    "state": "U",
+                    "count": 6464
+                }
+            ]
+        },
+        {
+            "party": "United Democratic Movement",
+            "member-count": 99,
+            "attendance": [
+                {
+                    "state": "P",
+                    "count": 6739
+                },
+                {
+                    "state": "A",
+                    "count": 4464
+                },
+                {
+                    "state": "AP",
+                    "count": 4464
+                },
+                {
+                    "state": "DE",
+                    "count": 4464
+                },
+                {
+                    "state": "L",
+                    "count": 4464
+                },
+                {
+                    "state": "LDE",
+                    "count": 4464
+                },
+                {
+                    "state": "U",
+                    "count": 4464
+                }
+            ]
+        },
+        {
+            "party": "African Christian Democratic Party",
+            "member-count": 99,
+            "attendance": [
+                {
+                    "state": "P",
+                    "count": 16739
+                },
+                {
+                    "state": "A",
+                    "count": 9464
+                },
+                {
+                    "state": "AP",
+                    "count": 9464
+                },
+                {
+                    "state": "DE",
+                    "count": 9464
+                },
+                {
+                    "state": "L",
+                    "count": 9464
+                },
+                {
+                    "state": "LDE",
+                    "count": 9464
+                },
+                {
+                    "state": "U",
+                    "count": 9464
+                }
+            ]
+        },
+        {
+            "party": "Congress of the People",
+            "member-count": 99,
+            "attendance": [
+                {
+                    "state": "P",
+                    "count": 16739
+                },
+                {
+                    "state": "A",
+                    "count": 4464
+                },
+                {
+                    "state": "AP",
+                    "count": 4464
+                },
+                {
+                    "state": "DE",
+                    "count": 4464
+                },
+                {
+                    "state": "L",
+                    "count": 4464
+                },
+                {
+                    "state": "LDE",
+                    "count": 4464
+                },
+                {
+                    "state": "U",
+                    "count": 4464
+                }
+            ]
+        },
+        {
+            "party": "Pan Africanist Congress of Azania",
+            "member-count": 99,
+            "attendance": [
+                {
+                    "state": "P",
+                    "count": 16739
+                },
+                {
+                    "state": "A",
+                    "count": 4464
+                },
+                {
+                    "state": "AP",
+                    "count": 4464
+                },
+                {
+                    "state": "DE",
+                    "count": 4464
+                },
+                {
+                    "state": "L",
+                    "count": 4464
+                },
+                {
+                    "state": "LDE",
+                    "count": 4464
+                },
+                {
+                    "state": "U",
+                    "count": 4464
+                }
+            ]
+        }
+    ]
+}
