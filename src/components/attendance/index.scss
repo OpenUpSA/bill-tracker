@@ -225,13 +225,42 @@ table {
   }
 
   thead {
+    position: sticky;
+    top: 0;
     tr {
       th {
+        background-color: #fff;
         font-family: Inter;
         font-size: 10px;
         font-weight: 400;
         line-height: 12.1px;
         text-align: left;
+        padding: 10px 20px 10px 0;
+
+        &:last-child {
+          padding-right: 0;
+        }
+
+        &.sortable {
+          white-space: nowrap;
+          cursor: pointer;
+          span {
+            display: inline-block;
+            padding-right: 8px;
+          }
+        }
+
+        &.membersOrParty {
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+
+  tbody {
+    tr:first-child {
+      td {
+        padding-top: 0px;
       }
     }
   }
@@ -257,7 +286,7 @@ table {
     border-radius: 2px;
     display: inline-block;
     height: 16px;
-    padding: 0 0 0 8px;
+    padding: 0 4px 0 4px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -327,6 +356,8 @@ table {
 .rounded-image {
   border-radius: 100%;
   display: inline-block;
+  display: none;
+  vertical-align: -5px;
 }
 
 h2 {
@@ -335,4 +366,8 @@ h2 {
   font-weight: 600;
   line-height: 25.2px;
   text-align: left;
+}
+
+.percentageAttendance {
+  font-weight: 700;
 }

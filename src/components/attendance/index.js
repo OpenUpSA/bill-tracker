@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -9,63 +9,176 @@ import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faCaretUp,
+  faUserCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 import "./index.scss";
 
-import * as data from "../../data/attendance/attendance.json";
+import * as data from "../../data/attendance/all-time.json";
 import * as lookup from "../../data/lookup.json";
 
 function Attendance() {
-  const partyAttendance = data;
   const attendanceStates = lookup["attendance-states"];
+  const parliaments = lookup["parliaments"];
 
+  const [maxAttendance, setMaxAttendance] = useState(0);
+  const [dataAttendance, setDataAttendance] = useState(null);
   const [grouping, setGrouping] = useState("party");
   const [detailedBreakdown, setDetailedBreakdown] = useState(false);
   const [showAsPercentage, setShowAsPercentage] = useState(false);
-  const [selectedParliament, setSelectedParliament] = useState(null);
+  const [selectedParliament, setSelectedParliament] = useState("all");
+  const [sortedDirection, setSortedDirection] = useState("desc");
 
-  // Filter out 0 attendance
-  partyAttendance.forEach((party) => {
-    party.attendance = party.attendance.filter(
-      (attendance) => attendance.count > 0
+  const setupData = () => {
+    let partyAttendance = {};
+    let memberAttendance = {};
+
+    Object.keys(data).forEach((id) => {
+      // set memberAttendance by selectedParliament
+      memberAttendance[id] = {
+        label: data[id].name,
+        party: data[id].party,
+        attendance: data[id]["parliamentary-record"][selectedParliament],
+      };
+
+      // set partyAttendance by grouping memberAttenandance by party
+      if (!partyAttendance[data[id].party]) {
+        partyAttendance[data[id].party] = {
+          label: data[id].party,
+          party: data[id].party,
+          "member-count": 0,
+          attendance: [],
+        };
+      }
+      partyAttendance[data[id].party]["member-count"] += 1;
+      data[id]["parliamentary-record"][selectedParliament] &&
+        data[id]["parliamentary-record"][selectedParliament].forEach(
+          (attendance) => {
+            const recordIndex = partyAttendance[
+              data[id].party
+            ].attendance.findIndex((r) => r.state === attendance.state);
+            if (recordIndex > -1) {
+              partyAttendance[data[id].party].attendance[recordIndex].count +=
+                attendance.count;
+            } else {
+              partyAttendance[data[id].party].attendance.push({
+                state: attendance.state,
+                count: attendance.count,
+              });
+            }
+          }
+        );
+    });
+
+    let activeAttendance = [];
+
+    // Push partyAttendance hash into activeAttendance array
+    if (grouping === "party") {
+      activeAttendance = Object.values(partyAttendance);
+    } else {
+      activeAttendance = Object.values(memberAttendance);
+    }
+
+    // Filter out attendnace.state = 'U'
+    activeAttendance.forEach((row) => {
+      row["attendance"] = row["attendance"]?.filter(
+        (attendance) => attendance.state !== "U"
+      );
+    });
+
+    // filter out empty activeAttendance.attendance
+    activeAttendance = activeAttendance.filter(
+      (row) => row["attendance"].length > 0
     );
-  });
 
-  // Total party.attendance.count for each party as party-attendance-count
-  partyAttendance.forEach((party) => {
-    party["party-attendance-count"] = party.attendance.reduce(
-      (total, attendance) => total + attendance.count,
-      0
-    );
-  });
+    activeAttendance.forEach((item) => {
+      // Total attendance.count for each item as attendance-count
 
-  // Group and total partyAttendance.party.attendance by attendanceStates.group ib partyAttendance.party.grouped-attendance[{state: STATE, count: COUNT}]
-  partyAttendance.forEach((party) => {
-    party["grouped-attendance"] = party.attendance.reduce(
-      (grouped, attendance) => {
-        if (grouped[attendanceStates[attendance.state].group]) {
-          grouped[attendanceStates[attendance.state].group].count +=
-            attendance.count;
-        } else {
-          grouped[attendanceStates[attendance.state].group] = {
-            state: attendanceStates[attendance.state].group,
-            count: attendance.count,
-            group: attendanceStates[attendance.state].group,
-          };
+      item["attendance-count"] = item.attendance.reduce(
+        (total, attendance) => total + attendance.count,
+        0
+      );
+
+      // Group and total item.attendance by attendanceStates.group ib item.grouped-attendance[{state: STATE, count: COUNT}]
+      item["grouped-attendance"] = item.attendance.reduce(
+        (grouped, attendance) => {
+          if (grouped[attendanceStates[attendance.state].group]) {
+            grouped[attendanceStates[attendance.state].group].count +=
+              attendance.count;
+          } else {
+            grouped[attendanceStates[attendance.state].group] = {
+              state: attendanceStates[attendance.state].group,
+              count: attendance.count,
+              group: attendanceStates[attendance.state].group,
+            };
+          }
+          return grouped;
+        },
+        {}
+      );
+
+      // Calculate grouped-percentage of attendance-count
+      Object.keys(item["grouped-attendance"]).forEach((key) => {
+        item["grouped-attendance"][key].percentage =
+          (item["grouped-attendance"][key].count / item["attendance-count"]) *
+          100;
+        if (item["grouped-attendance"][key].group === "attended") {
+          item["attendance-percentage"] =
+            item["grouped-attendance"][key].percentage;
         }
-        return grouped;
-      },
-      {}
+      });
+
+      if (!item["attendance-percentage"]) {
+        item["attendance-percentage"] = 0;
+      }
+
+      // Make grouped-attendance an array
+      item["grouped-attendance"] = Object.values(item["grouped-attendance"]);
+    });
+
+    // Sort activeAttendance by attendance-percentage
+    activeAttendance = activeAttendance.sort((a, b) => {
+      return b["attendance-percentage"] - a["attendance-percentage"];
+    });
+
+    setDataAttendance(activeAttendance);
+
+    // Calculate max attendance overall
+    setMaxAttendance(
+      activeAttendance.reduce((max, item) => {
+        return item["attendance-count"] > max ? item["attendance-count"] : max;
+      }, 0)
     );
-  });
+  };
 
-  // Make grouped-attendance an array
-  partyAttendance.forEach((party) => {
-    party["grouped-attendance"] = Object.values(party["grouped-attendance"]);
-  });
+  useEffect(() => {
+    setupData();
+  }, [data, selectedParliament, grouping]);
 
-  console.log(partyAttendance);
+  const toggleSortableDirection = () => {
+    if (sortedDirection === "desc") {
+      setDataAttendance(
+        dataAttendance.sort((a, b) => {
+          return a["attendance-percentage"] - b["attendance-percentage"];
+        })
+      );
+      setSortedDirection("asc");
+    } else {
+      setDataAttendance(
+        dataAttendance.sort((a, b) => {
+          return b["attendance-percentage"] - a["attendance-percentage"];
+        })
+      );
+      setSortedDirection("desc");
+    }
+  };
+
+  const changeParliament = (parliament) => {
+    setSelectedParliament(parliament);
+  };
 
   const toggleGrouping = () => {
     if (grouping === "party") {
@@ -73,6 +186,7 @@ function Attendance() {
     } else {
       setGrouping("party");
     }
+    setupData();
   };
 
   const toggleShowAsPercentage = () => {
@@ -82,13 +196,6 @@ function Attendance() {
   const toggleDetailedBreakDown = () => {
     setDetailedBreakdown(!detailedBreakdown);
   };
-
-  // Calculate max attendance overall
-  const maxAttendance = Math.max(
-    ...partyAttendance.map((party) =>
-      Math.max(...party.attendance.map((attendance) => attendance.count))
-    )
-  );
 
   return (
     <div className="attendance-tracker">
@@ -114,21 +221,19 @@ function Attendance() {
                       <Form.Select
                         aria-label="Select Parliament"
                         defaultValue={selectedParliament}
-                        onChange={(e) => setSelectedParliament(e.target.value)}
+                        onChange={(e) => changeParliament(e.target.value)}
                         size="lg"
                       >
-                        {Object.keys(lookup.parliaments).map(
-                          (parliament, index) => {
-                            return (
-                              <option
-                                value={parliament}
-                                key={`parliament-${index}`}
-                              >
-                                {lookup.parliaments[parliament].name}
-                              </option>
-                            );
-                          }
-                        )}
+                        {Object.keys(parliaments).map((parliament, index) => {
+                          return (
+                            <option
+                              value={parliament}
+                              key={`parliament-${index}`}
+                            >
+                              {lookup.parliaments[parliament].name}
+                            </option>
+                          );
+                        })}
                       </Form.Select>
                     </Col>
                   </Form.Group>
@@ -182,93 +287,99 @@ function Attendance() {
                 </Stack>
               </div>
             </Stack>
-            {grouping === "party" && (
-              <table className={`${detailedBreakdown && "detailed"}`}>
-                <thead>
-                  <tr>
-                    <th>Party</th>
-                    <th>Members</th>
-                    <th>Attendance</th>
-                    <th>Recorded totals breakdown</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {partyAttendance
-                    .sort((a, b) => a.party.localeCompare(b.party))
-                    .map((party) => (
-                      <tr key={party.party}>
-                        <td className="no-word-break">
-                          <img
-                            src="https://pa.org.za/media_root/cache/9e/f5/9ef5a6050bafc6be0d2a0a69c40f1372.jpg"
-                            alt="ANC"
-                            width="20"
-                            height="20"
-                            className="rounded-image"
-                          />
-                          {party.party}
-                        </td>
-                        <td>{party["member-count"]}</td>
-                        <td className="no-word-break">
-                          {party["attendance-percentage"]}% of{" "}
-                          {party["party-attendance-count"]}
-                        </td>
-                        <td width="100%">
-                          <div className="bar-background">
-                            {party[
-                              detailedBreakdown
-                                ? "attendance"
-                                : "grouped-attendance"
-                            ]
-                              .sort((a, b) => {
-                                return b.state.localeCompare(a.state);
-                              })
-                              .map((attendance) => (
-                                <div
-                                  key={attendance.state}
-                                  className={`bar state-${
-                                    attendance.state
-                                  } state-grouping-${
-                                    detailedBreakdown
-                                      ? attendanceStates[attendance.state].group
-                                      : attendance.group
-                                  }`}
-                                  style={{
-                                    width: `${
-                                      (attendance.count /
-                                        (showAsPercentage
-                                          ? party["party-attendance-count"]
-                                          : maxAttendance)) *
-                                      100
-                                    }%`,
-                                  }}
-                                >
-                                  {showAsPercentage
-                                    ? `${Math.round(
-                                        parseFloat(
-                                          (attendance.count /
-                                            party["party-attendance-count"]) *
-                                            100
-                                        )
-                                      )}%`
-                                    : attendance.count}
-                                </div>
-                              ))}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-            )}
-            {grouping === "member" && (
-              <table>
-                <tbody>
-                  <tr>
-                    <td>member</td>
-                  </tr>
-                </tbody>
-              </table>
-            )}
+            <table className={`${detailedBreakdown && "detailed"}`}>
+              <thead>
+                <tr>
+                  <th>{grouping === "party" ? "Party" : "Member"}</th>
+                  <th className="no-word-break">
+                    {grouping === "party" ? "Members" : "Party"}
+                  </th>
+                  <th className="sortable" onClick={toggleSortableDirection}>
+                    <span>Attendance</span>
+                    <FontAwesomeIcon
+                      icon={
+                        sortedDirection === "desc" ? faCaretDown : faCaretUp
+                      }
+                    />
+                  </th>
+                  <th>Recorded totals breakdown</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dataAttendance &&
+                  dataAttendance.map((row) => (
+                    <tr key={row.label}>
+                      <td className="no-word-break">
+                        <img
+                          src="https://pa.org.za/media_root/cache/9e/f5/9ef5a6050bafc6be0d2a0a69c40f1372.jpg"
+                          alt="ANC"
+                          width="20"
+                          height="20"
+                          className="rounded-image"
+                        />
+                        {row.label}
+                      </td>
+                      <td className="no-word-break">
+                        {grouping === "party"
+                          ? row["member-count"]
+                          : row["party"]}
+                      </td>
+                      <td className="no-word-break">
+                        <span className="percentageAttendance">
+                          {Math.round(parseFloat(row["attendance-percentage"]))}
+                          %
+                        </span>{" "}
+                        of {row["attendance-count"].toLocaleString()}
+                      </td>
+                      <td width="100%">
+                        <div className="bar-background">
+                          {row[
+                            detailedBreakdown
+                              ? "attendance"
+                              : "grouped-attendance"
+                          ]
+                            .sort((a, b) => {
+                              return detailedBreakdown
+                                ? b.state.localeCompare(a.state)
+                                : a.state.localeCompare(b.state);
+                            })
+                            .map((attendance) => (
+                              <div
+                                key={attendance.state}
+                                className={`bar state-${
+                                  attendance.state
+                                } state-grouping-${
+                                  detailedBreakdown
+                                    ? attendanceStates[attendance.state].group
+                                    : attendance.group
+                                }`}
+                                style={{
+                                  width: `${
+                                    (attendance.count /
+                                      (showAsPercentage
+                                        ? row["attendance-count"]
+                                        : maxAttendance)) *
+                                    100
+                                  }%`,
+                                }}
+                              >
+                                {showAsPercentage
+                                  ? `${Math.round(
+                                      parseFloat(
+                                        (attendance.count /
+                                          row["attendance-count"]) *
+                                          100
+                                      )
+                                    )}%`
+                                  : attendance.count.toLocaleString()}
+                              </div>
+                            ))}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
             <hr />
           </Col>
         </Row>
