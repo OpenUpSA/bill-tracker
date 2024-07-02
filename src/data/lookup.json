@@ -2,7 +2,8 @@
     "house_status": {
         "na": "NA",
         "ncop": "NCOP",
-        "president": "President"
+        "president": "President",
+        "joint": "Joint NA/NCOP"
     },
 
     "groupby": {
