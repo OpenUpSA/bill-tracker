@@ -53,7 +53,7 @@ header .form-select {
 
 
 .bill-tracker {
-    padding: 0 0 2em 0;
+    padding: 0 0 1em 0;
     position: relative;
     height: 400px;
 
@@ -77,11 +77,11 @@ header .form-select {
         .bill-title-container {
             width: 200px;
             position: absolute;
-            z-index: 999;
             left: 0;
             top: 0;
 
             .bill-title {
+                
                 background: #fff;
                 text-overflow: ellipsis;
                 overflow: hidden;
@@ -107,16 +107,19 @@ header .form-select {
                 position: relative;
                 left: 200px;
                 
+                
 
                 .house-group-bar {
                     height: 100%;
                     width: 100%;
                     border-radius: 5px;
-
+                    position: relative;
+                    transition: all 0.5s;
                     
                     .event {
-                        display: inline-block;
-                        position: relative;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        position: absolute;
                         margin: 0;
                         line-height: 0;
                         height: 100%;
@@ -125,48 +128,13 @@ header .form-select {
                         width: 10px;
                         height: 10px;
                         border-radius: 50%;
-
-                        .event-tooltip {
-                            // no mouse events
-                            pointer-events: none;
-                            opacity: 0;
-                            position: absolute;
-                            background: #fff;
-                            padding: 1em;
-                            border-radius: 5px;
-                            box-shadow: 0 0 5px rgba(0,0,0,0.2);
-                            top: 10px;
-                            left: 0;
-                            transform: translateX(-50%);
-                            z-index: 9999;
-                            width: 250px;
-                            white-space: normal;
-                            line-height: normal;
-
-                            .tooltip-title {
-                                font-weight: 600;
-                            }
-
-                            .tooltip-body .row {
-                                margin-bottom: 0.4em;
-                            }
-
-                            &::after {
-                                content: '';
-                                position: absolute;
-                                top: -10px;
-                                left: 50%;
-                                transform: translateX(-50%);
-                                border: 5px solid transparent;
-                                border-bottom-color: #fff;
-                            }
-
-                        }
+                        z-index: 10;
 
 
                         &:hover {
                             border: 2px solid #fff;
                             cursor: pointer;
+                            z-index: 999;
 
                             .event-tooltip {
                                 opacity: 1;
@@ -186,21 +154,64 @@ header .form-select {
 }
 
 
+.bill-tracker-tooltip {
+    pointer-events: none;
+    opacity: 1;
+    position: absolute;
+    background: #fff;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    top: 10px;
+    left: 0;
+    transform: translateX(-50%);
+    width: 250px;
+    white-space: normal;
+    line-height: normal;
+
+    .tooltip-title {
+        font-weight: 600;
+    }
+
+    .tooltip-body .row {
+        margin-bottom: 0.4em;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-bottom-color: #fff;
+    }
+}
 
 .xAxis {
     position: sticky;
-    padding: 0.2em 0 1em 0;
+    padding: 2em 0 1em 0;
     bottom: 0em;
     margin-left: 200px;
     width: 100%;
-    overflow: hidden;
+    
     white-space: nowrap;
     background-color: #fff;
+    border-top: 1px solid #000;
 
     .tick {
         font-size: 10px;
         color: #333;
-        display: inline-block;
+        position: absolute;
+        top: 0px;
+        border-left: 1px solid #000;
+        height: 5px;
+        transition: left 0.5s;
+
+        .label {
+            transform: translate(-50%, 40%);
+
+        }
     }
 }
 
@@ -223,4 +234,3 @@ header .form-select {
         background-color: #ddd;
     }
 }
-

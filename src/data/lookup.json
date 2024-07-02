@@ -1,4 +1,11 @@
 {
+    "house_status": {
+        "na": "NA",
+        "ncop": "NCOP",
+        "president": "President",
+        "joint": "Joint NA/NCOP"
+    },
+
     "groupby": {
         "na": "National Assembly",
         "ncop": "National Council of Provinces",
