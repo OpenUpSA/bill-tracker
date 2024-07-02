@@ -70,7 +70,7 @@ function BillTracker() {
         { value: 'bill-passed', label: 'Bill Passings' },
         { value: 'bill-enacted', label: 'Bill Enactments' },
         { value: 'bill-act-commenced', label: 'Act Commencements' },
-        { value: 'current-house-start', label: 'Current House Start' },
+        // { value: 'current-house-start', label: 'Current House Start' },
         { value: 'today', label: 'Today' }
 
     ];
@@ -260,19 +260,23 @@ function BillTracker() {
 
             if (lastHouse != lookup.house_status[bill.status]) {
 
-                let lastDate = bill.events[bill.events.length - 1].date;
+                if(bill.stats !== 'lapsed' && bill.status !== 'withdrawn' && bill.status !== 'rejected', bill.status !== 'enacted', bill.status !== 'act-commenced', bill.status !== 'act-partly-commenced') {
 
-                let startDate = new Date(lastDate + 1);
+                    let lastDate = bill.events[bill.events.length - 1].date;
 
-                dummyEvents.push([{
-                    date: startDate,
-                    house: lookup.house_status[bill.status],
-                    type: 'current-house-start'
-                }, {
-                    date: today,
-                    house: lookup.house_status[bill.status],
-                    type: 'today'
-                }]);
+                    let startDate = new Date(lastDate + 1);
+
+                    dummyEvents.push([{
+                        date: startDate,
+                        house: lookup.house_status[bill.status],
+                        type: 'current-house-start'
+                    }, {
+                        date: today,
+                        house: lookup.house_status[bill.status],
+                        type: 'today'
+                    }]);
+
+                }
 
             } else {
                 bill.houses[bill.houses.length - 1].push({
