@@ -270,12 +270,26 @@ table {
   background-color: #0000000a;
   border-radius: 2px;
   width: 100%;
-
   font-size: 10px;
   font-weight: 400;
   line-height: 16px;
   display: flex;
   align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &.half {
+    display: inline-block;
+    width: 50%;
+
+    &.align-right {
+      text-align: right;
+    }
+
+    &:first-child {
+      border-right: dashed 1px #000;
+    }
+  }
 
   &:hover {
     background-color: #0000001a;
@@ -311,11 +325,26 @@ table {
 
 .detailed {
   .bar-background {
+    &.align-right {
+      direction: rtl;
+    }
     .bar {
       margin-right: 1px;
 
       &:last-child {
         margin-right: 0;
+      }
+
+      &.state-more-than-average {
+        background-color: #8AE561;
+        overflow: visible;
+      }
+
+      &.state-less-than-average {
+        background-color: #FFA694;
+        overflow: visible!important;
+        text-align: right;
+        direction: ltr;
       }
 
       &.state-P {
@@ -351,13 +380,6 @@ table {
 
 .no-word-break {
   white-space: nowrap;
-}
-
-.rounded-image {
-  border-radius: 100%;
-  display: inline-block;
-  display: none;
-  vertical-align: -5px;
 }
 
 h2 {

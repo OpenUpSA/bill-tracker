@@ -49,6 +49,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
     party = row[2];
     createdAt = new Date(row[3]);
     attendance = row[4];
+    profilePicUrl = row[6];
     const parliamentKey = lookupParliamentFromCreatedAt(createdAt);
     console.log(parliamentKey);
 
@@ -96,6 +97,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
       const newMember = {
         name: name,
         party: party,
+        profilePicUrl: profilePicUrl,
         "parliamentary-record": {},
       };
       newMember["parliamentary-record"][parliamentKey] = [
