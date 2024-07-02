@@ -13,18 +13,17 @@ import { faUserCheck } from "@fortawesome/free-solid-svg-icons";
 
 import "./index.scss";
 
-import * as data from "../../data/attendance.json";
+import * as data from "../../data/attendance/attendance.json";
 import * as lookup from "../../data/lookup.json";
 
 function Attendance() {
-  const partyAttendance = data["party-attendance"];
+  const partyAttendance = data;
   const attendanceStates = lookup["attendance-states"];
 
   const [grouping, setGrouping] = useState("party");
   const [detailedBreakdown, setDetailedBreakdown] = useState(false);
   const [showAsPercentage, setShowAsPercentage] = useState(false);
-  const [selectedParliament, setSelectedParliament] =
-    useState("6th-parliament");
+  const [selectedParliament, setSelectedParliament] = useState(null);
 
   // Filter out 0 attendance
   partyAttendance.forEach((party) => {
