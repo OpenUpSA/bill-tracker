@@ -1,3 +1,5 @@
+import "../index.scss";
+
 import React, { useEffect, useState } from "react";
 
 import Form from "react-bootstrap/Form";
@@ -6,11 +8,8 @@ import Stack from "react-bootstrap/Stack";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 
-import "../index.scss";
-
 import * as data from "../../../data/attendance/all-time.json";
 import * as lookup from "../../../data/lookup.json";
-import { sort } from "d3";
 
 function OverallAttendance(props) {
   const { selectedParliament } = props;

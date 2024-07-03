@@ -1,13 +1,11 @@
+import "../index.scss";
+
 import React, { useEffect, useState } from "react";
 
 import Stack from "react-bootstrap/Stack";
-import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
-
-import "../index.scss";
 
 import * as data from "../../../data/attendance/all-time.json";
 import * as lookup from "../../../data/lookup.json";
@@ -20,6 +18,7 @@ function AverageAttendance(props) {
   const [dataAttendance, setDataAttendance] = useState(null);
   const [grouping, setGrouping] = useState("party");
   const [sortedDirection, setSortedDirection] = useState("desc");
+  const [sortedField, setSortedField] = useState("attendance-percentage");
 
   const setupData = () => {
     let partyAttendance = {};
@@ -154,18 +153,28 @@ function AverageAttendance(props) {
     setupData();
   }, [data, selectedParliament, grouping]);
 
-  const toggleSortableDirection = () => {
+  const setSort = (fieldToSortBy) => {
+    setSortedField(fieldToSortBy);
+
     if (sortedDirection === "desc") {
       setDataAttendance(
         dataAttendance.sort((a, b) => {
-          return a["attendance-percentage"] - b["attendance-percentage"];
+          if (fieldToSortBy === "label" || fieldToSortBy === "party") {
+            return a[fieldToSortBy].localeCompare(b[fieldToSortBy]);
+          } else {
+            return a[fieldToSortBy] - b[fieldToSortBy];
+          }
         })
       );
       setSortedDirection("asc");
     } else {
       setDataAttendance(
         dataAttendance.sort((a, b) => {
-          return b["attendance-percentage"] - a["attendance-percentage"];
+          if (fieldToSortBy === "label" || fieldToSortBy === "party") {
+            return b[fieldToSortBy].localeCompare(a[fieldToSortBy]);
+          } else {
+            return b[fieldToSortBy] - a[fieldToSortBy];
+          }
         })
       );
       setSortedDirection("desc");
@@ -196,15 +205,38 @@ function AverageAttendance(props) {
       <table className="detailed">
         <thead>
           <tr>
-            <th>{grouping === "party" ? "Party" : "Member"}</th>
-            <th className="no-word-break">
-              {grouping === "party" ? "Members" : "Party"}
+            <th className="sortable" onClick={() => setSort("label")}>
+              <span>{grouping === "party" ? "Party" : "Member"}</span>
+              {sortedField === "label" && (
+                <FontAwesomeIcon
+                  icon={sortedDirection === "desc" ? faCaretDown : faCaretUp}
+                />
+              )}
             </th>
-            <th className="sortable" onClick={toggleSortableDirection}>
+            <th
+              className="no-word-break sortable"
+              onClick={() =>
+                setSort(grouping === "party" ? "member-count" : "party")
+              }
+            >
+              <span>{grouping === "party" ? "Members" : "Party"}</span>
+              {sortedField ===
+                (grouping === "party" ? "member-count" : "party") && (
+                <FontAwesomeIcon
+                  icon={sortedDirection === "desc" ? faCaretDown : faCaretUp}
+                />
+              )}
+            </th>
+            <th
+              className="sortable"
+              onClick={() => setSort("attendance-percentage")}
+            >
               <span>Attendance</span>
-              <FontAwesomeIcon
-                icon={sortedDirection === "desc" ? faCaretDown : faCaretUp}
-              />
+              {sortedField === "attendance-percentage" && (
+                <FontAwesomeIcon
+                  icon={sortedDirection === "desc" ? faCaretDown : faCaretUp}
+                />
+              )}
             </th>
             <th>
               Comparison against the average ({Math.round(averageAttendance)}%)
