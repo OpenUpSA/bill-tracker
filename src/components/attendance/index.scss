@@ -241,6 +241,25 @@ h2 {
   font-weight: 700;
 }
 
+.input-pre-icon {
+  display: inline-block;
+  position: absolute;
+  margin-top: 11px;
+  margin-left: 15px;
+  opacity: 0.3;
+}
+
+.memberSearch {
+  border: none;
+  width: Fixed (100px) px;
+  height: Fill (36px) px;
+  padding: 8px 20px 8px 40px;
+  gap: 10px;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+
+}
+
 .toggleButtonGroup {
   border-radius: 20px;
   background-color: #f0f0f0;

@@ -4,11 +4,13 @@ import React, { useEffect, useState } from "react";
 
 import Form from "react-bootstrap/Form";
 import Stack from "react-bootstrap/Stack";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faCaretUp,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 
 import * as data from "../../../data/attendance/all-time.json";
 import * as lookup from "../../../data/lookup.json";
@@ -30,6 +32,7 @@ function OverallAttendance(props) {
     x: 0,
     y: 0,
   });
+  const [memberSearch, setMemberSearch] = useState("");
 
   const AttendanceTooltip = () => {
     const attendedGroup = tooltipAttendance["grouped-attendance"]?.find(
@@ -301,6 +304,18 @@ function OverallAttendance(props) {
             </button>
           </div>
         </div>
+        {grouping === "members" && (
+          <div className="pt-2 pb-2">
+            <FontAwesomeIcon className="input-pre-icon" icon={faSearch} />
+            <Form.Control
+              className="memberSearch"
+              type="text"
+              placeholder="Search for a member..."
+              value={memberSearch}
+              onChange={(e) => setMemberSearch(e.target.value)}
+            />
+          </div>
+        )}
         <div className="p-2 ms-auto">
           <Stack direction="horizontal" gap={3}>
             <Form>
@@ -376,74 +391,84 @@ function OverallAttendance(props) {
         </thead>
         <tbody>
           {dataAttendance &&
-            dataAttendance.map((row) => (
-              <tr key={row.label}>
-                <td className="no-word-break">{row.label}</td>
-                <td className="no-word-break">
-                  {grouping === "party" ? row["member-count"] : row["party"]}
-                </td>
-                <td className="no-word-break">
-                  <span className="percentageAttendance">
-                    {Math.round(parseFloat(row["attendance-percentage"]))}%
-                  </span>{" "}
-                </td>
-                <td className="no-word-break">
-                  {row["attendance-count"].toLocaleString()}
-                </td>
-                <td
-                  width="100%"
-                  onMouseEnter={() => showTooltip(row)}
-                  onMouseLeave={hideTooltip}
-                  onMouseMove={(e) =>
-                    setTooltipMousePosition({
-                      x: e.pageX,
-                      y: e.pageY,
-                    })
-                  }
-                >
-                  <div className="bar-background">
-                    {row[
-                      detailedBreakdown ? "attendance" : "grouped-attendance"
-                    ]
-                      .sort((a, b) => {
-                        return detailedBreakdown
-                          ? b.state.localeCompare(a.state)
-                          : a.state.localeCompare(b.state);
+            dataAttendance
+              .filter((row) => {
+                if (grouping === "members") {
+                  return row.label
+                    .toLowerCase()
+                    .includes(memberSearch.toLowerCase());
+                }
+                return true;
+              })
+              .map((row) => (
+                <tr key={row.label}>
+                  <td className="no-word-break">{row.label}</td>
+                  <td className="no-word-break">
+                    {grouping === "party" ? row["member-count"] : row["party"]}
+                  </td>
+                  <td className="no-word-break">
+                    <span className="percentageAttendance">
+                      {Math.round(parseFloat(row["attendance-percentage"]))}%
+                    </span>{" "}
+                  </td>
+                  <td className="no-word-break">
+                    {row["attendance-count"].toLocaleString()}
+                  </td>
+                  <td
+                    width="100%"
+                    onMouseEnter={() => showTooltip(row)}
+                    onMouseLeave={hideTooltip}
+                    onMouseMove={(e) =>
+                      setTooltipMousePosition({
+                        x: e.pageX,
+                        y: e.pageY,
                       })
-                      .map((attendance) => (
-                        <div
-                          key={attendance.state}
-                          className={`bar state-${
-                            attendance.state
-                          } state-grouping-${
-                            detailedBreakdown
-                              ? attendanceStates[attendance.state].group
-                              : attendance.group
-                          }`}
-                          style={{
-                            width: `${
-                              (attendance.count /
-                                (showAsPercentage
-                                  ? row["attendance-count"]
-                                  : maxAttendance)) *
-                              100
-                            }%`,
-                          }}
-                        >
-                          {showAsPercentage
-                            ? `${Math.round(
-                                parseFloat(
-                                  (attendance.count / row["attendance-count"]) *
-                                    100
-                                )
-                              )}%`
-                            : attendance.count.toLocaleString()}
-                        </div>
-                      ))}
-                  </div>
-                </td>
-              </tr>
-            ))}
+                    }
+                  >
+                    <div className="bar-background">
+                      {row[
+                        detailedBreakdown ? "attendance" : "grouped-attendance"
+                      ]
+                        .sort((a, b) => {
+                          return detailedBreakdown
+                            ? b.state.localeCompare(a.state)
+                            : a.state.localeCompare(b.state);
+                        })
+                        .map((attendance) => (
+                          <div
+                            key={attendance.state}
+                            className={`bar state-${
+                              attendance.state
+                            } state-grouping-${
+                              detailedBreakdown
+                                ? attendanceStates[attendance.state].group
+                                : attendance.group
+                            }`}
+                            style={{
+                              width: `${
+                                (attendance.count /
+                                  (showAsPercentage
+                                    ? row["attendance-count"]
+                                    : maxAttendance)) *
+                                100
+                              }%`,
+                            }}
+                          >
+                            {showAsPercentage
+                              ? `${Math.round(
+                                  parseFloat(
+                                    (attendance.count /
+                                      row["attendance-count"]) *
+                                      100
+                                  )
+                                )}%`
+                              : attendance.count.toLocaleString()}
+                          </div>
+                        ))}
+                    </div>
+                  </td>
+                </tr>
+              ))}
         </tbody>
       </table>
       {tooltipShown && <AttendanceTooltip />}
