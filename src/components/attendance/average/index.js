@@ -297,9 +297,9 @@ function AverageAttendance(props) {
                   <td className="no-word-break">
                     {row["attendance-count"].toLocaleString()}
                   </td>
-                  <td width="100%">
+                  <td width="50%" className="no-padding-horizontal">
                     <div
-                      className={`bar-background half ${
+                      className={`bar-background dotted-border-right no-border-radius-right half ${
                         getDifferentToAveragePercentage(
                           row["attendance-percentage"]
                         ) <= 0 && "align-right"
@@ -340,8 +340,10 @@ function AverageAttendance(props) {
                       )}
                       &nbsp;
                     </div>
+                  </td>
+                  <td width="50%" className="no-padding-horizontal">
                     <div
-                      className={`bar-background half ${
+                      className={`bar-background no-border-radius-left half ${
                         getDifferentToAveragePercentage(
                           row["attendance-percentage"]
                         ) <= 0 && "align-right"
@@ -391,7 +393,8 @@ function AverageAttendance(props) {
             <td colspan="5">
               <ul className="stateLegend">
                 <li>
-                  <span className="bar state-attended">Above</span> Above average
+                  <span className="bar state-attended">Above</span> Above
+                  average
                 </li>
                 <li>
                   <span className="bar state-missed">Below</span> Below average

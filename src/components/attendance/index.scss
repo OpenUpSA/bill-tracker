@@ -60,10 +60,15 @@ table {
 
   tr {
     td {
-      padding: 2px 18px 2px 0;
+      padding: 2px 18px 2px 2px;
+
+      &.no-padding-horizontal {
+        padding-right: 0;
+        padding-left: 0;
+      }
 
       &:last-child {
-        padding-right: 0;
+        padding-right: 2px;
       }
     }
   }
@@ -107,6 +112,24 @@ table {
         padding-top: 0px;
       }
     }
+
+    tr {
+      &:hover {
+        td {
+          background-color: #0000000a;
+
+          &:first-child {
+            border-top-left-radius: 2px;
+            border-bottom-left-radius: 2px;
+          }
+
+          &:last-child {
+            border-top-right-radius: 2px;
+            border-bottom-right-radius: 2px;
+          }
+        }
+      }
+    }
   }
 
   tfoot {
@@ -140,11 +163,13 @@ table {
               background-color: #f0f0f0;
               margin-right: 5px;
 
-              &.state-P, &.state-attended {
+              &.state-P,
+              &.state-attended {
                 background-color: #8ae56199;
               }
 
-              &.state-A, &.state-missed {
+              &.state-A,
+              &.state-missed {
                 background-color: #ffa694;
               }
 
@@ -186,21 +211,27 @@ table {
   align-items: center;
   overflow: hidden;
   white-space: nowrap;
+  height: 100%;
 
-  &:hover {
-    background-color: #0000001a;
+  &.no-border-radius-right {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.no-border-radius-left {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &.dotted-border-right {
+    border-right: dashed 1px #000;
   }
 
   &.half {
-    display: inline-block;
-    width: 50%;
+    //width: 50%;
 
     &.align-right {
       text-align: right;
-    }
-
-    &:first-child {
-      border-right: dashed 1px #000;
     }
 
     &:hover {
@@ -415,6 +446,7 @@ h2 {
 
   table {
     margin: 0;
+    border-bottom: none;
 
     tbody {
       tr {
