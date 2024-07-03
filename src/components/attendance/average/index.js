@@ -80,7 +80,7 @@ function AverageAttendance(props) {
 
     // filter out empty activeAttendance.attendance
     activeAttendance = activeAttendance.filter(
-      (row) => row["attendance"].length > 0
+      (row) => row["attendance"]?.length > 0
     );
 
     activeAttendance.forEach((item) => {
@@ -176,20 +176,21 @@ function AverageAttendance(props) {
     <>
       <h2>Recorded meeting attendance compared to the average</h2>
       <Stack direction="horizontal" gap={3}>
-        <div className="p-2">
-          <ToggleButtonGroup
-            type="radio"
-            name="options"
-            defaultValue={1}
-            value={grouping}
-          >
-            <ToggleButton value="party" onClick={() => setGrouping("party")}>
+        <div className="pt-2 pb-2">
+          <div className="toggleButtonGroup">
+            <button
+              className={grouping === "party" && "active"}
+              onClick={() => setGrouping("party")}
+            >
               Party
-            </ToggleButton>
-            <ToggleButton value="member" onClick={() => setGrouping("members")}>
+            </button>
+            <button
+              className={grouping === "members" && "active"}
+              onClick={() => setGrouping("members")}
+            >
               Members
-            </ToggleButton>
-          </ToggleButtonGroup>
+            </button>
+          </div>
         </div>
       </Stack>
       <table className="detailed">

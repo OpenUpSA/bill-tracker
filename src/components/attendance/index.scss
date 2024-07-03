@@ -336,13 +336,13 @@ table {
       }
 
       &.state-more-than-average {
-        background-color: #8AE561;
+        background-color: #8ae561;
         overflow: visible;
       }
 
       &.state-less-than-average {
-        background-color: #FFA694;
-        overflow: visible!important;
+        background-color: #ffa694;
+        overflow: visible !important;
         text-align: right;
         direction: ltr;
       }
@@ -392,4 +392,23 @@ h2 {
 
 .percentageAttendance {
   font-weight: 700;
+}
+
+.toggleButtonGroup {
+  border-radius: 20px;
+  background-color: #F0F0F0;
+  
+  button {
+    border: none;
+    width: Fixed (100px) px;
+    height: Fill (36px) px;
+    padding: 8px 20px 8px 20px;
+    gap: 10px;
+    border-radius: 20px;
+
+    &.active {
+      background-color: #000000;
+      color: #ffffff;
+    }
+  }
 }

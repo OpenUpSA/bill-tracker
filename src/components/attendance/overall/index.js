@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import Form from "react-bootstrap/Form";
 import Stack from "react-bootstrap/Stack";
-import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
@@ -181,20 +179,21 @@ function OverallAttendance(props) {
     <>
       <h2>Overall recorded meeting attendance</h2>
       <Stack direction="horizontal" gap={3}>
-        <div className="p-2">
-          <ToggleButtonGroup
-            type="radio"
-            name="options"
-            defaultValue={1}
-            value={grouping}
-          >
-            <ToggleButton value="party" onClick={() => setGrouping("party")}>
+        <div className="pt-2 pb-2">
+          <div className="toggleButtonGroup">
+            <button
+              className={grouping === "party" && "active"}
+              onClick={() => setGrouping("party")}
+            >
               Party
-            </ToggleButton>
-            <ToggleButton value="member" onClick={() => setGrouping("members")}>
+            </button>
+            <button
+              className={grouping === "members" && "active"}
+              onClick={() => setGrouping("members")}
+            >
               Members
-            </ToggleButton>
-          </ToggleButtonGroup>
+            </button>
+          </div>
         </div>
         <div className="p-2 ms-auto">
           <Stack direction="horizontal" gap={3}>
