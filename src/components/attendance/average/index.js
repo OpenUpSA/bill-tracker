@@ -238,6 +238,17 @@ function AverageAttendance(props) {
                 />
               )}
             </th>
+            <th
+              className="sortable"
+              onClick={() => setSort("attendance-count")}
+            >
+              <span>Meetings</span>
+              {sortedField === "attendance-count" && (
+                <FontAwesomeIcon
+                  icon={sortedDirection === "desc" ? faCaretDown : faCaretUp}
+                />
+              )}
+            </th>
             <th>
               Comparison against the average ({Math.round(averageAttendance)}%)
             </th>
@@ -253,9 +264,11 @@ function AverageAttendance(props) {
                 </td>
                 <td className="no-word-break">
                   <span className="percentageAttendance">
-                    {Math.round(row["attendance-percentage"])}%
+                    {Math.round(parseFloat(row["attendance-percentage"]))}%
                   </span>{" "}
-                  of {row["attendance-count"].toLocaleString()}
+                </td>
+                <td className="no-word-break">
+                  {row["attendance-count"].toLocaleString()}
                 </td>
                 <td width="100%">
                   <div
