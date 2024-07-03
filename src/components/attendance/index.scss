@@ -121,6 +121,10 @@ table {
   overflow: hidden;
   white-space: nowrap;
 
+  &:hover {
+    background-color: #0000001a;
+  }
+
   &.half {
     display: inline-block;
     width: 50%;
@@ -132,10 +136,10 @@ table {
     &:first-child {
       border-right: dashed 1px #000;
     }
-  }
 
-  &:hover {
-    background-color: #0000001a;
+    &:hover {
+      background-color: #0000000a;
+    }
   }
 
   .bar {
@@ -331,6 +335,10 @@ h2 {
       tr {
         td {
           white-space: nowrap;
+
+          &.text-align-right {
+            text-align: right;
+          }
         }
       }
     }

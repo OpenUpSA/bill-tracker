@@ -64,20 +64,41 @@ function OverallAttendance(props) {
                 {attendedGroup && (
                   <tr>
                     <td>Meetings attended:</td>
-                    <td>
-                      {attendedGroup.count.toLocaleString()} (
-                      {Math.round(attendedGroup.percentage)}%)
+                    <td className="text-align-right">
+                      {attendedGroup.count.toLocaleString()}
                     </td>
+                    <td>({Math.round(attendedGroup.percentage)}%)</td>
                   </tr>
                 )}
                 {missedGroup && (
                   <tr>
                     <td>Meetings missed:</td>
-                    <td>
-                      {missedGroup.count.toLocaleString()} (
-                      {Math.round(missedGroup.percentage)}%)
+                    <td className="text-align-right">
+                      {missedGroup.count.toLocaleString()}
                     </td>
+                    <td>({Math.round(missedGroup.percentage)}%)</td>
                   </tr>
+                )}
+                {detailedBreakdown && (
+                  <>
+                    {tooltipAttendance["attendance"].map((attendance) => (
+                      <tr key={attendance.state}>
+                        <td>{attendanceStates[attendance.state].label}:</td>
+                        <td className="text-align-right">
+                          {attendance.count.toLocaleString()}
+                        </td>
+                        <td>
+                          (
+                          {Math.round(
+                            (attendance.count /
+                              tooltipAttendance["attendance-count"]) *
+                              100
+                          )}
+                          %)
+                        </td>
+                      </tr>
+                    ))}
+                  </>
                 )}
               </tbody>
             </table>
