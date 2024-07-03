@@ -2,10 +2,15 @@ import "../index.scss";
 
 import React, { useEffect, useState } from "react";
 
+import Form from "react-bootstrap/Form";
 import Stack from "react-bootstrap/Stack";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faCaretUp,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 
 import * as data from "../../../data/attendance/all-time.json";
 import * as lookup from "../../../data/lookup.json";
@@ -19,6 +24,7 @@ function AverageAttendance(props) {
   const [grouping, setGrouping] = useState("party");
   const [sortedDirection, setSortedDirection] = useState("desc");
   const [sortedField, setSortedField] = useState("attendance-percentage");
+  const [memberSearch, setMemberSearch] = useState("");
 
   const setupData = () => {
     let partyAttendance = {};
@@ -201,6 +207,18 @@ function AverageAttendance(props) {
             </button>
           </div>
         </div>
+        {grouping === "members" && (
+          <div className="pt-2 pb-2">
+            <FontAwesomeIcon className="input-pre-icon" icon={faSearch} />
+            <Form.Control
+              className="memberSearch"
+              type="text"
+              placeholder="Search for a member..."
+              value={memberSearch}
+              onChange={(e) => setMemberSearch(e.target.value)}
+            />
+          </div>
+        )}
       </Stack>
       <table className="detailed">
         <thead>
@@ -256,108 +274,117 @@ function AverageAttendance(props) {
         </thead>
         <tbody>
           {dataAttendance &&
-            dataAttendance.map((row) => (
-              <tr key={row.label}>
-                <td className="no-word-break">{row.label}</td>
-                <td className="no-word-break">
-                  {grouping === "party" ? row["member-count"] : row["party"]}
-                </td>
-                <td className="no-word-break">
-                  <span className="percentageAttendance">
-                    {Math.round(parseFloat(row["attendance-percentage"]))}%
-                  </span>{" "}
-                </td>
-                <td className="no-word-break">
-                  {row["attendance-count"].toLocaleString()}
-                </td>
-                <td width="100%">
-                  <div
-                    className={`bar-background half ${
-                      getDifferentToAveragePercentage(
-                        row["attendance-percentage"]
-                      ) <= 0 && "align-right"
-                    }`}
-                  >
-                    {getDifferentToAveragePercentage(
-                      row["attendance-percentage"]
-                    ) <= 0 && (
-                      <div
-                        className={`bar state-${
-                          getDifferentToAveragePercentage(
-                            row["attendance-percentage"]
-                          ) > 0
-                            ? "more-than-average"
-                            : "less-than-average"
-                        }`}
-                        style={{
-                          width: `${Math.min(
-                            Math.abs(
-                              getDifferentToAveragePercentage(
-                                row["attendance-percentage"]
-                              )
-                            ),
-                            100
-                          )}%`,
-                        }}
-                      >
-                        {getDifferentToAveragePercentage(
+            dataAttendance
+              .filter((row) => {
+                if (grouping === "members") {
+                  return row.label
+                    .toLowerCase()
+                    .includes(memberSearch.toLowerCase());
+                }
+                return true;
+              })
+              .map((row) => (
+                <tr key={row.label}>
+                  <td className="no-word-break">{row.label}</td>
+                  <td className="no-word-break">
+                    {grouping === "party" ? row["member-count"] : row["party"]}
+                  </td>
+                  <td className="no-word-break">
+                    <span className="percentageAttendance">
+                      {Math.round(parseFloat(row["attendance-percentage"]))}%
+                    </span>{" "}
+                  </td>
+                  <td className="no-word-break">
+                    {row["attendance-count"].toLocaleString()}
+                  </td>
+                  <td width="100%">
+                    <div
+                      className={`bar-background half ${
+                        getDifferentToAveragePercentage(
                           row["attendance-percentage"]
-                        ) > 0 && "+"}
-                        {Math.round(
-                          getDifferentToAveragePercentage(
-                            row["attendance-percentage"]
-                          )
-                        )}
-                        %
-                      </div>
-                    )}
-                    &nbsp;
-                  </div>
-                  <div
-                    className={`bar-background half ${
-                      getDifferentToAveragePercentage(
+                        ) <= 0 && "align-right"
+                      }`}
+                    >
+                      {getDifferentToAveragePercentage(
                         row["attendance-percentage"]
-                      ) <= 0 && "align-right"
-                    }`}
-                  >
-                    {getDifferentToAveragePercentage(
-                      row["attendance-percentage"]
-                    ) > 0 && (
-                      <div
-                        className={`bar state-${
-                          getDifferentToAveragePercentage(
+                      ) <= 0 && (
+                        <div
+                          className={`bar state-${
+                            getDifferentToAveragePercentage(
+                              row["attendance-percentage"]
+                            ) > 0
+                              ? "more-than-average"
+                              : "less-than-average"
+                          }`}
+                          style={{
+                            width: `${Math.min(
+                              Math.abs(
+                                getDifferentToAveragePercentage(
+                                  row["attendance-percentage"]
+                                )
+                              ),
+                              100
+                            )}%`,
+                          }}
+                        >
+                          {getDifferentToAveragePercentage(
                             row["attendance-percentage"]
-                          ) > 0
-                            ? "more-than-average"
-                            : "less-than-average"
-                        }`}
-                        style={{
-                          width: `${Math.min(
-                            Math.abs(
-                              getDifferentToAveragePercentage(
-                                row["attendance-percentage"]
-                              )
-                            ),
-                            100
-                          )}%`,
-                        }}
-                      >
-                        {getDifferentToAveragePercentage(
+                          ) > 0 && "+"}
+                          {Math.round(
+                            getDifferentToAveragePercentage(
+                              row["attendance-percentage"]
+                            )
+                          )}
+                          %
+                        </div>
+                      )}
+                      &nbsp;
+                    </div>
+                    <div
+                      className={`bar-background half ${
+                        getDifferentToAveragePercentage(
                           row["attendance-percentage"]
-                        ) > 0 && "+"}
-                        {Math.round(
-                          getDifferentToAveragePercentage(
+                        ) <= 0 && "align-right"
+                      }`}
+                    >
+                      {getDifferentToAveragePercentage(
+                        row["attendance-percentage"]
+                      ) > 0 && (
+                        <div
+                          className={`bar state-${
+                            getDifferentToAveragePercentage(
+                              row["attendance-percentage"]
+                            ) > 0
+                              ? "more-than-average"
+                              : "less-than-average"
+                          }`}
+                          style={{
+                            width: `${Math.min(
+                              Math.abs(
+                                getDifferentToAveragePercentage(
+                                  row["attendance-percentage"]
+                                )
+                              ),
+                              100
+                            )}%`,
+                          }}
+                        >
+                          {getDifferentToAveragePercentage(
                             row["attendance-percentage"]
-                          )
-                        )}
-                        %
-                      </div>
-                    )}
-                    &nbsp;
-                  </div>
-                </td>
-              </tr>
-            ))}
+                          ) > 0 && "+"}
+                          {Math.round(
+                            getDifferentToAveragePercentage(
+                              row["attendance-percentage"]
+                            )
+                          )}
+                          %
+                        </div>
+                      )}
+                      &nbsp;
+                    </div>
+                  </td>
+                </tr>
+              ))}
         </tbody>
       </table>
     </>
