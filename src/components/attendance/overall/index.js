@@ -421,17 +421,7 @@ function OverallAttendance(props) {
                 return true;
               })
               .map((row) => (
-                <tr
-                  key={row.label}
-                  onMouseEnter={() => showTooltip(row)}
-                  onMouseLeave={hideTooltip}
-                  onMouseMove={(e) =>
-                    setTooltipMousePosition({
-                      x: e.pageX,
-                      y: e.pageY,
-                    })
-                  }
-                >
+                <tr key={row.label}>
                   <td className="no-word-break">{row.label}</td>
                   <td className="no-word-break">
                     {grouping === "party" ? row["member-count"] : row["party"]}
@@ -444,7 +434,17 @@ function OverallAttendance(props) {
                   <td className="no-word-break">
                     {row["attendance-count"].toLocaleString()}
                   </td>
-                  <td width="100%">
+                  <td
+                    width="100%"
+                    onMouseEnter={() => showTooltip(row)}
+                    onMouseLeave={hideTooltip}
+                    onMouseMove={(e) =>
+                      setTooltipMousePosition({
+                        x: e.pageX,
+                        y: e.pageY,
+                      })
+                    }
+                  >
                     <div className="bar-background">
                       {row[
                         detailedBreakdown ? "attendance" : "grouped-attendance"

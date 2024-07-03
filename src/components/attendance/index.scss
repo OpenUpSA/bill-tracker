@@ -107,12 +107,6 @@ table {
   }
 
   tbody {
-    tr:first-child {
-      td {
-        padding-top: 0px;
-      }
-    }
-
     tr {
       &:hover {
         td {
@@ -138,7 +132,7 @@ table {
 
     tr {
       td {
-        background-color: #fff;
+        background-color: rgba(255, 255, 255, 0.9);
         padding: 10px 0 20px 0;
         .stateLegend {
           display: flex;
@@ -200,6 +194,18 @@ table {
   }
 }
 
+.dotted-border-right {
+  //border-right: dashed 1px #000;
+  background-image: url("data:image/svg+xml,%3csvg width='2' height='328' viewBox='0 0 2 328' fill='none' xmlns='http://www.w3.org/2000/svg'><path opacity='0.6' d='M1.00001 0L0.999986 328' stroke='black' stroke-dasharray='2 2'/>%3c/svg%3e");
+  background-repeat: repeat-y;
+  background-position: center;
+  padding: 0;
+  width: 1px;
+  overflow: hidden;
+
+}
+
+
 .bar-background {
   background-color: #0000000a;
   border-radius: 2px;
@@ -221,10 +227,6 @@ table {
   &.no-border-radius-left {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-  }
-
-  &.dotted-border-right {
-    border-right: dashed 1px #000;
   }
 
   &.half {
