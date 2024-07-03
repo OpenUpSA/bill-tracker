@@ -18,6 +18,11 @@ const lookup = require("../src/data/lookup.json");
 const parliaments = lookup["parliaments"];
 const data = {};
 
+function dateToEpoch(thedate) {
+  var time = thedate.getTime();
+  return time - (time % 86400000);
+}
+
 function exportDataToJsonFile() {
   fs.writeFileSync(
     "./src/data/attendance/all-time.json",
@@ -31,10 +36,9 @@ function lookupParliamentFromCreatedAt(createdAt) {
   // Find the parliament with a start and end date using createdAt
   Object.keys(parliaments).forEach((key) => {
     const parliament = parliaments[key];
-    startDate = new Date(parliament.start);
-    endDate = new Date(parliament.end);
+    startDate = dateToEpoch(new Date(parliament.start));
+    endDate = dateToEpoch(new Date(parliament.end));
     if (createdAt >= startDate && createdAt <= endDate) {
-      console.log("Parliament found for:", createdAt, key);
       foundkey = key;
     }
   });
@@ -47,11 +51,11 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
     id = row[0];
     name = row[1];
     party = row[2];
-    createdAt = new Date(row[3]);
+    createdAt = dateToEpoch(new Date(row[3]));
     attendance = row[4];
     profilePicUrl = row[6];
     const parliamentKey = lookupParliamentFromCreatedAt(createdAt);
-    console.log(parliamentKey);
+    console.log(parliamentKey, createdAt);
 
     // Add to existing member or create new one
     if (data[id]) {

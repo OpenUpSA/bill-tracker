@@ -179,13 +179,13 @@ function AverageAttendance(props) {
         <div className="pt-2 pb-2">
           <div className="toggleButtonGroup">
             <button
-              className={grouping === "party" && "active"}
+              className={grouping === "party" ? "active" : ""}
               onClick={() => setGrouping("party")}
             >
               Party
             </button>
             <button
-              className={grouping === "members" && "active"}
+              className={grouping === "members" ? "active" : ""}
               onClick={() => setGrouping("members")}
             >
               Members

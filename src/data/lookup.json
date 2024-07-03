@@ -14,15 +14,25 @@
         "all": {
             "name": "All Parliaments"
         },
+        "7th-parliament": {
+            "name": "7th Parliament",
+            "start": "2024-05-21",
+            "end": "2029-05-20"
+        },
         "6th-parliament": {
             "name": "6th Parliament",
-            "start": "2014-05-21",
-            "end": "2019-05-07"
+            "start": "2019-05-21",
+            "end": "2024-05-20"
         },
         "5th-parliament": {
             "name": "5th Parliament",
-            "start": "2009-05-06",
-            "end": "2014-05-21"
+            "start": "2014-05-21",
+            "end": "2019-05-20"
+        },
+        "4th-parliament": {
+            "name": "4th Parliament",
+            "start": "2009-05-21",
+            "end": "2014-05-20"
         }
     },
     "attendance-states": {
