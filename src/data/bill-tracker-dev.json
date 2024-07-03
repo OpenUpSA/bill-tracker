@@ -1,0 +1,44 @@
+[
+    {
+        "id": 705,
+        "title": "Copyright Amendment Bill",
+        "type": "S76",
+        "status": "na",
+        "year": 2017,
+        "introduced_by": "Minister of Trade and Industry",
+        "date_of_introduction": "2017-05-16",
+        "events": [
+            {
+                "id": 24382,
+                "title": "Bill introduced to National Assembly",
+                "date": "2017-05-12 20:58:00+00:00",
+                "type": "bill-introduced",
+                "public_participation": false,
+                "house": "NA"
+            },
+            {
+                "id": 24373,
+                "title": "Copyright & Performers Protection Bills: sectoral impact briefing",
+                "date": "2018-05-16 13:10:00+00:00",
+                "type": "bill-passed",
+                "public_participation": false,
+                "house": "NA",
+                "committee": "Arts and Culture"
+            }
+        ],
+        "versions": [
+            {
+                "id": 3886,
+                "date": "2017-05-15",
+                "title": "SEIAS Report",
+                "enacted": false
+            },
+            {
+                "id": 3885,
+                "date": "2017-05-16",
+                "title": "B13-2017",
+                "enacted": false
+            }
+        ]
+    }
+]

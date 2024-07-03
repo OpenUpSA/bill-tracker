@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as d3 from 'd3';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -9,8 +8,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Modal from 'react-bootstrap/Modal';
-
-import ReactJson from '@microlink/react-json-view'
+import Spinner from 'react-bootstrap/Spinner';
 
 import { Scrollbars } from 'react-custom-scrollbars';
 
@@ -53,7 +51,7 @@ function BillTracker() {
             color: "rgb(23, 160, 140)"
         }
     ];
-    const [zoom, setZoom] = useState(1);
+    const [daySizeinPx, setDaySizeinPx] = useState(0.5);
     const [maxDays, setMaxDays] = useState(0);
     const [groupBillsBy, setGroupBillsBy] = useState('status');
     const [selectedParliament, setSelectedParliament] = useState('6th-parliament');
@@ -64,12 +62,22 @@ function BillTracker() {
         }
     ];
     const viewOptions = [
-        {value: 'events', label: 'Show Events'}
+        { value: 'committee-meeting', label: 'Committee Meetings' },
+        { value: 'plenary', label: 'Plenaries' },
+        { value: 'bill-updated', label: 'Bill updates' },
+        { value: 'bill-signed', label: 'Bill Signings' },
+        { value: 'bill-introduced', label: 'Bill Introductions' },
+        { value: 'bill-passed', label: 'Bill Passings' },
+        { value: 'bill-enacted', label: 'Bill Enactments' },
+        { value: 'bill-act-commenced', label: 'Act Commencements' },
+        // { value: 'current-house-start', label: 'Current House Start' },
+        { value: 'today', label: 'Today' }
+
     ];
     const statusOptions = [
-        {value: 'na', label: 'National Assembly'},
-        {value: 'ncop', label: 'National Council of Provinces'},
-        {value: 'president', label: 'President'},
+        { value: 'na', label: 'National Assembly' },
+        { value: 'ncop', label: 'National Council of Provinces' },
+        { value: 'president', label: 'President' },
         {value: '', label: '----'},
         {value: 'act-partly-commenced', label: 'Act Partly Commenced'},
         {value: 'act-commenced', label: 'Act Commenced'},
@@ -80,13 +88,21 @@ function BillTracker() {
         {value: 'withdrawn', label: 'Withdrawn'},
         {value: 'rejected', label: 'Rejected'}
     ];
-        
-    const [selectedViewOptions, setSelectedViewOptions] = useState([]);
+
+    const [selectedViewOptions, setSelectedViewOptions] = useState(['bill-introduced', 'bill-passed', 'bill-updated', 'bill-signed']);
     const [selectedStatuses, setSelectedStatuses] = useState(['na', 'ncop', 'president']);
     const [showModal, setShowModal] = useState(false);
     const [selectedBill, setSelectedBill] = useState({});
-    
+    const [hoveredEvent, setHoveredEvent] = useState(null);
+    const [hoveredBill, setHoveredBill] = useState(null);
+
     const [search, setSearch] = useState('');
+    const [analysis, setAnalysis] = useState({
+        'na': 0,
+        'ncop': 0,
+        'joint': 0,
+        'president': 0,
+    })
     
 
     useEffect(() => {
@@ -97,6 +113,7 @@ function BillTracker() {
 
     useEffect(() => {
 
+
         let filteredBills = bills;
 
         // Filter by status
@@ -104,14 +121,14 @@ function BillTracker() {
             filteredBills = filteredBills.filter(bill => selectedStatuses.includes(bill.status));
         }
 
-        if(search.length > 3) {
+        if (search.length > 3) {
             filteredBills = filteredBills.filter(bill => bill.title.toLowerCase().includes(search.toLowerCase()));
         } else {
             filteredBills = filteredBills;
         }
 
         if (selectedParliament !== 'all') {
-            filteredBills = filteredBills.filter(bill => bill.date_of_introduction >= lookup.parliaments[selectedParliament].start && bill.date_of_introduction <= lookup.parliaments[selectedParliament].end); 
+            filteredBills = filteredBills.filter(bill => bill.date_of_introduction >= lookup.parliaments[selectedParliament].start && bill.date_of_introduction <= lookup.parliaments[selectedParliament].end);
         }
 
         let groupedBills = [];
@@ -126,7 +143,7 @@ function BillTracker() {
                 });
             });
         }
-        
+
         // reorder the groups so that the statuses are in the order defined in the statusOptions array
         const orderedGroups = [];
         statusOptions.forEach(option => {
@@ -142,86 +159,175 @@ function BillTracker() {
 
     }, [bills, selectedParliament, search, selectedStatuses, groupBillsBy]);
 
-   
+
+    const billWork = () => {
+        console.log(billsData);
+
+        let all_statuses = [];
+
+        let all_event_types = [];
+
+        billsData.forEach(bill => {
+            if (!all_statuses.includes(bill.status)) {
+                all_statuses.push(bill.status);
+            }
+
+            bill.events.forEach(event => {
+                if (!all_event_types.includes(event.type)) {
+                    all_event_types.push(event.type);
+                }
+            })
+        })
+
+        console.log(all_statuses);
+        console.log(all_event_types);
+
+
+
+    }
 
     const getMaxDays = () => {
 
         let max = 0;
-        bills.forEach(bill => {
-            let total = 0;
-            bill.houses_time.forEach(time => {
-                total += time;
+
+        billGroups.forEach(group => {
+            group.bills.forEach(bill => {
+                let total = 0;
+                bill.houses_time.forEach(time => {
+                    total += time;
+                });
+                bill.total_days = total;
+                if (total > max) {
+                    max = total;
+                }
             });
-            bill.total_days = total;
-            if (total > max) {
-                max = total;
-            }
         });
+
         setMaxDays(max);
 
     }
 
-    useEffect(() => {
-    }, [maxDays]);
+    
+
+    const getDateDifferenceInDays = (startDate, endDate) => {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        const diffTime = Math.abs(end - start);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    };
+
+    // Function to calculate event position
+    const getEventPosition = (eventDate, billStartDate) => {
+        const daysFromStart = getDateDifferenceInDays(billStartDate, eventDate);
+        return daysFromStart * daySizeinPx;
+    };
 
 
     const getBills = () => {
 
         let filteredBills = billsData;
 
-        billsData.forEach((bill, index) => {
+        filteredBills.forEach((bill) => {
             bill.houses = [];
             bill.houses_time = [];
             let currentHouse = [];
             let lastHouse = null;
             bill.total_commitee_meetings = 0;
 
-            const getDateDifferenceInDays = (startDate, endDate) => {
-                const start = new Date(startDate);
-                const end = new Date(endDate);
-                const diffTime = Math.abs(end - start);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                return diffDays;
-            };
-
             bill.events.forEach(event => {
-                if (event.house !== undefined) {
-                    if (lastHouse === null || event.house === lastHouse) {
-                        currentHouse.push(event);
-                    } else {
-                        // Push the current group to bill.houses
-                        if (currentHouse.length > 0) {
-                            bill.houses.push(currentHouse);
-                            // Calculate the days difference
-                            const startDate = currentHouse[0].date;
-                            const endDate = currentHouse[currentHouse.length - 1].date;
-                            const daysInGroup = getDateDifferenceInDays(startDate, endDate);
-                            bill.houses_time.push(daysInGroup);
-                        }
-                        // Start a new group
-                        currentHouse = [event];
-                    }
-                    lastHouse = event.house;
-                    if (event.type === 'committee-meeting') {
-                        bill.total_commitee_meetings++;
-                    }
-                }
-            });
 
-           
-            // Push the last group to bill.houses and calculate the days difference
-            if (currentHouse.length > 0) {
-                bill.houses.push(currentHouse);
-                const startDate = currentHouse[0].date;
-                const endDate = currentHouse[currentHouse.length - 1].date;
-                const daysInGroup = getDateDifferenceInDays(startDate, endDate);
-                bill.houses_time.push(daysInGroup);
+                if (lastHouse === null || lastHouse == event.house) {
+                    currentHouse.push(event);
+                } else {
+                    bill.houses.push(currentHouse);
+                    currentHouse = [event];
+                }
+
+                lastHouse = event.house;
+
+                if (event.type === 'committee-meeting') {
+                    bill.total_commitee_meetings++;
+                }
+
+            })
+
+            bill.houses.push(currentHouse);
+
+            const today = new Date();
+
+            let dummyEvents = [];
+
+            if (lastHouse != lookup.house_status[bill.status]) {
+
+                if(bill.stats !== 'lapsed' && bill.status !== 'withdrawn' && bill.status !== 'rejected', bill.status !== 'enacted', bill.status !== 'act-commenced', bill.status !== 'act-partly-commenced') {
+
+                    let lastDate = bill.events[bill.events.length - 1].date;
+
+                    let startDate = new Date(lastDate + 1);
+
+                    dummyEvents.push([{
+                        date: startDate,
+                        house: lookup.house_status[bill.status],
+                        type: 'current-house-start'
+                    }, {
+                        date: today,
+                        house: lookup.house_status[bill.status],
+                        type: 'today'
+                    }]);
+
+                }
+
+            } else {
+                bill.houses[bill.houses.length - 1].push({
+                    date: today,
+                    house: lookup.house_status[bill.status],
+                    type: 'today'
+                });
             }
+
+            bill.houses = [...bill.houses, ...dummyEvents];
+
+            // bill.houses.forEach((house_group,index) => {
+            //     if(index > 0) {
+            //         if(house_group[0].date > bill.houses[index - 1][bill.houses[index - 1].length - 1].date) {
+            //             console.log('house gap', house_group[0].date, bill.houses[index - 1][bill.houses[index - 1].length - 1].date);
+
+            //         }
+            //     }
+            // })
+
+
+            bill.houses.forEach(house_group => {
+                if (house_group.length > 0) {
+                    let daysInGroup = 1;
+
+                    const startDate = house_group[0].date;
+                    const endDate = house_group[house_group.length - 1].date;
+                    daysInGroup = getDateDifferenceInDays(startDate, endDate);
+
+                    bill.houses_time.push(daysInGroup);
+                }
+            })
+
         });
+
+
 
         setBills(filteredBills);
 
     }
+
+    useEffect(() => {
+        getMaxDays();
+
+      
+        billGroups.forEach(group => {
+            group.bills.forEach(bill => {
+
+            });
+        })
+    }, [billGroups])
 
     const getBillCount = () => {
 
@@ -262,17 +368,17 @@ function BillTracker() {
         });
 
         return Math.round(total / count);
-    
+
     }
 
     const getPublicParticipation = () => {
-    
+
         let total = 0;
         let count = 0;
         billGroups.forEach(group => {
             group.bills.forEach(bill => {
-               bill.events.forEach(event => {
-                    if(event.public_participation) {
+                bill.events.forEach(event => {
+                    if (event.public_participation) {
                         total++;
                     }
                 });
@@ -281,7 +387,7 @@ function BillTracker() {
         });
 
         return Math.round(total / count);
-    
+
     }
 
     const getRevisions = () => {
@@ -297,33 +403,56 @@ function BillTracker() {
         });
 
 
-    
+
         return Math.round(total / count);
 
     }
 
-    const Tooltip = ({ event }) => {
+    const Tooltip = ({ event = null, bill = null }) => {
+
+
         return (
-            <div className="event-tooltip">
-                <div className="tooltip-title">{event.title}</div>
-                <div className="tooltip-body mt-4">
-                    <Row>
-                        <Col xs="4">Date:</Col>
-                        <Col xs="8">{formatDate(event.date)}</Col>    
-                    </Row>
-                    <Row>
-                        <Col xs="4">House:</Col>
-                        <Col xs="8">{houses.find(h => h.house == event.house).name}</Col>
-                    </Row>
-                    <Row>
-                        <Col xs="4">Type:</Col>
-                        <Col xs="8">{event.type}</Col>
-                    </Row>
-                </div>
-                
+            <div className="bill-tracker-tooltip">
+                {event ? (
+                    <div className="event-tooltip">
+                        <div className="tooltip-title">{event.title}</div>
+                        <div className="tooltip-body mt-4">
+                            <Row>
+                                <Col xs="4">Date:</Col>
+                                <Col xs="8">{formatDate(event.date)}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="4">House:</Col>
+                                <Col xs="8">{houses.find(h => h.house === event.house)?.name}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="4">Type:</Col>
+                                <Col xs="8">{event.type}</Col>
+                            </Row>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="bill-tracker-tooltip">
+                        <div className="tooltip-title">{bill.title}</div>
+                        <div className="tooltip-body mt-4">
+                            <Row>
+                                <Col xs="4">Status:</Col>
+                                <Col xs="8">{bill.status}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="4">Date of Introduction:</Col>
+                                <Col xs="8">{formatDate(bill.date_of_introduction)}</Col>
+                            </Row>
+                            <Row>
+                                <Col xs="4">Total Days:</Col>
+                                <Col xs="8">{bill.total_days}</Col>
+                            </Row>
+                        </div>
+                    </div>
+                )}
             </div>
-        )
-    }
+        );
+    };
 
     const handleViewOptionsChange = (option) => {
 
@@ -341,18 +470,35 @@ function BillTracker() {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-    
+
         return `${day}-${month}-${year}`;
     };
 
-   
+    const changeDaySize = (e) => {
+        const value = parseFloat(e.target.value);
+        if (value >= 0.25 && value <= 10) {
+            setDaySizeinPx(value);
+        }
+    };
+
+    const handleMouseOver = (event = null, bill = null) => {
+        setHoveredEvent(event);
+        setHoveredBill(bill);
+    };
+
+    const handleMouseOut = () => {
+        setHoveredEvent(null);
+        setHoveredBill(null);
+    };
+
+
 
 
     return (
         <div className="bill-tracker">
             <header className="p-5">
                 <Container fluid>
-                    <Row>
+                    <Row className="justify-content-between">
                         <Col md={8}>
                             <h1><FontAwesomeIcon icon={faPenNib} /> Progress of Bills</h1>
                             <span>How long does it take for a bill to go from being introduced to being signed into law by the president.</span>
@@ -363,9 +509,9 @@ function BillTracker() {
                                     <Form.Group as={Row}>
                                         <Form.Label column md="auto">Time period</Form.Label>
                                         <Col>
-                                            <Form.Select aria-label="Select time-period" size="lg">
+                                            <select aria-label="Select time-period" size="lg">
                                                 <option value="parliament">Parliament</option>
-                                            </Form.Select>
+                                            </select>
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -373,7 +519,7 @@ function BillTracker() {
                                     <Form.Group as={Row}>
                                         <Form.Label column md="auto">Parliament</Form.Label>
                                         <Col>
-                                            <Form.Select aria-label="Select Parliament" defaultValue={selectedParliament} onChange={(e) => setSelectedParliament(e.target.value)} size="lg">
+                                            <select aria-label="Select Parliament" defaultValue={selectedParliament} onChange={(e) => setSelectedParliament(e.target.value)} size="lg">
                                                 {
                                                     Object.keys(lookup.parliaments).map((parliament, index) => {
                                                         return (
@@ -381,7 +527,7 @@ function BillTracker() {
                                                         )
                                                     })
                                                 }
-                                            </Form.Select>
+                                            </select>
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -397,7 +543,7 @@ function BillTracker() {
                             <div className="widget">
                                 <Row>
                                     <Col xs="auto">
-                                        <FontAwesomeIcon icon={faFileLines} />
+                                        <FontAwesomeIcon icon={faFileLines} size="3x" />
                                     </Col>
                                     <Col>
                                         <h2>{getBillCount()} bills</h2>
@@ -410,11 +556,11 @@ function BillTracker() {
                             <div className="widget">
                                 <Row>
                                     <Col xs="auto">
-                                        <FontAwesomeIcon icon={faClock} />
+                                        <FontAwesomeIcon icon={faClock} size="3x" />
                                     </Col>
                                     <Col>
                                         <h2>{getAvgDays()} days</h2>
-                                        <span>average time in parliament</span>
+                                        <span>avg time in parliament</span>
                                     </Col>
                                 </Row>
                             </div>
@@ -423,11 +569,11 @@ function BillTracker() {
                             <div className="widget">
                                 <Row>
                                     <Col xs="auto">
-                                        <FontAwesomeIcon icon={faComments} />
+                                        <FontAwesomeIcon icon={faComments} size="3x" />
                                     </Col>
                                     <Col>
                                         <h2>{getAvgMeetings()} meetings</h2>
-                                        <span>average for current bills</span>
+                                        <span>avg for current bills</span>
                                     </Col>
                                 </Row>
                             </div>
@@ -436,11 +582,11 @@ function BillTracker() {
                             <div className="widget">
                                 <Row>
                                     <Col xs="auto">
-                                        <FontAwesomeIcon icon={faHandshakeSimple} />
+                                        <FontAwesomeIcon icon={faHandshakeSimple} size="3x" />
                                     </Col>
                                     <Col>
                                         <h2>{getPublicParticipation()} sessions</h2>
-                                        <span>average public participation</span>
+                                        <span>avg public participation</span>
                                     </Col>
                                 </Row>
                             </div>
@@ -449,11 +595,11 @@ function BillTracker() {
                             <div className="widget">
                                 <Row>
                                     <Col xs="auto">
-                                        <FontAwesomeIcon icon={faPenToSquare} />
+                                        <FontAwesomeIcon icon={faPenToSquare} size="3x" />
                                     </Col>
                                     <Col>
                                         <h2>{getRevisions()} revisions</h2>
-                                        <span>average for current bills</span>
+                                        <span>avg for current bills</span>
                                     </Col>
                                 </Row>
                             </div>
@@ -461,25 +607,32 @@ function BillTracker() {
                     </Row>
                 </Container>
             </section>
-            <section className="p-5">
+            <section className="px-5">
                 <Container fluid>
                     <Row className="mb-5">
                         <Col xs="auto" className="search-controls">
-                            <div className="zoom-btns">
-                                <div className="zoom-btn" onClick={() => zoom > 1 && setZoom(zoom - 1)}>-</div>
-                                <div className="zoom-btn" onClick={() => setZoom(zoom + 1)}>+</div>
-                            </div>
-                            
+                            <Form.Range
+                                className="mt-2"
+                                min={0.25}
+                                max={10}
+                                step={0.25}
+                                value={daySizeinPx}
+                                onChange={(e) => changeDaySize(e)}
+                                variant="dark"
+                            />
                         </Col>
+
                         <Col xs={2}>
                             <Form.Control type="search" size="lg" placeholder="Search for a bill..." onChange={e => setSearch(e.target.value)} />
                         </Col>
+                        
+                            
                         <Col xs={6}></Col>
                         <Col>
                             <Row>
                                 <Col>
-                                    <Dropdown className="dropdown-btn">  
-                                        <Dropdown.Toggle  size="lg">
+                                    <Dropdown className="dropdown-btn" variant="info" autoClose="outside">
+                                        <Dropdown.Toggle size="lg">
                                             <FontAwesomeIcon icon={faGear} />  View Options
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
@@ -492,8 +645,8 @@ function BillTracker() {
                                     </Dropdown>
                                 </Col>
                                 <Col>
-                                    <Dropdown className="dropdown-btn">  
-                                        <Dropdown.Toggle  size="lg">
+                                    <Dropdown className="dropdown-btn" variant="dark" autoClose="outside">
+                                        <Dropdown.Toggle size="lg">
                                             <FontAwesomeIcon icon={faBarsStaggered} /> Status
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
@@ -513,86 +666,104 @@ function BillTracker() {
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
-                                
-                                
+
+
                             </Row>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <div className="bill-tracker">
-                                <Scrollbars className="bills" style={{ height: 400 }}>
-                                    
-                                    
-                                        {
-                                            billGroups?.length > 0 && billGroups?.map((group, index) => {
-                                                return (
-                                                    <div className="bill-group" key={`bill-group-${index}`}>
-                                                        <h2>{lookup.groupby[group.name]} ({group.bills.length})</h2>
-                                                        {
-                                                            group?.bills?.length > 0 && group?.bills?.map((bill, index) => {
 
-                                                                return (
-                                                                    <div className="bill-row" key={`bill-${index}`}>
-                                                                        <div className="bill-title-container"  onClick={() => {setSelectedBill(bill); setShowModal(true)}} key={`bill-${index}`}>
-                                                                            <div className="bill-title">
-                                                                                {bill.title}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="bill-progress">
-                                                                            {
-                                                                                bill.houses_time.map((house_group, index) => {
-                                                                                    return (
-                                                                                        <div className="house-group" key={`house-group-${index}`}>
-                                                                                            <div className="house-group-bar" style={{ width: `${house_group * zoom}px`, backgroundColor: houses.find(h => h.house == bill.houses[index][0].house).color}}>
-                                                                                                
-                                                                                                {
-                                                                                                    selectedViewOptions?.includes('events') && 
-                                                                                                        bill.houses[index].map((event, index) => {
-                                                                                                            return(
-                                                                                                                <div className="event" key={`event-${index}`} style={{ backgroundColor: houses.find(h => h.house == event.house).active_color }}>
-                                                                                                                    <Tooltip event={event} />
-                                                                                                                </div>
-                                                                                                            )
-                                                                                                        })
 
-                                                                                                }
-                                                                                                
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    )
-                                                                                })
-                                                                            }
+
+
+                            <div className="bill-tracker-viz">
+                                    
+
+
+                                    {
+                                        billGroups?.length > 0 && billGroups?.map((group, index) => {
+                                            return (
+                                                <div className="bill-group" key={`bill-group-${index}`}>
+                                                    <h2>{lookup.groupby[group.name]} ({group.bills.length})</h2>
+                                                    {
+                                                        group?.bills?.length > 0 && group?.bills?.map((bill, index) => {
+
+                                                            return (
+                                                                <div className="bill-row" key={`bill-${index}`}>
+                                                                    <div className="bill-title-container" onClick={() => { setSelectedBill(bill); setShowModal(true) }} key={`bill-${index}`}>
+                                                                        <div className="bill-title" title={bill.title}>
+                                                                            {bill.title}
                                                                         </div>
                                                                     </div>
-                                                                )
+                                                                    <div className="bill-progress">
+                                                                        {
+                                                                            bill.houses.map((house_group, index) => {
 
-                                                            })
-                                                        }
+                                                                                return (
+                                                                                    <div className="house-group" key={`house-group-${index}`}>
+                                                                                        <div 
+                                                                                            className="house-group-bar" 
+                                                                                            style={{ width: `${bill.houses_time[index] * daySizeinPx}px`, backgroundColor: houses.find(h => h.house == bill.houses[index][0].house)?.color }}
+                                                                                            // onMouseOver={() => handleMouseOver(null, bill)}
+                                                                                            // onMouseOut={handleMouseOut}
+                                                                                        >
+                                                                                            {
 
-                                                    </div>
-                                                )
-                                            })
-                                        }
+                                                                                                bill.houses[index].map((event, index) => {
+                                                                                                    const eventPosition = getEventPosition(event.date, house_group[0].date);
+                                                                                                    return (
+                                                                                                        selectedViewOptions?.includes(event.type) &&
+                                                                                                        <div
+                                                                                                            className="event"
+                                                                                                            key={`event-${index}`}
+                                                                                                            style={{ left: `${eventPosition}px`, backgroundColor: houses.find(h => h.house == event.house)?.active_color }}
+                                                                                                            onMouseOver={() => handleMouseOver(event)}
+                                                                                                            onMouseOut={handleMouseOut}
+                                                                                                        >
+                                                                                                            {hoveredEvent === event && <Tooltip event={event} />}
+                                                                                                        </div>
 
-                                    
-                                    
+                                                                                                    )
+                                                                                                })
+                                                                                            }
+                                                                                            {hoveredBill === bill && <Tooltip bill={bill} />}
+                                                                                        </div>
+                                                                                    </div>
+                                                                                )
+                                                                            })
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            )
+
+                                                        })
+                                                    }
+
+                                                </div>
+                                            )
+                                        })
+                                    }
+
+
+
                                     {
                                         maxDays > 0 && (
-                                            <div className="xAxis" style={{ width: `${maxDays * zoom}px` }}>
+                                            <div className="xAxis" style={{ width: `${maxDays * daySizeinPx}px` }}>
+                                                <div className="tick" style={{ left: '0px' }} key={0}>
+                                                    <div className="label">0</div>
+                                                </div>
                                                 {
                                                     Array.from({ length: maxDays }, (_, i) => i + 1).map((day, index) => {
                                                         return (
+                                                            day % (daySizeinPx < 0.5 ? 120 : daySizeinPx < 1 ? 60 : 30) == 0 && (
+                                                                <div className="tick" style={{ left: `${day * daySizeinPx}px` }} key={`day-${index}`}>
+                                                                    <div className="label">
+                                                                        {day}
+                                                                    </div>
+                                                                </div>
+                                                            )
 
-                                                            <div className="tick" style={{ width: `${zoom}px` }} key={`day-${index}`}>
-                                                                {
-                                                                    day % (zoom > 3 ? 10 : 50) == 0 && (
-                                                                        <div className="label">
-                                                                            {day}
-                                                                        </div>
-                                                                    )
-                                                                }
-                                                            </div>
 
                                                         )
                                                     })
@@ -600,23 +771,91 @@ function BillTracker() {
                                             </div>
                                         )
                                     }
-                                </Scrollbars>
+                                
+                                
                             </div>
                         </Col>
+                        {/* <Col md={3}>
+                            <div className="analysis">
+                                <h2>Where these bills have spent the most time</h2>
 
-                        
+                                <h2>Where meetings for these bills happened</h2>
+                            </div>
+                        </Col> */}
+
+
                     </Row>
+                    <Row className="my-4">
+                        <Col xs="auto" className="align-self-end">
+                            <a className="feedback-btn" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform">
+                                    Provide feedback
+                            </a>
+                        </Col>
+                    </Row>
+                    
                 </Container>
                 <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
                     <Modal.Header closeButton>
                         <Modal.Title>{selectedBill.title}</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-                        <pre>
-                        {JSON.stringify(selectedBill, null, 1)}
-                        </pre>
+                    <Modal.Body className="bill-stats">
+                        <Row>
+                            <Col className="bill-stats-heading">Bill Id:</Col>
+                            <Col>{selectedBill.id}</Col>
+                        </Row>
+                        <Row>
+                            <Col className="bill-stats-heading">Bill Type:</Col>
+                            <Col>{selectedBill.type}</Col>
+                        </Row>
+                        <Row>    
+                            <Col className="bill-stats-heading">Status:</Col>
+                            <Col>{selectedBill.status}</Col>
+                        </Row>
+                        <Row>    
+                            <Col className="bill-stats-heading">Date of Introduction:</Col>
+                            <Col>{formatDate(selectedBill.date_of_introduction)}</Col>
+                        </Row>
+                        <Row>
+                            <Col className="bill-stats-heading">Introduced By</Col>
+                            <Col>{selectedBill.introduced_by}</Col>
+                        </Row>
+                        <Row>
+                            <Col className="bill-stats-heading">Total Days:</Col>
+                            <Col>{selectedBill.total_days}</Col>
+                        </Row>
+                        <Row>
+                            <Col className="bill-stats-heading">Total Committee Meetings:</Col>
+                            <Col>{selectedBill.total_commitee_meetings}</Col>
+                        </Row>
+                        <h4 className='mt-4'>Events</h4>
+                        <Scrollbars style={{ height: '400px' }}>
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>House</th>
+                                        <th>Type</th>
+                                        <th width="300">Title</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        selectedBill.events.map((event, index) => {
+                                            return (
+                                                <tr key={`event-${index}`}>
+                                                    <td>{formatDate(event.date)}</td>
+                                                    <td>{event.house}</td>
+                                                    <td>{event.type}</td>
+                                                    <td>{event.title}</td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                        </Scrollbars>
                     </Modal.Body>
-                    
+
                 </Modal>
             </section>
 

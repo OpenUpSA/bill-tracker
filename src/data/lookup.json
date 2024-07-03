@@ -1,4 +1,11 @@
 {
+    "house_status": {
+        "na": "NA",
+        "ncop": "NCOP",
+        "president": "President",
+        "joint": "Joint NA/NCOP"
+    },
+
     "groupby": {
         "na": "National Assembly",
         "ncop": "National Council of Provinces",
@@ -8,7 +15,8 @@
         "act-partly-commenced": "Partly commenced",
         "act-commenced": "Commenced",
         "lapsed": "Lapsed",
-        "draft": "Draft"
+        "draft": "Draft",
+        "enacted": "Enacted"
     },
     "parliaments": {
         "all": {
