@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 
 import Form from "react-bootstrap/Form";
 import Stack from "react-bootstrap/Stack";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
@@ -22,6 +24,78 @@ function OverallAttendance(props) {
   const [showAsPercentage, setShowAsPercentage] = useState(false);
   const [sortedDirection, setSortedDirection] = useState("desc");
   const [sortedField, setSortedField] = useState("attendance-percentage");
+  const [tooltipShown, setTooltipShown] = useState(true);
+  const [tooltipAttendance, setTooltipAttendance] = useState({});
+  const [tooltipMousePosition, setTooltipMousePosition] = useState({
+    x: 0,
+    y: 0,
+  });
+
+  const AttendanceTooltip = () => {
+    const attendedGroup = tooltipAttendance["grouped-attendance"]?.find(
+      (a) => a.group === "attended"
+    );
+    const missedGroup = tooltipAttendance["grouped-attendance"]?.find(
+      (a) => a.group === "missed"
+    );
+    return (
+      <div
+        className="attendance-tooltip"
+        style={{
+          top: tooltipMousePosition.y + 10,
+          left: tooltipMousePosition.x,
+        }}
+      >
+        <div>
+          <div className="tooltip-title">
+            <span className="chip">
+              {tooltipAttendance.party === tooltipAttendance.label ? (
+                <>Party</>
+              ) : (
+                <>Member</>
+              )}
+            </span>
+            <br />
+            {tooltipAttendance.label}
+          </div>
+          <div className="tooltip-body mt-2">
+            <table>
+              <tbody>
+                {attendedGroup && (
+                  <tr>
+                    <td>Meetings attended:</td>
+                    <td>
+                      {attendedGroup.count.toLocaleString()} (
+                      {Math.round(attendedGroup.percentage)}%)
+                    </td>
+                  </tr>
+                )}
+                {missedGroup && (
+                  <tr>
+                    <td>Meetings missed:</td>
+                    <td>
+                      {missedGroup.count.toLocaleString()} (
+                      {Math.round(missedGroup.percentage)}%)
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const showTooltip = (attendance) => {
+    setTooltipAttendance(attendance);
+    setTooltipShown(true);
+  };
+
+  const hideTooltip = () => {
+    setTooltipAttendance({});
+    setTooltipShown(false);
+  };
 
   const setupData = () => {
     let partyAttendance = {};
@@ -295,7 +369,17 @@ function OverallAttendance(props) {
                 <td className="no-word-break">
                   {row["attendance-count"].toLocaleString()}
                 </td>
-                <td width="100%">
+                <td
+                  width="100%"
+                  onMouseEnter={() => showTooltip(row)}
+                  onMouseLeave={hideTooltip}
+                  onMouseMove={(e) =>
+                    setTooltipMousePosition({
+                      x: e.pageX,
+                      y: e.pageY,
+                    })
+                  }
+                >
                   <div className="bar-background">
                     {row[
                       detailedBreakdown ? "attendance" : "grouped-attendance"
@@ -341,6 +425,7 @@ function OverallAttendance(props) {
             ))}
         </tbody>
       </table>
+      {tooltipShown && <AttendanceTooltip />}
     </>
   );
 }

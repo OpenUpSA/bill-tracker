@@ -52,165 +52,8 @@ header .form-select {
   }
 }
 
-.bill-tracker {
-  padding: 0 0 2em 0;
-  position: relative;
-  height: 400px;
-
-  .bill-group {
-    margin: 0 0 2em 0;
-
-    h2 {
-      font-size: 1.2em;
-      color: #000;
-      font-weight: 600;
-      margin: 0 0 1.5em 0;
-    }
-  }
-
-  .bill-row {
-    position: relative;
-
-    margin: 0 0 0.5em 0;
-
-    .bill-title-container {
-      width: 200px;
-      position: absolute;
-      z-index: 999;
-      left: 0;
-      top: 0;
-
-      .bill-title {
-        background: #fff;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        width: 200px;
-        color: rgba(0, 0, 0, 0.8);
-      }
-    }
-
-    .bill-progress {
-      width: calc(100% - 250px);
-      width: auto;
-      height: 15px;
-      white-space: nowrap;
-
-      .house-group {
-        display: inline-block;
-        height: 100%;
-        width: auto;
-        position: relative;
-        left: 200px;
-
-        .house-group-bar {
-          height: 100%;
-          width: 100%;
-          border-radius: 5px;
-
-          .event {
-            display: inline-block;
-            position: relative;
-            margin: 0;
-            line-height: 0;
-            height: 100%;
-            width: 1px;
-            border: 1px solid #fff;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-
-            .event-tooltip {
-              // no mouse events
-              pointer-events: none;
-              opacity: 0;
-              position: absolute;
-              background: #fff;
-              padding: 1em;
-              border-radius: 5px;
-              box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-              top: 10px;
-              left: 0;
-              transform: translateX(-50%);
-              z-index: 9999;
-              width: 250px;
-              white-space: normal;
-              line-height: normal;
-
-              .tooltip-title {
-                font-weight: 600;
-              }
-
-              .tooltip-body .row {
-                margin-bottom: 0.4em;
-              }
-
-              &::after {
-                content: "";
-                position: absolute;
-                top: -10px;
-                left: 50%;
-                transform: translateX(-50%);
-                border: 5px solid transparent;
-                border-bottom-color: #fff;
-              }
-            }
-
-            &:hover {
-              border: 2px solid #fff;
-              cursor: pointer;
-
-              .event-tooltip {
-                opacity: 1;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-.xAxis {
-  position: sticky;
-  padding: 0.2em 0 1em 0;
-  bottom: 0em;
-  margin-left: 200px;
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  background-color: #fff;
-
-  .tick {
-    font-size: 10px;
-    color: #333;
-    display: inline-block;
-  }
-}
-
-.zoom-btns {
-  display: inline-block;
-}
-
-.zoom-btn {
-  margin-right: 2px;
-  border-radius: 5px;
-  text-align: center;
-  display: inline-block;
-  padding: 10px 12px;
-  background-color: #eee;
-  color: #333;
-  cursor: pointer;
-  user-select: none;
-
-  &:hover {
-    background-color: #ddd;
-  }
-}
-
 table {
   width: 100%;
-
   font-size: 10px;
   font-weight: 400;
 
@@ -431,5 +274,65 @@ h2 {
   &:hover {
     background: linear-gradient(0deg, #001489 0%, #001489 100%), #fff;
     color: #fff;
+  }
+}
+
+.attendance-tooltip {
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  left: 50%;
+  line-height: 14.4px;
+  line-height: normal;
+  margin-top: -15px;
+  opacity: 1;
+  padding: 1em;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -100%);
+  white-space: normal;
+
+  .tooltip-title {
+    font-weight: 600;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    margin-left: -10px;
+    //transform: translateX(-90%);
+    border: 5px solid transparent;
+    border-top-color: #fff;
+  }
+
+  .chip {
+    background: #000000;
+    height: 18px;
+    padding: 3px 5px 3px 5px;
+    gap: 10px;
+    border-radius: 100px;
+    color: #fff;
+    display: inline-block;
+    font-family: Inter;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 12px;
+    margin-bottom: 6px;
+  }
+
+  table {
+    margin: 0;
+
+    tbody {
+      tr {
+        td {
+          white-space: nowrap;
+        }
+      }
+    }
   }
 }
