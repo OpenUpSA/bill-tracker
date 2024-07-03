@@ -56,6 +56,7 @@ table {
   width: 100%;
   font-size: 10px;
   font-weight: 400;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.1);
 
   tr {
     td {
@@ -104,6 +105,71 @@ table {
     tr:first-child {
       td {
         padding-top: 0px;
+      }
+    }
+  }
+
+  tfoot {
+    position: sticky;
+    bottom: 0;
+
+    tr {
+      td {
+        background-color: #fff;
+        padding: 10px 0 20px 0;
+        .stateLegend {
+          display: flex;
+          padding: 0;
+          margin: 0;
+          list-style: none;
+
+          li {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 400;
+            line-height: 12.1px;
+            padding: 5px 10px 0 0;
+
+            .bar {
+              display: inline-block;
+              height: 12px;
+              width: 12px;
+              border-radius: 100%;
+              font-size: 0;
+              background-color: #f0f0f0;
+              margin-right: 5px;
+
+              &.state-P, &.state-attended {
+                background-color: #8ae56199;
+              }
+
+              &.state-A, &.state-missed {
+                background-color: #ffa694;
+              }
+
+              &.state-AP {
+                background-color: #ffc794;
+              }
+
+              &.state-DE {
+                background-color: #77efc4;
+              }
+
+              &.state-L {
+                background-color: #77a8f2;
+              }
+
+              &.state-LDE {
+                background-color: #ad7aed;
+              }
+
+              &.state-U {
+                background-color: #b5b5b5;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -371,13 +437,15 @@ h2 {
           }
         }
 
-        &.state-P, &.state-attended {
+        &.state-P,
+        &.state-attended {
           td {
             background-color: #8ae56199;
           }
         }
 
-        &.state-A, &.state-missed {
+        &.state-A,
+        &.state-missed {
           td {
             background-color: #ffa694;
           }

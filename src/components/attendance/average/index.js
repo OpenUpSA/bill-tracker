@@ -386,6 +386,23 @@ function AverageAttendance(props) {
                 </tr>
               ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">
+              <ul className="stateLegend">
+                <li>
+                  <span className="bar state-attended">Above</span> Above average
+                </li>
+                <li>
+                  <span className="bar state-missed">Below</span> Below average
+                </li>
+                <li>
+                  &mdash; Attendance average ({Math.round(averageAttendance)}%)
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </>
   );

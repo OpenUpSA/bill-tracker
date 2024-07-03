@@ -72,13 +72,11 @@ function Attendance() {
         <Row className="p-5">
           <Col md={12}>
             <OverallAttendance selectedParliament={selectedParliament} />
-            <hr />
           </Col>
         </Row>
         <Row className="p-5">
           <Col md={12}>
             <AverageAttendance selectedParliament={selectedParliament} />
-            <hr />
           </Col>
         </Row>
       </Container>

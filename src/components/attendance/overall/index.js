@@ -494,6 +494,49 @@ function OverallAttendance(props) {
                 </tr>
               ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">
+              <ul className="stateLegend">
+                {detailedBreakdown ? (
+                  <>
+                    <li>
+                      <span className="bar state-P">P</span> Present
+                    </li>
+                    <li>
+                      <span className="bar state-LDE">LDE</span> Arrived Late
+                      and Departed Early
+                    </li>
+                    <li>
+                      <span className="bar state-L">L</span> Arrived Late
+                    </li>
+                    <li>
+                      <span className="bar state-DE">DE</span> Departed Early
+                    </li>
+                    <li>
+                      <span className="bar state-AP">AP</span> Absent with
+                      Apologies
+                    </li>
+                    <li>
+                      <span className="bar state-A">A</span> Absent
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <span className="bar state-attended">Attended</span>{" "}
+                      Meetings attended
+                    </li>
+                    <li>
+                      <span className="bar state-missed">Missed</span> Meetings
+                      missed
+                    </li>
+                  </>
+                )}
+              </ul>
+            </td>
+          </tr>
+        </tfoot>
       </table>
       {tooltipShown && <AttendanceTooltip />}
     </>
