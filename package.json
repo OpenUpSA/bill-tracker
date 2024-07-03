@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "dev": "parcel src/index.html src/attendance/index.html",
+    "build": "parcel build src/index.html src/attendance/index.html",
+    "deploy": "netlify deploy"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "2.8.3",
+    "csv-parse": "^5.5.6",
     "parcel": "^2.8.3",
     "process": "^0.11.10"
   }
