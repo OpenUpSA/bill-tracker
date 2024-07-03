@@ -82,6 +82,14 @@ function Attendance() {
           </Col>
         </Row>
       </Container>
+      <a
+        className="provideFeedback"
+        href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform?usp=pp_url&entry.1431082534=Attendance+Tracker"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Povide feedback
+      </a>
     </div>
   );
 }
