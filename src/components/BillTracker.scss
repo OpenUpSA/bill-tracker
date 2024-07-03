@@ -25,12 +25,23 @@ header {
     }    
 }
 
+.feedback-btn {
+    border-radius: 100px;
+    background: linear-gradient(0deg, #001489 0%, #001489 100%), #FFF;
+    display: inline-flex;
+    padding: 8px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
 .form-control, .form-select, .dropdown-btn .dropdown-toggle {
     background: rgb(235, 235, 235);
     border: none;
 }
 
-header .form-select {
+header .form-select, select {
     background: rgb(223, 223, 223);
 }
 
@@ -43,6 +54,11 @@ header .form-select {
     width: 100%;
     text-align: left;
     color: #000;
+
+    &:hover, &:focus, &:active {
+        background: rgb(235, 235, 235) !important;
+        color: #000;
+    }
 }
 
 .dropdown-btn {
@@ -51,11 +67,39 @@ header .form-select {
     }
 }
 
+select {
+    
+    width: 100%;
+    padding: 0.5em;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.2em !important;
 
-.bill-tracker {
+    option {
+        font-size: 1.2em;
+        background-color: #fff;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:hover {
+        option {
+            &:hover {
+                background-color: rgb(235, 235, 235) !important;
+            }
+        }
+    }
+}
+
+
+.bill-tracker-viz {
     padding: 0 0 1em 0;
     position: relative;
-    height: 400px;
+    max-width: 100%;
+    width: 100%;
+    overflow-x: scroll;
 
     .bill-group {
         margin: 0 0 2em 0;
@@ -238,4 +282,8 @@ header .form-select {
     font-size: 1.1em;
     font-weight: 600;
     margin: 0 0 1em 0;
+}
+
+.bill-stats-heading {
+    font-weight: bold;
 }

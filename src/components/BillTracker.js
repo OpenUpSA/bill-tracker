@@ -498,7 +498,7 @@ function BillTracker() {
         <div className="bill-tracker">
             <header className="p-5">
                 <Container fluid>
-                    <Row>
+                    <Row className="justify-content-between">
                         <Col md={8}>
                             <h1><FontAwesomeIcon icon={faPenNib} /> Progress of Bills</h1>
                             <span>How long does it take for a bill to go from being introduced to being signed into law by the president.</span>
@@ -509,9 +509,9 @@ function BillTracker() {
                                     <Form.Group as={Row}>
                                         <Form.Label column md="auto">Time period</Form.Label>
                                         <Col>
-                                            <Form.Select aria-label="Select time-period" size="lg">
+                                            <select aria-label="Select time-period" size="lg">
                                                 <option value="parliament">Parliament</option>
-                                            </Form.Select>
+                                            </select>
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -519,7 +519,7 @@ function BillTracker() {
                                     <Form.Group as={Row}>
                                         <Form.Label column md="auto">Parliament</Form.Label>
                                         <Col>
-                                            <Form.Select aria-label="Select Parliament" defaultValue={selectedParliament} onChange={(e) => setSelectedParliament(e.target.value)} size="lg">
+                                            <select aria-label="Select Parliament" defaultValue={selectedParliament} onChange={(e) => setSelectedParliament(e.target.value)} size="lg">
                                                 {
                                                     Object.keys(lookup.parliaments).map((parliament, index) => {
                                                         return (
@@ -527,7 +527,7 @@ function BillTracker() {
                                                         )
                                                     })
                                                 }
-                                            </Form.Select>
+                                            </select>
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -607,14 +607,10 @@ function BillTracker() {
                     </Row>
                 </Container>
             </section>
-            <section className="p-5">
+            <section className="px-5">
                 <Container fluid>
                     <Row className="mb-5">
                         <Col xs="auto" className="search-controls">
-                            {/* <div className="zoom-btns">
-                                <div className="zoom-btn" onClick={() => daySizeinPx > 0.25 && setDaySizeinPx(daySizeinPx - 0.25)}>-</div>
-                                <div className="zoom-btn" onClick={() => daySizeinPx < 10 && setDaySizeinPx(daySizeinPx + 0.25)}>+</div>
-                            </div> */}
                             <Form.Range
                                 className="mt-2"
                                 min={0.25}
@@ -622,17 +618,20 @@ function BillTracker() {
                                 step={0.25}
                                 value={daySizeinPx}
                                 onChange={(e) => changeDaySize(e)}
+                                variant="dark"
                             />
                         </Col>
 
                         <Col xs={2}>
                             <Form.Control type="search" size="lg" placeholder="Search for a bill..." onChange={e => setSearch(e.target.value)} />
                         </Col>
+                        
+                            
                         <Col xs={6}></Col>
                         <Col>
                             <Row>
                                 <Col>
-                                    <Dropdown className="dropdown-btn">
+                                    <Dropdown className="dropdown-btn" variant="info" autoClose="outside">
                                         <Dropdown.Toggle size="lg">
                                             <FontAwesomeIcon icon={faGear} />  View Options
                                         </Dropdown.Toggle>
@@ -646,7 +645,7 @@ function BillTracker() {
                                     </Dropdown>
                                 </Col>
                                 <Col>
-                                    <Dropdown className="dropdown-btn">
+                                    <Dropdown className="dropdown-btn" variant="dark" autoClose="outside">
                                         <Dropdown.Toggle size="lg">
                                             <FontAwesomeIcon icon={faBarsStaggered} /> Status
                                         </Dropdown.Toggle>
@@ -678,8 +677,8 @@ function BillTracker() {
 
 
 
-                            <div className="bill-tracker">
-                                
+                            <div className="bill-tracker-viz">
+                                    
 
 
                                     {
@@ -773,7 +772,7 @@ function BillTracker() {
                                         )
                                     }
                                 
-
+                                
                             </div>
                         </Col>
                         {/* <Col md={3}>
@@ -786,15 +785,75 @@ function BillTracker() {
 
 
                     </Row>
+                    <Row className="my-4">
+                        <Col xs="auto" className="align-self-end">
+                            <a className="feedback-btn" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform">
+                                    Provide feedback
+                            </a>
+                        </Col>
+                    </Row>
+                    
                 </Container>
                 <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
                     <Modal.Header closeButton>
                         <Modal.Title>{selectedBill.title}</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
-                        <pre>
-                            {JSON.stringify(selectedBill, null, 1)}
-                        </pre>
+                    <Modal.Body className="bill-stats">
+                        <Row>
+                            <Col className="bill-stats-heading">Bill Id:</Col>
+                            <Col>{selectedBill.id}</Col>
+                        </Row>
+                        <Row>
+                            <Col className="bill-stats-heading">Bill Type:</Col>
+                            <Col>{selectedBill.type}</Col>
+                        </Row>
+                        <Row>    
+                            <Col className="bill-stats-heading">Status:</Col>
+                            <Col>{selectedBill.status}</Col>
+                        </Row>
+                        <Row>    
+                            <Col className="bill-stats-heading">Date of Introduction:</Col>
+                            <Col>{formatDate(selectedBill.date_of_introduction)}</Col>
+                        </Row>
+                        <Row>
+                            <Col className="bill-stats-heading">Introduced By</Col>
+                            <Col>{selectedBill.introduced_by}</Col>
+                        </Row>
+                        <Row>
+                            <Col className="bill-stats-heading">Total Days:</Col>
+                            <Col>{selectedBill.total_days}</Col>
+                        </Row>
+                        <Row>
+                            <Col className="bill-stats-heading">Total Committee Meetings:</Col>
+                            <Col>{selectedBill.total_commitee_meetings}</Col>
+                        </Row>
+                        <h4 className='mt-4'>Events</h4>
+                        <Scrollbars style={{ height: '400px' }}>
+                            <table className="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>House</th>
+                                        <th>Type</th>
+                                        <th width="300">Title</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        selectedBill.events.map((event, index) => {
+                                            return (
+                                                <tr key={`event-${index}`}>
+                                                    <td>{formatDate(event.date)}</td>
+                                                    <td>{event.house}</td>
+                                                    <td>{event.type}</td>
+                                                    <td>{event.title}</td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                        </Scrollbars>
                     </Modal.Body>
 
                 </Modal>
