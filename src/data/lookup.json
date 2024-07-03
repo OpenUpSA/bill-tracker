@@ -5,7 +5,6 @@
         "president": "President",
         "joint": "Joint NA/NCOP"
     },
-
     "groupby": {
         "na": "National Assembly",
         "ncop": "National Council of Provinces",
@@ -45,25 +44,32 @@
     },
     "attendance-states": {
         "P": {
-            "group": "attended"
+            "group": "attended",
+            "label": "Present"
         },
         "U": {
-            "group": "unknown"
+            "group": "unknown",
+            "label": "Unknown"
         },
         "A": {
-            "group": "missed"
+            "group": "missed",
+            "label": "Absent"
         },
         "AP": {
-            "group": "missed"
+            "group": "missed",
+            "label": "Absent with Apologies"
         },
         "DE": {
-            "group": "attended"
+            "group": "attended",
+            "label": "Departed Early"
         },
         "L": {
-            "group": "attended"
+            "group": "attended",
+            "label": "Arrived Late"
         },
         "LDE": {
-            "group": "attended"
+            "group": "attended",
+            "label": "Arrived Late and Departed Early"
         }
     }
 }
