@@ -28,6 +28,7 @@ function OverallAttendance(props) {
   const [sortedField, setSortedField] = useState("attendance-percentage");
   const [tooltipShown, setTooltipShown] = useState(true);
   const [tooltipAttendance, setTooltipAttendance] = useState({});
+  const [tooltipAttendanceState, setTooltipAttendanceState] = useState("");
   const [tooltipMousePosition, setTooltipMousePosition] = useState({
     x: 0,
     y: 0,
@@ -64,28 +65,47 @@ function OverallAttendance(props) {
           <div className="tooltip-body mt-2">
             <table>
               <tbody>
-                {attendedGroup && (
-                  <tr>
-                    <td>Meetings attended:</td>
-                    <td className="text-align-right">
-                      {attendedGroup.count.toLocaleString()}
-                    </td>
-                    <td>({Math.round(attendedGroup.percentage)}%)</td>
-                  </tr>
-                )}
-                {missedGroup && (
-                  <tr>
-                    <td>Meetings missed:</td>
-                    <td className="text-align-right">
-                      {missedGroup.count.toLocaleString()}
-                    </td>
-                    <td>({Math.round(missedGroup.percentage)}%)</td>
-                  </tr>
-                )}
-                {detailedBreakdown && (
+                {!detailedBreakdown ? (
+                  <>
+                    {attendedGroup && (
+                      <tr
+                        className={
+                          tooltipAttendanceState === "attended" &&
+                          `state-highlight state-attended`
+                        }
+                      >
+                        <td>Meetings attended:</td>
+                        <td className="text-align-right">
+                          {attendedGroup.count.toLocaleString()}
+                        </td>
+                        <td>({Math.round(attendedGroup.percentage)}%)</td>
+                      </tr>
+                    )}
+                    {missedGroup && (
+                      <tr
+                        className={
+                          tooltipAttendanceState === "missed" &&
+                          `state-highlight state-missed`
+                        }
+                      >
+                        <td>Meetings missed:</td>
+                        <td className="text-align-right">
+                          {missedGroup.count.toLocaleString()}
+                        </td>
+                        <td>({Math.round(missedGroup.percentage)}%)</td>
+                      </tr>
+                    )}
+                  </>
+                ) : (
                   <>
                     {tooltipAttendance["attendance"].map((attendance) => (
-                      <tr key={attendance.state}>
+                      <tr
+                        key={attendance.state}
+                        className={
+                          attendance.state === tooltipAttendanceState &&
+                          `state-highlight state-${attendance.state}`
+                        }
+                      >
                         <td>{attendanceStates[attendance.state].label}:</td>
                         <td className="text-align-right">
                           {attendance.count.toLocaleString()}
@@ -437,6 +457,10 @@ function OverallAttendance(props) {
                         .map((attendance) => (
                           <div
                             key={attendance.state}
+                            onMouseEnter={() =>
+                              setTooltipAttendanceState(attendance.state)
+                            }
+                            onMouseLeave={() => setTooltipAttendanceState("")}
                             className={`bar state-${
                               attendance.state
                             } state-grouping-${
