@@ -111,7 +111,7 @@ function OverallAttendance(props) {
                   </>
                 ) : (
                   <>
-                    {tooltipAttendance["attendance"].map((attendance) => (
+                    {tooltipAttendance["attendance"]?.map((attendance) => (
                       <tr
                         key={attendance.state}
                         className={
