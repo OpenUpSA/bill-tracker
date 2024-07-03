@@ -10,6 +10,7 @@ import {
   faCaretDown,
   faCaretUp,
   faSearch,
+  faArrowPointer,
 } from "@fortawesome/free-solid-svg-icons";
 
 import * as data from "../../../data/attendance/all-time.json";
@@ -34,6 +35,16 @@ function OverallAttendance(props) {
     y: 0,
   });
   const [memberSearch, setMemberSearch] = useState("");
+  const [highlightedAttendanceState, setHighlightedAttendanceState] =
+    useState("");
+
+  const toggleHighlightedAttendanceState = (state) => {
+    if (highlightedAttendanceState === state) {
+      setHighlightedAttendanceState("");
+    } else {
+      setHighlightedAttendanceState(state);
+    }
+  };
 
   const AttendanceTooltip = () => {
     const attendedGroup = tooltipAttendance["grouped-attendance"]?.find(
@@ -70,8 +81,9 @@ function OverallAttendance(props) {
                     {attendedGroup && (
                       <tr
                         className={
-                          tooltipAttendanceState === "attended" &&
-                          `state-highlight state-attended`
+                          tooltipAttendanceState === "attended"
+                            ? "state-attended"
+                            : ""
                         }
                       >
                         <td>Meetings attended:</td>
@@ -84,8 +96,9 @@ function OverallAttendance(props) {
                     {missedGroup && (
                       <tr
                         className={
-                          tooltipAttendanceState === "missed" &&
-                          `state-highlight state-missed`
+                          tooltipAttendanceState === "missed"
+                            ? "state-missed"
+                            : ""
                         }
                       >
                         <td>Meetings missed:</td>
@@ -102,8 +115,9 @@ function OverallAttendance(props) {
                       <tr
                         key={attendance.state}
                         className={
-                          attendance.state === tooltipAttendanceState &&
-                          `state-highlight state-${attendance.state}`
+                          attendance.state === tooltipAttendanceState
+                            ? `state-${attendance.state}`
+                            : ""
                         }
                       >
                         <td>{attendanceStates[attendance.state].label}:</td>
@@ -359,7 +373,7 @@ function OverallAttendance(props) {
           </Stack>
         </div>
       </Stack>
-      <table className={`${detailedBreakdown && "detailed"}`}>
+      <table className={`${detailedBreakdown ? "detailed" : ""}`}>
         <thead>
           <tr>
             <th className="sortable" onClick={() => setSort("label")}>
@@ -444,6 +458,11 @@ function OverallAttendance(props) {
                         y: e.pageY,
                       })
                     }
+                    className={
+                      highlightedAttendanceState !== ""
+                        ? "state-highlighting-on"
+                        : ""
+                    }
                   >
                     <div className="bar-background">
                       {row[
@@ -461,12 +480,19 @@ function OverallAttendance(props) {
                               setTooltipAttendanceState(attendance.state)
                             }
                             onMouseLeave={() => setTooltipAttendanceState("")}
+                            onClick={() =>
+                              toggleHighlightedAttendanceState(attendance.state)
+                            }
                             className={`bar state-${
                               attendance.state
                             } state-grouping-${
                               detailedBreakdown
                                 ? attendanceStates[attendance.state].group
                                 : attendance.group
+                            } ${
+                              highlightedAttendanceState === attendance.state
+                                ? "state-highlighted"
+                                : ""
                             }`}
                             style={{
                               width: `${
@@ -496,44 +522,64 @@ function OverallAttendance(props) {
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="5">
-              <ul className="stateLegend">
-                {detailedBreakdown ? (
+            <td colSpan="5">
+              <Stack direction="horizontal" gap={2}>
+                <ul
+                  className={
+                    highlightedAttendanceState !== ""
+                      ? "state-highlighting-on stateLegend"
+                      : "stateLegend"
+                  }
+                >
+                  {detailedBreakdown ? (
+                    <>
+                      {Object.keys(attendanceStates)
+                        .filter((state) => state !== "U")
+                        .map((state) => (
+                          <li
+                            key={state}
+                            className={`state-${state} ${
+                              highlightedAttendanceState === state
+                                ? "state-highlighted"
+                                : ""
+                            }`}
+                          >
+                            <span
+                              className={`bar state-${state} ${
+                                highlightedAttendanceState === state
+                                  ? "state-highlighted"
+                                  : ""
+                              }`}
+                            >
+                              {state}
+                            </span>{" "}
+                            {attendanceStates[state].label}
+                          </li>
+                        ))}
+                    </>
+                  ) : (
+                    <>
+                      <li>
+                        <span className="bar state-attended">Attended</span>{" "}
+                        Meetings attended
+                      </li>
+                      <li>
+                        <span className="bar state-missed">Missed</span>{" "}
+                        Meetings missed
+                      </li>
+                    </>
+                  )}
+                </ul>
+                {detailedBreakdown && (
                   <>
-                    <li>
-                      <span className="bar state-P">P</span> Present
-                    </li>
-                    <li>
-                      <span className="bar state-LDE">LDE</span> Arrived Late
-                      and Departed Early
-                    </li>
-                    <li>
-                      <span className="bar state-L">L</span> Arrived Late
-                    </li>
-                    <li>
-                      <span className="bar state-DE">DE</span> Departed Early
-                    </li>
-                    <li>
-                      <span className="bar state-AP">AP</span> Absent with
-                      Apologies
-                    </li>
-                    <li>
-                      <span className="bar state-A">A</span> Absent
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li>
-                      <span className="bar state-attended">Attended</span>{" "}
-                      Meetings attended
-                    </li>
-                    <li>
-                      <span className="bar state-missed">Missed</span> Meetings
-                      missed
-                    </li>
+                    <FontAwesomeIcon
+                      style={{ marginLeft: "auto" }}
+                      icon={faArrowPointer}
+                    />
+                    <div>Click to isolate a category</div>
                   </>
                 )}
-              </ul>
+              </Stack>
             </td>
           </tr>
         </tfoot>

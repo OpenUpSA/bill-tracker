@@ -395,7 +395,7 @@ function AverageAttendance(props) {
         </tbody>
         <tfoot>
           <tr>
-            <td colspan="7">
+            <td colSpan="7">
               <ul className="stateLegend">
                 <li>
                   <span className="bar state-attended">Above</span> Above

@@ -78,7 +78,7 @@ table {
     top: 0;
     tr {
       th {
-        background-color: #fff;
+        background-color: rgba(255, 255, 255, 0.9);
         font-family: Inter;
         font-size: 10px;
         font-weight: 400;
@@ -202,9 +202,7 @@ table {
   padding: 0;
   width: 1px;
   overflow: hidden;
-
 }
-
 
 .bar-background {
   background-color: #0000000a;
@@ -276,6 +274,7 @@ table {
       direction: rtl;
     }
     .bar {
+      cursor: pointer !important;
       margin-right: 1px;
 
       &:last-child {
@@ -322,6 +321,22 @@ table {
         background-color: #b5b5b5;
       }
     }
+  }
+}
+
+.state-highlighting-on {
+  .state-P,
+  .state-A,
+  .state-AP,
+  .state-DE,
+  .state-L,
+  .state-LDE,
+  .state-U {
+    opacity: 0.25;
+  }
+
+  .state-highlighted {
+    opacity: 1;
   }
 }
 
