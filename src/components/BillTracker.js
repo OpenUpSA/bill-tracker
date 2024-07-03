@@ -840,7 +840,7 @@ function BillTracker() {
                                 </thead>
                                 <tbody>
                                     {
-                                        selectedBill.events.map((event, index) => {
+                                        selectedBill.events?.map((event, index) => {
                                             return (
                                                 <tr key={`event-${index}`}>
                                                     <td>{formatDate(event.date)}</td>
