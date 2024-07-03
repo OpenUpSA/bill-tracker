@@ -69,12 +69,12 @@ function Attendance() {
         </Container>
       </header>
       <Container fluid>
-        <Row className="p-5">
+        <Row className="p-5 pb-4">
           <Col md={12}>
             <OverallAttendance selectedParliament={selectedParliament} />
           </Col>
         </Row>
-        <Row className="p-5">
+        <Row className="p-5 pt-0">
           <Col md={12}>
             <AverageAttendance selectedParliament={selectedParliament} />
           </Col>
