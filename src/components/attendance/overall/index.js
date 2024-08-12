@@ -6,12 +6,9 @@ import Form from "react-bootstrap/Form";
 import Stack from "react-bootstrap/Stack";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCaretDown,
-  faCaretUp,
-  faSearch,
-  faArrowPointer,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
+
+import SortedColumn from "../../sortedColumn";
 
 import * as data from "../../../data/attendance/all-time.json";
 import * as lookup from "../../../data/lookup.json";
@@ -220,7 +217,6 @@ function OverallAttendance(props) {
 
     activeAttendance.forEach((item) => {
       // Total attendance.count for each item as attendance-count
-
       item["attendance-count"] = item.attendance.reduce(
         (total, attendance) => total + attendance.count,
         0
@@ -252,11 +248,16 @@ function OverallAttendance(props) {
         if (item["grouped-attendance"][key].group === "attended") {
           item["attendance-percentage"] =
             item["grouped-attendance"][key].percentage;
+          item["attended-count"] = item["grouped-attendance"][key].count;
         }
       });
 
       if (!item["attendance-percentage"]) {
         item["attendance-percentage"] = 0;
+      }
+
+      if (!item["attended-count"]) {
+        item["attended-count"] = 0;
       }
 
       // Make grouped-attendance an array
@@ -376,50 +377,46 @@ function OverallAttendance(props) {
       <table className={`${detailedBreakdown ? "detailed" : ""}`}>
         <thead>
           <tr>
-            <th className="sortable" onClick={() => setSort("label")}>
-              <span>{grouping === "party" ? "Party" : "Member"}</span>
-              {sortedField === "label" && (
-                <FontAwesomeIcon
-                  icon={sortedDirection === "desc" ? faCaretDown : faCaretUp}
-                />
-              )}
-            </th>
-            <th
-              className="no-word-break sortable"
-              onClick={() =>
-                setSort(grouping === "party" ? "member-count" : "party")
-              }
-            >
-              <span>{grouping === "party" ? "Members" : "Party"}</span>
-              {sortedField ===
-                (grouping === "party" ? "member-count" : "party") && (
-                <FontAwesomeIcon
-                  icon={sortedDirection === "desc" ? faCaretDown : faCaretUp}
-                />
-              )}
-            </th>
-            <th
-              className="sortable"
-              onClick={() => setSort("attendance-percentage")}
-            >
-              <span>Attendance</span>
-              {sortedField === "attendance-percentage" && (
-                <FontAwesomeIcon
-                  icon={sortedDirection === "desc" ? faCaretDown : faCaretUp}
-                />
-              )}
-            </th>
-            <th
-              className="sortable"
-              onClick={() => setSort("attendance-count")}
-            >
-              <span>Meetings</span>
-              {sortedField === "attendance-count" && (
-                <FontAwesomeIcon
-                  icon={sortedDirection === "desc" ? faCaretDown : faCaretUp}
-                />
-              )}
-            </th>
+            <SortedColumn
+              sortThisfield="label"
+              heading={grouping === "party" ? "Party" : "Name"}
+              setSort={setSort}
+              sortedField={sortedField}
+              sortedDirection={sortedDirection}
+            />
+
+            <SortedColumn
+              sortThisfield={grouping === "party" ? "member-count" : "party"}
+              heading={grouping === "party" ? "Members" : "Party"}
+              setSort={setSort}
+              sortedField={sortedField}
+              sortedDirection={sortedDirection}
+            />
+
+            <SortedColumn
+              sortThisfield="attendance-count"
+              heading="Possible Meetings"
+              setSort={setSort}
+              sortedField={sortedField}
+              sortedDirection={sortedDirection}
+            />
+
+            <SortedColumn
+              sortThisfield="attended-count"
+              heading="Attended (value)"
+              setSort={setSort}
+              sortedField={sortedField}
+              sortedDirection={sortedDirection}
+            />
+
+            <SortedColumn
+              sortThisfield="attendance-percentage"
+              heading="Attended (%)"
+              setSort={setSort}
+              sortedField={sortedField}
+              sortedDirection={sortedDirection}
+            />
+
             <th>Recorded totals breakdown</th>
           </tr>
         </thead>
@@ -440,13 +437,14 @@ function OverallAttendance(props) {
                   <td className="no-word-break">
                     {grouping === "party" ? row["member-count"] : row["party"]}
                   </td>
+                  <td>{row["attendance-count"].toLocaleString()}</td>
+                  <td className="no-word-break">
+                    {row["attended-count"].toLocaleString()}
+                  </td>
                   <td className="no-word-break">
                     <span className="percentageAttendance">
                       {Math.round(parseFloat(row["attendance-percentage"]))}%
                     </span>{" "}
-                  </td>
-                  <td className="no-word-break">
-                    {row["attendance-count"].toLocaleString()}
                   </td>
                   <td
                     width="100%"

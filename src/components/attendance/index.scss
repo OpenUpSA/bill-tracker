@@ -45,15 +45,6 @@ table {
           padding-right: 0;
         }
 
-        &.sortable {
-          white-space: nowrap;
-          cursor: pointer;
-          span {
-            display: inline-block;
-            padding-right: 8px;
-          }
-        }
-
         &.membersOrParty {
           white-space: nowrap;
         }

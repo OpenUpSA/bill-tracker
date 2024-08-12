@@ -1,0 +1,16 @@
+table {
+  thead {
+    tr {
+      th {
+        &.sortable {
+          white-space: nowrap;
+          cursor: pointer;
+          span {
+            display: inline-block;
+            padding-right: 8px;
+          }
+        }
+      }
+    }
+  }
+}
