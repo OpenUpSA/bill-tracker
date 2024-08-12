@@ -22,7 +22,7 @@ function OverallAttendance(props) {
 
   const [maxAttendance, setMaxAttendance] = useState(0);
   const [dataAttendance, setDataAttendance] = useState(null);
-  const [grouping, setGrouping] = useState("party");
+  const [grouping, setGrouping] = useState("members");
   const [detailedBreakdown, setDetailedBreakdown] = useState(false);
   const [showAsPercentage, setShowAsPercentage] = useState(false);
   const [sortedDirection, setSortedDirection] = useState("desc");
@@ -325,16 +325,16 @@ function OverallAttendance(props) {
         <div className="pt-2 pb-2">
           <div className="toggleButtonGroup">
             <button
-              className={grouping === "party" ? "active" : ""}
-              onClick={() => setGrouping("party")}
-            >
-              Party
-            </button>
-            <button
               className={grouping === "members" ? "active" : ""}
               onClick={() => setGrouping("members")}
             >
               Members
+            </button>
+            <button
+              className={grouping === "party" ? "active" : ""}
+              onClick={() => setGrouping("party")}
+            >
+              Party
             </button>
           </div>
         </div>
