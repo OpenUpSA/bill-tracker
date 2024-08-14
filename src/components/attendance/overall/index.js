@@ -414,6 +414,16 @@ function OverallAttendance(props) {
               sortedDirection={sortedDirection}
             />
 
+            {grouping === "members" && (
+              <SortedColumn
+                sortThisfield="committees-count"
+                heading="Committee Memberships"
+                setSort={setSort}
+                sortedField={sortedField}
+                sortedDirection={sortedDirection}
+              />
+            )}
+
             <SortedColumn
               sortThisfield="attendance-count"
               heading="Possible Meetings"
@@ -438,16 +448,6 @@ function OverallAttendance(props) {
               sortedDirection={sortedDirection}
             />
 
-            {grouping === "members" && (
-              <SortedColumn
-                sortThisfield="committees-count"
-                heading="Committee Memberships"
-                setSort={setSort}
-                sortedField={sortedField}
-                sortedDirection={sortedDirection}
-              />
-            )}
-
             <th>Recorded totals breakdown</th>
           </tr>
         </thead>
@@ -468,6 +468,7 @@ function OverallAttendance(props) {
                   <td className="no-word-break">
                     {grouping === "party" ? row["member-count"] : row["party"]}
                   </td>
+                  {grouping === "members" && <td>{row["committees-count"]}</td>}
                   <td>{row["attendance-count"].toLocaleString()}</td>
                   <td className="no-word-break">
                     {row["attended-count"].toLocaleString()}
@@ -477,7 +478,6 @@ function OverallAttendance(props) {
                       {Math.round(parseFloat(row["attendance-percentage"]))}%
                     </span>{" "}
                   </td>
-                  {grouping === "members" && <td>{row["committees-count"]}</td>}
                   <td
                     width="100%"
                     onMouseEnter={() => showTooltip(row)}
