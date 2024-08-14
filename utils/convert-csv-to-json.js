@@ -53,9 +53,8 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
     party = row[2];
     createdAt = dateToEpoch(new Date(row[3]));
     attendance = row[4];
-    profilePicUrl = row[6];
+    committee = row[5];
     const parliamentKey = lookupParliamentFromCreatedAt(createdAt);
-    console.log(parliamentKey, createdAt);
 
     // Add to existing member or create new one
     if (data[id]) {
@@ -64,10 +63,15 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
         const recordIndex = record.findIndex((r) => r.state === attendance);
         if (recordIndex > -1) {
           record[recordIndex].count += 1;
+          record[recordIndex].committees.push(committee);
+          record[recordIndex].committees = [
+            ...new Set(record[recordIndex].committees),
+          ];
         } else {
           record.push({
             state: attendance,
             count: 1,
+            committees: [committee],
           });
         }
 
@@ -81,6 +85,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
           recordAll.push({
             state: attendance,
             count: 1,
+            committees: [committee],
           });
         }
       } else {
@@ -88,12 +93,14 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
           {
             state: attendance,
             count: 1,
+            committees: [committee],
           },
         ];
         data[id]["parliamentary-record"]["all"] = [
           {
             state: attendance,
             count: 1,
+            committees: [committee],
           },
         ];
       }
@@ -101,19 +108,20 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
       const newMember = {
         name: name,
         party: party,
-        profilePicUrl: profilePicUrl,
         "parliamentary-record": {},
       };
       newMember["parliamentary-record"][parliamentKey] = [
         {
           state: attendance,
           count: 1,
+          committees: [committee],
         },
       ];
       newMember["parliamentary-record"]["all"] = [
         {
           state: attendance,
           count: 1,
+          committees: [committee],
         },
       ];
       data[id] = newMember;

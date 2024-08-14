@@ -161,7 +161,6 @@ function OverallAttendance(props) {
       memberAttendance[id] = {
         label: data[id].name,
         party: data[id].party,
-        profilePicUrl: data[id].profilePicUrl,
         attendance: data[id]["parliamentary-record"][selectedParliament],
       };
 
@@ -184,11 +183,23 @@ function OverallAttendance(props) {
             if (recordIndex > -1) {
               partyAttendance[data[id].party].attendance[recordIndex].count +=
                 attendance.count;
+              partyAttendance[data[id].party].committees.push(
+                attendance.committees
+              );
+              partyAttendance[data[id].party].committees = [
+                ...new Set(partyAttendance[data[id].party].committees.flat()),
+              ];
+              partyAttendance[data[id].party]["committees-count"] =
+                partyAttendance[data[id].party].committees.length;
             } else {
               partyAttendance[data[id].party].attendance.push({
                 state: attendance.state,
                 count: attendance.count,
               });
+              partyAttendance[data[id].party].committees =
+                attendance.committees;
+              partyAttendance[data[id].party]["committees-count"] =
+                partyAttendance[data[id].party].committees.length;
             }
           }
         );
@@ -221,6 +232,16 @@ function OverallAttendance(props) {
         (total, attendance) => total + attendance.count,
         0
       );
+
+      item["committees"] = [];
+
+      item.attendance.map((attendance) =>
+        item["committees"].push(attendance.committees)
+      );
+
+      item["committees"] = [...new Set(item["committees"].flat())];
+
+      item["committees-count"] = item["committees"].length;
 
       // Group and total item.attendance by attendanceStates.group ib item.grouped-attendance[{state: STATE, count: COUNT}]
       item["grouped-attendance"] = item.attendance.reduce(
@@ -417,6 +438,16 @@ function OverallAttendance(props) {
               sortedDirection={sortedDirection}
             />
 
+            {grouping === "members" && (
+              <SortedColumn
+                sortThisfield="committees-count"
+                heading="Committee Memberships"
+                setSort={setSort}
+                sortedField={sortedField}
+                sortedDirection={sortedDirection}
+              />
+            )}
+
             <th>Recorded totals breakdown</th>
           </tr>
         </thead>
@@ -446,6 +477,7 @@ function OverallAttendance(props) {
                       {Math.round(parseFloat(row["attendance-percentage"]))}%
                     </span>{" "}
                   </td>
+                  {grouping === "members" && <td>{row["committees-count"]}</td>}
                   <td
                     width="100%"
                     onMouseEnter={() => showTooltip(row)}
