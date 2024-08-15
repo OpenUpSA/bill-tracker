@@ -13,7 +13,6 @@ import "./index.scss";
 
 import * as lookup from "../../data/lookup.json";
 import OverallAttendance from "./overall";
-import AverageAttendance from "./average";
 
 function Attendance() {
   const parliaments = lookup["parliaments"];
@@ -65,11 +64,6 @@ function Attendance() {
         <Row className="p-5 pb-4">
           <Col md={12}>
             <OverallAttendance selectedParliament={selectedParliament} />
-          </Col>
-        </Row>
-        <Row className="p-5 pt-0">
-          <Col md={12}>
-            <AverageAttendance selectedParliament={selectedParliament} />
           </Col>
         </Row>
       </Container>

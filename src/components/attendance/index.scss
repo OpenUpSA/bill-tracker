@@ -45,15 +45,6 @@ table {
           padding-right: 0;
         }
 
-        &.sortable {
-          white-space: nowrap;
-          cursor: pointer;
-          span {
-            display: inline-block;
-            padding-right: 8px;
-          }
-        }
-
         &.membersOrParty {
           white-space: nowrap;
         }
@@ -172,6 +163,10 @@ table {
   white-space: nowrap;
   height: 100%;
 
+  &.align-right {
+    direction: rtl;
+  }
+
   &.no-border-radius-right {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -219,6 +214,18 @@ table {
 
     &.state-P {
       margin-right: 1px;
+    }
+
+    &.state-more-than-average {
+      background-color: #8ae561;
+      overflow: visible;
+    }
+
+    &.state-less-than-average {
+      background-color: #ffa694;
+      overflow: visible !important;
+      text-align: right;
+      direction: ltr;
     }
   }
 }
@@ -492,6 +499,5 @@ h2 {
 .parliamentSelector {
   max-width: 225px;
   border-radius: 0;
-  background-color: #DFDFDF;
-  
+  background-color: #dfdfdf;
 }
