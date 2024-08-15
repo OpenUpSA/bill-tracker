@@ -18,26 +18,31 @@ const ChartTypes = {
     label: "Numeric (Simple)",
     percentage: false,
     detailed: false,
+    default: false,
   },
   "numeric-detailed": {
     label: "Numeric (Detailed)",
     percentage: false,
     detailed: true,
+    default: false,
   },
   "pecentage-simple": {
     label: "Percentage (Simple)",
     percentage: true,
     detailed: false,
+    default: false,
   },
   "percentage-detailed": {
     label: "Percentage (Detailed)",
     percentage: true,
     detailed: true,
+    default: true,
   },
   average: {
     label: "Compare to average",
     percentage: false,
     detailed: false,
+    default: false,
   },
 };
 
@@ -50,7 +55,7 @@ function OverallAttendance(props) {
   const [dataAttendance, setDataAttendance] = useState(null);
   const [grouping, setGrouping] = useState("members");
   const [sortedDirection, setSortedDirection] = useState("desc");
-  const [sortedField, setSortedField] = useState("attendance-percentage");
+  const [sortedField, setSortedField] = useState("attendance-count");
   const [tooltipShown, setTooltipShown] = useState(true);
   const [tooltipAttendance, setTooltipAttendance] = useState({});
   const [tooltipAttendanceState, setTooltipAttendanceState] = useState("");
@@ -59,7 +64,7 @@ function OverallAttendance(props) {
     y: 0,
   });
   const [selectedChartType, setSelectedChartType] = useState(
-    Object.keys(ChartTypes)[0]
+    Object.keys(ChartTypes).find((key) => ChartTypes[key].default)
   );
   const [memberSearch, setMemberSearch] = useState("");
   const [highlightedAttendanceState, setHighlightedAttendanceState] =
@@ -330,9 +335,9 @@ function OverallAttendance(props) {
       item["grouped-attendance"] = Object.values(item["grouped-attendance"]);
     });
 
-    // Sort activeAttendance by attendance-percentage
+    // Sort activeAttendance by sortedField (default)
     activeAttendance = activeAttendance.sort((a, b) => {
-      return b["attendance-percentage"] - a["attendance-percentage"];
+      return b[sortedField] - a[sortedField];
     });
 
     setDataAttendance(activeAttendance);
