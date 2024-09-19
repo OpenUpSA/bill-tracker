@@ -78,6 +78,15 @@ function OverallAttendance(props) {
     }
   };
 
+  const shortPartyName = (partyName) => {
+    const match = partyName.match(/.*\((.*)\)/);
+    if (match) {
+      return match[1];
+    } else {
+      return partyName;
+    }
+  };
+
   const AttendanceTooltip = () => {
     const attendedGroup = tooltipAttendance["grouped-attendance"]?.find(
       (a) => a.group === "attended"
@@ -528,7 +537,9 @@ function OverallAttendance(props) {
                 <tr key={row.label}>
                   <td className="no-word-break">{row.label}</td>
                   <td className="no-word-break">
-                    {grouping === "party" ? row["member-count"] : row["party"]}
+                    {grouping === "party"
+                      ? row["member-count"]
+                      : shortPartyName(row["party"])}
                   </td>
                   {grouping === "members" && <td>{row["committees-count"]}</td>}
                   <td>{row["attendance-count"].toLocaleString()}</td>
