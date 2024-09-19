@@ -16,6 +16,7 @@
     "@mdi/react": "^1.6.1",
     "@microlink/react-json-view": "^1.23.0",
     "autoprefixer": "^10.4.14",
+    "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "d3": "^7.9.0",
     "react": "^18.2.0",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@parcel/transformer-sass": "2.8.3",
+    "buffer": "^5.5.0",
     "csv-parse": "^5.5.6",
     "parcel": "^2.8.3",
     "process": "^0.11.10"

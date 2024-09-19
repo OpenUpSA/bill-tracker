@@ -1,0 +1,39 @@
+.bill-status-icon {
+    border-radius: 50%;
+    height: 2em;
+    width: 2em;
+    position: relative;
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.bill-commenced {
+    background-color: #0071d6;
+}
+
+.bill-revised {
+    background-color: #ff862d;
+}
+
+.bill-withdrawn {
+    background-color: #565656;
+}
+
+.bill-rejected {
+    background-color: #e53e36;
+}
+
+.bill-passed {
+    background-color: #00774b;
+}
+
+.act-commenced {
+    background-color: #3b0075;
+}
