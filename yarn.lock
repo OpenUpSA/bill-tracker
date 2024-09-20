@@ -32,6 +32,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.10.1, @babel/runtime@npm:^7.18.3":
+  version: 7.25.6
+  resolution: "@babel/runtime@npm:7.25.6"
+  dependencies:
+    regenerator-runtime: ^0.14.0
+  checksum: ee1a69d3ac7802803f5ee6a96e652b78b8addc28c6a38c725a4ad7d61a059d9e6cb9f6550ed2f63cce67a1bd82e0b1ef66a1079d895be6bfb536a5cfbd9ccc32
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.10.2":
   version: 7.24.6
   resolution: "@babel/runtime@npm:7.24.6"
@@ -224,6 +233,21 @@ __metadata:
   version: 2.5.2
   resolution: "@lmdb/lmdb-win32-x64@npm:2.5.2"
   conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@lueton/react-sparklines@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@lueton/react-sparklines@npm:2.0.0"
+  dependencies:
+    clsx: ^2.1.1
+    d3: ^7.9.0
+    lodash: ^4.17.21
+    react-is: ^18.3.1
+  peerDependencies:
+    react: ">=16.8.0 || ^17.0.0 || ^18.0.0"
+    react-dom: ">=16.8.0 || ^17.0.0 || ^18.0.0"
+  checksum: 935849bae76eabfc9df91049c8ff2cc4534954eea9dbfafefef136abd205faf92db6df890ab4d9ef7efcf6b8e2560e180e320275441f00ed96ef096b86fb9e0f
   languageName: node
   linkType: hard
 
@@ -1475,7 +1499,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.3.2":
+"classnames@npm:^2.2.5, classnames@npm:^2.3.2":
   version: 2.5.1
   resolution: "classnames@npm:2.5.1"
   checksum: da424a8a6f3a96a2e87d01a432ba19315503294ac7e025f9fece656db6b6a0f7b5003bb1fbb51cbb0d9624d964f1b9bb35a51c73af9b2434c7b292c42231c1e5
@@ -1493,6 +1517,13 @@ __metadata:
   version: 2.1.2
   resolution: "clone@npm:2.1.2"
   checksum: aaf106e9bc025b21333e2f4c12da539b568db4925c0501a1bf4070836c9e848c892fa22c35548ce0d1132b08bbbfa17a00144fe58fccdab6fa900fec4250f67d
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "clsx@npm:2.1.1"
+  checksum: acd3e1ab9d8a433ecb3cc2f6a05ab95fe50b4a3cfc5ba47abb6cbf3754585fcb87b84e90c822a1f256c4198e3b41c7f6c391577ffc8678ad587fc0976b24fd57
   languageName: node
   linkType: hard
 
@@ -2776,6 +2807,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
+  languageName: node
+  linkType: hard
+
 "loose-envify@npm:^1.0.0, loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
@@ -3389,6 +3427,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rc-slider@npm:^11.1.6":
+  version: 11.1.6
+  resolution: "rc-slider@npm:11.1.6"
+  dependencies:
+    "@babel/runtime": ^7.10.1
+    classnames: ^2.2.5
+    rc-util: ^5.36.0
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 0899c01dcd479417ba3aa972ed2559d6dcee162785aaedd125b6f6af322dbe00c90b2f8ef3a703cd264d15c4b59cdfe742e56589e08a428e587eff8d38908c55
+  languageName: node
+  linkType: hard
+
+"rc-util@npm:^5.36.0":
+  version: 5.43.0
+  resolution: "rc-util@npm:5.43.0"
+  dependencies:
+    "@babel/runtime": ^7.18.3
+    react-is: ^18.2.0
+  peerDependencies:
+    react: ">=16.9.0"
+    react-dom: ">=16.9.0"
+  checksum: 48c10afb5886aed86d1f5241883f972b2b16235b0cc4867a05d061324f107aa113260c34eeb13ad18f4b66d1264dbcb3baf725c8ea34fbdaa504410d4e71b3ce
+  languageName: node
+  linkType: hard
+
 "react-base16-styling@npm:~0.6.0":
   version: 0.6.0
   resolution: "react-base16-styling@npm:0.6.0"
@@ -3468,6 +3533,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-is@npm:^18.2.0, react-is@npm:^18.3.1":
+  version: 18.3.1
+  resolution: "react-is@npm:18.3.1"
+  checksum: e20fe84c86ff172fc8d898251b7cc2c43645d108bf96d0b8edf39b98f9a2cae97b40520ee7ed8ee0085ccc94736c4886294456033304151c3f94978cec03df21
+  languageName: node
+  linkType: hard
+
 "react-lifecycles-compat@npm:^3.0.4, react-lifecycles-compat@npm:~3.0.4":
   version: 3.0.4
   resolution: "react-lifecycles-compat@npm:3.0.4"
@@ -3490,6 +3562,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": ^6.5.2
     "@fortawesome/free-solid-svg-icons": ^6.5.2
     "@fortawesome/react-fontawesome": ^0.2.2
+    "@lueton/react-sparklines": ^2.0.0
     "@mdi/js": ^7.4.47
     "@mdi/react": ^1.6.1
     "@microlink/react-json-view": ^1.23.0
@@ -3502,6 +3575,7 @@ __metadata:
     d3: ^7.9.0
     parcel: ^2.8.3
     process: ^0.11.10
+    rc-slider: ^11.1.6
     react: ^18.2.0
     react-bootstrap: ^2.10.2
     react-custom-scrollbars: ^4.2.1
