@@ -99,6 +99,10 @@ h1 {
         &::placeholder {
             color: #000;
         }
+
+        &:focus {
+            background-color: #fafafa;
+        }
     }
 
     &::before {

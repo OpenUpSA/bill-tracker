@@ -13,7 +13,7 @@ import Stack from 'react-bootstrap/Stack';
 import { SparklinesLine } from '@lueton/react-sparklines';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faFlag, faChevronDown, faScroll, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faFlag, faChevronDown, faScroll, faCircleInfo, faSquareCheck, faSquare } from "@fortawesome/free-solid-svg-icons";
 
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -31,7 +31,11 @@ function BillTracker() {
 
     const [bills, setBills] = useState([]);
     const [preparedBills, setPreparedBills] = useState([]);
-
+    
+    const [selectedBillTypes, setSelectedBillTypes] = useState([]);
+    const [selectedStatuses, setSelectedStatuses] = useState([]);
+    const [groupBy, setGroupBy] = useState('status');
+    
     const [daySizeinPx, setDaySizeinPx] = useState(5);
 
     // Effects
@@ -42,6 +46,7 @@ function BillTracker() {
 
     useEffect(() => {
         bills.length > 0 && prepareBills();
+
     }, [bills]);
 
     useEffect(() => {
@@ -91,7 +96,7 @@ function BillTracker() {
 
             let dummyEvents = [];
 
-            if (lastHouse != lookup.house_status[bill.status]) {
+            if (lastHouse != lookup.status[bill.status]) {
                 if (
                     (bill.stats !== "lapsed" &&
                         bill.status !== "withdrawn" &&
@@ -107,12 +112,12 @@ function BillTracker() {
                     dummyEvents.push([
                         {
                             date: startDate,
-                            house: lookup.house_status[bill.status],
+                            house: lookup.status[bill.status],
                             type: "current-house-start",
                         },
                         {
                             date: today,
-                            house: lookup.house_status[bill.status],
+                            house: lookup.status[bill.status],
                             type: "today",
                         },
                     ]);
@@ -120,7 +125,7 @@ function BillTracker() {
             } else {
                 bill.houses[bill.houses.length - 1].push({
                     date: today,
-                    house: lookup.house_status[bill.status],
+                    house: lookup.status[bill.status],
                     type: "today",
                 });
             }
@@ -206,14 +211,13 @@ function BillTracker() {
                                                     <Dropdown className="dropdown-select">
                                                         <Dropdown.Toggle>
                                                             <Row>
-                                                                <Col>Current Status</Col>
+                                                                <Col>{ groupBy === 'status' ? 'Current Status' : 'Bill Type' }</Col>
                                                                 <Col xs="auto"><FontAwesomeIcon icon={faChevronDown} /></Col>
                                                             </Row>
                                                         </Dropdown.Toggle>
                                                         <Dropdown.Menu>
-                                                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                                            <Dropdown.Item onClick={() => setGroupBy('status')}>Current Status</Dropdown.Item>
+                                                            <Dropdown.Item onClick={() => setGroupBy('type')}>Bill Type</Dropdown.Item>
                                                         </Dropdown.Menu>
                                                     </Dropdown>
                                                 </Col>
@@ -237,17 +241,51 @@ function BillTracker() {
 
                                             <Row className="mt-4">
                                                 <Col>
-                                                    <Dropdown className="dropdown-select">
+                                                    <Dropdown className="dropdown-select" autoClose="outside">
                                                         <Dropdown.Toggle>
                                                             <Row>
-                                                                <Col>Bill type</Col>
+                                                                <Col>Bill type ({selectedBillTypes.length == 0 ? 'All' : selectedBillTypes.length})</Col>
                                                                 <Col xs="auto"><FontAwesomeIcon icon={faChevronDown} /></Col>
                                                             </Row>
                                                         </Dropdown.Toggle>
                                                         <Dropdown.Menu>
-                                                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                                            <Dropdown.Item onClick={() => setSelectedBillTypes([])}>
+                                                                <FontAwesomeIcon
+                                                                    icon={
+                                                                    selectedBillTypes.length == 0
+                                                                        ? faSquareCheck
+                                                                        : faSquare
+                                                                    }
+                                                                    className="me-2"
+                                                                />
+                                                                All Types
+                                                            </Dropdown.Item>
+
+                                                            {Object.keys(lookup.billtypes).map(
+                                                                (type, index) => 
+                                                                <Dropdown.Item
+                                                                    key={index}
+                                                                    onClick={() => 
+                                                                        setSelectedBillTypes(
+                                                                            selectedBillTypes.includes(type)
+                                                                                ? selectedBillTypes.filter(
+                                                                                    (selectedType) => selectedType !== type
+                                                                                )
+                                                                                : [...selectedBillTypes, type]
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <FontAwesomeIcon
+                                                                        icon={
+                                                                        selectedBillTypes.includes(type)
+                                                                            ? faSquareCheck
+                                                                            : faSquare
+                                                                        }
+                                                                        className="me-2"
+                                                                    />
+                                                                    {lookup.billtypes[type]}
+                                                                </Dropdown.Item>
+                                                            )}
                                                         </Dropdown.Menu>
                                                     </Dropdown>
                                                 </Col>
@@ -255,17 +293,52 @@ function BillTracker() {
 
                                             <Row className="mt-2">
                                                 <Col>
-                                                    <Dropdown className="dropdown-select">
+                                                    <Dropdown className="dropdown-select" autoClose="outside">
                                                         <Dropdown.Toggle>
                                                             <Row>
-                                                                <Col>Bill status</Col>
+                                                                <Col>Bill status ({selectedStatuses.length == 0 ? 'All' : selectedStatuses.length})</Col>
                                                                 <Col xs="auto"><FontAwesomeIcon icon={faChevronDown} /></Col>
                                                             </Row>
                                                         </Dropdown.Toggle>
                                                         <Dropdown.Menu>
-                                                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+
+                                                            <Dropdown.Item onClick={() => setSelectedStatuses([])}>
+                                                                <FontAwesomeIcon
+                                                                    icon={
+                                                                    selectedStatuses.length == 0
+                                                                        ? faSquareCheck
+                                                                        : faSquare
+                                                                    }
+                                                                    className="me-2"
+                                                                />
+                                                                All Statuses
+                                                            </Dropdown.Item>
+
+                                                            {Object.keys(lookup.status).map(
+                                                                (status, index) => 
+                                                                <Dropdown.Item
+                                                                    key={index}
+                                                                    onClick={() => 
+                                                                        setSelectedStatuses(
+                                                                            selectedStatuses.includes(status)
+                                                                                ? selectedStatuses.filter(
+                                                                                    (selectedStatus) => selectedStatus !== status
+                                                                                )
+                                                                                : [...selectedStatuses, status]
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <FontAwesomeIcon
+                                                                        icon={
+                                                                        selectedStatuses.includes(status)
+                                                                            ? faSquareCheck
+                                                                            : faSquare
+                                                                        }
+                                                                        className="me-2"
+                                                                    />
+                                                                    {lookup.status[status]}
+                                                                </Dropdown.Item>
+                                                            )}
                                                         </Dropdown.Menu>
                                                     </Dropdown>
                                                 </Col>
