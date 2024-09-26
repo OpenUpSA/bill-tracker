@@ -1,6 +1,7 @@
 $national_assembly: #6befc5;
 $ncop: #73a6ef;
 $presidency: #af78ea;
+$joint: #f7b267;
 
 body {
     overflow-x: hidden;
@@ -38,11 +39,22 @@ body {
     }
 }
 
+.feedback-btn {
+    border-radius: 100px;
+    background: linear-gradient(0deg, #001489 0%, #001489 100%), #FFF;
+    display: inline-flex;
+    padding: 8px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
 
 .page-body{
     padding-left: 3em !important;
     
-    width: 100;
+    
 
     h2 {
         font-size: 1em;
@@ -54,6 +66,8 @@ body {
             margin-right: 1em;
         }
     }
+
+   
 }
 
 .dropdown-select.show {
@@ -83,6 +97,7 @@ body {
 
 .bills-table {
     width: 100%;
+    
 
     thead {
         position: sticky;
@@ -110,6 +125,7 @@ body {
         .bill-epm-trend {
             padding-left: 15px;
             width: 150px;
+            white-space: nowrap;
 
             .svg-inline--fa {
                 width: 1.3em !important;
@@ -127,7 +143,6 @@ body {
 
         .bill-timeline {
             width: 60% !important;
-            overflow: hidden;
             padding-top: 0.7em;
 
             .form-range-container {
@@ -187,6 +202,8 @@ body {
 
         .bill-name {
             border-radius: 5px 0 0 5px;
+            position: relative;
+            white-space: nowrap;
         }
 
         .bill-days {
@@ -214,26 +231,26 @@ body {
        
         
         .bill-timeline {
-
             position: relative;
-            position: absolute;
+            white-space: nowrap;
+            overflow: hidden;
 
             .bill-progress {
-                width: 100%;
-                overflow: hidden;
+                
+                position: absolute;
 
                 .house-group {
+                    top: 50%;
+                    transform: translateY(-50%);
                     height: 20px;
                     border-radius: 5px;
                     display: inline-block;
+                    line-height: 0;
                     width: auto;
                     transition: all 0.5s;
                 }
 
             }
-
-
-            
 
             border-radius: 0 5px 5px 0;
         }
@@ -246,6 +263,7 @@ body {
 
         .bill-tracker-legend {
             margin-top: 1em;
+            white-space: nowrap;
         }
 
         .legend-title {
@@ -255,6 +273,7 @@ body {
 
         .legend {
             margin: 0 1em 0 0;
+            
 
             .legend-block {
                 display: inline-block;
@@ -278,7 +297,17 @@ body {
     }
 
     .group-header {
-        padding: 1em 0.5em !important;
+        
+        th {
+            padding: 1em 0.5em;
+            font-size: 1.2em;
+        }
+      
+        &.sticky {
+          position: sticky;
+          top: 0; 
+          z-index: 100; 
+        }
     }
     
 }
@@ -318,4 +347,35 @@ body {
 
 .president {
     background-color: $presidency;
+}
+
+.Joint {
+    background-color: $joint;
+}
+
+// TOOLTIP
+
+.bill-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    z-index: 999;
+    width: 350px;
+    opacity: 0;
+    transition: all 0.3s;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: #fff;
+    }
 }

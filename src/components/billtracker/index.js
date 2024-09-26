@@ -9,6 +9,9 @@ import Accordion from 'react-bootstrap/Accordion';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Stack from 'react-bootstrap/Stack';
+import Modal from 'react-bootstrap/Modal';
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 
 import { SparklinesLine } from '@lueton/react-sparklines';
 
@@ -18,6 +21,8 @@ import { faFilter, faFlag, faChevronDown, faScroll, faCircleInfo, faSquareCheck,
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
+import { Scrollbars } from "react-custom-scrollbars";
+
 import { BillCommenced, BillRevised, BillWithdrawn, BillRejected, BillPassed, ActCommenced, IconZoomIn, IconZoomOut, IconFullscreen, IconReset } from "./icons";
 
 import PMHeader from "../pmheader";
@@ -26,17 +31,33 @@ import PMTabs from "../pmtabs";
 import "./style.scss";
 
 import * as lookup from "../../data/lookup.json";
+import { filter } from "d3";
 
 function BillTracker() {
 
     const [bills, setBills] = useState([]);
     const [preparedBills, setPreparedBills] = useState([]);
-    
+    const [filteredBills, setFilteredBills] = useState([]);
+    const [groupedBills, setGroupedBills] = useState([]);
+
     const [selectedBillTypes, setSelectedBillTypes] = useState([]);
-    const [selectedStatuses, setSelectedStatuses] = useState([]);
+    const [selectedStatuses, setSelectedStatuses] = useState(['na','ncop','president']);
     const [groupBy, setGroupBy] = useState('status');
-    
+    const [search, setSearch] = useState('');
+
+    const hideBillsWithStatus = ["lapsed", "withdrawn", "rejected", "enacted", "act-commenced", "act-partly-commenced"];
+
     const [daySizeinPx, setDaySizeinPx] = useState(5);
+    const [maxDays, setMaxDays] = useState(0);
+    const [timelineScroll, setTimelineScroll] = useState(0);
+
+    const [loading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedBill, setSelectedBill] = useState({});
+    const [hoveredEvent, setHoveredEvent] = useState(null);
+    const [hoveredBill, setHoveredBill] = useState(null);
+
+    
 
     // Effects
 
@@ -46,19 +67,36 @@ function BillTracker() {
 
     useEffect(() => {
         bills.length > 0 && prepareBills();
-
     }, [bills]);
 
     useEffect(() => {
-        console.log(preparedBills);
-    }, [preparedBills]);
+        filterBills();
+    }, [preparedBills, selectedBillTypes, selectedStatuses, search]);
+
+    useEffect(() => {
+        groupBills();
+    }, [filteredBills]);
+
+    useEffect(() => {
+        getMaxDays();
+        setLoading(false);
+    }, [groupedBills]);
+
+    useEffect(() => {
+        groupBills();
+    }, [groupBy]);
+
+    useEffect(() => {
+        console.log("Max days changed", maxDays);
+    }, [maxDays]);
+
+
 
     // Methods
 
     const getBills = async () => {
         try {
             const response = await axios.get("https://api.pmg.org.za/v2/bill-tracker/");
-            console.log(response);
             setBills(response.data);
         } catch (err) {
             console.error(err.message);
@@ -66,14 +104,16 @@ function BillTracker() {
     };
 
     const prepareBills = () => {
-        let filteredBills = bills;
 
-        filteredBills.forEach((bill) => {
+        let billsWork = bills;
+
+        billsWork.forEach(bill => {
             bill.houses = [];
             bill.houses_time = [];
             let currentHouse = [];
             let lastHouse = null;
             bill.total_commitee_meetings = 0;
+            bill.total_days = 0;
 
             bill.events.forEach((event) => {
                 if (lastHouse === null || lastHouse == event.house) {
@@ -92,71 +132,113 @@ function BillTracker() {
 
             bill.houses.push(currentHouse);
 
-            const today = new Date();
+        });
 
-            let dummyEvents = [];
-
-            if (lastHouse != lookup.status[bill.status]) {
-                if (
-                    (bill.stats !== "lapsed" &&
-                        bill.status !== "withdrawn" &&
-                        bill.status !== "rejected",
-                        bill.status !== "enacted",
-                        bill.status !== "act-commenced",
-                        bill.status !== "act-partly-commenced")
-                ) {
-                    let lastDate = bill.events[bill.events.length - 1].date;
-
-                    let startDate = new Date(lastDate + 1);
-
-                    dummyEvents.push([
-                        {
-                            date: startDate,
-                            house: lookup.status[bill.status],
-                            type: "current-house-start",
-                        },
-                        {
-                            date: today,
-                            house: lookup.status[bill.status],
-                            type: "today",
-                        },
-                    ]);
-                }
-            } else {
-                bill.houses[bill.houses.length - 1].push({
-                    date: today,
-                    house: lookup.status[bill.status],
-                    type: "today",
-                });
-            }
-
-            bill.houses = [...bill.houses, ...dummyEvents];
-
-            // bill.houses.forEach((house_group,index) => {
-            //     if(index > 0) {
-            //         if(house_group[0].date > bill.houses[index - 1][bill.houses[index - 1].length - 1].date) {
-            //             console.log('house gap', house_group[0].date, bill.houses[index - 1][bill.houses[index - 1].length - 1].date);
-
-            //         }
-            //     }
-            // })
-
+        billsWork.forEach(bill => {
             bill.houses.forEach((house_group) => {
+                
                 if (house_group.length > 0) {
                     let daysInGroup = 1;
-
+    
                     const startDate = house_group[0].date;
                     const endDate = house_group[house_group.length - 1].date;
                     daysInGroup = getDateDifferenceInDays(startDate, endDate);
+    
+                    if (daysInGroup < 1) {
+                        daysInGroup = 1;
+                    }
 
                     bill.houses_time.push(daysInGroup);
                 }
             });
 
+            bill.total_days = bill.houses_time.reduce((sum, time) => sum + time, 0);
+        })
+
+        setPreparedBills(billsWork);
+    };
+
+    const filterBills = () => {
+        let filteredBillsWork = preparedBills;
+
+        if (selectedBillTypes.length > 0) {
+            filteredBillsWork = filteredBillsWork.filter(bill => selectedBillTypes.includes(bill.type));
+        }
+
+        if (selectedStatuses.length > 0) {
+            filteredBillsWork = filteredBillsWork.filter(bill => selectedStatuses.includes(bill.status));
+        }
+
+        if (search.length > 3) {
+            filteredBillsWork = filteredBillsWork.filter((bill) =>
+                bill.title.toLowerCase().includes(search.toLowerCase())
+            );
+        }
+
+        setFilteredBills(filteredBillsWork);
+    };
+
+    const groupBills = () => {
+        let groupedBillsWork = [];
+
+        let groupByValues = [];
+        filteredBills.forEach(bill => {
+            if (!groupByValues.includes(bill[groupBy])) {
+                groupByValues.push(bill[groupBy]);
+            }
         });
 
-        setPreparedBills(filteredBills);
+        groupByValues.forEach(value => {
+            let group = {
+                title: value,
+                bills: []
+            };
+
+            let bills = filteredBills.filter(bill => bill[groupBy] === value);
+
+            group.bills = bills;
+            groupedBillsWork.push(group);
+        });
+
+
+        let orderedGroups = [];
+        Object.keys(lookup[groupBy]).forEach(key => {
+            let group = groupedBillsWork.find(group => group.title === key);
+            if (group) {
+                orderedGroups.push(group);
+            }
+        })
+
+        setGroupedBills(orderedGroups);
+
     };
+
+    // Components
+
+    const BillTooltip = () => {
+        return (
+            <div className="bill-tooltip" style={{opacity: 1}}>
+                <Row>
+                    <Col>Bill type:</Col>
+                    <Col className="text-end">{lookup.type[hoveredBill.type]}</Col>
+                </Row>
+                <Row>
+                    <Col>Introduced by:</Col>
+                    <Col className="text-end">{hoveredBill.introduced_by}</Col>
+                </Row>
+                <Row>
+                    <Col>Currently before:</Col>
+                    <Col className="text-end">{hoveredBill.status}</Col>
+                </Row>
+
+            </div>
+        );
+    }
+
+    
+
+
+
 
     // Helpers
 
@@ -171,6 +253,73 @@ function BillTracker() {
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return diffDays;
     };
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+
+        return `${day}-${month}-${year}`;
+    };
+
+    const throttle = (func, limit) => {
+        let inThrottle;
+        return function () {
+            const args = arguments;
+            const context = this;
+
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => (inThrottle = false), limit);
+            }
+        };
+    };
+
+    const getMaxDays = () => {
+        let max = 0;
+
+        groupedBills.forEach((group) => {
+            group.bills.forEach((bill) => {
+                if (bill.total_days > max) {
+                    max = bill.total_days;
+                }
+            })
+        });
+
+        setMaxDays(max);
+    };
+
+    
+    const handleMouseOver = (event = null, bill = null) => {
+        setHoveredEvent(event);
+        setHoveredBill(bill);
+    };
+
+    const throttledHandleMouseOver = throttle(handleMouseOver, 500);
+    
+    const handleMouseOut = () => {
+        setHoveredEvent(null);
+        setHoveredBill(null);
+    };
+
+
+
+
+
+
+    // Debug Helper
+    const listValues = (key) => {
+        let values = [];
+        bills.forEach(bill => {
+            if (!values.includes(bill[key])) {
+                introducedBys.push(bill[key]);
+            }
+        })
+        console.log(values);
+    }
+
 
 
 
@@ -211,7 +360,7 @@ function BillTracker() {
                                                     <Dropdown className="dropdown-select">
                                                         <Dropdown.Toggle>
                                                             <Row>
-                                                                <Col>{ groupBy === 'status' ? 'Current Status' : 'Bill Type' }</Col>
+                                                                <Col>{groupBy === 'status' ? 'Current Status' : 'Bill Type'}</Col>
                                                                 <Col xs="auto"><FontAwesomeIcon icon={faChevronDown} /></Col>
                                                             </Row>
                                                         </Dropdown.Toggle>
@@ -226,14 +375,14 @@ function BillTracker() {
                                             <Row className="my-3">
                                                 <Col xs="auto">Showing:</Col>
                                                 <Col className="text-end">
-                                                    63 of 63 (100%)
+                                                    {filteredBills.length} of {preparedBills.length} ({(filteredBills.length / preparedBills.length * 100).toFixed(0)}%)
                                                 </Col>
                                             </Row>
 
                                             <Row>
                                                 <Col>
                                                     <div className="form-input-container">
-                                                        <Form.Control type="text" placeholder="Search for a bill..." className="form-input" />
+                                                        <Form.Control type="text" placeholder="Search for a bill..." className="form-input" onChange={(e) => setSearch(e.target.value)}/>
                                                     </div>
                                                 </Col>
                                             </Row>
@@ -252,39 +401,39 @@ function BillTracker() {
                                                             <Dropdown.Item onClick={() => setSelectedBillTypes([])}>
                                                                 <FontAwesomeIcon
                                                                     icon={
-                                                                    selectedBillTypes.length == 0
-                                                                        ? faSquareCheck
-                                                                        : faSquare
+                                                                        selectedBillTypes.length == 0
+                                                                            ? faSquareCheck
+                                                                            : faSquare
                                                                     }
                                                                     className="me-2"
                                                                 />
                                                                 All Types
                                                             </Dropdown.Item>
 
-                                                            {Object.keys(lookup.billtypes).map(
-                                                                (type, index) => 
-                                                                <Dropdown.Item
-                                                                    key={index}
-                                                                    onClick={() => 
-                                                                        setSelectedBillTypes(
-                                                                            selectedBillTypes.includes(type)
-                                                                                ? selectedBillTypes.filter(
-                                                                                    (selectedType) => selectedType !== type
-                                                                                )
-                                                                                : [...selectedBillTypes, type]
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <FontAwesomeIcon
-                                                                        icon={
-                                                                        selectedBillTypes.includes(type)
-                                                                            ? faSquareCheck
-                                                                            : faSquare
+                                                            {Object.keys(lookup.type).map(
+                                                                (type, index) =>
+                                                                    <Dropdown.Item
+                                                                        key={index}
+                                                                        onClick={() =>
+                                                                            setSelectedBillTypes(
+                                                                                selectedBillTypes.includes(type)
+                                                                                    ? selectedBillTypes.filter(
+                                                                                        (selectedType) => selectedType !== type
+                                                                                    )
+                                                                                    : [...selectedBillTypes, type]
+                                                                            )
                                                                         }
-                                                                        className="me-2"
-                                                                    />
-                                                                    {lookup.billtypes[type]}
-                                                                </Dropdown.Item>
+                                                                    >
+                                                                        <FontAwesomeIcon
+                                                                            icon={
+                                                                                selectedBillTypes.includes(type)
+                                                                                    ? faSquareCheck
+                                                                                    : faSquare
+                                                                            }
+                                                                            className="me-2"
+                                                                        />
+                                                                        {lookup.type[type]}
+                                                                    </Dropdown.Item>
                                                             )}
                                                         </Dropdown.Menu>
                                                     </Dropdown>
@@ -305,9 +454,9 @@ function BillTracker() {
                                                             <Dropdown.Item onClick={() => setSelectedStatuses([])}>
                                                                 <FontAwesomeIcon
                                                                     icon={
-                                                                    selectedStatuses.length == 0
-                                                                        ? faSquareCheck
-                                                                        : faSquare
+                                                                        selectedStatuses.length == 0
+                                                                            ? faSquareCheck
+                                                                            : faSquare
                                                                     }
                                                                     className="me-2"
                                                                 />
@@ -315,29 +464,29 @@ function BillTracker() {
                                                             </Dropdown.Item>
 
                                                             {Object.keys(lookup.status).map(
-                                                                (status, index) => 
-                                                                <Dropdown.Item
-                                                                    key={index}
-                                                                    onClick={() => 
-                                                                        setSelectedStatuses(
-                                                                            selectedStatuses.includes(status)
-                                                                                ? selectedStatuses.filter(
-                                                                                    (selectedStatus) => selectedStatus !== status
-                                                                                )
-                                                                                : [...selectedStatuses, status]
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <FontAwesomeIcon
-                                                                        icon={
-                                                                        selectedStatuses.includes(status)
-                                                                            ? faSquareCheck
-                                                                            : faSquare
+                                                                (status, index) =>
+                                                                    <Dropdown.Item
+                                                                        key={index}
+                                                                        onClick={() =>
+                                                                            setSelectedStatuses(
+                                                                                selectedStatuses.includes(status)
+                                                                                    ? selectedStatuses.filter(
+                                                                                        (selectedStatus) => selectedStatus !== status
+                                                                                    )
+                                                                                    : [...selectedStatuses, status]
+                                                                            )
                                                                         }
-                                                                        className="me-2"
-                                                                    />
-                                                                    {lookup.status[status]}
-                                                                </Dropdown.Item>
+                                                                    >
+                                                                        <FontAwesomeIcon
+                                                                            icon={
+                                                                                selectedStatuses.includes(status)
+                                                                                    ? faSquareCheck
+                                                                                    : faSquare
+                                                                            }
+                                                                            className="me-2"
+                                                                        />
+                                                                        {lookup.status[status]}
+                                                                    </Dropdown.Item>
                                                             )}
                                                         </Dropdown.Menu>
                                                     </Dropdown>
@@ -417,161 +566,265 @@ function BillTracker() {
                                         </Accordion.Body>
                                     </Accordion.Item>
                                 </Accordion>
+                                <a className="feedback-btn" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform">Provide feedback</a>
                             </div>
                         </Col>
-                        <Col className="page-body">
+                        <Col className="page-body" md={10}>
                             <Row>
                                 <Col>
-                                    <h2><FontAwesomeIcon icon={faScroll} /> List of bills (63)</h2>
+                                    <h2><FontAwesomeIcon icon={faScroll} /> List of bills ({filteredBills.length})</h2>
                                 </Col>
                             </Row>
 
-                            <table className="bills-table">
-                                <thead>
-                                    <tr>
-                                        <th className="bill-name">Bill name</th>
-                                        <th className="bill-days">Days</th>
-                                        <th className="bill-meetings">Meetings</th>
-                                        <th className="bill-epm-trend">EPM + Trend <FontAwesomeIcon icon={faCircleInfo} /></th>
-                                        <th className="bill-timeline">
-                                            <Row>
-                                                <Col md={8}>Timeline</Col>
-                                                <Col>
-                                                    <div className="form-range-container">
-                                                        <Slider
-                                                            included={false}
-                                                            handleStyle={[{ backgroundColor: 'white', borderColor: 'black', borderWidth: '3px' }]}
-                                                            min={1}
-                                                            max={10}
-                                                            defaultValue={5}
-                                                            step={0.25}
-                                                            value={daySizeinPx}
-                                                            onChange={(e) => changeDaySize(e)}
-                                                        />
-                                                    </div>
-                                                </Col>
-                                                <Col>
-                                                    <div className="timeline-controls">
-                                                        <div className="timeline-control zoom-out" onClick={() => daySizeinPx > 1 && setDaySizeinPx(daySizeinPx - 1)}>
-                                                            <IconZoomOut />
-                                                        </div>
-                                                        <div className="timeline-control zoom-in" onClick={() => setDaySizeinPx(daySizeinPx + 1)}>
-                                                            <IconZoomIn />
-                                                        </div>
-                                                        <div className="timeline-control fullscreen">
-                                                            <IconFullscreen />
-                                                        </div>
-                                                        <div className="timeline-control reset" onClick={() => setDaySizeinPx(5)}>
-                                                            <IconReset />
-                                                        </div>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th colspan="5" className="group-header">Group</th>
-                                    </tr>
-                                    {   
-                                        preparedBills.length > 0 && preparedBills.map((bill, index) => {
-                                            
-                                            if (bill.houses_time.reduce((sum, time) => sum + time, 0) > 0) {
-                                                return (
-                                                    <tr key={`bill-${index}`} className="bill-row">
-                                                        <td className="bill-name">{bill.title.length > 40 ? `${bill.title.substring(0, 40)}...` : bill.title}</td>
-                                                        <td className="bill-days">1234</td>
-                                                        <td className="bill-meetings">100</td>
-                                                        <td className="bill-epm-trend">
-                                                            <div className="epm-count">100</div>
-                                                            <SparklinesLine
-                                                                stroke="#999"
-                                                                fill="none"
-                                                                data={[5, 7, 1, 0, 3, 4, 5, 7, 8, 9, 10]}
-                                                                width={100}
-                                                                height={25}
+                            {loading ? <div>Loading...</div> :
+                                <table className="bills-table">
+                                    <thead>
+                                        <tr>
+                                            <th className="bill-name">Bill name</th>
+                                            <th className="bill-days">Days</th>
+                                            <th className="bill-meetings">Meetings</th>
+                                            <th className="bill-epm-trend">EPM + Trend <OverlayTrigger overlay={<Tooltip>Hey</Tooltip>}><FontAwesomeIcon icon={faCircleInfo} /></OverlayTrigger></th>
+                                            <th className="bill-timeline">
+                                                <Row>
+                                                    <Col md={8}>Timeline</Col>
+                                                    <Col>
+                                                        <div className="form-range-container">
+                                                            <Slider
+                                                                included={false}
+                                                                handleStyle={[{ backgroundColor: 'white', borderColor: 'black', borderWidth: '3px' }]}
+                                                                min={1}
+                                                                max={10}
+                                                                defaultValue={5}
+                                                                step={0.25}
+                                                                value={daySizeinPx}
+                                                                onChange={(e) => changeDaySize(e)}
                                                             />
-                                                        </td>
-                                                        <td className="bill-timeline">
-                                                            <div className="bill-progress">
-                                                                {
-                                                                    bill.houses.map((house_group, index) => {
-                                                                        return (
-                                                                            <div key={index} className={`house-group ${house_group[0].house}`}
-                                                                                style={{
-                                                                                    left: bill.houses_time.slice(0, index).reduce((a, b) => a + b, 0) * daySizeinPx + 'px',
-                                                                                    width: bill.houses_time[index] * daySizeinPx + 'px',
-                                                                                }}></div>
-                                                                        );
-                                                                    })
-                                                                }
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <div className="timeline-controls">
+                                                            <div className="timeline-control zoom-out" onClick={() => daySizeinPx > 1 && setDaySizeinPx(daySizeinPx - 1)}>
+                                                                <IconZoomOut />
                                                             </div>
-                                                        </td>
+                                                            <div className="timeline-control zoom-in" onClick={() => setDaySizeinPx(daySizeinPx + 1)}>
+                                                                <IconZoomIn />
+                                                            </div>
+                                                            <div className="timeline-control fullscreen">
+                                                                <IconFullscreen />
+                                                            </div>
+                                                            <div className="timeline-control reset" onClick={() => setDaySizeinPx(5)}>
+                                                                <IconReset />
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                </Row>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {
+
+                                            groupedBills.length > 0 && groupedBills.map((group, index) =>
+                                                <>
+                                                    <tr key={index} className="group-header">
+                                                        <th colSpan="5">{lookup[groupBy][group.title]}</th>
                                                     </tr>
-                                                );
-                                            }
-                                        })
 
-                                    }
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="4">
-                                            <Stack direction="horizontal" gap={2} className="bill-tracker-legend">
-                                                <div className="legend-title">Time spent in:</div>
-                                                <div className="legend">
-                                                    <div className="legend-block NA"></div>
-                                                    <div className="legend-label">National Assembly</div>
-                                                </div>
-                                                <div className="legend">
-                                                    <div className="legend-block NCOP"></div>
-                                                    <div className="legend-label">National Council of Provinced</div>
-                                                </div>
-                                                <div className="legend">
-                                                    <div className="legend-block president"></div>
-                                                    <div className="legend-label">Presidency</div>
-                                                </div>
-                                            </Stack>
-                                        </td>
-                                        <td>
-                                            <div className="xAxis" style={{ width: `${100 * daySizeinPx}px` }}>
-                                                <div className="tick" style={{ left: "0px" }} key={0}>
-                                                    <div className="label">0</div>
-                                                </div>
-                                                {Array.from({ length: 100 }, (_, i) => i + daySizeinPx).map(
-                                                    (day, index) => {
-                                                        return (
-                                                            day %
-                                                            (1 < 0.5
-                                                                ? 120
-                                                                : daySizeinPx < 1
-                                                                    ? 60
-                                                                    : 30) ==
-                                                            0 && (
-                                                                <div
-                                                                    className="tick"
-                                                                    style={{ left: `${day * daySizeinPx}px` }}
-                                                                    key={`day-${index}`}
-                                                                >
-                                                                    <div className="label">{day}</div>
-                                                                </div>
-                                                            )
-                                                        );
+                                                    {
+                                                        group.bills.map((bill, index) => {
+                                                            
+                                                            return (
+                                                                <tr key={`bill-${index}`} className="bill-row" onClick={() => {
+                                                                    setSelectedBill(bill); 
+                                                                    setShowModal(true);
+                                                                  }}
+                                                                  >
+                                                                    <td className="bill-name"
+                                                                        onMouseOver={() => throttledHandleMouseOver(null, bill)}
+                                                                        onMouseOut={() => handleMouseOut()}
+                                                                    >{bill.title.length > 40 ? `${bill.title.substring(0, 40)}...` : bill.title}{
+                                                                        hoveredBill === bill && <BillTooltip />
+                                                                    }</td>
+                                                                    <td className="bill-days">{bill.total_days}</td>
+                                                                    <td className="bill-meetings">{bill.total_commitee_meetings}</td>
+                                                                    <td className="bill-epm-trend">
+                                                                        {/* <div className="epm-count">100</div>
+                                                                        <SparklinesLine
+                                                                            stroke="#999"
+                                                                            fill="none"
+                                                                            data={[5, 7, 1, 0, 3, 4, 5, 7, 8, 9, 10]}
+                                                                            width={100}
+                                                                            height={25}
+                                                                        /> */}
+                                                                    </td>
+                                                                    <td className="bill-timeline">
+                                                                        <div className="bill-progress" style={{left: `-${maxDays*daySizeinPx * timelineScroll}px`, width: `${maxDays * daySizeinPx}px`}}>
+                                                                            {
+                                                                                bill.houses.map((house_group, index) => {
+                                                                                    return (
+                                                                                        <div key={index} className={`house-group ${house_group[0].house}`}
+                                                                                            style={{
+                                                                                                left: bill.houses_time.slice(0, index).reduce((a, b) => a + b, 0) * daySizeinPx + 'px',
+                                                                                                width: bill.houses_time[index] * daySizeinPx + 'px',
+                                                                                            }}></div>
+                                                                                    );
+                                                                                })
+                                                                            }
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                            
+                                                        })
                                                     }
-                                                )}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                                </>)
 
+
+
+
+
+
+
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colSpan="4">
+                                                <Stack direction="horizontal" gap={2} className="bill-tracker-legend">
+                                                    <div className="legend">
+                                                        <div className="legend-block NA"></div>
+                                                        <div className="legend-label">National Assembly</div>
+                                                    </div>
+                                                    <div className="legend">
+                                                        <div className="legend-block NCOP"></div>
+                                                        <div className="legend-label">National Council of Provinces</div>
+                                                    </div>
+                                                    <div className="legend">
+                                                        <div className="legend-block Joint"></div>
+                                                        <div className="legend-label">Joint</div>
+                                                    </div>
+                                                    <div className="legend">
+                                                        <div className="legend-block president"></div>
+                                                        <div className="legend-label">Presidency</div>
+                                                    </div>
+                                                </Stack>
+                                            </td>
+                                            <td className="footer-timeline">
+                                                <Slider
+                                                    className="mb-2"
+                                                    included={false}
+                                                    railStyle={{ height: '10px' }}
+                                                    handleStyle={[{ backgroundColor: 'black', borderColor: 'black', borderWidth: '0px', borderRadius: '0', height: '10px', width: '5px', marginTop: '0' }]}
+                                                    min={0}
+                                                    max={1}
+                                                    defaultValue={0}
+                                                    step={0.01}
+                                                    value={timelineScroll}
+                                                    onChange={(e) => setTimelineScroll(e)}
+                                                />
+                                                
+                                                <div className="xAxis" style={{ width: `${100 * daySizeinPx}px` }}>
+                                                    <div className="tick" style={{ left: "0px" }} key={0}>
+                                                        <div className="label">0</div>
+                                                    </div>
+                                                    {Array.from({ length: 100 }, (_, i) => i + daySizeinPx).map(
+                                                        (day, index) => {
+                                                            return (
+                                                                day %
+                                                                (1 < 0.5
+                                                                    ? 120
+                                                                    : daySizeinPx < 1
+                                                                        ? 60
+                                                                        : 30) ==
+                                                                0 && (
+                                                                    <div
+                                                                        className="tick"
+                                                                        style={{ left: `${day * daySizeinPx}px` }}
+                                                                        key={`day-${index}`}
+                                                                    >
+                                                                        <div className="label">{day}</div>
+                                                                    </div>
+                                                                )
+                                                            );
+                                                        }
+                                                    )}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            }
                         </Col>
                     </Row>
 
                 </div>
 
             </Container>
+
+            {/* MODAL */}
+            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>{selectedBill.title}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="bill-stats">
+                    <Row>
+                        <Col className="bill-stats-heading">Bill Id:</Col>
+                        <Col>{selectedBill.id}</Col>
+                    </Row>
+                    <Row>
+                        <Col className="bill-stats-heading">Bill Type:</Col>
+                        <Col>{selectedBill.type}</Col>
+                    </Row>
+                    <Row>
+                        <Col className="bill-stats-heading">Status:</Col>
+                        <Col>{selectedBill.status}</Col>
+                    </Row>
+                    <Row>
+                        <Col className="bill-stats-heading">Date of Introduction:</Col>
+                        <Col>{formatDate(selectedBill.date_of_introduction)}</Col>
+                    </Row>
+                    <Row>
+                        <Col className="bill-stats-heading">Introduced By</Col>
+                        <Col>{selectedBill.introduced_by}</Col>
+                    </Row>
+                    <Row>
+                        <Col className="bill-stats-heading">Total Days:</Col>
+                        <Col>{selectedBill.total_days}</Col>
+                    </Row>
+                    <Row>
+                        <Col className="bill-stats-heading">
+                            Total Committee Meetings:
+                        </Col>
+                        <Col>{selectedBill.total_commitee_meetings}</Col>
+                    </Row>
+                    <h4 className="mt-4">Events</h4>
+                    <Scrollbars style={{ height: "400px" }}>
+                        <table className="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>House</th>
+                                    <th>Type</th>
+                                    <th width="300">Title</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {selectedBill.events?.map((event, index) => {
+                                    return (
+                                        <tr key={`event-${index}`}>
+                                            <td>{formatDate(event.date)}</td>
+                                            <td>{event.house}</td>
+                                            <td>{event.type}</td>
+                                            <td>{event.title}</td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </Scrollbars>
+                </Modal.Body>
+            </Modal>
         </>
     );
 }
