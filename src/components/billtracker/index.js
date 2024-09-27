@@ -49,8 +49,10 @@ function BillTracker() {
     const [billEvents, setBillEvents] = useState(['bill-introduced', 'bill-updated', 'bill-withdrawn', 'bill-rejected', 'bill-passed', 'bill-signed', 'bill-enacted', 'bill-act-commenced']);
 
     const [daySizeinPx, setDaySizeinPx] = useState(5);
+    const [minDaySizeInPx, setMinDaySizeInPx] = useState(1);
     const [maxDays, setMaxDays] = useState(0);
     const [timelineScroll, setTimelineScroll] = useState(0);
+
 
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
@@ -58,6 +60,8 @@ function BillTracker() {
     const [hoveredEvent, setHoveredEvent] = useState(null);
     const [hoveredBill, setHoveredBill] = useState(null);
     const [sortOrder, setSortOrder] = useState('dec');
+
+    const timelineRef = useRef(null);
 
     
 
@@ -70,7 +74,7 @@ function BillTracker() {
     }, []);
 
     useEffect(() => {
-        bills.length > 0 && prepareBills();
+        prepareBills();
     }, [bills]);
 
     useEffect(() => {
@@ -79,7 +83,7 @@ function BillTracker() {
 
     useEffect(() => {
         groupBills();
-    }, [filteredBills]);
+    }, [filteredBills, sortOrder]);
 
     useEffect(() => {
         getMaxDays();
@@ -91,7 +95,7 @@ function BillTracker() {
     }, [groupBy]);
 
     useEffect(() => {
-        console.log("Max days changed", maxDays);
+        updateMinDaySizeInPx();
     }, [maxDays]);
 
     
@@ -119,6 +123,8 @@ function BillTracker() {
             let lastHouse = null;
             bill.total_commitee_meetings = 0;
             bill.total_days = 0;
+            bill.epm_count = 0;
+            bill.epm = [];
 
             bill.events.forEach((event) => {
                 if (lastHouse === null || lastHouse == event.house) {
@@ -158,6 +164,51 @@ function BillTracker() {
             });
 
             bill.total_days = bill.houses_time.reduce((sum, time) => sum + time, 0);
+
+            // EPM Calculation
+
+            let epm_count = 0;
+
+            let months = bill.total_days / 30;
+
+            months = months < 1 ? 1 : months;
+
+            epm_count = (bill.events.length / months).toFixed(2);
+
+            bill.epm_count = epm_count;
+
+            // EPM Trend
+            let counts = {};
+            bill.events.forEach(event => {
+                let eventDate = new Date(event.date);
+                let year = eventDate.getFullYear();
+                let month = eventDate.getMonth(); // 0-based index
+                let key = `${year}-${month}`;
+                counts[key] = (counts[key] || 0) + 1;
+            });
+
+            let eventDates = bill.events.map(e => new Date(e.date));
+            let earliestDate = new Date(Math.min(...eventDates));
+            let latestDate = new Date(Math.max(...eventDates));
+
+            // Generate month keys between earliestDate and latestDate
+            let monthKeys = [];
+            let date = new Date(earliestDate.getFullYear(), earliestDate.getMonth(), 1);
+            while (date <= latestDate) {
+                let key = `${date.getFullYear()}-${date.getMonth()}`;
+                monthKeys.push(key);
+                date.setMonth(date.getMonth() + 1);
+            }
+
+            let epm_trend = [];
+            monthKeys.forEach(key => {
+                let count = counts[key] || 0;
+                epm_trend.push(count);
+            });
+
+            bill.epm_trend = epm_trend;
+            
+
         })
 
         setPreparedBills(billsWork);
@@ -203,6 +254,16 @@ function BillTracker() {
 
             group.bills = bills;
             groupedBillsWork.push(group);
+        });
+
+        groupedBillsWork.forEach(group => {
+            group.bills.sort((a, b) => {
+                if (sortOrder === 'asc') {
+                    return a.total_days - b.total_days;
+                } else {
+                    return b.total_days - a.total_days;
+                }
+            });
         });
 
 
@@ -296,6 +357,13 @@ function BillTracker() {
         setMaxDays(max);
     };
 
+    const updateMinDaySizeInPx = () => {
+        if (timelineRef.current) {
+            let width = timelineRef.current.offsetWidth;
+            let calculatedDaySize = width / maxDays;
+            setMinDaySizeInPx(calculatedDaySize);
+        }
+    };
     
     const handleMouseOver = (event = null, bill = null) => {
         setHoveredEvent(event);
@@ -622,8 +690,8 @@ function BillTracker() {
                                             <th className="bill-name">Bill name</th>
                                             <th className="bill-days" onClick={() => toggleSortOrder()}>Days <FontAwesomeIcon icon={sortOrder == 'dec' ? faCaretDown : faCaretUp} /></th>
                                             <th className="bill-meetings">Meetings</th>
-                                            {/* <th className="bill-epm-trend">EPM + Trend <OverlayTrigger overlay={<Tooltip>Hey</Tooltip>}><FontAwesomeIcon icon={faCircleInfo} /></OverlayTrigger></th> */}
-                                            <th className="bill-timeline">
+                                            <th className="bill-epm-trend">EPM + Trend <OverlayTrigger overlay={<Tooltip>Hey</Tooltip>}><FontAwesomeIcon icon={faCircleInfo} /></OverlayTrigger></th>
+                                            <th className="bill-timeline" ref={timelineRef}>
                                                 <Row>
                                                     <Col md={8}>Timeline</Col>
                                                     <Col>
@@ -648,7 +716,7 @@ function BillTracker() {
                                                             <div className="timeline-control zoom-in" onClick={() => setDaySizeinPx(daySizeinPx + 1)}>
                                                                 <IconZoomIn />
                                                             </div>
-                                                            <div className="timeline-control fullscreen">
+                                                            <div className="timeline-control fullscreen" onClick={() => setDaySizeinPx(minDaySizeInPx)}>
                                                                 <IconFullscreen />
                                                             </div>
                                                             <div className="timeline-control reset" onClick={() => setDaySizeinPx(5)}>
@@ -687,16 +755,16 @@ function BillTracker() {
                                                                     }</td>
                                                                     <td className="bill-days">{bill.total_days}</td>
                                                                     <td className="bill-meetings">{bill.total_commitee_meetings}</td>
-                                                                    {/* <td className="bill-epm-trend">
-                                                                        <div className="epm-count">100</div>
+                                                                    <td className="bill-epm-trend">
+                                                                        <div className="epm-count">{bill.epm_count}</div>
                                                                         <SparklinesLine
                                                                             stroke="#999"
                                                                             fill="none"
-                                                                            data={[5, 7, 1, 0, 3, 4, 5, 7, 8, 9, 10]}
+                                                                            data={bill.epm_trend}
                                                                             width={100}
                                                                             height={25}
                                                                         />
-                                                                    </td> */}
+                                                                    </td>
                                                                     <td className="bill-timeline">
                                                                         <div className="bill-progress" style={{left: `-${maxDays*daySizeinPx * timelineScroll}px`, width: `${maxDays * daySizeinPx}px`}}>
                                                                             {
@@ -753,7 +821,7 @@ function BillTracker() {
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td colSpan="3">
+                                            <td colSpan="4">
                                                 <Stack direction="horizontal" gap={2} className="bill-tracker-legend">
                                                     <div className="legend">
                                                         <div className="legend-block NA"></div>
@@ -795,13 +863,7 @@ function BillTracker() {
                                                         {Array.from({ length: maxDays }, (_, i) => i + daySizeinPx).map(
                                                             (day, index) => {
                                                                 return (
-                                                                    day %
-                                                                    (daySizeinPx < 0.5
-                                                                        ? 120
-                                                                        : daySizeinPx < 1
-                                                                            ? 60
-                                                                            : 30) ==
-                                                                    0 && (
+                                                                    day % (daySizeinPx < 0.5 ? 120 : daySizeinPx < 1 ? 60 : 30) == 0 && (
                                                                         <div
                                                                             className="tick"
                                                                             style={{ left: `${day * daySizeinPx}px` }}
