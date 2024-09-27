@@ -12,6 +12,10 @@ body {
     top: 0;
 }
 
+.accordion-button:not(.collapsed) {
+    box-shadow: none;
+}
+
 .status-toggle {
     font-weight: 600;
 
@@ -44,6 +48,7 @@ body {
 }
 
 .feedback-btn {
+    margin-top: 2em;
     border-radius: 100px;
     background: linear-gradient(0deg, #001489 0%, #001489 100%), #FFF;
     display: inline-flex;
@@ -120,6 +125,7 @@ body {
 
         .bill-days {
             width: 5%;
+            cursor: pointer;
         }
 
         .bill-meetings {
