@@ -29,14 +29,14 @@ export function BillIntroduced() {
 	return (
 		<div className="event-type-icon bill-introduced">
 			<svg viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M7.74669 6.12929C7.387 5.53888 6.73895 5.14705 6 5.14705V3.81372C7.22319 3.81372 8.29376 4.46453 8.88536 5.43559L7.74669 6.12929Z" fill="white"/>
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M7.74669 6.12929C7.387 5.53888 6.73895 5.14705 6 5.14705V3.81372C7.22319 3.81372 8.29376 4.46453 8.88536 5.43559L7.74669 6.12929Z" fill="white"/>
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M4.25526 6.12929C4.61495 5.53888 5.263 5.14705 6.00195 5.14705V3.81372C4.77876 3.81372 3.70819 4.46453 3.1166 5.43559L4.25526 6.12929Z" fill="white"/>
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M4.25526 6.12929C4.61495 5.53888 5.263 5.14705 6.00195 5.14705V3.81372C4.77876 3.81372 3.70819 4.46453 3.1166 5.43559L4.25526 6.12929Z" fill="white"/>
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M10.2489 4.54113C9.37531 3.10723 7.79888 2.15218 6 2.15218V0.818848C8.28312 0.818848 10.2821 2.03289 11.3875 3.84743L10.2489 4.54113Z" fill="white"/>
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M10.2489 4.54113C9.37531 3.10723 7.79888 2.15218 6 2.15218V0.818848C8.28312 0.818848 10.2821 2.03289 11.3875 3.84743L10.2489 4.54113Z" fill="white"/>
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M1.75307 4.54113C2.62664 3.10723 4.20307 2.15218 6.00195 2.15218V0.818848C3.71883 0.818848 1.71987 2.03289 0.614404 3.84743L1.75307 4.54113Z" fill="white"/>
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M1.75307 4.54113C2.62664 3.10723 4.20307 2.15218 6.00195 2.15218V0.818848C3.71883 0.818848 1.71987 2.03289 0.614404 3.84743L1.75307 4.54113Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M7.74669 6.12929C7.387 5.53888 6.73895 5.14705 6 5.14705V3.81372C7.22319 3.81372 8.29376 4.46453 8.88536 5.43559L7.74669 6.12929Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M7.74669 6.12929C7.387 5.53888 6.73895 5.14705 6 5.14705V3.81372C7.22319 3.81372 8.29376 4.46453 8.88536 5.43559L7.74669 6.12929Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M4.25526 6.12929C4.61495 5.53888 5.263 5.14705 6.00195 5.14705V3.81372C4.77876 3.81372 3.70819 4.46453 3.1166 5.43559L4.25526 6.12929Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M4.25526 6.12929C4.61495 5.53888 5.263 5.14705 6.00195 5.14705V3.81372C4.77876 3.81372 3.70819 4.46453 3.1166 5.43559L4.25526 6.12929Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M10.2489 4.54113C9.37531 3.10723 7.79888 2.15218 6 2.15218V0.818848C8.28312 0.818848 10.2821 2.03289 11.3875 3.84743L10.2489 4.54113Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M10.2489 4.54113C9.37531 3.10723 7.79888 2.15218 6 2.15218V0.818848C8.28312 0.818848 10.2821 2.03289 11.3875 3.84743L10.2489 4.54113Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M1.75307 4.54113C2.62664 3.10723 4.20307 2.15218 6.00195 2.15218V0.818848C3.71883 0.818848 1.71987 2.03289 0.614404 3.84743L1.75307 4.54113Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M1.75307 4.54113C2.62664 3.10723 4.20307 2.15218 6.00195 2.15218V0.818848C3.71883 0.818848 1.71987 2.03289 0.614404 3.84743L1.75307 4.54113Z" fill="white"/>
 				<path d="M7.0612 7.9742C7.0612 8.55957 6.58667 9.0341 6.0013 9.0341C5.41594 9.0341 4.94141 8.55957 4.94141 7.9742C4.94141 7.38884 5.41594 6.91431 6.0013 6.91431C6.58667 6.91431 7.0612 7.38884 7.0612 7.9742Z" fill="white"/>
 			</svg>
 		</div>
@@ -47,8 +47,8 @@ export function BillUpdated() {
 	return (
 		<div className="event-type-icon bill-updated">
 			<svg viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M4.82422 9.1696C6.31424 9.1696 7.52214 7.9617 7.52214 6.47168L8.85547 6.47168C8.85547 8.69808 7.05062 10.5029 4.82422 10.5029C2.59782 10.5029 0.792969 8.69808 0.792969 6.47168C0.792969 4.24528 2.59782 2.44043 4.82422 2.44043L6.99563 2.44043L6.99563 3.77376L4.82422 3.77376C3.3342 3.77376 2.1263 4.98166 2.1263 6.47168C2.1263 7.9617 3.3342 9.1696 4.82422 9.1696Z" fill="white"/>
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M6.61107 3.10732L5.01129 4.70709L5.9541 5.6499L8.49669 3.10732L5.9541 0.564732L5.01129 1.50754L6.61107 3.10732Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M4.82422 9.1696C6.31424 9.1696 7.52214 7.9617 7.52214 6.47168L8.85547 6.47168C8.85547 8.69808 7.05062 10.5029 4.82422 10.5029C2.59782 10.5029 0.792969 8.69808 0.792969 6.47168C0.792969 4.24528 2.59782 2.44043 4.82422 2.44043L6.99563 2.44043L6.99563 3.77376L4.82422 3.77376C3.3342 3.77376 2.1263 4.98166 2.1263 6.47168C2.1263 7.9617 3.3342 9.1696 4.82422 9.1696Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M6.61107 3.10732L5.01129 4.70709L5.9541 5.6499L8.49669 3.10732L5.9541 0.564732L5.01129 1.50754L6.61107 3.10732Z" fill="white"/>
 			</svg>
 		</div>
 	);
@@ -58,7 +58,7 @@ export function BillPassed() {
 	return (
 		<div className="event-type-icon bill-passed">
 			<svg viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M7.02409 4.66668L0.357422 4.66668L0.357422 3.33334L7.02409 3.33334L5.15742 0.844455L6.22409 0.0444553L9.19075 4.00001L6.22409 7.95557L5.15742 7.15557L7.02409 4.66668Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M7.02409 4.66668L0.357422 4.66668L0.357422 3.33334L7.02409 3.33334L5.15742 0.844455L6.22409 0.0444553L9.19075 4.00001L6.22409 7.95557L5.15742 7.15557L7.02409 4.66668Z" fill="white"/>
 			</svg>
 		</div>
 	);
@@ -68,7 +68,7 @@ export function BillSigned() {
 	return (
 		<div className="event-type-icon bill-signed">
 			<svg viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path fill-rule="evenodd" clip-rule="evenodd" d="M5.51792 0.478414L1.91797 4.07837L2.99077 5.15117L6.59053 1.55141L7.58101 2.54188L3.98124 6.14164L5.04947 7.20987L8.64942 3.60991L5.51792 0.478414Z" fill="white"/>
+				<path fillRule="evenodd" clipRule="evenodd" d="M5.51792 0.478414L1.91797 4.07837L2.99077 5.15117L6.59053 1.55141L7.58101 2.54188L3.98124 6.14164L5.04947 7.20987L8.64942 3.60991L5.51792 0.478414Z" fill="white"/>
 				<path d="M0.563328 8.57285L4.00465 7.70154L1.43463 5.13153L0.563328 8.57285Z" fill="white"/>
 			</svg>
 
@@ -90,7 +90,7 @@ export function BillActCommenced() {
 	return (
 		<div className="event-type-icon bill-act-commenced">
 			<svg viewBox="0 0 10 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M1.57129 3.00007L3.857 5.28578L8.42843 0.714355" stroke="white" stroke-width="2"/>
+				<path d="M1.57129 3.00007L3.857 5.28578L8.42843 0.714355" stroke="white" strokeWidth="2"/>
 			</svg>
 		</div>
 	);

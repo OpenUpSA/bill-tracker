@@ -713,7 +713,7 @@ function BillTracker() {
                                                                                                         billEvents.includes(event.type) &&
                                                                                                             (
                                                                                                                 <div key={index} className="event"
-                                                                                                                    style={{left: `${getDateDifferenceInDays(bill.houses[0][0].date, event.date) * daySizeinPx}px`}}
+                                                                                                                    style={{left: `${getDateDifferenceInDays(house_group[0].date, event.date) * daySizeinPx}px`}}
                                                                                                                     onMouseOver={() => throttledHandleMouseOver(event, bill)}
                                                                                                                     onMouseOut={() => handleMouseOut()}
                                                                                                                 >
