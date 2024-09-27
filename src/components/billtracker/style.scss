@@ -259,6 +259,7 @@ body {
                         position: absolute;
                         z-index: 999999;
                         font-size: 16px;
+                        transition: all 0.5s;
 
                         .event-type-icon {
                             border: 1px solid #fff !important;
@@ -289,7 +290,6 @@ body {
 
         .legend {
             margin: 0 1em 0 0;
-            
 
             .legend-block {
                 display: inline-block;
@@ -304,22 +304,27 @@ body {
             .legend-label {
                 display: inline-block;
             }
-
         }
 
         td {
-            padding: 0.3em 0.5em;
+            padding: 1em 0.5em;
         }
 
         .footer-timeline {
             position: relative;
+            padding: 0 !important;
+            overflow: hidden;
         }
 
         .footer-timeline-wrapper {
             position: absolute;
             width: 100%;
-            overflow: hidden;
-            height: 45px;
+            overflow: visible;
+            
+
+            .rc-slider {
+                top: -1.5em;
+            }
         }
     }
 
@@ -342,8 +347,7 @@ body {
 }
 
 .xAxis {
-    padding: 0 0 1em 0;
-    bottom: 0em;
+    bottom: 1.2em;
     width: 100%;
     position: relative;    
     white-space: nowrap;

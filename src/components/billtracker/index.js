@@ -46,7 +46,7 @@ function BillTracker() {
     const [search, setSearch] = useState('');
 
     const hideBillsWithStatus = ["lapsed", "withdrawn", "rejected", "enacted", "act-commenced", "act-partly-commenced"];
-    const [billEvents, setBillEvents] = useState(['committee-meeting','bill-introduced', 'bill-updated', 'bill-withdrawn', 'bill-rejected', 'bill-passed', 'bill-act-commenced']);
+    const [billEvents, setBillEvents] = useState(['bill-introduced', 'bill-updated', 'bill-withdrawn', 'bill-rejected', 'bill-passed', 'bill-signed', 'bill-enacted', 'bill-act-commenced']);
 
     const [daySizeinPx, setDaySizeinPx] = useState(5);
     const [maxDays, setMaxDays] = useState(0);
@@ -629,7 +629,7 @@ function BillTracker() {
                                                                 min={1}
                                                                 max={10}
                                                                 defaultValue={5}
-                                                                step={0.25}
+                                                                step={1}
                                                                 value={daySizeinPx}
                                                                 onChange={(e) => changeDaySize(e)}
                                                             />
@@ -705,26 +705,30 @@ function BillTracker() {
                                                                                             {
                                                                                                 house_group.map((event, index) => {
                                                                                                     return (
-                                                                                                        <div key={index} className={`event`}
-                                                                                                            style={{left: `${getDateDifferenceInDays(bill.houses[0][0].date, event.date) * daySizeinPx}px`}}
-                                                                                                            onMouseOver={() => throttledHandleMouseOver(event, bill)}
-                                                                                                            onMouseOut={() => handleMouseOut()}
-                                                                                                        >
-                                                                                                            {
-                                                                                                                billEvents.includes('committee-meeting') && event.type === 'committee-meeting' ? <CommitteeMeeting /> :
-                                                                                                                billEvents.includes('plenary') && event.type === 'plenary' ? <Plenary /> :
-                                                                                                                billEvents.includes('media-briefing') && event.type === 'media-briefing' ? <MediaBriefing /> :
+                                                                                                    billEvents.includes(event.type) &&
+                                                                                                        (
+                                                                                                            <div key={index} className="event"
+                                                                                                                style={{left: `${getDateDifferenceInDays(bill.houses[0][0].date, event.date) * daySizeinPx}px`}}
+                                                                                                                onMouseOver={() => throttledHandleMouseOver(event, bill)}
+                                                                                                                onMouseOut={() => handleMouseOut()}
+                                                                                                            >
+                                                                                                                {
+                                                                                                                    event.type === 'committee-meeting' ? <CommitteeMeeting /> :
+                                                                                                                    event.type === 'plenary' ? <Plenary /> :
+                                                                                                                    event.type === 'media-briefing' ? <MediaBriefing /> :
 
-                                                                                                                billEvents.includes('bill-introduced') && event.type === 'bill-introduced' ? <BillIntroduced /> :
-                                                                                                                billEvents.includes('bill-updated') && event.type === 'bill-updated' ? <BillUpdated /> :
-                                                                                                                billEvents.includes('bill-passed') && event.type === 'bill-passed' ? <BillPassed /> :
-                                                                                                                billEvents.includes('bill-signed') && event.type === 'bill-signed' ? <BillSigned /> :
+                                                                                                                    event.type === 'bill-introduced' ? <BillIntroduced /> :
+                                                                                                                    event.type === 'bill-updated' ? <BillUpdated /> :
+                                                                                                                    event.type === 'bill-passed' ? <BillPassed /> :
+                                                                                                                    event.type === 'bill-signed' ? <BillSigned /> :
 
-                                                                                                                billEvents.includes('bill-enacted') && event.type === 'bill-enacted' ? <BillEnacted /> :
-                                                                                                                billEvents.includes('bill-act-commenced') && event.type === 'bill-act-commenced' ? <BillActCommenced /> : ''
-                                                                                                            }   
-                                                                                                        </div>
-                                                                                                    );
+                                                                                                                    event.type === 'bill-enacted' ? <BillEnacted /> :
+                                                                                                                    event.type === 'bill-act-commenced' ? <BillActCommenced /> : ''
+                                                                                                                }
+
+                                                                                                            </div>
+                                                                                                        )
+                                                                                                    )
                                                                                                 })
                                                                                             }
                                                                                             </div>
@@ -767,7 +771,7 @@ function BillTracker() {
                                             <td className="footer-timeline">
                                                 <div className="footer-timeline-wrapper">
                                                     <Slider
-                                                        className="mb-2"
+                                                        className=""
                                                         included={false}
                                                         railStyle={{ height: '10px' }}
                                                         handleStyle={[{ backgroundColor: 'black', borderColor: 'black', borderWidth: '0px', borderRadius: '5px', height: '10px', width: '15px', marginTop: '0' }]}
