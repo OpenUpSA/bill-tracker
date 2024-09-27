@@ -23,7 +23,7 @@ import 'rc-slider/assets/index.css';
 
 import { Scrollbars } from "react-custom-scrollbars";
 
-import { BillCommenced, BillRevised, BillWithdrawn, BillRejected, BillPassed, ActCommenced, IconZoomIn, IconZoomOut, IconFullscreen, IconReset } from "./icons";
+import { CommitteeMeeting, Plenary, MediaBriefing, BillIntroduced, BillUpdated, BillPassed, BillSigned, BillEnacted, BillActCommenced, IconZoomIn, IconZoomOut, IconFullscreen, IconReset } from "./icons";
 
 import PMHeader from "../pmheader";
 import PMTabs from "../pmtabs";
@@ -46,6 +46,7 @@ function BillTracker() {
     const [search, setSearch] = useState('');
 
     const hideBillsWithStatus = ["lapsed", "withdrawn", "rejected", "enacted", "act-commenced", "act-partly-commenced"];
+    const [billEvents, setBillEvents] = useState(['committee-meeting','bill-introduced', 'bill-updated', 'bill-withdrawn', 'bill-rejected', 'bill-passed', 'bill-act-commenced']);
 
     const [daySizeinPx, setDaySizeinPx] = useState(5);
     const [maxDays, setMaxDays] = useState(0);
@@ -56,6 +57,8 @@ function BillTracker() {
     const [selectedBill, setSelectedBill] = useState({});
     const [hoveredEvent, setHoveredEvent] = useState(null);
     const [hoveredBill, setHoveredBill] = useState(null);
+
+    
 
     
 
@@ -90,6 +93,7 @@ function BillTracker() {
         console.log("Max days changed", maxDays);
     }, [maxDays]);
 
+    
 
 
     // Methods
@@ -304,32 +308,32 @@ function BillTracker() {
         setHoveredBill(null);
     };
 
+    const toggleEvents = (event) => {
+        setBillEvents(billEvents.includes(event) ? billEvents.filter(e => e !== event) : [...billEvents, event]);
+    };
 
-
-
-
+    
 
     // Debug Helper
-    const listValues = (key) => {
+    const listValues = (key, nestedKey = null) => {
         let values = [];
         bills.forEach(bill => {
-            if (!values.includes(bill[key])) {
-                introducedBys.push(bill[key]);
+
+            if (nestedKey) {
+                bill[nestedKey].forEach(nestedItem => {
+                    if (!values.includes(nestedItem[key])) {
+                        values.push(nestedItem[key]);
+                    }
+                });
+            } else {
+                if (!values.includes(bill[key])) {
+                    values.push(bill[key]);
+                }
             }
+
         })
         console.log(values);
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     return (
@@ -504,41 +508,51 @@ function BillTracker() {
 
                                             <Row className="mb-4 status-toggle">
                                                 <Col xs="auto">
-                                                    <BillCommenced />
+                                                    <CommitteeMeeting />
                                                 </Col>
-                                                <Col className="align-self-center">Bill commenced</Col>
+                                                <Col className="align-self-center">Committee meeting</Col>
                                                 <Col xs="auto">
-                                                    <Form.Check type="switch" />
-                                                </Col>
-                                            </Row>
-
-                                            <Row className="mb-4 status-toggle">
-                                                <Col xs="auto">
-                                                    <BillRevised />
-                                                </Col>
-                                                <Col className="align-self-center">Bill revised</Col>
-                                                <Col xs="auto">
-                                                    <Form.Check type="switch" />
+                                                    <Form.Check type="switch" onClick={() => toggleEvents('committee-meeting')} checked={billEvents.includes('committee-meeting')} />
                                                 </Col>
                                             </Row>
 
                                             <Row className="mb-4 status-toggle">
                                                 <Col xs="auto">
-                                                    <BillWithdrawn />
+                                                    <Plenary />
                                                 </Col>
-                                                <Col className="align-self-center">Bill withdrawn</Col>
+                                                <Col className="align-self-center">Plenary</Col>
                                                 <Col xs="auto">
-                                                    <Form.Check type="switch" />
+                                                    <Form.Check type="switch" onClick={() => toggleEvents('plenary')} checked={billEvents.includes('plenary')} />
                                                 </Col>
                                             </Row>
 
                                             <Row className="mb-4 status-toggle">
                                                 <Col xs="auto">
-                                                    <BillRejected />
+                                                    <MediaBriefing/>
                                                 </Col>
-                                                <Col className="align-self-center">Bill rejected</Col>
+                                                <Col className="align-self-center">Media Briefing</Col>
                                                 <Col xs="auto">
-                                                    <Form.Check type="switch" />
+                                                    <Form.Check type="switch" onClick={() => toggleEvents('media-briefing')} checked={billEvents.includes('media-briefing')} />
+                                                </Col>
+                                            </Row>
+
+                                            <Row className="mb-4 status-toggle">
+                                                <Col xs="auto">
+                                                    <BillIntroduced />
+                                                </Col>
+                                                <Col className="align-self-center">Introduced</Col>
+                                                <Col xs="auto">
+                                                    <Form.Check type="switch" value={true} onClick={() => toggleEvents('bill-introduced')} checked={billEvents.includes('bill-introduced')} />
+                                                </Col>
+                                            </Row>
+
+                                            <Row className="mb-4 status-toggle">
+                                                <Col xs="auto">
+                                                    <BillUpdated />
+                                                </Col>
+                                                <Col className="align-self-center">Updated</Col>
+                                                <Col xs="auto">
+                                                    <Form.Check type="switch" onClick={() => toggleEvents('bill-updated')} checked={billEvents.includes('bill-updated')} />
                                                 </Col>
                                             </Row>
 
@@ -546,19 +560,39 @@ function BillTracker() {
                                                 <Col xs="auto">
                                                     <BillPassed />
                                                 </Col>
-                                                <Col className="align-self-center">Bill passed</Col>
+                                                <Col className="align-self-center">Passed</Col>
                                                 <Col xs="auto">
-                                                    <Form.Check type="switch" />
+                                                    <Form.Check type="switch" onClick={() => toggleEvents('bill-passed')} checked={billEvents.includes('bill-passed')} />
+                                                </Col>
+                                            </Row>
+
+                                            <Row className="mb-4 status-toggle">
+                                                <Col xs="auto">
+                                                    <BillSigned />
+                                                </Col>
+                                                <Col className="align-self-center">Signed</Col>
+                                                <Col xs="auto">
+                                                    <Form.Check type="switch" onClick={() => toggleEvents('bill-signed')} checked={billEvents.includes('bill-signed')} />
+                                                </Col>
+                                            </Row>
+
+                                            <Row className="mb-4 status-toggle">
+                                                <Col xs="auto">
+                                                    <BillEnacted />
+                                                </Col>
+                                                <Col className="align-self-center">Enacted</Col>
+                                                <Col xs="auto">
+                                                    <Form.Check type="switch" onClick={() => toggleEvents('bill-enacted')} checked={billEvents.includes('bill-enacted')} />
                                                 </Col>
                                             </Row>
 
                                             <Row className="status-toggle">
                                                 <Col xs="auto">
-                                                    <ActCommenced />
+                                                    <BillActCommenced />
                                                 </Col>
-                                                <Col className="align-self-center">Act commenced</Col>
+                                                <Col className="align-self-center">Act Commenced</Col>
                                                 <Col xs="auto">
-                                                    <Form.Check type="switch" />
+                                                    <Form.Check type="switch" onClick={() => toggleEvents('bill-act-commenced')} checked={billEvents.includes('bill-act-commenced')} />
                                                 </Col>
                                             </Row>
 
@@ -583,7 +617,7 @@ function BillTracker() {
                                             <th className="bill-name">Bill name</th>
                                             <th className="bill-days">Days</th>
                                             <th className="bill-meetings">Meetings</th>
-                                            <th className="bill-epm-trend">EPM + Trend <OverlayTrigger overlay={<Tooltip>Hey</Tooltip>}><FontAwesomeIcon icon={faCircleInfo} /></OverlayTrigger></th>
+                                            {/* <th className="bill-epm-trend">EPM + Trend <OverlayTrigger overlay={<Tooltip>Hey</Tooltip>}><FontAwesomeIcon icon={faCircleInfo} /></OverlayTrigger></th> */}
                                             <th className="bill-timeline">
                                                 <Row>
                                                     <Col md={8}>Timeline</Col>
@@ -591,7 +625,7 @@ function BillTracker() {
                                                         <div className="form-range-container">
                                                             <Slider
                                                                 included={false}
-                                                                handleStyle={[{ backgroundColor: 'white', borderColor: 'black', borderWidth: '3px' }]}
+                                                                handleStyle={[{ backgroundColor: 'white', borderColor: 'black', borderWidth: '3px', zIndex: '999' }]}
                                                                 min={1}
                                                                 max={10}
                                                                 defaultValue={5}
@@ -648,16 +682,16 @@ function BillTracker() {
                                                                     }</td>
                                                                     <td className="bill-days">{bill.total_days}</td>
                                                                     <td className="bill-meetings">{bill.total_commitee_meetings}</td>
-                                                                    <td className="bill-epm-trend">
-                                                                        {/* <div className="epm-count">100</div>
+                                                                    {/* <td className="bill-epm-trend">
+                                                                        <div className="epm-count">100</div>
                                                                         <SparklinesLine
                                                                             stroke="#999"
                                                                             fill="none"
                                                                             data={[5, 7, 1, 0, 3, 4, 5, 7, 8, 9, 10]}
                                                                             width={100}
                                                                             height={25}
-                                                                        /> */}
-                                                                    </td>
+                                                                        />
+                                                                    </td> */}
                                                                     <td className="bill-timeline">
                                                                         <div className="bill-progress" style={{left: `-${maxDays*daySizeinPx * timelineScroll}px`, width: `${maxDays * daySizeinPx}px`}}>
                                                                             {
@@ -667,7 +701,33 @@ function BillTracker() {
                                                                                             style={{
                                                                                                 left: bill.houses_time.slice(0, index).reduce((a, b) => a + b, 0) * daySizeinPx + 'px',
                                                                                                 width: bill.houses_time[index] * daySizeinPx + 'px',
-                                                                                            }}></div>
+                                                                                            }}>
+                                                                                            {
+                                                                                                house_group.map((event, index) => {
+                                                                                                    return (
+                                                                                                        <div key={index} className={`event`}
+                                                                                                            style={{left: `${getDateDifferenceInDays(bill.houses[0][0].date, event.date) * daySizeinPx}px`}}
+                                                                                                            onMouseOver={() => throttledHandleMouseOver(event, bill)}
+                                                                                                            onMouseOut={() => handleMouseOut()}
+                                                                                                        >
+                                                                                                            {
+                                                                                                                billEvents.includes('committee-meeting') && event.type === 'committee-meeting' ? <CommitteeMeeting /> :
+                                                                                                                billEvents.includes('plenary') && event.type === 'plenary' ? <Plenary /> :
+                                                                                                                billEvents.includes('media-briefing') && event.type === 'media-briefing' ? <MediaBriefing /> :
+
+                                                                                                                billEvents.includes('bill-introduced') && event.type === 'bill-introduced' ? <BillIntroduced /> :
+                                                                                                                billEvents.includes('bill-updated') && event.type === 'bill-updated' ? <BillUpdated /> :
+                                                                                                                billEvents.includes('bill-passed') && event.type === 'bill-passed' ? <BillPassed /> :
+                                                                                                                billEvents.includes('bill-signed') && event.type === 'bill-signed' ? <BillSigned /> :
+
+                                                                                                                billEvents.includes('bill-enacted') && event.type === 'bill-enacted' ? <BillEnacted /> :
+                                                                                                                billEvents.includes('bill-act-commenced') && event.type === 'bill-act-commenced' ? <BillActCommenced /> : ''
+                                                                                                            }   
+                                                                                                        </div>
+                                                                                                    );
+                                                                                                })
+                                                                                            }
+                                                                                            </div>
                                                                                     );
                                                                                 })
                                                                             }
@@ -680,17 +740,11 @@ function BillTracker() {
                                                     }
                                                 </>)
 
-
-
-
-
-
-
                                         }
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td colSpan="4">
+                                            <td colSpan="3">
                                                 <Stack direction="horizontal" gap={2} className="bill-tracker-legend">
                                                     <div className="legend">
                                                         <div className="legend-block NA"></div>
@@ -711,44 +765,46 @@ function BillTracker() {
                                                 </Stack>
                                             </td>
                                             <td className="footer-timeline">
-                                                <Slider
-                                                    className="mb-2"
-                                                    included={false}
-                                                    railStyle={{ height: '10px' }}
-                                                    handleStyle={[{ backgroundColor: 'black', borderColor: 'black', borderWidth: '0px', borderRadius: '0', height: '10px', width: '5px', marginTop: '0' }]}
-                                                    min={0}
-                                                    max={1}
-                                                    defaultValue={0}
-                                                    step={0.01}
-                                                    value={timelineScroll}
-                                                    onChange={(e) => setTimelineScroll(e)}
-                                                />
-                                                
-                                                <div className="xAxis" style={{ width: `${100 * daySizeinPx}px` }}>
-                                                    <div className="tick" style={{ left: "0px" }} key={0}>
-                                                        <div className="label">0</div>
+                                                <div className="footer-timeline-wrapper">
+                                                    <Slider
+                                                        className="mb-2"
+                                                        included={false}
+                                                        railStyle={{ height: '10px' }}
+                                                        handleStyle={[{ backgroundColor: 'black', borderColor: 'black', borderWidth: '0px', borderRadius: '5px', height: '10px', width: '15px', marginTop: '0' }]}
+                                                        min={0}
+                                                        max={1}
+                                                        defaultValue={0}
+                                                        step={0.01}
+                                                        value={timelineScroll}
+                                                        onChange={(e) => setTimelineScroll(e)}
+                                                    />
+                                                    
+                                                    <div className="xAxis" style={{ width: `${maxDays*daySizeinPx}px`,left: `-${maxDays*daySizeinPx * timelineScroll}px` }}>
+                                                        <div className="tick" style={{ left: "0px" }} key={0}>
+                                                            <div className="label">0</div>
+                                                        </div>
+                                                        {Array.from({ length: maxDays }, (_, i) => i + daySizeinPx).map(
+                                                            (day, index) => {
+                                                                return (
+                                                                    day %
+                                                                    (daySizeinPx < 0.5
+                                                                        ? 120
+                                                                        : daySizeinPx < 1
+                                                                            ? 60
+                                                                            : 30) ==
+                                                                    0 && (
+                                                                        <div
+                                                                            className="tick"
+                                                                            style={{ left: `${day * daySizeinPx}px` }}
+                                                                            key={`day-${index}`}
+                                                                        >
+                                                                            <div className="label">{day}</div>
+                                                                        </div>
+                                                                    )
+                                                                );
+                                                            }
+                                                        )}
                                                     </div>
-                                                    {Array.from({ length: 100 }, (_, i) => i + daySizeinPx).map(
-                                                        (day, index) => {
-                                                            return (
-                                                                day %
-                                                                (1 < 0.5
-                                                                    ? 120
-                                                                    : daySizeinPx < 1
-                                                                        ? 60
-                                                                        : 30) ==
-                                                                0 && (
-                                                                    <div
-                                                                        className="tick"
-                                                                        style={{ left: `${day * daySizeinPx}px` }}
-                                                                        key={`day-${index}`}
-                                                                    >
-                                                                        <div className="label">{day}</div>
-                                                                    </div>
-                                                                )
-                                                            );
-                                                        }
-                                                    )}
                                                 </div>
                                             </td>
                                         </tr>

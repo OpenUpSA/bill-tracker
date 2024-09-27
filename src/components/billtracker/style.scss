@@ -15,6 +15,10 @@ body {
 .status-toggle {
     font-weight: 600;
 
+    .event-type-icon {
+        font-size: 2em;
+    }
+
     .form-check-input {
         font-size: 1.5em;
         background-color: #ebebeb;
@@ -248,6 +252,18 @@ body {
                     line-height: 0;
                     width: auto;
                     transition: all 0.5s;
+
+                    .event {
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        position: absolute;
+                        z-index: 999999;
+                        font-size: 16px;
+
+                        .event-type-icon {
+                            border: 1px solid #fff !important;
+                        }
+                    }
                 }
 
             }
@@ -294,6 +310,17 @@ body {
         td {
             padding: 0.3em 0.5em;
         }
+
+        .footer-timeline {
+            position: relative;
+        }
+
+        .footer-timeline-wrapper {
+            position: absolute;
+            width: 100%;
+            overflow: hidden;
+            height: 45px;
+        }
     }
 
     .group-header {
@@ -309,6 +336,8 @@ body {
           z-index: 100; 
         }
     }
+
+   
     
 }
 

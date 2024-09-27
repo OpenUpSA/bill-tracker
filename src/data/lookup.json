@@ -17,6 +17,16 @@
         "draft": "Draft",
         "enacted": "Enacted"
     },
+    "event_types": {
+        "committee-meeting": "Committee Meeting",
+        "bill-introduced": "Bill Introduced",
+        "bill-passed": "Bill Passed",
+        "plenary": "Plenary",
+        "bill-enacted": "Bill Enacted",
+        "bill-act-commenced": "Act Commenced",
+        "bill-updated": "Bill Updated",
+        "bill-signed": "Bill Signed"
+    },
     "type": {
         "S75": "Section 75",
         "S77": "Section 77",
