@@ -3,6 +3,12 @@
     height: 1em;
     width: 1em;
     position: relative;
+    transition: all 0.5s;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.2);
+    }
 
     svg {
         position: absolute;
@@ -82,7 +88,7 @@
         line-height: 0;
     }
 
-    &.fullscreen, &.reset {
+    &.fullscreen, &.reset, &.maximise {
         background-color: #ebebeb;
     }
 }

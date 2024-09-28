@@ -16,14 +16,14 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { SparklinesLine } from '@lueton/react-sparklines';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faFlag, faChevronDown, faScroll, faCircleInfo, faSquareCheck, faSquare, faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faFlag, faChevronDown, faScroll, faCircleInfo, faSquareCheck, faSquare, faCaretDown, faCaretUp, faArrowsLeftRightToLine } from "@fortawesome/free-solid-svg-icons";
 
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 import { Scrollbars } from "react-custom-scrollbars";
 
-import { CommitteeMeeting, Plenary, MediaBriefing, BillIntroduced, BillUpdated, BillPassed, BillSigned, BillEnacted, BillActCommenced, IconZoomIn, IconZoomOut, IconFullscreen, IconReset } from "./icons";
+import { CommitteeMeeting, Plenary, MediaBriefing, BillIntroduced, BillUpdated, BillPassed, BillSigned, BillEnacted, BillActCommenced, IconZoomIn, IconZoomOut, IconFullscreen, IconReset, IconMaximise } from "./icons";
 
 import PMHeader from "../pmheader";
 import PMTabs from "../pmtabs";
@@ -42,13 +42,14 @@ function BillTracker() {
 
     const [selectedBillTypes, setSelectedBillTypes] = useState([]);
     const [selectedStatuses, setSelectedStatuses] = useState(['na','ncop','president']);
+
     const [groupBy, setGroupBy] = useState('status');
     const [search, setSearch] = useState('');
 
     const hideBillsWithStatus = ["lapsed", "withdrawn", "rejected", "enacted", "act-commenced", "act-partly-commenced"];
-    const [billEvents, setBillEvents] = useState(['bill-introduced', 'bill-updated', 'bill-withdrawn', 'bill-rejected', 'bill-passed', 'bill-signed', 'bill-enacted', 'bill-act-commenced']);
+    const [billEvents, setBillEvents] = useState(['current-house-start','bill-introduced', 'bill-updated', 'bill-withdrawn', 'bill-rejected', 'bill-passed', 'bill-signed', 'bill-enacted', 'bill-act-commenced']);
 
-    const [daySizeinPx, setDaySizeinPx] = useState(5);
+    const [daySizeinPx, setDaySizeinPx] = useState(1);
     const [minDaySizeInPx, setMinDaySizeInPx] = useState(1);
     const [maxDays, setMaxDays] = useState(0);
     const [timelineScroll, setTimelineScroll] = useState(0);
@@ -60,12 +61,11 @@ function BillTracker() {
     const [hoveredEvent, setHoveredEvent] = useState(null);
     const [hoveredBill, setHoveredBill] = useState(null);
     const [sortOrder, setSortOrder] = useState('dec');
+    const [maximise, setMaximise] = useState(false);
 
     const timelineRef = useRef(null);
 
-    
-
-    
+    const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 });
 
     // Effects
 
@@ -143,7 +143,66 @@ function BillTracker() {
 
             bill.houses.push(currentHouse);
 
+
+            bill.houses.forEach((house_group,index) => {
+
+                if(index > 0) {
+                    let last_house_last_event_date = new Date(bill.houses[index - 1][bill.houses[index - 1].length - 1].date);
+                    let this_house_first_event_date = new Date(house_group[0].date);
+
+                    if (last_house_last_event_date < this_house_first_event_date) {
+                        let dummyEvent = {
+                            date: new Date(last_house_last_event_date + 1),
+                            house: house_group[0].house,
+                            type: "current-house-start",
+                        };
+                        house_group.unshift(dummyEvent);
+                    }
+                }
+            });
+
+
+        //     const today = new Date();
+
+        //     let dummyEvents = [];
+        //     if (lastHouse != lookup.status[bill.status]) {
+        //         console.log(lastHouse, bill.status);
+
+        //         if (lastHouse == 'President') {
+                    
+
+        //             let lastDate = bill.events[bill.events.length - 1]?.date;
+
+        //             let startDate = new Date(lastDate + 1);
+
+        //             dummyEvents.push([
+        //                 {
+        //                     date: startDate,
+        //                     house: lookup.status[bill.status],
+        //                     type: "current-house-start",
+        //                 },
+        //                 {
+        //                     date: today,
+        //                     house: lookup.status[bill.status],
+        //                     type: "today",
+        //                 },
+        //             ]);
+        //         }
+        //     } else {
+        //         bill.houses[bill.houses.length - 1].push({
+        //             date: today,
+        //             house: lookup.status[bill.status],
+        //             type: "today",
+        //         });
+        //     }
+
+        //     bill.houses = [...bill.houses, ...dummyEvents];
+
+            
+
         });
+
+
 
         billsWork.forEach(bill => {
             bill.houses.forEach((house_group) => {
@@ -283,7 +342,11 @@ function BillTracker() {
 
     const BillTooltip = () => {
         return (
-            <div className="bill-tooltip" style={{opacity: 1}}>
+            <div className="bill-tooltip" style={{
+                opacity: 1,
+                left: `${tooltipPosition.left}px`,
+                top: `${tooltipPosition.top}px`
+            }}>
                 <Row>
                     <Col>Bill type:</Col>
                     <Col className="text-end">{lookup.type[hoveredBill.type]}</Col>
@@ -295,6 +358,22 @@ function BillTracker() {
                 <Row>
                     <Col>Currently before:</Col>
                     <Col className="text-end">{hoveredBill.status}</Col>
+                </Row>
+
+            </div>
+        );
+    }
+
+    const EventTooltip = () => {
+        return (
+            <div className="event-tooltip" style={{
+                opacity: 1,
+                left: `${tooltipPosition.left}px`,
+                top: `${tooltipPosition.top}px`
+            }}>
+                <Row>
+                    <Col>Event type:</Col>
+                    <Col className="text-end">{lookup.event_types[hoveredEvent.type]}</Col>
                 </Row>
 
             </div>
@@ -364,17 +443,40 @@ function BillTracker() {
             setMinDaySizeInPx(calculatedDaySize);
         }
     };
+
+    const toggleMax = () => {
+        setMaximise(!maximise);
+    };
+
+    // Bill Hovers
     
-    const handleMouseOver = (event = null, bill = null) => {
-        setHoveredEvent(event);
+    const handleMouseOver = (bill) => {
         setHoveredBill(bill);
     };
 
     const throttledHandleMouseOver = throttle(handleMouseOver, 500);
     
     const handleMouseOut = () => {
-        setHoveredEvent(null);
         setHoveredBill(null);
+    };
+
+    // Event Hovers
+
+    const handleEventMouseOver = (event) => {
+        setHoveredEvent(event);
+    };
+
+    const throttledHandleEventMouseOver = throttle(handleEventMouseOver, 500);
+    
+    const handleEventMouseOut = () => {
+        setHoveredEvent(null);
+    };
+
+    const handleMouseMove = (e) => {
+        setTooltipPosition({
+            left: e.pageX, 
+            top: e.pageY
+        });
     };
 
     const toggleEvents = (event) => {
@@ -425,7 +527,7 @@ function BillTracker() {
                     </Row>
 
                     <Row className="mt-5">
-                        <Col md={2}>
+                        <Col md={2} className={maximise ? 'd-none' : ''}>
                             <div className="sidebar">
                                 <Accordion defaultActiveKey={['0', '1']} alwaysOpen>
                                     <Accordion.Item eventKey="0">
@@ -676,7 +778,7 @@ function BillTracker() {
                                 <a className="feedback-btn" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform">Provide feedback</a>
                             </div>
                         </Col>
-                        <Col className="page-body" md={10}>
+                        <Col className="page-body" md={maximise ? 12 : 10}>
                             <Row>
                                 <Col>
                                     <h2><FontAwesomeIcon icon={faScroll} /> List of bills ({filteredBills.length})</h2>
@@ -722,6 +824,9 @@ function BillTracker() {
                                                             <div className="timeline-control reset" onClick={() => setDaySizeinPx(5)}>
                                                                 <IconReset />
                                                             </div>
+                                                            <div className="timeline-control maximise" onClick={() => toggleMax()}>
+                                                                <IconMaximise />
+                                                            </div>
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -748,11 +853,10 @@ function BillTracker() {
                                                                   }}
                                                                   >
                                                                     <td className="bill-name"
-                                                                        onMouseOver={() => throttledHandleMouseOver(null, bill)}
+                                                                        onMouseMove={handleMouseMove} 
+                                                                        onMouseOver={() => throttledHandleMouseOver(bill)}
                                                                         onMouseOut={() => handleMouseOut()}
-                                                                    >{bill.title.length > 40 ? `${bill.title.substring(0, 40)}...` : bill.title}{
-                                                                        hoveredBill === bill && <BillTooltip />
-                                                                    }</td>
+                                                                    >{bill.title.length > 40 ? `${bill.title.substring(0, 40)}...` : bill.title}</td>
                                                                     <td className="bill-days">{bill.total_days}</td>
                                                                     <td className="bill-meetings">{bill.total_commitee_meetings}</td>
                                                                     <td className="bill-epm-trend">
@@ -767,6 +871,7 @@ function BillTracker() {
                                                                     </td>
                                                                     <td className="bill-timeline">
                                                                         <div className="bill-progress" style={{left: `-${maxDays*daySizeinPx * timelineScroll}px`, width: `${maxDays * daySizeinPx}px`}}>
+                                                                            <>
                                                                             {
                                                                                 bill.houses.length > 0 && bill.houses.map((house_group, index) => {
                                                                                     return (
@@ -775,44 +880,57 @@ function BillTracker() {
                                                                                                 left: bill.houses_time.slice(0, index).reduce((a, b) => a + b, 0) * daySizeinPx + 'px',
                                                                                                 width: bill.houses_time[index] * daySizeinPx + 'px',
                                                                                             }}>
-                                                                                            {
-                                                                                                house_group.map((event, index) => {
-                                                                                                    return (
-                                                                                                        billEvents.includes(event.type) &&
-                                                                                                            (
-                                                                                                                <div key={index} className="event"
-                                                                                                                    style={{left: `${getDateDifferenceInDays(house_group[0].date, event.date) * daySizeinPx}px`}}
-                                                                                                                    onMouseOver={() => throttledHandleMouseOver(event, bill)}
-                                                                                                                    onMouseOut={() => handleMouseOut()}
-                                                                                                                >
-                                                                                                                    {
-                                                                                                                        event.type === 'committee-meeting' ? <CommitteeMeeting /> :
-                                                                                                                        event.type === 'plenary' ? <Plenary /> :
-                                                                                                                        event.type === 'media-briefing' ? <MediaBriefing /> :
-
-                                                                                                                        event.type === 'bill-introduced' ? <BillIntroduced /> :
-                                                                                                                        event.type === 'bill-updated' ? <BillUpdated /> :
-                                                                                                                        event.type === 'bill-passed' ? <BillPassed /> :
-                                                                                                                        event.type === 'bill-signed' ? <BillSigned /> :
-
-                                                                                                                        event.type === 'bill-enacted' ? <BillEnacted /> :
-                                                                                                                        event.type === 'bill-act-commenced' ? <BillActCommenced /> : ''
-                                                                                                                    }
-
-                                                                                                                </div>
-                                                                                                            )
-                                                                                                    )
-                                                                                                })
-                                                                                            }
-                                                                                            </div>
+                                                                                        </div>
                                                                                     );
                                                                                 })
                                                                             }
+                                                                            </>
+                                                                            <>
+                                                                            {
+                                                                                // events
+                                                                                bill.houses.length > 0 && bill.houses.map((house_group, index) => {
+                                                                                    return (
+                                                                                        house_group.map((event, index) => {
+                                                                                            return (
+                                                                                                // TODO: NOT APPEARING. WHERE IS THE EVENT?
+                                                                                                
+                                                                                                billEvents.includes(event.type) &&
+                                                                                                    
+                                                                                                    <div key={event.id ? event.id : index} className="event"
+                                                                                                        style={{left: `${getDateDifferenceInDays(bill.houses[0][0].date, event.date) * daySizeinPx}px`}}
+                                                                                                        onMouseMove={handleMouseMove}
+                                                                                                        onMouseOver={() => throttledHandleEventMouseOver(event)}
+                                                                                                        onMouseOut={() => handleEventMouseOut()}
+                                                                                                    >
+                                                                                                        
+                                                                                                        {
+                                                                                                            event.type === 'current-house-start' ? <div className="dummy-event"></div> :
+                                                                                                            event.type === 'committee-meeting' ? <CommitteeMeeting /> :
+                                                                                                            event.type === 'plenary' ? <Plenary /> :
+                                                                                                            event.type === 'media-briefing' ? <MediaBriefing /> :
+
+                                                                                                            event.type === 'bill-introduced' ? <BillIntroduced /> :
+                                                                                                            event.type === 'bill-updated' ? <BillUpdated /> :
+                                                                                                            event.type === 'bill-passed' ? <BillPassed /> :
+                                                                                                            event.type === 'bill-signed' ? <BillSigned /> :
+
+                                                                                                            event.type === 'bill-enacted' ? <BillEnacted /> :
+                                                                                                            event.type === 'bill-act-commenced' ? <BillActCommenced /> : ''
+                                                                                                        }
+                                                                                                        
+
+                                                                                                    </div>
+                                                                                                
+                                                                                            )
+                                                                                        })
+                                                                                    )
+                                                                                })
+                                                                            }
+                                                                            </>
                                                                         </div>
                                                                     </td>
                                                                 </tr>
                                                             );
-                                                            
                                                         })
                                                     }
                                                 </>)
@@ -836,7 +954,7 @@ function BillTracker() {
                                                         <div className="legend-label">Joint</div>
                                                     </div>
                                                     <div className="legend">
-                                                        <div className="legend-block president"></div>
+                                                        <div className="legend-block President"></div>
                                                         <div className="legend-label">Presidency</div>
                                                     </div>
                                                 </Stack>
@@ -884,6 +1002,8 @@ function BillTracker() {
                             }
                         </Col>
                     </Row>
+                    { hoveredBill && <BillTooltip /> }
+                    { hoveredEvent && <EventTooltip /> }
 
                 </div>
 
