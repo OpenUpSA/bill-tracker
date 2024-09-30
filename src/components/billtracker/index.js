@@ -16,7 +16,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { SparklinesLine } from '@lueton/react-sparklines';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faFlag, faChevronDown, faScroll, faCircleInfo, faSquareCheck, faSquare, faCaretDown, faCaretUp, faTableColumns } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faFlag, faChevronDown, faScroll, faCircleInfo, faSquareCheck, faSquare, faCaretDown, faCaretUp, faTableColumns, faLightbulb } from "@fortawesome/free-solid-svg-icons";
 
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -78,6 +78,7 @@ function BillTracker() {
     }, []);
 
     useEffect(() => {
+        console.log(bills);
         prepareBills();
     }, [bills]);
 
@@ -451,6 +452,63 @@ function BillTracker() {
         )
     }
 
+    const getAvgDays = () => {
+        let total = 0;
+        let count = 0;
+        groupedBills.forEach((group) => {
+            group.bills.forEach((bill) => {
+                total += bill.total_days;
+                count++;
+            });
+        });
+
+        return Math.round(total / count);
+    };
+
+    const getAvgMeetings = () => {
+        let total = 0;
+        let count = 0;
+        groupedBills.forEach((group) => {
+            group.bills.forEach((bill) => {
+                total += bill.total_commitee_meetings;
+                count++;
+            });
+        });
+
+        return Math.round(total / count);
+    };
+
+    const getPublicParticipation = () => {
+        let total = 0;
+        let count = 0;
+        groupedBills.forEach((group) => {
+            group.bills.forEach((bill) => {
+                bill.events.forEach((event) => {
+                    if (event.public_participation) {
+                        total++;
+                    }
+                });
+                count++;
+            });
+        });
+
+        return Math.round(total / count);
+    };
+
+    const getRevisions = () => {
+        let total = 0;
+        let count = 0;
+
+        groupedBills.forEach((group) => {
+            group.bills.forEach((bill) => {
+                total += bill.versions.length;
+                count++;
+            });
+        });
+
+        return Math.round(total / count);
+    };
+
     // Helpers
 
     const changeDaySize = (e) => {
@@ -619,7 +677,7 @@ function BillTracker() {
                         </Col>
                     </Row>
 
-                    <Row className="mt-5">
+                    <Row className="mt-3">
                         <Col md={2} className={maximise ? 'd-none' : ''}>
                             <div className="sidebar">
                                 <Accordion defaultActiveKey={['0', '1']} alwaysOpen>
@@ -871,7 +929,7 @@ function BillTracker() {
                                 <a className="feedback-btn" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform">Provide feedback</a>
                             </div>
                         </Col>
-                        <Col className="page-body" md={maximise ? 12 : 10}>
+                        <Col className={`page-body ${maximise ? 'maximise' : ''}`} md={maximise ? 12 : 8}>
                             <Row>
                                 <Col>
                                     <h2><FontAwesomeIcon icon={faScroll} /> List of bills ({filteredBills.length})</h2>
@@ -880,6 +938,7 @@ function BillTracker() {
 
                             {loading ? <div>Loading...</div> :
                                 <table className="bills-table">
+                                    
                                     <thead>
                                         <tr>
                                             <th className="bill-name">Bill name</th>
@@ -977,7 +1036,7 @@ function BillTracker() {
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                    
                                         {
 
                                             groupedBills.length > 0 && groupedBills.map((group, index) =>
@@ -1014,8 +1073,8 @@ function BillTracker() {
                                                                                 stroke="#999"
                                                                                 fill="none"
                                                                                 data={bill.epm_trend}
-                                                                                width={100}
-                                                                                height={25}
+                                                                                width={maximise ? 120 : 70}
+                                                                                height={20}
                                                                             />
                                                                         </td>
                                                                     }
@@ -1151,6 +1210,29 @@ function BillTracker() {
                                     </tfoot>
                                 </table>
                             }
+                        </Col>
+                        <Col className={maximise ? 'd-none' : ''} md={2}>
+                            <div className="insights-box">
+                                <h2><FontAwesomeIcon icon={faLightbulb} /> Insights for listed bills</h2>
+                                <table className="w-100">
+                                    <tr>
+                                        <th>Avg days in parliament:</th>
+                                        <td>{getAvgDays()}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Avg committee meetings:</th>
+                                        <td>{getAvgMeetings()}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Public participation:</th>
+                                        <td>{getPublicParticipation()}%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Avg revisions:</th>
+                                        <td>{getRevisions()}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </Col>
                     </Row>
                     { hoveredBill && <BillTooltip /> }

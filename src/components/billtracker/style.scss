@@ -13,7 +13,7 @@ body {
 }
 
 .accordion-button:not(.collapsed) {
-    box-shadow: none;
+    box-shadow: none !important;
 }
 
 .status-toggle {
@@ -60,8 +60,8 @@ body {
 }
 
 
-.page-body{
-    padding-left: 3em !important;
+.page-body, .insights-box {
+    padding-left: 2em !important;
     
     
 
@@ -77,6 +77,12 @@ body {
     }
 
    
+}
+
+.page-body {
+    &.maximise {
+        padding-left: 0 !important;
+    }
 }
 
 .dropdown-select.show {
@@ -120,7 +126,7 @@ body {
 
 .bills-table {
     width: 100%;
-    
+    position: relative;
 
     thead {
         position: sticky;
@@ -228,15 +234,16 @@ body {
     }
 
     tbody {
-
+        
         .bill-row {
             &:hover {
                 background-color: rgba(0,0,0,0.01)
             }
 
             td {
-                padding: 0.3em 0.5em;
+                padding: 0 0.5em;
                 vertical-align: middle;
+                
             }
         }
 
@@ -246,13 +253,7 @@ body {
             white-space: nowrap;
         }
 
-        .bill-days {
-            text-align: right;
-        }
-
-        .bill-meetings {
-            text-align: right;
-        }
+        
 
 
         .bill-epm-trend {
@@ -269,21 +270,38 @@ body {
             }
         }
        
+
+        
         
         .bill-timeline {
             position: relative;
             white-space: nowrap;
             overflow: hidden;
+            
+            &::after {
+                content: '';
+                display: block;
+                width: 20px;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                right: 0;
+                background: linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,0.2));
+                z-index: 9999;
+            }
 
             .bill-progress {
-                height: 20px;
+                margin-left: -1em;
+                padding-left: 1.2em;
+                height: 16px;
                 transform: translateY(-50%);
                 background-color: #ebebeb;
                 position: absolute;
+                
 
                 .house-group {
                     top: 50%;
-                    height: 20px;
+                    height: 16px;
                     border-radius: 5px;
                     display: inline-block;
                     line-height: 0;
@@ -293,11 +311,12 @@ body {
                 }
 
                 .event {
+                    margin-left: 1.2em;
                     top: 50%;
                     transform: translate(-50%, -50%);
                     position: absolute;
                     z-index: 99;
-                    font-size: 20px;
+                    font-size: 16px;
                     transition: all 0.5s;
 
                     .event-type-icon {
@@ -319,7 +338,7 @@ body {
 
             }
 
-            border-radius: 0 5px 5px 0;
+            border-radius: 5px 0 0 5px;
         }
     }
     
@@ -375,6 +394,7 @@ body {
             
 
             .rc-slider {
+                left: 0.7em;
                 top: -1.5em;
             }
         }
@@ -385,6 +405,8 @@ body {
         th {
             padding: 1em 0.5em;
             font-size: 1.2em;
+
+            
         }
       
         &.sticky {
@@ -398,7 +420,17 @@ body {
     
 }
 
+.insights-box {
+    padding: 2em 1em;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 6px 12px;
+    margin-top: 2em;
+
+    
+}
+
 .xAxis {
+    margin-left: 0.6em;
     bottom: 1.2em;
     width: 100%;
     position: relative;    
@@ -442,7 +474,7 @@ body {
 
 .bill-tooltip, .event-tooltip, .epm-tooltip {
     position: absolute;
-    transform: translate(-50%, -130%);
+    transform: translate(-50%, -105%);
     background-color: #fff;
     padding: 1em;
     border-radius: 5px;
@@ -453,15 +485,15 @@ body {
     opacity: 0;
     transition: all 0.3s;
 
-    &::after {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 5px solid transparent;
-        border-top-color: #fff;
-    }
+    // &::after {
+    //     content: '';
+    //     position: absolute;
+    //     top: 100%;
+    //     left: 50%;
+    //     transform: translateX(-50%);
+    //     border: 5px solid transparent;
+    //     border-top-color: #fff;
+    // }
 
     h2 {
         font-size: 14px;
@@ -508,4 +540,17 @@ body {
         margin-bottom: 1.5em;
     }
 
+}
+
+.insights-box {
+    padding: 0.5em 1em !important;
+    margin-top: -0.5em;
+
+    table {
+        td {
+            padding: 0.2em 0;
+            text-align: right;
+
+        }
+    }
 }
