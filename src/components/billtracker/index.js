@@ -60,8 +60,11 @@ function BillTracker() {
     const [selectedBill, setSelectedBill] = useState({});
     const [hoveredEvent, setHoveredEvent] = useState(null);
     const [hoveredBill, setHoveredBill] = useState(null);
+    const [hoveredEPM, setHoveredEPM] = useState(false);
     const [sortOrder, setSortOrder] = useState('dec');
     const [maximise, setMaximise] = useState(false);
+    const [tableColumns, setTableColumns] = useState(['days', 'meetings', 'epm']);
+    const [selectedTableColumns, setSelectedTableColumns] = useState(['days', 'meetings', 'epm']);
 
     const timelineRef = useRef(null);
 
@@ -105,7 +108,7 @@ function BillTracker() {
 
     const getBills = async () => {
         try {
-            const response = await axios.get("https://cors-proxy.fringe.zone/https://api.pmg.org.za/v2/bill-tracker/");
+            const response = await axios.get("https://api.pmg.org.za/v2/bill-tracker/");
             setBills(response.data);
         } catch (err) {
             console.error(err.message);
@@ -180,6 +183,7 @@ function BillTracker() {
                             type: "current-house-start",
                         },
                         {
+                            title: "Today",
                             date: new Date(),
                             house: lookup.status[bill.status],
                             type: "today",
@@ -344,19 +348,34 @@ function BillTracker() {
                 left: `${tooltipPosition.left}px`,
                 top: `${tooltipPosition.top}px`
             }}>
-                <Row>
-                    <Col>Bill type:</Col>
-                    <Col className="text-end">{lookup.type[hoveredBill.type]}</Col>
-                </Row>
-                <Row>
-                    <Col>Introduced by:</Col>
-                    <Col className="text-end">{hoveredBill.introduced_by}</Col>
-                </Row>
-                <Row>
-                    <Col>Currently before:</Col>
-                    <Col className="text-end">{hoveredBill.status}</Col>
-                </Row>
-
+                
+                <h2 className="mb-4">{hoveredBill.title}</h2>
+                <table className="w-100">
+                    <tr>
+                        <th>Bill type:</th>
+                        <td>{lookup.type[hoveredBill.type]}</td>
+                    </tr>
+                    <tr>
+                        <th>Introduced by:</th>
+                        <td>{hoveredBill.introduced_by}</td>
+                    </tr>
+                    <tr>
+                        <th>Currently before:</th>
+                        <td>{lookup.status[hoveredBill.status]}</td>
+                    </tr>
+                    <tr>
+                        <th>Days in parliament:</th>
+                        <td>{hoveredBill.total_days}</td>
+                    </tr>
+                    <tr>
+                        <th>Committee Meetings (total):</th>
+                        <td>{hoveredBill.total_commitee_meetings}</td>
+                    </tr>
+                    <tr>
+                        <th>Days since last event:</th>
+                        <td>{getDateDifferenceInDays(hoveredBill.events[hoveredBill.events.length - 1].date, new Date())}</td>
+                    </tr>
+                </table>
             </div>
         );
     }
@@ -368,13 +387,55 @@ function BillTracker() {
                 left: `${tooltipPosition.left}px`,
                 top: `${tooltipPosition.top}px`
             }}>
-                <Row>
-                    <Col>Event type:</Col>
-                    <Col className="text-end">{lookup.event_types[hoveredEvent.type]}</Col>
-                </Row>
+                <h2 className="mb-4">{lookup.event_types[hoveredEvent.type]}</h2>
+
+                {
+                    hoveredEvent.type === "today" &&
+                    <div>{formatDate(hoveredEvent.date)}</div>
+                }
+
+                { 
+                
+                    hoveredEvent.type != "today" && 
+                    
+                    <>
+                    
+                        <div className="mb-3">{hoveredEvent.title}</div>
+
+                        <table className="w-100">
+                            <tr>
+                                <th>Date:</th>
+                                <td>{formatDate(hoveredEvent.date)}</td>
+                            </tr>
+                            <tr>
+                                <th>House:</th>
+                                <td>{lookup.house[hoveredEvent.house]}</td>
+                            </tr>
+                            <tr>
+                                <th>Days since event:</th>
+                                <td>{getDateDifferenceInDays(hoveredEvent.date, new Date())}</td>
+                            </tr>
+                        </table>
+
+                    </>
+                }
+                
 
             </div>
         );
+    }
+
+    const EPMTooltip = () => {
+        return (
+            <div className="epm-tooltip" style={{
+                opacity: 1,
+                left: `${tooltipPosition.left}px`,
+                top: `${tooltipPosition.top}px`
+            }}>
+                <h2>Events per month (EPM)</h2>
+                <p>This metric is used to show how much parliamentary activity has taken place around a bill. The trend helps to show where the activity has taken place over the life of a bill.</p>
+            </div>
+        )
     }
 
     // Helpers
@@ -782,9 +843,22 @@ function BillTracker() {
                                     <thead>
                                         <tr>
                                             <th className="bill-name">Bill name</th>
-                                            <th className="bill-days" onClick={() => toggleSortOrder()}>Days <FontAwesomeIcon icon={sortOrder == 'dec' ? faCaretDown : faCaretUp} /></th>
-                                            <th className="bill-meetings">Meetings</th>
-                                            <th className="bill-epm-trend">EPM + Trend <OverlayTrigger overlay={<Tooltip>Hey</Tooltip>}><FontAwesomeIcon icon={faCircleInfo} /></OverlayTrigger></th>
+                                            
+                                            { selectedTableColumns.includes('days') &&
+                                                <th className="bill-days" onClick={() => toggleSortOrder()}>Days <FontAwesomeIcon icon={sortOrder == 'dec' ? faCaretDown : faCaretUp} /></th>
+                                            }
+                                            { selectedTableColumns.includes('meetings') &&
+                                                <th className="bill-meetings">Meetings</th>
+                                            }
+                                            { selectedTableColumns.includes('epm') &&
+                                                <th className="bill-epm-trend">EPM + Trend 
+                                                    <FontAwesomeIcon onMouseMove={handleMouseMove} 
+                                                        onMouseOver={() => setHoveredEPM(true)}
+                                                        onMouseOut={() => setHoveredEPM(false)} icon={faCircleInfo} />
+                                                </th>
+                                            }
+                                            
+                                            
                                             <th className="bill-timeline" ref={timelineRef}>
                                                 <Row>
                                                     <Col md={5}>Timeline</Col>
@@ -825,17 +899,33 @@ function BillTracker() {
                                                                         <FontAwesomeIcon icon={faTableColumns} />
                                                                     </Dropdown.Toggle>
                                                                     <Dropdown.Menu>
-                                                                        <Dropdown.Item onClick={() => setSelectedBillTypes([])}>
-                                                                            <FontAwesomeIcon
-                                                                                icon={
-                                                                                    selectedBillTypes.length == 0
-                                                                                        ? faSquareCheck
-                                                                                        : faSquare
-                                                                                }
-                                                                                className="me-2"
-                                                                            />
-                                                                            All Types
-                                                                        </Dropdown.Item>
+                                                                       
+                                                                        {
+                                                                            tableColumns.map((column, index) =>
+                                                                                <Dropdown.Item
+                                                                                    key={index}
+                                                                                    onClick={() =>
+                                                                                        setSelectedTableColumns(
+                                                                                            selectedTableColumns.includes(column)
+                                                                                                ? selectedTableColumns.filter(
+                                                                                                    (selectedColumn) => selectedColumn !== column
+                                                                                                )
+                                                                                                : [...selectedTableColumns, column]
+                                                                                        )
+                                                                                    }
+                                                                                >
+                                                                                    <FontAwesomeIcon
+                                                                                        icon={
+                                                                                            selectedTableColumns.includes(column)
+                                                                                                ? faSquareCheck
+                                                                                                : faSquare
+                                                                                        }
+                                                                                        className="me-2"
+                                                                                    />
+                                                                                    {column}
+                                                                                </Dropdown.Item>
+                                                                            )
+                                                                        }
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
                                                             </div>
@@ -870,18 +960,25 @@ function BillTracker() {
                                                                         onMouseOver={() => throttledHandleMouseOver(bill)}
                                                                         onMouseOut={() => handleMouseOut()}
                                                                     >{bill.title.length > 40 ? `${bill.title.substring(0, 40)}...` : bill.title}</td>
-                                                                    <td className="bill-days">{bill.total_days}</td>
-                                                                    <td className="bill-meetings">{bill.total_commitee_meetings}</td>
-                                                                    <td className="bill-epm-trend">
-                                                                        <div className="epm-count">{bill.epm_count}</div>
-                                                                        <SparklinesLine
-                                                                            stroke="#999"
-                                                                            fill="none"
-                                                                            data={bill.epm_trend}
-                                                                            width={100}
-                                                                            height={25}
-                                                                        />
-                                                                    </td>
+                                                                    
+                                                                    {selectedTableColumns.includes('days') &&
+                                                                        <td className="bill-days">{bill.total_days}</td>
+                                                                    }
+                                                                    {selectedTableColumns.includes('meetings') &&
+                                                                        <td className="bill-meetings">{bill.total_commitee_meetings}</td>
+                                                                    }
+                                                                    {selectedTableColumns.includes('epm') &&
+                                                                        <td className="bill-epm-trend">
+                                                                            <div className="epm-count">{bill.epm_count}</div>
+                                                                            <SparklinesLine
+                                                                                stroke="#999"
+                                                                                fill="none"
+                                                                                data={bill.epm_trend}
+                                                                                width={100}
+                                                                                height={25}
+                                                                            />
+                                                                        </td>
+                                                                    }
                                                                     <td className="bill-timeline">
                                                                         <div className="bill-progress" style={{left: `-${maxDays*daySizeinPx * timelineScroll}px`, width: `${maxDays * daySizeinPx}px`}}>
                                                                             <>
@@ -953,7 +1050,7 @@ function BillTracker() {
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td colSpan="4">
+                                            <td colSpan={selectedTableColumns.length + 1}>
                                                 <Stack direction="horizontal" gap={2} className="bill-tracker-legend">
                                                     <div className="legend">
                                                         <div className="legend-block NA"></div>
@@ -1018,47 +1115,63 @@ function BillTracker() {
                     </Row>
                     { hoveredBill && <BillTooltip /> }
                     { hoveredEvent && <EventTooltip /> }
+                    { hoveredEPM && <EPMTooltip /> }
 
                 </div>
 
             </Container>
 
             {/* MODAL */}
-            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>{selectedBill.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="bill-stats">
-                    <Row>
-                        <Col className="bill-stats-heading">Bill Id:</Col>
-                        <Col>{selectedBill.id}</Col>
-                    </Row>
-                    <Row>
-                        <Col className="bill-stats-heading">Bill Type:</Col>
-                        <Col>{selectedBill.type}</Col>
-                    </Row>
-                    <Row>
-                        <Col className="bill-stats-heading">Status:</Col>
-                        <Col>{selectedBill.status}</Col>
-                    </Row>
-                    <Row>
-                        <Col className="bill-stats-heading">Date of Introduction:</Col>
-                        <Col>{formatDate(selectedBill.date_of_introduction)}</Col>
-                    </Row>
-                    <Row>
-                        <Col className="bill-stats-heading">Introduced By</Col>
-                        <Col>{selectedBill.introduced_by}</Col>
-                    </Row>
-                    <Row>
-                        <Col className="bill-stats-heading">Total Days:</Col>
-                        <Col>{selectedBill.total_days}</Col>
-                    </Row>
-                    <Row>
-                        <Col className="bill-stats-heading">
-                            Total Committee Meetings:
-                        </Col>
-                        <Col>{selectedBill.total_commitee_meetings}</Col>
-                    </Row>
+                    
+                    <div className="alert">
+                        <Row>
+                            <Col>Data for this bill is provided by PMG</Col>
+                            <Col xs="auto">
+                                <a href={`https://pmg.org.za/bill/${selectedBill.id}`} target="_blank">View Bill on PMG</a>
+                            </Col>
+                        </Row>
+                    </div>
+                    
+
+                    <table className="w-100 stats-table">
+                        <tr>
+                            <th>Bill Id:</th>
+                            <td>{selectedBill.id}</td>
+                        </tr>
+                        <tr>
+                            <th>Bill Type:</th>
+                            <td>{lookup.type[selectedBill.type]}</td>
+                        </tr>
+                        <tr>
+                            <th>Status:</th>
+                            <td>{lookup.status[selectedBill.status]}</td>
+                        </tr>
+                        <tr>
+                            <th>Date of Introduction:</th>
+                            <td>{formatDate(selectedBill.date_of_introduction)}</td>
+                        </tr>
+                        <tr>
+                            <th>Introduced By:</th>
+                            <td>{selectedBill.introduced_by}</td>
+                        </tr>
+                        <tr>
+                            <th>Total Days:</th>
+                            <td>{selectedBill.total_days}</td>
+                        </tr>
+                        <tr>
+                            <th>Total Committee Meetings:</th>
+                            <td>{selectedBill.total_commitee_meetings}</td>
+                        </tr>
+
+
+                    </table>
+
+                    
                     <h4 className="mt-4">Events</h4>
                     <Scrollbars style={{ height: "400px" }}>
                         <table className="table table-striped">

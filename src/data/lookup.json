@@ -25,7 +25,8 @@
         "bill-enacted": "Bill Enacted",
         "bill-act-commenced": "Act Commenced",
         "bill-updated": "Bill Updated",
-        "bill-signed": "Bill Signed"
+        "bill-signed": "Bill Signed",
+        "today": "Today"
     },
     "type": {
         "S75": "Section 75",

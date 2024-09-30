@@ -297,7 +297,7 @@ body {
                     }
 
                     .today {
-                        background-color: #000;
+                        background-color: transparent;
                     }
 
                 }
@@ -425,7 +425,7 @@ body {
 
 // TOOLTIP
 
-.bill-tooltip, .event-tooltip {
+.bill-tooltip, .event-tooltip, .epm-tooltip {
     position: absolute;
     transform: translate(-50%, -130%);
     background-color: #fff;
@@ -433,7 +433,8 @@ body {
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(0,0,0,0.4);
     z-index: 999999;
-    width: 350px;
+    min-width: 350px;
+    max-width: 450px;
     opacity: 0;
     transition: all 0.3s;
 
@@ -446,4 +447,50 @@ body {
         border: 5px solid transparent;
         border-top-color: #fff;
     }
+
+    h2 {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    th, td {
+        padding: 0.2em 0;
+    }
+
+    td {
+        text-align: right;
+    }
+}
+
+.epm-tooltip {
+    width: 200px;
+}
+
+.modal-dialog {
+    width: 700px !important;
+    max-width: 700px !important;
+}
+
+.bill-stats {
+    .stats-table {
+        td {
+            text-align: right;
+        }
+    }
+
+    .alert {
+        background-color:  #ebebeb;
+        border-radius: 5px;
+
+        a {
+            color: #000;
+        }
+    }
+
+    h4 {
+        font-size: 1.1em;
+        font-weight: 600;
+        margin-bottom: 1.5em;
+    }
+
 }
