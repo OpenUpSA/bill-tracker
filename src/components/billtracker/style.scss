@@ -231,7 +231,7 @@ body {
 
         .bill-row {
             &:hover {
-                background-color: #f2f2f2;
+                background-color: rgba(0,0,0,0.01)
             }
 
             td {
@@ -276,12 +276,13 @@ body {
             overflow: hidden;
 
             .bill-progress {
-                
+                height: 20px;
+                transform: translateY(-50%);
+                background-color: #ebebeb;
                 position: absolute;
 
                 .house-group {
                     top: 50%;
-                    transform: translateY(-50%);
                     height: 20px;
                     border-radius: 5px;
                     display: inline-block;
@@ -292,7 +293,7 @@ body {
                 }
 
                 .event {
-                    top: 0%;
+                    top: 50%;
                     transform: translate(-50%, -50%);
                     position: absolute;
                     z-index: 99;
