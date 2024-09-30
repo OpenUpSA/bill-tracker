@@ -1,11 +1,11 @@
 {
-    "house_status": {
-        "na": "NA",
-        "ncop": "NCOP",
-        "president": "President",
-        "joint": "Joint NA/NCOP"
+    "house": {
+        "NA": "National Assembly",
+        "NCOP": "National Council of Provinces",
+        "President": "President",
+        "Joint": "Joint NA/NCOP"
     },
-    "groupby": {
+    "status": {
         "na": "National Assembly",
         "ncop": "National Council of Provinces",
         "president": "President",
@@ -16,6 +16,28 @@
         "lapsed": "Lapsed",
         "draft": "Draft",
         "enacted": "Enacted"
+    },
+    "event_types": {
+        "committee-meeting": "Committee Meeting",
+        "bill-introduced": "Bill Introduced",
+        "bill-passed": "Bill Passed",
+        "plenary": "Plenary",
+        "bill-enacted": "Bill Enacted",
+        "bill-act-commenced": "Act Commenced",
+        "bill-updated": "Bill Updated",
+        "bill-signed": "Bill Signed",
+        "today": "Today"
+    },
+    "type": {
+        "S75": "Section 75",
+        "S77": "Section 77",
+        "S76": "Section 76",
+        "S74": "Section 74",
+        "Draft": "Draft",
+        "Private Member Bill": "Private Member Bill",
+        "Private Member Bill: S75": "Private Member Bill: Section 75",
+        "Private Member Bill: S76": "Private Member Bill: Section 76",
+        "Private Member Bill: S74": "Private Member Bill: Section 74"
     },
     "parliaments": {
         "all": {

@@ -28,12 +28,12 @@ import {
   faBarsStaggered,
 } from "@fortawesome/free-solid-svg-icons";
 
-import "./BillTracker.scss";
+import "./BillTrackerOld.scss";
 
 import * as billsData from "../data/bill-tracker.json";
 import * as lookup from "../data/lookup.json";
 
-function BillTracker() {
+function BillTrackerOld() {
   const [bills, setBills] = useState([]);
   const [billGroups, setBillGroups] = useState([]);
   const houses = [
@@ -945,4 +945,4 @@ function BillTracker() {
   );
 }
 
-export default BillTracker;
+export default BillTrackerOld;
