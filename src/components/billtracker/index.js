@@ -16,7 +16,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { SparklinesLine } from '@lueton/react-sparklines';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faFlag, faChevronDown, faScroll, faCircleInfo, faSquareCheck, faSquare, faCaretDown, faCaretUp, faArrowsLeftRightToLine } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faFlag, faChevronDown, faScroll, faCircleInfo, faSquareCheck, faSquare, faCaretDown, faCaretUp, faTableColumns } from "@fortawesome/free-solid-svg-icons";
 
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -47,7 +47,7 @@ function BillTracker() {
     const [search, setSearch] = useState('');
 
     const hideBillsWithStatus = ["lapsed", "withdrawn", "rejected", "enacted", "act-commenced", "act-partly-commenced"];
-    const [billEvents, setBillEvents] = useState(['current-house-start','bill-introduced', 'bill-updated', 'bill-withdrawn', 'bill-rejected', 'bill-passed', 'bill-signed', 'bill-enacted', 'bill-act-commenced']);
+    const [billEvents, setBillEvents] = useState(['today','bill-introduced', 'bill-updated', 'bill-withdrawn', 'bill-rejected', 'bill-passed', 'bill-signed', 'bill-enacted', 'bill-act-commenced']);
 
     const [daySizeinPx, setDaySizeinPx] = useState(1);
     const [minDaySizeInPx, setMinDaySizeInPx] = useState(1);
@@ -105,7 +105,7 @@ function BillTracker() {
 
     const getBills = async () => {
         try {
-            const response = await axios.get("https://api.pmg.org.za/v2/bill-tracker/");
+            const response = await axios.get("https://cors-proxy.fringe.zone/https://api.pmg.org.za/v2/bill-tracker/");
             setBills(response.data);
         } catch (err) {
             console.error(err.message);
@@ -159,46 +159,43 @@ function BillTracker() {
                         house_group.unshift(dummyEvent);
                     }
                 }
+
             });
 
+            // This is to add a dummy event for the current house if the last event is not the current house
+            // This is to ensure that the current house is always shown on the timeline
+            // It is still ongoing and needs to show today.
 
-        //     const today = new Date();
+            if (['na','ncop','president'].includes(bill.status)) {
 
-        //     let dummyEvents = [];
-        //     if (lastHouse != lookup.status[bill.status]) {
-        //         console.log(lastHouse, bill.status);
+                if(lastHouse.toLowerCase() != bill.status.toLowerCase()) {
 
-        //         if (lastHouse == 'President') {
-                    
+                    // add a house
+                    let lastDate = bill.events[bill.events.length - 1]?.date;
+                    let startDate = new Date(lastDate + 1);
+                    let dummyEvents = [
+                        {
+                            date: startDate,
+                            house: lookup.status[bill.status],
+                            type: "current-house-start",
+                        },
+                        {
+                            date: new Date(),
+                            house: lookup.status[bill.status],
+                            type: "today",
+                        }
+                    ];
 
-        //             let lastDate = bill.events[bill.events.length - 1]?.date;
+                    bill.houses.push(dummyEvents);
 
-        //             let startDate = new Date(lastDate + 1);
-
-        //             dummyEvents.push([
-        //                 {
-        //                     date: startDate,
-        //                     house: lookup.status[bill.status],
-        //                     type: "current-house-start",
-        //                 },
-        //                 {
-        //                     date: today,
-        //                     house: lookup.status[bill.status],
-        //                     type: "today",
-        //                 },
-        //             ]);
-        //         }
-        //     } else {
-        //         bill.houses[bill.houses.length - 1].push({
-        //             date: today,
-        //             house: lookup.status[bill.status],
-        //             type: "today",
-        //         });
-        //     }
-
-        //     bill.houses = [...bill.houses, ...dummyEvents];
-
-            
+                } else {
+                    bill.houses[bill.houses.length - 1].push({
+                        date: new Date(),
+                        house: lookup.status[bill.status],
+                        type: "today",
+                    });
+                }
+            }
 
         });
 
@@ -379,11 +376,6 @@ function BillTracker() {
             </div>
         );
     }
-
-    
-
-
-
 
     // Helpers
 
@@ -795,7 +787,7 @@ function BillTracker() {
                                             <th className="bill-epm-trend">EPM + Trend <OverlayTrigger overlay={<Tooltip>Hey</Tooltip>}><FontAwesomeIcon icon={faCircleInfo} /></OverlayTrigger></th>
                                             <th className="bill-timeline" ref={timelineRef}>
                                                 <Row>
-                                                    <Col md={8}>Timeline</Col>
+                                                    <Col md={5}>Timeline</Col>
                                                     <Col>
                                                         <div className="form-range-container">
                                                             <Slider
@@ -810,7 +802,7 @@ function BillTracker() {
                                                             />
                                                         </div>
                                                     </Col>
-                                                    <Col>
+                                                    <Col md="auto">
                                                         <div className="timeline-controls">
                                                             <div className="timeline-control zoom-out" onClick={() => daySizeinPx > 1 && setDaySizeinPx(daySizeinPx - 1)}>
                                                                 <IconZoomOut />
@@ -821,12 +813,33 @@ function BillTracker() {
                                                             <div className="timeline-control fullscreen" onClick={() => setDaySizeinPx(minDaySizeInPx)}>
                                                                 <IconFullscreen />
                                                             </div>
-                                                            <div className="timeline-control reset" onClick={() => setDaySizeinPx(5)}>
+                                                            <div className="timeline-control reset" onClick={() => setDaySizeinPx(1)}>
                                                                 <IconReset />
                                                             </div>
                                                             <div className="timeline-control maximise" onClick={() => toggleMax()}>
                                                                 <IconMaximise />
                                                             </div>
+                                                            <div className="timeline-control">
+                                                                <Dropdown className="dropdown-select" autoClose="outside">
+                                                                    <Dropdown.Toggle>
+                                                                        <FontAwesomeIcon icon={faTableColumns} />
+                                                                    </Dropdown.Toggle>
+                                                                    <Dropdown.Menu>
+                                                                        <Dropdown.Item onClick={() => setSelectedBillTypes([])}>
+                                                                            <FontAwesomeIcon
+                                                                                icon={
+                                                                                    selectedBillTypes.length == 0
+                                                                                        ? faSquareCheck
+                                                                                        : faSquare
+                                                                                }
+                                                                                className="me-2"
+                                                                            />
+                                                                            All Types
+                                                                        </Dropdown.Item>
+                                                                    </Dropdown.Menu>
+                                                                </Dropdown>
+                                                            </div>
+                                                            
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -892,7 +905,7 @@ function BillTracker() {
                                                                                     return (
                                                                                         house_group.map((event, index) => {
                                                                                             return (
-                                                                                                // TODO: NOT APPEARING. WHERE IS THE EVENT?
+                                                                                                
                                                                                                 
                                                                                                 billEvents.includes(event.type) &&
                                                                                                     
@@ -904,6 +917,7 @@ function BillTracker() {
                                                                                                     >
                                                                                                         
                                                                                                         {
+                                                                                                            event.type === 'today' ? <div className="today"></div> :
                                                                                                             event.type === 'current-house-start' ? <div className="dummy-event"></div> :
                                                                                                             event.type === 'committee-meeting' ? <CommitteeMeeting /> :
                                                                                                             event.type === 'plenary' ? <Plenary /> :

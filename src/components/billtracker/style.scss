@@ -192,6 +192,22 @@ body {
                 cursor: pointer;
                 position: relative;
                 top: -0.3em;
+
+                .dropdown-select button {
+                    width: 1.6em;
+                    height: 1.6em;
+                    padding: 0.4em;
+                    position: relative;
+                    top: -0.5em;
+
+                    svg {
+                        font-size: 0.9em;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
             }
 
         }
@@ -273,12 +289,17 @@ body {
                         border: 1px solid #fff !important;
                     }
 
-                    .dummy-event {
+                    .dummy-event, .today {
                         width: 2px;
                         height: 10px;
                         border-radius: 0;
                         background-color: red;
                     }
+
+                    .today {
+                        background-color: #000;
+                    }
+
                 }
 
             }
@@ -291,6 +312,7 @@ body {
         background-color: rgba(255,255,255,0.9);
         position: sticky;
         bottom: 0;
+        z-index: 999;
 
         .bill-tracker-legend {
             margin-top: 1em;
@@ -328,6 +350,7 @@ body {
             position: relative;
             padding: 0 !important;
             overflow: hidden;
+            
         }
 
         .footer-timeline-wrapper {
