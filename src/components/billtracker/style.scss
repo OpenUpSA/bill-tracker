@@ -103,6 +103,20 @@ body {
     
 }
 
+.parliament-select {
+    padding: 1em 1.2em;
+    border-radius: 35px;
+    width: 100%;
+    text-align: left;
+    background-color: rgba(0,0,0,0.05);
+    color: #000;
+    border: none;
+
+    &::after {
+        display: none;
+    }
+}
+
 
 .bills-table {
     width: 100%;

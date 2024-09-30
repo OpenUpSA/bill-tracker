@@ -40,6 +40,7 @@ function BillTracker() {
     const [filteredBills, setFilteredBills] = useState([]);
     const [groupedBills, setGroupedBills] = useState([]);
 
+    const [selectedParliament, setSelectedParliament] = useState('all');
     const [selectedBillTypes, setSelectedBillTypes] = useState([]);
     const [selectedStatuses, setSelectedStatuses] = useState(['na','ncop','president']);
 
@@ -82,7 +83,7 @@ function BillTracker() {
 
     useEffect(() => {
         filterBills();
-    }, [preparedBills, selectedBillTypes, selectedStatuses, search]);
+    }, [preparedBills, selectedBillTypes, selectedStatuses, search, selectedParliament]);
 
     useEffect(() => {
         groupBills();
@@ -277,6 +278,16 @@ function BillTracker() {
     const filterBills = () => {
         let filteredBillsWork = preparedBills;
 
+        if (selectedParliament !== "all") {
+            filteredBillsWork = filteredBillsWork.filter(
+              (bill) =>
+                bill.date_of_introduction >=
+                  lookup.parliaments[selectedParliament].start &&
+                bill.date_of_introduction <=
+                  lookup.parliaments[selectedParliament].end
+            );
+        }
+
         if (selectedBillTypes.length > 0) {
             filteredBillsWork = filteredBillsWork.filter(bill => selectedBillTypes.includes(bill.type));
         }
@@ -284,6 +295,8 @@ function BillTracker() {
         if (selectedStatuses.length > 0) {
             filteredBillsWork = filteredBillsWork.filter(bill => selectedStatuses.includes(bill.status));
         }
+
+        
 
         if (search.length > 3) {
             filteredBillsWork = filteredBillsWork.filter((bill) =>
@@ -576,6 +589,33 @@ function BillTracker() {
                     <Row>
                         <Col>
                             <h1>Bill Tracker</h1>
+                        </Col>
+                        <Col xs="auto">
+                            <Form.Group as={Row}>
+                                <Form.Label column md="auto" className="mt-2">
+                                    Parliament
+                                </Form.Label>
+                            <Col>
+                                <Dropdown className="dropdown-select">
+                                    <Dropdown.Toggle>
+                                        <Row>
+                                            <Col>{lookup.parliaments[selectedParliament].name}</Col>
+                                            <Col xs="auto"><FontAwesomeIcon icon={faChevronDown} /></Col>
+                                        </Row>
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        {Object.keys(lookup.parliaments).map(
+                                            (parliament, index) => {
+                                                return (
+                                                    <Dropdown.Item onClick={() => setSelectedParliament(parliament)}>{lookup.parliaments[parliament].name}</Dropdown.Item>
+                                                );
+                                            }
+                                        )}
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                
+                            </Col>
+                            </Form.Group>
                         </Col>
                     </Row>
 
