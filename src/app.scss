@@ -84,6 +84,30 @@ h1 {
     }
 }
 
+.dropdown-select.show {
+    position: relative;
+
+    button {
+        position: relative;
+        z-index: 99999;
+        background-color: #fafafa;
+        border-color: #fafafa;
+    }
+
+    .dropdown-menu {
+        z-index: 998;
+        width: 100%;
+        background-color: #fafafa !important;
+        border: none !important;
+        padding: 2em 0 1em 0 !important;
+        top: -2em !important;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 3px 3px rgba(0,0,0,0.05);
+    
+    }
+    
+}
+
 .form-input-container {
     position: relative;
 
