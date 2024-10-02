@@ -1,147 +1,146 @@
 $primary: rgb(235, 235, 235);
 $theme-colors: (
-    "primary": $primary,
-    "dark": rgb(0, 0, 0)
+  "primary": $primary,
+  "dark": rgb(0, 0, 0),
 );
 
 $border-radius: 6px;
 
 @import "bootstrap/scss/bootstrap";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 html {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 body {
-    margin: 0;
-    background-color: rgb(255, 255, 255);
-    font-family: "Inter", sans-serif;
-    color: #000;
+  margin: 0;
+  background-color: rgb(255, 255, 255);
+  font-family: "Inter", sans-serif;
+  color: #000;
 }
 
 .container-fluid {
-    padding: 0 3em;
+  padding: 0 3em;
 }
 
 h1 {
-    font-size: 2em;
-    font-weight: 600;
+  font-size: 2em;
+  font-weight: 600;
 }
 
 .accordion {
-    .accordion-item {
+  .accordion-item {
+    border: none;
 
+    .accordion-header {
+      button {
+        font-weight: 600;
+        padding: 1em 0;
         border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 0 !important;
+        background-color: unset;
 
-        .accordion-header {
-            button {
-                font-weight: 600;
-                padding: 1em 0;
-                border: none;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-                border-radius: 0 !important;
-                background-color: unset;
-
-    
-                &[aria-expanded="true"] {
-                    color: #000;
-                }
-    
-                svg {
-                    margin-right: 1em;
-                }
-
-                &:focus {
-                    box-shadow: none;
-                }
-            }
+        &[aria-expanded="true"] {
+          color: #000;
         }
 
-        .accordion-body {
-            padding: 2em 0;
-        }
-
-       
-    
-
-    }
-
-}
-
-.dropdown-select {
-    button {
-        padding: 1em 1.2em;
-        border-radius: 35px;
-        width: 100%;
-        text-align: left;
-        background-color: rgba(0,0,0,0.05);
-        color: #000;
-
-        &::after {
-            display: none;
-        }
-    }
-}
-
-.dropdown-select.show {
-    position: relative;
-
-    button {
-        position: relative;
-        z-index: 99999;
-        background-color: #fafafa;
-        border-color: #fafafa;
-    }
-
-    .dropdown-menu {
-        z-index: 998;
-        width: 100%;
-        background-color: #fafafa !important;
-        border: none !important;
-        padding: 2em 0 1em 0 !important;
-        top: -2em !important;
-        border-radius: 0 0 20px 20px;
-        box-shadow: 0 3px 3px rgba(0,0,0,0.05);
-    
-    }
-    
-}
-
-.form-input-container {
-    position: relative;
-
-    .form-input {
-        padding: 1em 1.2em 1em 4em;
-        border-radius: 35px;
-        width: 100%;
-        background-color: rgba(0,0,0,0.03);
-        border: none;
-        color: #000;
-        
-    
-        &::placeholder {
-            color: #000;
+        svg {
+          margin-right: 1em;
         }
 
         &:focus {
-            background-color: #fafafa;
+          box-shadow: none;
         }
+      }
     }
 
-    &::before {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 1.5em;
-        transform: translateY(-50%);
-        width: 1.5em;
-        height: 1.5em;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999999' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
-        background-size: contain;
-        background-repeat: no-repeat;
-
+    .accordion-body {
+      padding: 2em 0;
     }
+  }
 }
 
+.dropdown-select {
+  button {
+    padding: 1em 1.2em;
+    border-radius: 35px;
+    width: 100%;
+    text-align: left;
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000;
+
+    &::after {
+      display: none;
+    }
+  }
+  &.size-sm {
+    button {
+      padding: 0.25em 0.65em;
+    }
+  }
+
+  &.width-auto {
+    button {
+      width: auto;
+    }
+  }
+}
+
+.dropdown-select.show {
+  position: relative;
+
+  button {
+    position: relative;
+    z-index: 99999;
+    background-color: #fafafa;
+    border-color: #fafafa;
+  }
+
+  .dropdown-menu {
+    z-index: 998;
+    width: 100%;
+    background-color: #fafafa !important;
+    border: none !important;
+    padding: 2em 0 1em 0 !important;
+    top: -2em !important;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.form-input-container {
+  position: relative;
+
+  .form-input {
+    padding: 1em 1.2em 1em 4em;
+    border-radius: 35px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.03);
+    border: none;
+    color: #000;
+
+    &::placeholder {
+      color: #000;
+    }
+
+    &:focus {
+      background-color: #fafafa;
+    }
+  }
+
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 1.5em;
+    transform: translateY(-50%);
+    width: 1.5em;
+    height: 1.5em;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23999999' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}
