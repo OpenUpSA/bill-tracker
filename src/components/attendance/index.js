@@ -518,7 +518,7 @@ function Attendance() {
           <Row className="mt-3">
             <Col md={2}>
               <div className="sidebar">
-                <Accordion defaultActiveKey={["0", "1"]} alwaysOpen>
+                <Accordion className="no-button" defaultActiveKey={["0", "1"]} alwaysOpen>
                   <Accordion.Item eventKey="0">
                     <Accordion.Header>
                       <FontAwesomeIcon icon={faFilter} /> Filter{" "}
