@@ -505,35 +505,6 @@ function Attendance() {
                   />
                 </div>
               )}
-              <div className="p-2 ms-auto">
-                <Stack direction="horizontal" gap={3}>
-                  <Dropdown
-                    aria-label="Select chart type"
-                    className="dropdown-select"
-                    onChange={(e) => setSelectedChartType(e.target.value)}
-                  >
-                    <Dropdown.Toggle>
-                      <Row>
-                        <Col>{ChartTypes[selectedChartType].label}</Col>
-                        <Col xs="auto">
-                          <FontAwesomeIcon icon={faChevronDown} />
-                        </Col>
-                      </Row>
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {Object.keys(ChartTypes).map((chartType, index) => {
-                        return (
-                          <Dropdown.Item
-                            onClick={() => setSelectedChartType(chartType)}
-                          >
-                            {ChartTypes[chartType].label}
-                          </Dropdown.Item>
-                        );
-                      })}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Stack>
-              </div>
             </Stack>
             <table
               className={`${
@@ -599,6 +570,33 @@ function Attendance() {
                     {selectedChartType === "average" && (
                       <> ({Math.round(averageAttendance)}%)</>
                     )}
+                  </th>
+                  <th textAlign="right">
+                    <Dropdown
+                      aria-label="Select chart type"
+                      className="dropdown-select size-sm"
+                      onChange={(e) => setSelectedChartType(e.target.value)}
+                    >
+                      <Dropdown.Toggle>
+                        <Row>
+                          <Col>{ChartTypes[selectedChartType].label}</Col>
+                          <Col xs="auto">
+                            <FontAwesomeIcon icon={faChevronDown} />
+                          </Col>
+                        </Row>
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {Object.keys(ChartTypes).map((chartType, index) => {
+                          return (
+                            <Dropdown.Item
+                              onClick={() => setSelectedChartType(chartType)}
+                            >
+                              {ChartTypes[chartType].label}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </Dropdown.Menu>
+                    </Dropdown>
                   </th>
                 </tr>
               </thead>
@@ -737,6 +735,7 @@ function Attendance() {
                         )}
                         {selectedChartType !== "average" && (
                           <td
+                            colSpan="2"
                             width="100%"
                             onMouseEnter={() => showTooltip(row)}
                             onMouseLeave={hideTooltip}
