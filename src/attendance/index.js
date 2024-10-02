@@ -6,9 +6,6 @@ import Attendance from "../components/attendance";
 import "../app.scss";
 
 function App() {
-  const [state, setState] = React.useState("Hello, world!");
-  const [counter, setCounter] = React.useState(0);
-
   return <Attendance />;
 }
 

@@ -357,8 +357,8 @@ h2 {
 
 .provideFeedback {
   position: fixed;
-  bottom: 50px;
-  right: 50px;
+  bottom: 47px;
+  right: 28px;
   text-decoration: none;
   display: inline-flex;
   padding: 10px 20px;
@@ -392,6 +392,7 @@ h2 {
   top: 50%;
   transform: translate(-50%, -100%);
   white-space: normal;
+  max-width: 300px;
 
   .tooltip-title {
     font-weight: 600;

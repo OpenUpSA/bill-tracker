@@ -4,9 +4,16 @@ import React, { useEffect, useState } from "react";
 
 import Form from "react-bootstrap/Form";
 import Stack from "react-bootstrap/Stack";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Dropdown from "react-bootstrap/Dropdown";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faArrowPointer } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSearch,
+  faArrowPointer,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 
 import SortedColumn from "../../sortedColumn";
 
@@ -407,7 +414,6 @@ function OverallAttendance(props) {
 
   return (
     <>
-      <h2>Overall recorded meeting attendance</h2>
       <Stack direction="horizontal" gap={3}>
         <div className="pt-2 pb-2">
           <div className="toggleButtonGroup">
@@ -439,21 +445,31 @@ function OverallAttendance(props) {
         )}
         <div className="p-2 ms-auto">
           <Stack direction="horizontal" gap={3}>
-            <Form.Select
+            <Dropdown
               aria-label="Select chart type"
-              defaultValue={selectedChartType}
+              className="dropdown-select"
               onChange={(e) => setSelectedChartType(e.target.value)}
-              size="md"
-              className="parliamentSelector"
             >
-              {Object.keys(ChartTypes).map((chartType, index) => {
-                return (
-                  <option value={chartType} key={`chart-type-${index}`}>
-                    {ChartTypes[chartType].label}
-                  </option>
-                );
-              })}
-            </Form.Select>
+              <Dropdown.Toggle>
+                <Row>
+                  <Col>{ChartTypes[selectedChartType].label}</Col>
+                  <Col xs="auto">
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </Col>
+                </Row>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                {Object.keys(ChartTypes).map((chartType, index) => {
+                  return (
+                    <Dropdown.Item
+                      onClick={() => setSelectedChartType(chartType)}
+                    >
+                      {ChartTypes[chartType].label}
+                    </Dropdown.Item>
+                  );
+                })}
+              </Dropdown.Menu>
+            </Dropdown>
           </Stack>
         </div>
       </Stack>
