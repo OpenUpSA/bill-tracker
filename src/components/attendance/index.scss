@@ -506,3 +506,14 @@ h2 {
   border-radius: 0;
   background-color: #dfdfdf;
 }
+
+.sectionHeader {
+  font-size: 1rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1em 0;
+
+  svg {
+    margin-right: 1em;
+  }
+}

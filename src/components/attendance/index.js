@@ -12,6 +12,7 @@ import {
   faChevronDown,
   faSearch,
   faArrowPointer,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./index.scss";
@@ -514,6 +515,11 @@ function Attendance() {
             </Col>
           </Row>
           <Row className="mt-3">
+            <h2 className="sectionHeader">
+              <FontAwesomeIcon icon={faUser} />
+              List of {grouping === "party" ? "parties" : "members"}{" "}
+              {dataAttendance && <>({dataAttendance.length})</>}
+            </h2>
             <table
               className={`${
                 ChartTypes[selectedChartType].detailed ? "detailed" : ""
@@ -574,10 +580,7 @@ function Attendance() {
                   />
 
                   <th>
-                    Attendance breakdown - {ChartTypes[selectedChartType].label}
-                    {selectedChartType === "average" && (
-                      <> ({Math.round(averageAttendance)}%)</>
-                    )}
+                    Attendance breakdown
                   </th>
                   <th colspan={selectedChartType === "average" ? "2" : ""}>
                     <div style={{ width: "200px", float: "right" }}>
