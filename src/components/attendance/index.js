@@ -434,8 +434,30 @@ function Attendance() {
             <Col>
               <h1>Overall recorded meeting attendance</h1>
             </Col>
-            <Col xs="auto">
+            <Col
+              style={{
+                display: "flex",
+                justifyContent: "right",
+                "padding-right": "0",
+              }}
+            >
               <Stack direction="horizontal" gap={3}>
+                {grouping === "members" && (
+                  <div>
+                    <FontAwesomeIcon
+                      className="input-pre-icon"
+                      icon={faSearch}
+                    />
+                    <Form.Control
+                      className="memberSearch"
+                      type="text"
+                      placeholder="Search for a member..."
+                      value={memberSearch}
+                      onChange={(e) => setMemberSearch(e.target.value)}
+                    />
+                  </div>
+                )}
+
                 <Form.Group as={Row}>
                   <Form.Label column md="auto" className="mt-2">
                     Parliament:
@@ -492,20 +514,6 @@ function Attendance() {
             </Col>
           </Row>
           <Row className="mt-3">
-            <Stack direction="horizontal" gap={3}>
-              {grouping === "members" && (
-                <div className="pt-2 pb-2">
-                  <FontAwesomeIcon className="input-pre-icon" icon={faSearch} />
-                  <Form.Control
-                    className="memberSearch"
-                    type="text"
-                    placeholder="Search for a member..."
-                    value={memberSearch}
-                    onChange={(e) => setMemberSearch(e.target.value)}
-                  />
-                </div>
-              )}
-            </Stack>
             <table
               className={`${
                 ChartTypes[selectedChartType].detailed ? "detailed" : ""
@@ -571,32 +579,34 @@ function Attendance() {
                       <> ({Math.round(averageAttendance)}%)</>
                     )}
                   </th>
-                  <th textAlign="right">
-                    <Dropdown
-                      aria-label="Select chart type"
-                      className="dropdown-select size-sm"
-                      onChange={(e) => setSelectedChartType(e.target.value)}
-                    >
-                      <Dropdown.Toggle>
-                        <Row>
-                          <Col>{ChartTypes[selectedChartType].label}</Col>
-                          <Col xs="auto">
-                            <FontAwesomeIcon icon={faChevronDown} />
-                          </Col>
-                        </Row>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {Object.keys(ChartTypes).map((chartType, index) => {
-                          return (
-                            <Dropdown.Item
-                              onClick={() => setSelectedChartType(chartType)}
-                            >
-                              {ChartTypes[chartType].label}
-                            </Dropdown.Item>
-                          );
-                        })}
-                      </Dropdown.Menu>
-                    </Dropdown>
+                  <th colspan={selectedChartType === "average" ? "2" : ""}>
+                    <div style={{ width: "200px", float: "right" }}>
+                      <Dropdown
+                        aria-label="Select chart type"
+                        className="dropdown-select size-sm"
+                        onChange={(e) => setSelectedChartType(e.target.value)}
+                      >
+                        <Dropdown.Toggle>
+                          <Row>
+                            <Col>{ChartTypes[selectedChartType].label}</Col>
+                            <Col xs="auto">
+                              <FontAwesomeIcon icon={faChevronDown} />
+                            </Col>
+                          </Row>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          {Object.keys(ChartTypes).map((chartType, index) => {
+                            return (
+                              <Dropdown.Item
+                                onClick={() => setSelectedChartType(chartType)}
+                              >
+                                {ChartTypes[chartType].label}
+                              </Dropdown.Item>
+                            );
+                          })}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
                   </th>
                 </tr>
               </thead>
