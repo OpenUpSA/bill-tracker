@@ -523,7 +523,11 @@ h2 {
     pointer-events: none;
     &::after {
       background-image: unset;
-    
     }
   }
+}
+
+.dropdown-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

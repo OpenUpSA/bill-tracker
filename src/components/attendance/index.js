@@ -69,8 +69,10 @@ function Attendance() {
   const [filteredAttendance, setFilteredAttendance] = useState([]);
 
   const [allParties, setAllParties] = useState([]);
+  const [allCommittees, setAllCommittees] = useState([]);
 
   const [filteredByParties, setFilteredByParties] = useState([]);
+  const [filteredByCommittees, setFilteredByCommittees] = useState([]);
 
   const changeParliament = (parliament) => {
     setSelectedParliament(parliament);
@@ -225,7 +227,9 @@ function Attendance() {
   };
 
   const clearFilters = () => {
+    setMemberSearch('');
     setFilteredByParties([]);
+    setFilteredByCommittees([]);
   };
 
   const setupData = () => {
@@ -263,7 +267,9 @@ function Attendance() {
                 attendance.committees
               );
               partyAttendance[data[id].party].committees = [
-                ...new Set(partyAttendance[data[id].party].committees.flat()),
+                ...new Set(
+                  partyAttendance[data[id].party].committees.flat(Infinity)
+                ),
               ];
               partyAttendance[data[id].party]["committees-count"] =
                 partyAttendance[data[id].party].committees.length;
@@ -315,7 +321,7 @@ function Attendance() {
         item["committees"].push(attendance.committees)
       );
 
-      item["committees"] = [...new Set(item["committees"].flat())];
+      item["committees"] = [...new Set(item["committees"].flat(Infinity))];
 
       item["committees-count"] = item["committees"].length;
 
@@ -400,8 +406,12 @@ function Attendance() {
     );
 
     const allPartiesSet = new Set(activeAttendance.map((r) => r.party).sort());
-
     setAllParties(Array.from(allPartiesSet));
+
+    const allCommitteesSet = new Set(
+      activeAttendance.map((r) => r.committees).flat(Infinity)
+    );
+    setAllCommittees(Array.from(allCommitteesSet).sort());
   };
 
   const getDifferentToAveragePercentage = (attendancePercentage) => {
@@ -415,7 +425,7 @@ function Attendance() {
 
   useEffect(() => {
     filterAttendanceData(dataAttendance);
-  }, [dataAttendance, filteredByParties, memberSearch]);
+  }, [dataAttendance, filteredByParties, filteredByCommittees, memberSearch]);
 
   const filterAttendanceData = (data) => {
     setFilteredAttendance(
@@ -430,6 +440,14 @@ function Attendance() {
           return (
             filteredByParties.length === 0 ||
             filteredByParties.includes(row.party)
+          );
+        })
+        .filter((row) => {
+          return (
+            filteredByCommittees.length === 0 ||
+            filteredByCommittees.some((committee) =>
+              row.committees.includes(committee)
+            )
           );
         })
     );
@@ -628,6 +646,69 @@ function Attendance() {
                             ))}
                           </Dropdown.Menu>
                         </Dropdown>
+
+                        {grouping === "members" && (
+                          <Dropdown
+                            className="dropdown-select"
+                            autoClose="outside"
+                          >
+                            <Dropdown.Toggle>
+                              <Row>
+                                <Col>
+                                  Committee (
+                                  {filteredByCommittees.length > 0 &&
+                                    `${filteredByCommittees.length}/`}
+                                  {allCommittees.length})
+                                </Col>
+                                <Col xs="auto">
+                                  <FontAwesomeIcon icon={faChevronDown} />
+                                </Col>
+                              </Row>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              <Dropdown.Item
+                                onClick={() => setFilteredByCommittees([])}
+                              >
+                                <FontAwesomeIcon
+                                  icon={
+                                    filteredByCommittees.length == 0
+                                      ? faSquareCheck
+                                      : faSquare
+                                  }
+                                  className="me-2"
+                                />
+                                All Committees
+                              </Dropdown.Item>
+
+                              {allCommittees.map((committee, index) => (
+                                <Dropdown.Item
+                                  key={committee}
+                                  onClick={() =>
+                                    setFilteredByCommittees(
+                                      filteredByCommittees.includes(committee)
+                                        ? filteredByCommittees.filter(
+                                            (selectedCommittee) =>
+                                              selectedCommittee !== committee
+                                          )
+                                        : [...filteredByCommittees, committee]
+                                    )
+                                  }
+                                  title={committee}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={
+                                      filteredByCommittees.includes(committee)
+                                        ? faSquareCheck
+                                        : faSquare
+                                    }
+                                    className="me-2"
+                                  />
+                                  {committee}
+                                </Dropdown.Item>
+                              ))}
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        )}
                         <Button variant="link" onClick={clearFilters}>
                           Clear all
                         </Button>
