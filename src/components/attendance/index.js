@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -136,9 +136,9 @@ function Attendance() {
           <div className="tooltip-title">
             <span className="chip">
               {tooltipAttendance.party === tooltipAttendance.label ? (
-                <>Party</>
+                <Fragment>Party</Fragment>
               ) : (
-                <>Member</>
+                <Fragment>Member</Fragment>
               )}
             </span>
             <br />
@@ -148,7 +148,7 @@ function Attendance() {
             <table>
               <tbody>
                 {!ChartTypes[selectedChartType].detailed ? (
-                  <>
+                  <Fragment>
                     {attendedGroup && (
                       <tr
                         className={
@@ -179,9 +179,9 @@ function Attendance() {
                         <td>({Math.round(missedGroup.percentage)}%)</td>
                       </tr>
                     )}
-                  </>
+                  </Fragment>
                 ) : (
-                  <>
+                  <Fragment>
                     {tooltipAttendance["attendance"]?.map((attendance) => (
                       <tr
                         key={attendance.state}
@@ -206,7 +206,7 @@ function Attendance() {
                         </td>
                       </tr>
                     ))}
-                  </>
+                  </Fragment>
                 )}
               </tbody>
             </table>
@@ -482,7 +482,7 @@ function Attendance() {
   };
 
   return (
-    <>
+    <Fragment>
       <PMHeader />
 
       <PMTabs active="attendance-tracker" />
@@ -840,7 +840,7 @@ function Attendance() {
                         </span>{" "}
                       </td>
                       {selectedChartType === "average" && (
-                        <>
+                        <Fragment>
                           <td width="50%" className="no-padding-horizontal">
                             <div
                               className={`bar-background no-border-radius-right half ${
@@ -936,7 +936,7 @@ function Attendance() {
                               &nbsp;
                             </div>
                           </td>
-                        </>
+                        </Fragment>
                       )}
                       {selectedChartType !== "average" && (
                         <td
@@ -1033,7 +1033,7 @@ function Attendance() {
                           }
                         >
                           {selectedChartType === "average" && (
-                            <>
+                            <Fragment>
                               <li>
                                 <span className="bar state-attended">
                                   Above
@@ -1048,11 +1048,11 @@ function Attendance() {
                                 &mdash; Attendance average (
                                 {Math.round(averageAttendance)}%)
                               </li>
-                            </>
+                            </Fragment>
                           )}
                           {selectedChartType !== "average" &&
                             ChartTypes[selectedChartType].detailed && (
-                              <>
+                              <Fragment>
                                 {Object.keys(attendanceStates)
                                   .filter((state) => state !== "U")
                                   .map((state) => (
@@ -1076,11 +1076,11 @@ function Attendance() {
                                       {attendanceStates[state].label}
                                     </li>
                                   ))}
-                              </>
+                              </Fragment>
                             )}
                           {selectedChartType !== "average" &&
                             !ChartTypes[selectedChartType].detailed && (
-                              <>
+                              <Fragment>
                                 <li>
                                   <span className="bar state-attended">
                                     Attended
@@ -1093,18 +1093,18 @@ function Attendance() {
                                   </span>{" "}
                                   Meetings missed
                                 </li>
-                              </>
+                              </Fragment>
                             )}
                         </ul>
                         {selectedChartType !== "average" &&
                           ChartTypes[selectedChartType].detailed && (
-                            <>
+                            <Fragment>
                               <FontAwesomeIcon
                                 style={{ marginLeft: "auto" }}
                                 icon={faArrowPointer}
                               />
                               <div>Click to isolate a category</div>
-                            </>
+                            </Fragment>
                           )}
                       </Stack>
                     </td>
@@ -1125,7 +1125,7 @@ function Attendance() {
       >
         Povide feedback
       </a>
-    </>
+    </Fragment>
   );
 }
 
