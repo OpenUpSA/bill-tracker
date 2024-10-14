@@ -227,7 +227,7 @@ function Attendance() {
   };
 
   const clearFilters = () => {
-    setMemberSearch('');
+    setMemberSearch("");
     setFilteredByParties([]);
     setFilteredByCommittees([]);
   };
@@ -803,6 +803,7 @@ function Attendance() {
                             {Object.keys(ChartTypes).map((chartType, index) => {
                               return (
                                 <Dropdown.Item
+                                  key={index}
                                   onClick={() =>
                                     setSelectedChartType(chartType)
                                   }
