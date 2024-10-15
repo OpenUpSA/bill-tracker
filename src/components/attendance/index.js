@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -6,13 +6,17 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Dropdown from "react-bootstrap/Dropdown";
 import Stack from "react-bootstrap/Stack";
+import Accordion from "react-bootstrap/Accordion";
+import Button from "react-bootstrap/Button";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,
-  faSearch,
+  faSquareCheck,
+  faSquare,
   faArrowPointer,
   faUser,
+  faFilter,
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./index.scss";
@@ -62,6 +66,13 @@ const ChartTypes = {
 
 function Attendance() {
   const [selectedParliament, setSelectedParliament] = useState("all");
+  const [filteredAttendance, setFilteredAttendance] = useState([]);
+
+  const [allParties, setAllParties] = useState([]);
+  const [allCommittees, setAllCommittees] = useState([]);
+
+  const [filteredByParties, setFilteredByParties] = useState([]);
+  const [filteredByCommittees, setFilteredByCommittees] = useState([]);
 
   const changeParliament = (parliament) => {
     setSelectedParliament(parliament);
@@ -71,7 +82,7 @@ function Attendance() {
 
   const [averageAttendance, setAverageAttendance] = useState(50);
   const [maxAttendance, setMaxAttendance] = useState(0);
-  const [dataAttendance, setDataAttendance] = useState(null);
+  const [dataAttendance, setDataAttendance] = useState([]);
   const [grouping, setGrouping] = useState("members");
   const [sortedDirection, setSortedDirection] = useState("desc");
   const [sortedField, setSortedField] = useState("attendance-count");
@@ -125,9 +136,9 @@ function Attendance() {
           <div className="tooltip-title">
             <span className="chip">
               {tooltipAttendance.party === tooltipAttendance.label ? (
-                <>Party</>
+                <Fragment>Party</Fragment>
               ) : (
-                <>Member</>
+                <Fragment>Member</Fragment>
               )}
             </span>
             <br />
@@ -137,7 +148,7 @@ function Attendance() {
             <table>
               <tbody>
                 {!ChartTypes[selectedChartType].detailed ? (
-                  <>
+                  <Fragment>
                     {attendedGroup && (
                       <tr
                         className={
@@ -168,9 +179,9 @@ function Attendance() {
                         <td>({Math.round(missedGroup.percentage)}%)</td>
                       </tr>
                     )}
-                  </>
+                  </Fragment>
                 ) : (
-                  <>
+                  <Fragment>
                     {tooltipAttendance["attendance"]?.map((attendance) => (
                       <tr
                         key={attendance.state}
@@ -195,7 +206,7 @@ function Attendance() {
                         </td>
                       </tr>
                     ))}
-                  </>
+                  </Fragment>
                 )}
               </tbody>
             </table>
@@ -213,6 +224,12 @@ function Attendance() {
   const hideTooltip = () => {
     setTooltipAttendance({});
     setTooltipShown(false);
+  };
+
+  const clearFilters = () => {
+    setMemberSearch("");
+    setFilteredByParties([]);
+    setFilteredByCommittees([]);
   };
 
   const setupData = () => {
@@ -250,7 +267,9 @@ function Attendance() {
                 attendance.committees
               );
               partyAttendance[data[id].party].committees = [
-                ...new Set(partyAttendance[data[id].party].committees.flat()),
+                ...new Set(
+                  partyAttendance[data[id].party].committees.flat(Infinity)
+                ),
               ];
               partyAttendance[data[id].party]["committees-count"] =
                 partyAttendance[data[id].party].committees.length;
@@ -302,7 +321,7 @@ function Attendance() {
         item["committees"].push(attendance.committees)
       );
 
-      item["committees"] = [...new Set(item["committees"].flat())];
+      item["committees"] = [...new Set(item["committees"].flat(Infinity))];
 
       item["committees-count"] = item["committees"].length;
 
@@ -385,6 +404,14 @@ function Attendance() {
         return item["attendance-count"] > max ? item["attendance-count"] : max;
       }, 0)
     );
+
+    const allPartiesSet = new Set(activeAttendance.map((r) => r.party).sort());
+    setAllParties(Array.from(allPartiesSet));
+
+    const allCommitteesSet = new Set(
+      activeAttendance.map((r) => r.committees).flat(Infinity)
+    );
+    setAllCommittees(Array.from(allCommitteesSet).sort());
   };
 
   const getDifferentToAveragePercentage = (attendancePercentage) => {
@@ -395,6 +422,36 @@ function Attendance() {
   useEffect(() => {
     setupData();
   }, [data, selectedParliament, grouping]);
+
+  useEffect(() => {
+    filterAttendanceData(dataAttendance);
+  }, [dataAttendance, filteredByParties, filteredByCommittees, memberSearch]);
+
+  const filterAttendanceData = (data) => {
+    setFilteredAttendance(
+      data
+        .filter((row) => {
+          if (grouping === "members") {
+            return row.label.toLowerCase().includes(memberSearch.toLowerCase());
+          }
+          return true;
+        })
+        .filter((row) => {
+          return (
+            filteredByParties.length === 0 ||
+            filteredByParties.includes(row.party)
+          );
+        })
+        .filter((row) => {
+          return (
+            filteredByCommittees.length === 0 ||
+            filteredByCommittees.some((committee) =>
+              row.committees.includes(committee)
+            )
+          );
+        })
+    );
+  };
 
   const setSort = (fieldToSortBy) => {
     setSortedField(fieldToSortBy);
@@ -425,7 +482,7 @@ function Attendance() {
   };
 
   return (
-    <>
+    <Fragment>
       <PMHeader />
 
       <PMTabs active="attendance-tracker" />
@@ -439,26 +496,10 @@ function Attendance() {
               style={{
                 display: "flex",
                 justifyContent: "right",
-                "padding-right": "0",
+                paddingRight: "0",
               }}
             >
               <Stack direction="horizontal" gap={3}>
-                {grouping === "members" && (
-                  <div>
-                    <FontAwesomeIcon
-                      className="input-pre-icon"
-                      icon={faSearch}
-                    />
-                    <Form.Control
-                      className="memberSearch"
-                      type="text"
-                      placeholder="Search for a member..."
-                      value={memberSearch}
-                      onChange={(e) => setMemberSearch(e.target.value)}
-                    />
-                  </div>
-                )}
-
                 <Form.Group as={Row}>
                   <Form.Label column md="auto" className="mt-2">
                     Parliament:
@@ -483,6 +524,7 @@ function Attendance() {
                           (parliament, index) => {
                             return (
                               <Dropdown.Item
+                                key={lookup.parliaments[parliament].name}
                                 onClick={() =>
                                   setSelectedParliament(parliament)
                                 }
@@ -515,410 +557,563 @@ function Attendance() {
             </Col>
           </Row>
           <Row className="mt-3">
-            <h2 className="sectionHeader">
-              <FontAwesomeIcon icon={faUser} />
-              List of {grouping === "party" ? "parties" : "members"}{" "}
-              {dataAttendance && <>({dataAttendance.length})</>}
-            </h2>
-            <table
-              className={`${
-                ChartTypes[selectedChartType].detailed ? "detailed" : ""
-              }`}
-            >
-              <thead>
-                <tr>
-                  <SortedColumn
-                    sortThisfield="label"
-                    heading={grouping === "party" ? "Party" : "Name"}
-                    setSort={setSort}
-                    sortedField={sortedField}
-                    sortedDirection={sortedDirection}
-                  />
+            <Col md={2}>
+              <div className="sidebar">
+                <Accordion
+                  className="no-button"
+                  defaultActiveKey={["0", "1"]}
+                  alwaysOpen
+                >
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>
+                      <FontAwesomeIcon icon={faFilter} /> Filter{" "}
+                      {grouping === "party" ? "parties" : "members"}
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <Stack gap={3}>
+                        <label>
+                          Showing: {filteredAttendance.length} of{" "}
+                          {dataAttendance.length}
+                        </label>
 
-                  <SortedColumn
-                    sortThisfield={
-                      grouping === "party" ? "member-count" : "party"
-                    }
-                    heading={grouping === "party" ? "Members" : "Party"}
-                    setSort={setSort}
-                    sortedField={sortedField}
-                    sortedDirection={sortedDirection}
-                  />
+                        {grouping === "members" && (
+                          <div className="form-input-container">
+                            <Form.Control
+                              type="text"
+                              placeholder="Filter by name..."
+                              className="form-input"
+                              onChange={(e) => setMemberSearch(e.target.value)}
+                            />
+                          </div>
+                        )}
 
-                  {grouping === "members" && (
+                        <Dropdown
+                          className="dropdown-select"
+                          autoClose="outside"
+                        >
+                          <Dropdown.Toggle>
+                            <Row>
+                              <Col>
+                                Party (
+                                {filteredByParties.length > 0 &&
+                                  `${filteredByParties.length}/`}
+                                {allParties.length})
+                              </Col>
+                              <Col xs="auto">
+                                <FontAwesomeIcon icon={faChevronDown} />
+                              </Col>
+                            </Row>
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            <Dropdown.Item
+                              onClick={() => setFilteredByParties([])}
+                            >
+                              <FontAwesomeIcon
+                                icon={
+                                  filteredByParties.length == 0
+                                    ? faSquareCheck
+                                    : faSquare
+                                }
+                                className="me-2"
+                              />
+                              All Parties
+                            </Dropdown.Item>
+
+                            {allParties.map((party, index) => (
+                              <Dropdown.Item
+                                key={party}
+                                onClick={() =>
+                                  setFilteredByParties(
+                                    filteredByParties.includes(party)
+                                      ? filteredByParties.filter(
+                                          (selectedParty) =>
+                                            selectedParty !== party
+                                        )
+                                      : [...filteredByParties, party]
+                                  )
+                                }
+                              >
+                                <FontAwesomeIcon
+                                  icon={
+                                    filteredByParties.includes(party)
+                                      ? faSquareCheck
+                                      : faSquare
+                                  }
+                                  className="me-2"
+                                />
+                                {party}
+                              </Dropdown.Item>
+                            ))}
+                          </Dropdown.Menu>
+                        </Dropdown>
+
+                        {grouping === "members" && (
+                          <Dropdown
+                            className="dropdown-select"
+                            autoClose="outside"
+                          >
+                            <Dropdown.Toggle>
+                              <Row>
+                                <Col>
+                                  Committee (
+                                  {filteredByCommittees.length > 0 &&
+                                    `${filteredByCommittees.length}/`}
+                                  {allCommittees.length})
+                                </Col>
+                                <Col xs="auto">
+                                  <FontAwesomeIcon icon={faChevronDown} />
+                                </Col>
+                              </Row>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              <Dropdown.Item
+                                onClick={() => setFilteredByCommittees([])}
+                              >
+                                <FontAwesomeIcon
+                                  icon={
+                                    filteredByCommittees.length == 0
+                                      ? faSquareCheck
+                                      : faSquare
+                                  }
+                                  className="me-2"
+                                />
+                                All Committees
+                              </Dropdown.Item>
+
+                              {allCommittees.map((committee, index) => (
+                                <Dropdown.Item
+                                  key={committee}
+                                  onClick={() =>
+                                    setFilteredByCommittees(
+                                      filteredByCommittees.includes(committee)
+                                        ? filteredByCommittees.filter(
+                                            (selectedCommittee) =>
+                                              selectedCommittee !== committee
+                                          )
+                                        : [...filteredByCommittees, committee]
+                                    )
+                                  }
+                                  title={committee}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={
+                                      filteredByCommittees.includes(committee)
+                                        ? faSquareCheck
+                                        : faSquare
+                                    }
+                                    className="me-2"
+                                  />
+                                  {committee}
+                                </Dropdown.Item>
+                              ))}
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        )}
+                        <Button variant="link" onClick={clearFilters}>
+                          Clear all
+                        </Button>
+                      </Stack>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </div>
+            </Col>
+            <Col>
+              <h2 className="sectionHeader">
+                <FontAwesomeIcon icon={faUser} />
+                List of {grouping === "party" ? "parties" : "members"} (
+                {filteredAttendance.length})
+              </h2>
+              <table
+                className={`${
+                  ChartTypes[selectedChartType].detailed ? "detailed" : ""
+                }`}
+              >
+                <thead>
+                  <tr>
                     <SortedColumn
-                      sortThisfield="committees-count"
-                      heading="Committee Memberships"
+                      sortThisfield="label"
+                      heading={grouping === "party" ? "Party" : "Name"}
                       setSort={setSort}
                       sortedField={sortedField}
                       sortedDirection={sortedDirection}
                     />
-                  )}
 
-                  <SortedColumn
-                    sortThisfield="attendance-count"
-                    heading="Possible Meetings"
-                    setSort={setSort}
-                    sortedField={sortedField}
-                    sortedDirection={sortedDirection}
-                  />
-
-                  <SortedColumn
-                    sortThisfield="attended-count"
-                    heading="Attended (value)"
-                    setSort={setSort}
-                    sortedField={sortedField}
-                    sortedDirection={sortedDirection}
-                  />
-
-                  <SortedColumn
-                    sortThisfield="attendance-percentage"
-                    heading="Attended (%)"
-                    setSort={setSort}
-                    sortedField={sortedField}
-                    sortedDirection={sortedDirection}
-                  />
-
-                  <th>
-                    Attendance breakdown
-                  </th>
-                  <th colspan={selectedChartType === "average" ? "2" : ""}>
-                    <div style={{ width: "200px", float: "right" }}>
-                      <Dropdown
-                        aria-label="Select chart type"
-                        className="dropdown-select size-sm"
-                        onChange={(e) => setSelectedChartType(e.target.value)}
-                      >
-                        <Dropdown.Toggle>
-                          <Row>
-                            <Col>{ChartTypes[selectedChartType].label}</Col>
-                            <Col xs="auto">
-                              <FontAwesomeIcon icon={faChevronDown} />
-                            </Col>
-                          </Row>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {Object.keys(ChartTypes).map((chartType, index) => {
-                            return (
-                              <Dropdown.Item
-                                onClick={() => setSelectedChartType(chartType)}
-                              >
-                                {ChartTypes[chartType].label}
-                              </Dropdown.Item>
-                            );
-                          })}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {dataAttendance &&
-                  dataAttendance
-                    .filter((row) => {
-                      if (grouping === "members") {
-                        return row.label
-                          .toLowerCase()
-                          .includes(memberSearch.toLowerCase());
+                    <SortedColumn
+                      sortThisfield={
+                        grouping === "party" ? "member-count" : "party"
                       }
-                      return true;
-                    })
-                    .map((row) => (
-                      <tr key={row.label}>
-                        <td className="no-word-break">{row.label}</td>
-                        <td className="no-word-break">
-                          {grouping === "party"
-                            ? row["member-count"]
-                            : shortPartyName(row["party"])}
-                        </td>
-                        {grouping === "members" && (
-                          <td>{row["committees-count"]}</td>
-                        )}
-                        <td>{row["attendance-count"].toLocaleString()}</td>
-                        <td className="no-word-break">
-                          {row["attended-count"].toLocaleString()}
-                        </td>
-                        <td className="no-word-break">
-                          <span className="percentageAttendance">
-                            {Math.round(
-                              parseFloat(row["attendance-percentage"])
-                            )}
-                            %
-                          </span>{" "}
-                        </td>
-                        {selectedChartType === "average" && (
-                          <>
-                            <td width="50%" className="no-padding-horizontal">
-                              <div
-                                className={`bar-background no-border-radius-right half ${
-                                  getDifferentToAveragePercentage(
-                                    row["attendance-percentage"]
-                                  ) <= 0 && "align-right"
-                                }`}
-                              >
-                                {getDifferentToAveragePercentage(
+                      heading={grouping === "party" ? "Members" : "Party"}
+                      setSort={setSort}
+                      sortedField={sortedField}
+                      sortedDirection={sortedDirection}
+                    />
+
+                    {grouping === "members" && (
+                      <SortedColumn
+                        sortThisfield="committees-count"
+                        heading="Committee Memberships"
+                        setSort={setSort}
+                        sortedField={sortedField}
+                        sortedDirection={sortedDirection}
+                      />
+                    )}
+
+                    <SortedColumn
+                      sortThisfield="attendance-count"
+                      heading="Possible Meetings"
+                      setSort={setSort}
+                      sortedField={sortedField}
+                      sortedDirection={sortedDirection}
+                    />
+
+                    <SortedColumn
+                      sortThisfield="attended-count"
+                      heading="Attended (value)"
+                      setSort={setSort}
+                      sortedField={sortedField}
+                      sortedDirection={sortedDirection}
+                    />
+
+                    <SortedColumn
+                      sortThisfield="attendance-percentage"
+                      heading="Attended (%)"
+                      setSort={setSort}
+                      sortedField={sortedField}
+                      sortedDirection={sortedDirection}
+                    />
+
+                    <th>Attendance breakdown</th>
+                    <th colSpan={selectedChartType === "average" ? "2" : ""}>
+                      <div style={{ width: "200px", float: "right" }}>
+                        <Dropdown
+                          aria-label="Select chart type"
+                          className="dropdown-select size-sm"
+                          onChange={(e) => setSelectedChartType(e.target.value)}
+                        >
+                          <Dropdown.Toggle>
+                            <Row>
+                              <Col>{ChartTypes[selectedChartType].label}</Col>
+                              <Col xs="auto">
+                                <FontAwesomeIcon icon={faChevronDown} />
+                              </Col>
+                            </Row>
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {Object.keys(ChartTypes).map((chartType, index) => {
+                              return (
+                                <Dropdown.Item
+                                  key={index}
+                                  onClick={() =>
+                                    setSelectedChartType(chartType)
+                                  }
+                                >
+                                  {ChartTypes[chartType].label}
+                                </Dropdown.Item>
+                              );
+                            })}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredAttendance.map((row) => (
+                    <tr key={row.label}>
+                      <td className="no-word-break">{row.label}</td>
+                      <td className="no-word-break">
+                        {grouping === "party"
+                          ? row["member-count"]
+                          : shortPartyName(row["party"])}
+                      </td>
+                      {grouping === "members" && (
+                        <td>{row["committees-count"]}</td>
+                      )}
+                      <td>{row["attendance-count"].toLocaleString()}</td>
+                      <td className="no-word-break">
+                        {row["attended-count"].toLocaleString()}
+                      </td>
+                      <td className="no-word-break">
+                        <span className="percentageAttendance">
+                          {Math.round(parseFloat(row["attendance-percentage"]))}
+                          %
+                        </span>{" "}
+                      </td>
+                      {selectedChartType === "average" && (
+                        <Fragment>
+                          <td width="50%" className="no-padding-horizontal">
+                            <div
+                              className={`bar-background no-border-radius-right half ${
+                                getDifferentToAveragePercentage(
                                   row["attendance-percentage"]
-                                ) <= 0 && (
-                                  <div
-                                    className={`bar state-${
-                                      getDifferentToAveragePercentage(
-                                        row["attendance-percentage"]
-                                      ) > 0
-                                        ? "more-than-average"
-                                        : "less-than-average"
-                                    }`}
-                                    style={{
-                                      width: `${Math.min(
-                                        Math.abs(
-                                          getDifferentToAveragePercentage(
-                                            row["attendance-percentage"]
-                                          )
-                                        ),
-                                        100
-                                      )}%`,
-                                    }}
-                                  >
-                                    {getDifferentToAveragePercentage(
+                                ) <= 0 && "align-right"
+                              }`}
+                            >
+                              {getDifferentToAveragePercentage(
+                                row["attendance-percentage"]
+                              ) <= 0 && (
+                                <div
+                                  className={`bar state-${
+                                    getDifferentToAveragePercentage(
                                       row["attendance-percentage"]
-                                    ) > 0 && "+"}
-                                    {Math.round(
-                                      getDifferentToAveragePercentage(
-                                        row["attendance-percentage"]
-                                      )
-                                    )}
-                                    %
-                                  </div>
-                                )}
-                                &nbsp;
-                              </div>
-                            </td>
-                            <td className="dotted-border-right">
-                              <div
-                                className={`bar-background no-border-radius-left no-border-radius-right`}
-                              >
-                                &nbsp;
-                              </div>
-                            </td>
-                            <td width="50%" className="no-padding-horizontal">
-                              <div
-                                className={`bar-background no-border-radius-left half ${
-                                  getDifferentToAveragePercentage(
+                                    ) > 0
+                                      ? "more-than-average"
+                                      : "less-than-average"
+                                  }`}
+                                  style={{
+                                    width: `${Math.min(
+                                      Math.abs(
+                                        getDifferentToAveragePercentage(
+                                          row["attendance-percentage"]
+                                        )
+                                      ),
+                                      100
+                                    )}%`,
+                                  }}
+                                >
+                                  {getDifferentToAveragePercentage(
                                     row["attendance-percentage"]
-                                  ) <= 0 && "align-right"
-                                }`}
-                              >
-                                {getDifferentToAveragePercentage(
-                                  row["attendance-percentage"]
-                                ) > 0 && (
-                                  <div
-                                    className={`bar state-${
-                                      getDifferentToAveragePercentage(
-                                        row["attendance-percentage"]
-                                      ) > 0
-                                        ? "more-than-average"
-                                        : "less-than-average"
-                                    }`}
-                                    style={{
-                                      width: `${Math.min(
-                                        Math.abs(
-                                          getDifferentToAveragePercentage(
-                                            row["attendance-percentage"]
-                                          )
-                                        ),
-                                        100
-                                      )}%`,
-                                    }}
-                                  >
-                                    {getDifferentToAveragePercentage(
+                                  ) > 0 && "+"}
+                                  {Math.round(
+                                    getDifferentToAveragePercentage(
                                       row["attendance-percentage"]
-                                    ) > 0 && "+"}
-                                    {Math.round(
-                                      getDifferentToAveragePercentage(
-                                        row["attendance-percentage"]
-                                      )
-                                    )}
-                                    %
-                                  </div>
-                                )}
-                                &nbsp;
-                              </div>
-                            </td>
-                          </>
-                        )}
-                        {selectedChartType !== "average" && (
-                          <td
-                            colSpan="2"
-                            width="100%"
-                            onMouseEnter={() => showTooltip(row)}
-                            onMouseLeave={hideTooltip}
-                            onMouseMove={(e) =>
-                              setTooltipMousePosition({
-                                x: e.pageX,
-                                y: e.pageY,
-                              })
-                            }
-                            className={
-                              highlightedAttendanceState !== ""
-                                ? "state-highlighting-on"
-                                : ""
-                            }
-                          >
-                            <div className="bar-background">
-                              {row[
-                                ChartTypes[selectedChartType].detailed
-                                  ? "attendance"
-                                  : "grouped-attendance"
-                              ]
-                                .sort((a, b) => {
-                                  return ChartTypes[selectedChartType].detailed
-                                    ? b.state.localeCompare(a.state)
-                                    : a.state.localeCompare(b.state);
-                                })
-                                .map((attendance) => (
-                                  <div
-                                    key={attendance.state}
-                                    onMouseEnter={() =>
-                                      setTooltipAttendanceState(
-                                        attendance.state
-                                      )
-                                    }
-                                    onMouseLeave={() =>
-                                      setTooltipAttendanceState("")
-                                    }
-                                    onClick={() =>
-                                      toggleHighlightedAttendanceState(
-                                        attendance.state
-                                      )
-                                    }
-                                    className={`bar state-${
-                                      attendance.state
-                                    } state-grouping-${
-                                      ChartTypes[selectedChartType].detailed
-                                        ? attendanceStates[attendance.state]
-                                            .group
-                                        : attendance.group
-                                    } ${
-                                      highlightedAttendanceState ===
-                                      attendance.state
-                                        ? "state-highlighted"
-                                        : ""
-                                    }`}
-                                    style={{
-                                      width: `${
-                                        (attendance.count /
-                                          (ChartTypes[selectedChartType]
-                                            .percentage
-                                            ? row["attendance-count"]
-                                            : maxAttendance)) *
-                                        100
-                                      }%`,
-                                    }}
-                                  >
-                                    {ChartTypes[selectedChartType].percentage
-                                      ? `${Math.round(
-                                          parseFloat(
-                                            (attendance.count /
-                                              row["attendance-count"]) *
-                                              100
-                                          )
-                                        )}%`
-                                      : attendance.count.toLocaleString()}
-                                  </div>
-                                ))}
+                                    )
+                                  )}
+                                  %
+                                </div>
+                              )}
+                              &nbsp;
                             </div>
                           </td>
-                        )}
-                      </tr>
-                    ))}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <td colSpan="100">
-                    <Stack direction="horizontal" gap={2}>
-                      <ul
-                        className={
-                          highlightedAttendanceState !== ""
-                            ? "state-highlighting-on stateLegend"
-                            : "stateLegend"
-                        }
-                      >
-                        {selectedChartType === "average" && (
-                          <>
-                            <li>
-                              <span className="bar state-attended">Above</span>{" "}
-                              Above average
-                            </li>
-                            <li>
-                              <span className="bar state-missed">Below</span>{" "}
-                              Below average
-                            </li>
-                            <li>
-                              &mdash; Attendance average (
-                              {Math.round(averageAttendance)}%)
-                            </li>
-                          </>
-                        )}
-                        {selectedChartType !== "average" &&
-                          ChartTypes[selectedChartType].detailed && (
-                            <>
-                              {Object.keys(attendanceStates)
-                                .filter((state) => state !== "U")
-                                .map((state) => (
-                                  <li
-                                    key={state}
-                                    className={`state-${state} ${
-                                      highlightedAttendanceState === state
-                                        ? "state-highlighted"
-                                        : ""
-                                    }`}
-                                  >
-                                    <span
-                                      className={`bar state-${state} ${
+                          <td className="dotted-border-right">
+                            <div
+                              className={`bar-background no-border-radius-left no-border-radius-right`}
+                            >
+                              &nbsp;
+                            </div>
+                          </td>
+                          <td width="50%" className="no-padding-horizontal">
+                            <div
+                              className={`bar-background no-border-radius-left half ${
+                                getDifferentToAveragePercentage(
+                                  row["attendance-percentage"]
+                                ) <= 0 && "align-right"
+                              }`}
+                            >
+                              {getDifferentToAveragePercentage(
+                                row["attendance-percentage"]
+                              ) > 0 && (
+                                <div
+                                  className={`bar state-${
+                                    getDifferentToAveragePercentage(
+                                      row["attendance-percentage"]
+                                    ) > 0
+                                      ? "more-than-average"
+                                      : "less-than-average"
+                                  }`}
+                                  style={{
+                                    width: `${Math.min(
+                                      Math.abs(
+                                        getDifferentToAveragePercentage(
+                                          row["attendance-percentage"]
+                                        )
+                                      ),
+                                      100
+                                    )}%`,
+                                  }}
+                                >
+                                  {getDifferentToAveragePercentage(
+                                    row["attendance-percentage"]
+                                  ) > 0 && "+"}
+                                  {Math.round(
+                                    getDifferentToAveragePercentage(
+                                      row["attendance-percentage"]
+                                    )
+                                  )}
+                                  %
+                                </div>
+                              )}
+                              &nbsp;
+                            </div>
+                          </td>
+                        </Fragment>
+                      )}
+                      {selectedChartType !== "average" && (
+                        <td
+                          colSpan="2"
+                          width="100%"
+                          onMouseEnter={() => showTooltip(row)}
+                          onMouseLeave={hideTooltip}
+                          onMouseMove={(e) =>
+                            setTooltipMousePosition({
+                              x: e.pageX,
+                              y: e.pageY,
+                            })
+                          }
+                          className={
+                            highlightedAttendanceState !== ""
+                              ? "state-highlighting-on"
+                              : ""
+                          }
+                        >
+                          <div className="bar-background">
+                            {row[
+                              ChartTypes[selectedChartType].detailed
+                                ? "attendance"
+                                : "grouped-attendance"
+                            ]
+                              .sort((a, b) => {
+                                return ChartTypes[selectedChartType].detailed
+                                  ? b.state.localeCompare(a.state)
+                                  : a.state.localeCompare(b.state);
+                              })
+                              .map((attendance) => (
+                                <div
+                                  key={attendance.state}
+                                  onMouseEnter={() =>
+                                    setTooltipAttendanceState(attendance.state)
+                                  }
+                                  onMouseLeave={() =>
+                                    setTooltipAttendanceState("")
+                                  }
+                                  onClick={() =>
+                                    toggleHighlightedAttendanceState(
+                                      attendance.state
+                                    )
+                                  }
+                                  className={`bar state-${
+                                    attendance.state
+                                  } state-grouping-${
+                                    ChartTypes[selectedChartType].detailed
+                                      ? attendanceStates[attendance.state].group
+                                      : attendance.group
+                                  } ${
+                                    highlightedAttendanceState ===
+                                    attendance.state
+                                      ? "state-highlighted"
+                                      : ""
+                                  }`}
+                                  style={{
+                                    width: `${
+                                      (attendance.count /
+                                        (ChartTypes[selectedChartType]
+                                          .percentage
+                                          ? row["attendance-count"]
+                                          : maxAttendance)) *
+                                      100
+                                    }%`,
+                                  }}
+                                >
+                                  {ChartTypes[selectedChartType].percentage
+                                    ? `${Math.round(
+                                        parseFloat(
+                                          (attendance.count /
+                                            row["attendance-count"]) *
+                                            100
+                                        )
+                                      )}%`
+                                    : attendance.count.toLocaleString()}
+                                </div>
+                              ))}
+                          </div>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colSpan="100">
+                      <Stack direction="horizontal" gap={2}>
+                        <ul
+                          className={
+                            highlightedAttendanceState !== ""
+                              ? "state-highlighting-on stateLegend"
+                              : "stateLegend"
+                          }
+                        >
+                          {selectedChartType === "average" && (
+                            <Fragment>
+                              <li>
+                                <span className="bar state-attended">
+                                  Above
+                                </span>{" "}
+                                Above average
+                              </li>
+                              <li>
+                                <span className="bar state-missed">Below</span>{" "}
+                                Below average
+                              </li>
+                              <li>
+                                &mdash; Attendance average (
+                                {Math.round(averageAttendance)}%)
+                              </li>
+                            </Fragment>
+                          )}
+                          {selectedChartType !== "average" &&
+                            ChartTypes[selectedChartType].detailed && (
+                              <Fragment>
+                                {Object.keys(attendanceStates)
+                                  .filter((state) => state !== "U")
+                                  .map((state) => (
+                                    <li
+                                      key={state}
+                                      className={`state-${state} ${
                                         highlightedAttendanceState === state
                                           ? "state-highlighted"
                                           : ""
                                       }`}
                                     >
-                                      {state}
-                                    </span>{" "}
-                                    {attendanceStates[state].label}
-                                  </li>
-                                ))}
-                            </>
-                          )}
+                                      <span
+                                        className={`bar state-${state} ${
+                                          highlightedAttendanceState === state
+                                            ? "state-highlighted"
+                                            : ""
+                                        }`}
+                                      >
+                                        {state}
+                                      </span>{" "}
+                                      {attendanceStates[state].label}
+                                    </li>
+                                  ))}
+                              </Fragment>
+                            )}
+                          {selectedChartType !== "average" &&
+                            !ChartTypes[selectedChartType].detailed && (
+                              <Fragment>
+                                <li>
+                                  <span className="bar state-attended">
+                                    Attended
+                                  </span>{" "}
+                                  Meetings attended
+                                </li>
+                                <li>
+                                  <span className="bar state-missed">
+                                    Missed
+                                  </span>{" "}
+                                  Meetings missed
+                                </li>
+                              </Fragment>
+                            )}
+                        </ul>
                         {selectedChartType !== "average" &&
-                          !ChartTypes[selectedChartType].detailed && (
-                            <>
-                              <li>
-                                <span className="bar state-attended">
-                                  Attended
-                                </span>{" "}
-                                Meetings attended
-                              </li>
-                              <li>
-                                <span className="bar state-missed">Missed</span>{" "}
-                                Meetings missed
-                              </li>
-                            </>
+                          ChartTypes[selectedChartType].detailed && (
+                            <Fragment>
+                              <FontAwesomeIcon
+                                style={{ marginLeft: "auto" }}
+                                icon={faArrowPointer}
+                              />
+                              <div>Click to isolate a category</div>
+                            </Fragment>
                           )}
-                      </ul>
-                      {selectedChartType !== "average" &&
-                        ChartTypes[selectedChartType].detailed && (
-                          <>
-                            <FontAwesomeIcon
-                              style={{ marginLeft: "auto" }}
-                              icon={faArrowPointer}
-                            />
-                            <div>Click to isolate a category</div>
-                          </>
-                        )}
-                    </Stack>
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-            {tooltipShown && <AttendanceTooltip />}
+                      </Stack>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+              {tooltipShown && <AttendanceTooltip />}
+            </Col>
           </Row>
         </div>
       </Container>
@@ -931,7 +1126,7 @@ function Attendance() {
       >
         Povide feedback
       </a>
-    </>
+    </Fragment>
   );
 }
 

@@ -144,3 +144,10 @@ h1 {
     background-repeat: no-repeat;
   }
 }
+
+.btn {
+  &.btn-link {
+    color: #000;
+    text-align: left;
+  }
+}

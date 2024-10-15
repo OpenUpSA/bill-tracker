@@ -517,3 +517,17 @@ h2 {
     margin-right: 1em;
   }
 }
+
+.no-button {
+  .accordion-button {
+    pointer-events: none;
+    &::after {
+      background-image: unset;
+    }
+  }
+}
+
+.dropdown-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
