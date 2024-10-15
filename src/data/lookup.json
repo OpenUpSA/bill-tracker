@@ -1,5 +1,11 @@
 {
-    "groupby": {
+    "house": {
+        "NA": "National Assembly",
+        "NCOP": "National Council of Provinces",
+        "President": "President",
+        "Joint": "Joint NA/NCOP"
+    },
+    "status": {
         "na": "National Assembly",
         "ncop": "National Council of Provinces",
         "president": "President",
@@ -8,22 +14,86 @@
         "act-partly-commenced": "Partly commenced",
         "act-commenced": "Commenced",
         "lapsed": "Lapsed",
-        "draft": "Draft"
-
+        "draft": "Draft",
+        "enacted": "Enacted"
+    },
+    "event_types": {
+        "committee-meeting": "Committee Meeting",
+        "bill-introduced": "Bill Introduced",
+        "bill-passed": "Bill Passed",
+        "plenary": "Plenary",
+        "bill-enacted": "Bill Enacted",
+        "bill-act-commenced": "Act Commenced",
+        "bill-updated": "Bill Updated",
+        "bill-signed": "Bill Signed",
+        "today": "Today"
+    },
+    "type": {
+        "S75": "Section 75",
+        "S77": "Section 77",
+        "S76": "Section 76",
+        "S74": "Section 74",
+        "Draft": "Draft",
+        "Private Member Bill": "Private Member Bill",
+        "Private Member Bill: S75": "Private Member Bill: Section 75",
+        "Private Member Bill: S76": "Private Member Bill: Section 76",
+        "Private Member Bill: S74": "Private Member Bill: Section 74"
     },
     "parliaments": {
         "all": {
-            "name": "All Parliaments"
+            "name": "All Parliaments",
+            "start": "2009-05-21",
+            "end": "2029-05-20"
+        },
+        "7th-parliament": {
+            "name": "7th Parliament",
+            "start": "2024-05-21",
+            "end": "2029-05-20"
         },
         "6th-parliament": {
             "name": "6th Parliament",
-            "start": "2014-05-21",
-            "end": "2019-05-07"
+            "start": "2019-05-21",
+            "end": "2024-05-20"
         },
         "5th-parliament": {
             "name": "5th Parliament",
-            "start": "2009-05-06",
-            "end": "2014-05-21"
+            "start": "2014-05-21",
+            "end": "2019-05-20"
+        },
+        "4th-parliament": {
+            "name": "4th Parliament",
+            "start": "2009-05-21",
+            "end": "2014-05-20"
+        }
+    },
+    "attendance-states": {
+        "P": {
+            "group": "attended",
+            "label": "Present"
+        },
+        "U": {
+            "group": "unknown",
+            "label": "Unknown"
+        },
+        "A": {
+            "group": "missed",
+            "label": "Absent"
+        },
+        "AP": {
+            "group": "missed",
+            "label": "Absent with Apologies"
+        },
+        "DE": {
+            "group": "attended",
+            "label": "Departed Early"
+        },
+        "L": {
+            "group": "attended",
+            "label": "Arrived Late"
+        },
+        "LDE": {
+            "group": "attended",
+            "label": "Arrived Late and Departed Early"
         }
     }
 }

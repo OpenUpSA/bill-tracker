@@ -1,16 +1,11 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import BillTracker from './components/BillTracker';
+import BillTracker from './components/billtracker';
 
 import './app.scss';
 
-
-
 function App() {
-  const [state, setState] = React.useState("Hello, world!");
-  const [counter, setCounter] = React.useState(0); 
-
   return (
     <BillTracker />
   );

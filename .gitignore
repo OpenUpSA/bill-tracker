@@ -4,3 +4,7 @@ dist
 node_modules
 .cache
 .env
+# Local Netlify folder
+.netlify
+.DS_Store
+.yarn
