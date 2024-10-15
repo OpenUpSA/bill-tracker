@@ -471,64 +471,65 @@ function Attendance() {
   ]);
 
   const filterAttendanceData = (data) => {
-    setFilteredAttendance(
-      data
-        .filter((row) => {
-          if (grouping === "members") {
-            return row.label.toLowerCase().includes(memberSearch.toLowerCase());
-          }
-          return true;
-        })
-        .filter((row) => {
-          return (
-            filteredByParties.length === 0 ||
-            filteredByParties.includes(row.party)
-          );
-        })
-        .filter((row) => {
-          return (
-            filteredByCommittees.length === 0 ||
-            filteredByCommittees.some((committee) =>
-              row.committees.includes(committee)
-            )
-          );
-        })
-        .filter((row) => {
-          return (
-            filteredByHouses.length === 0 ||
-            filteredByHouses.some((house) => row.houses.includes(house))
-          );
-        })
-    );
+    data = data
+      .filter((row) => {
+        if (grouping === "members") {
+          return row.label.toLowerCase().includes(memberSearch.toLowerCase());
+        }
+        return true;
+      })
+      .filter((row) => {
+        return (
+          filteredByParties.length === 0 ||
+          filteredByParties.includes(row.party)
+        );
+      })
+      .filter((row) => {
+        return (
+          filteredByCommittees.length === 0 ||
+          filteredByCommittees.some((committee) =>
+            row.committees.includes(committee)
+          )
+        );
+      })
+      .filter((row) => {
+        return (
+          filteredByHouses.length === 0 ||
+          filteredByHouses.some((house) => row.houses.includes(house))
+        );
+      });
+    setFilteredAttendance(data);
+  };
+
+  const sortAttendanceData = (data) => {
+    if (sortedDirection === "asc") {
+      data = data.sort((a, b) => {
+        if (sortedField === "label" || sortedField === "party") {
+          return b[sortedField].localeCompare(a[sortedField]);
+        } else {
+          return a[sortedField] - b[sortedField];
+        }
+      });
+    } else {
+      data = data.sort((a, b) => {
+        if (sortedField === "label" || sortedField === "party") {
+          return a[sortedField].localeCompare(b[sortedField]);
+        } else {
+          return b[sortedField] - a[sortedField];
+        }
+      });
+    }
+    setFilteredAttendance(data);
   };
 
   const setSort = (fieldToSortBy) => {
     setSortedField(fieldToSortBy);
-
-    if (sortedDirection === "desc") {
-      setDataAttendance(
-        dataAttendance.sort((a, b) => {
-          if (fieldToSortBy === "label" || fieldToSortBy === "party") {
-            return a[fieldToSortBy].localeCompare(b[fieldToSortBy]);
-          } else {
-            return a[fieldToSortBy] - b[fieldToSortBy];
-          }
-        })
-      );
-      setSortedDirection("asc");
-    } else {
-      setDataAttendance(
-        dataAttendance.sort((a, b) => {
-          if (fieldToSortBy === "label" || fieldToSortBy === "party") {
-            return b[fieldToSortBy].localeCompare(a[fieldToSortBy]);
-          } else {
-            return b[fieldToSortBy] - a[fieldToSortBy];
-          }
-        })
-      );
-      setSortedDirection("desc");
-    }
+    setSortedDirection(sortedDirection === "desc" ? "asc" : "desc");
   };
+
+  useEffect(() => {
+    sortAttendanceData(dataAttendance);
+  }, [sortedField, sortedDirection]);
 
   return (
     <Fragment>
