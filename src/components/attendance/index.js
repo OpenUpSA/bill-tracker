@@ -70,9 +70,11 @@ function Attendance() {
 
   const [allParties, setAllParties] = useState([]);
   const [allCommittees, setAllCommittees] = useState([]);
+  const [allHouses, setAllHouses] = useState([]);
 
   const [filteredByParties, setFilteredByParties] = useState([]);
   const [filteredByCommittees, setFilteredByCommittees] = useState([]);
+  const [filteredByHouses, setFilteredByHouses] = useState([]);
 
   const changeParliament = (parliament) => {
     setSelectedParliament(parliament);
@@ -230,6 +232,7 @@ function Attendance() {
     setMemberSearch("");
     setFilteredByParties([]);
     setFilteredByCommittees([]);
+    setFilteredByHouses([]);
   };
 
   const setupData = () => {
@@ -273,6 +276,21 @@ function Attendance() {
               ];
               partyAttendance[data[id].party]["committees-count"] =
                 partyAttendance[data[id].party].committees.length;
+              partyAttendance[data[id].party].committees.push(
+                attendance.committees
+              );
+              partyAttendance[data[id].party].committees = [
+                ...new Set(
+                  partyAttendance[data[id].party].committees.flat(Infinity)
+                ),
+              ];
+
+              partyAttendance[data[id].party].houses.push(attendance.houses);
+              partyAttendance[data[id].party].houses = [
+                ...new Set(
+                  partyAttendance[data[id].party].houses.flat(Infinity)
+                ),
+              ];
             } else {
               partyAttendance[data[id].party].attendance.push({
                 state: attendance.state,
@@ -280,6 +298,8 @@ function Attendance() {
               });
               partyAttendance[data[id].party].committees =
                 attendance.committees;
+
+              partyAttendance[data[id].party].houses = attendance.houses;
               partyAttendance[data[id].party]["committees-count"] =
                 partyAttendance[data[id].party].committees.length;
             }
@@ -324,6 +344,14 @@ function Attendance() {
       item["committees"] = [...new Set(item["committees"].flat(Infinity))];
 
       item["committees-count"] = item["committees"].length;
+
+      item["houses"] = [];
+
+      item.attendance.map((attendance) =>
+        item["houses"].push(attendance.houses)
+      );
+
+      item["houses"] = [...new Set(item["houses"].flat(Infinity))];
 
       // Group and total item.attendance by attendanceStates.group ib item.grouped-attendance[{state: STATE, count: COUNT}]
       item["grouped-attendance"] = item.attendance.reduce(
@@ -412,6 +440,15 @@ function Attendance() {
       activeAttendance.map((r) => r.committees).flat(Infinity)
     );
     setAllCommittees(Array.from(allCommitteesSet).sort());
+
+    const allHousesSet = new Set(
+      activeAttendance
+        .map((r) => r.houses)
+        .flat(Infinity)
+        .filter((r) => r)
+    );
+
+    setAllHouses(Array.from(allHousesSet).sort());
   };
 
   const getDifferentToAveragePercentage = (attendancePercentage) => {
@@ -425,7 +462,13 @@ function Attendance() {
 
   useEffect(() => {
     filterAttendanceData(dataAttendance);
-  }, [dataAttendance, filteredByParties, filteredByCommittees, memberSearch]);
+  }, [
+    dataAttendance,
+    filteredByParties,
+    filteredByCommittees,
+    filteredByHouses,
+    memberSearch,
+  ]);
 
   const filterAttendanceData = (data) => {
     setFilteredAttendance(
@@ -448,6 +491,12 @@ function Attendance() {
             filteredByCommittees.some((committee) =>
               row.committees.includes(committee)
             )
+          );
+        })
+        .filter((row) => {
+          return (
+            filteredByHouses.length === 0 ||
+            filteredByHouses.some((house) => row.houses.includes(house))
           );
         })
     );
@@ -704,6 +753,69 @@ function Attendance() {
                                     className="me-2"
                                   />
                                   {committee}
+                                </Dropdown.Item>
+                              ))}
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        )}
+
+                        {grouping === "members" && (
+                          <Dropdown
+                            className="dropdown-select"
+                            autoClose="outside"
+                          >
+                            <Dropdown.Toggle>
+                              <Row>
+                                <Col>
+                                  House (
+                                  {filteredByHouses.length > 0 &&
+                                    `${filteredByHouses.length}/`}
+                                  {allHouses.length})
+                                </Col>
+                                <Col xs="auto">
+                                  <FontAwesomeIcon icon={faChevronDown} />
+                                </Col>
+                              </Row>
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                              <Dropdown.Item
+                                onClick={() => setFilteredByHouses([])}
+                              >
+                                <FontAwesomeIcon
+                                  icon={
+                                    filteredByHouses.length == 0
+                                      ? faSquareCheck
+                                      : faSquare
+                                  }
+                                  className="me-2"
+                                />
+                                All Houses
+                              </Dropdown.Item>
+
+                              {allHouses.map((house) => (
+                                <Dropdown.Item
+                                  key={house}
+                                  onClick={() =>
+                                    setFilteredByHouses(
+                                      filteredByHouses.includes(house)
+                                        ? filteredByHouses.filter(
+                                            (selectedHouse) =>
+                                              selectedHouse !== house
+                                          )
+                                        : [...filteredByHouses, house]
+                                    )
+                                  }
+                                  title={house}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={
+                                      filteredByHouses.includes(house)
+                                        ? faSquareCheck
+                                        : faSquare
+                                    }
+                                    className="me-2"
+                                  />
+                                  {house}
                                 </Dropdown.Item>
                               ))}
                             </Dropdown.Menu>

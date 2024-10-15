@@ -54,6 +54,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
     createdAt = dateToEpoch(new Date(row[3]));
     attendance = row[4];
     committee = row[5];
+    house = row[6];
     const parliamentKey = lookupParliamentFromCreatedAt(createdAt);
 
     // Add to existing member or create new one
@@ -67,11 +68,16 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
           record[recordIndex].committees = [
             ...new Set(record[recordIndex].committees),
           ];
+          record[recordIndex].houses.push(house);
+          record[recordIndex].houses = [
+            ...new Set(record[recordIndex].houses),
+          ];
         } else {
           record.push({
             state: attendance,
             count: 1,
             committees: [committee],
+            houses: [house]
           });
         }
 
@@ -86,6 +92,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
             state: attendance,
             count: 1,
             committees: [committee],
+            houses: [house]
           });
         }
       } else {
@@ -94,6 +101,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
             state: attendance,
             count: 1,
             committees: [committee],
+            houses: [house]
           },
         ];
         data[id]["parliamentary-record"]["all"] = [
@@ -101,6 +109,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
             state: attendance,
             count: 1,
             committees: [committee],
+            houses: [house]
           },
         ];
       }
@@ -115,6 +124,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
           state: attendance,
           count: 1,
           committees: [committee],
+          houses: [house]
         },
       ];
       newMember["parliamentary-record"]["all"] = [
@@ -122,6 +132,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
           state: attendance,
           count: 1,
           committees: [committee],
+          houses: [house]
         },
       ];
       data[id] = newMember;
