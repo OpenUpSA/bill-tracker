@@ -950,7 +950,7 @@ function BillTracker() {
                         <Col xs="auto">
                           <Form.Check
                             type="switch"
-                            onClick={() => toggleEvents("committee-meeting")}
+                            onChange={() => toggleEvents("committee-meeting")}
                             checked={billEvents.includes("committee-meeting")}
                           />
                         </Col>
@@ -964,7 +964,7 @@ function BillTracker() {
                         <Col xs="auto">
                           <Form.Check
                             type="switch"
-                            onClick={() => toggleEvents("plenary")}
+                            onChange={() => toggleEvents("plenary")}
                             checked={billEvents.includes("plenary")}
                           />
                         </Col>
@@ -978,7 +978,7 @@ function BillTracker() {
                         <Col xs="auto">
                           <Form.Check
                             type="switch"
-                            onClick={() => toggleEvents("media-briefing")}
+                            onChange={() => toggleEvents("media-briefing")}
                             checked={billEvents.includes("media-briefing")}
                           />
                         </Col>
@@ -993,7 +993,7 @@ function BillTracker() {
                           <Form.Check
                             type="switch"
                             value={true}
-                            onClick={() => toggleEvents("bill-introduced")}
+                            onChange={() => toggleEvents("bill-introduced")}
                             checked={billEvents.includes("bill-introduced")}
                           />
                         </Col>
@@ -1007,7 +1007,7 @@ function BillTracker() {
                         <Col xs="auto">
                           <Form.Check
                             type="switch"
-                            onClick={() => toggleEvents("bill-updated")}
+                            onChange={() => toggleEvents("bill-updated")}
                             checked={billEvents.includes("bill-updated")}
                           />
                         </Col>
@@ -1021,7 +1021,7 @@ function BillTracker() {
                         <Col xs="auto">
                           <Form.Check
                             type="switch"
-                            onClick={() => toggleEvents("bill-passed")}
+                            onChange={() => toggleEvents("bill-passed")}
                             checked={billEvents.includes("bill-passed")}
                           />
                         </Col>
@@ -1035,7 +1035,7 @@ function BillTracker() {
                         <Col xs="auto">
                           <Form.Check
                             type="switch"
-                            onClick={() => toggleEvents("bill-signed")}
+                            onChange={() => toggleEvents("bill-signed")}
                             checked={billEvents.includes("bill-signed")}
                           />
                         </Col>
@@ -1049,7 +1049,7 @@ function BillTracker() {
                         <Col xs="auto">
                           <Form.Check
                             type="switch"
-                            onClick={() => toggleEvents("bill-enacted")}
+                            onChange={() => toggleEvents("bill-enacted")}
                             checked={billEvents.includes("bill-enacted")}
                           />
                         </Col>
@@ -1063,7 +1063,7 @@ function BillTracker() {
                         <Col xs="auto">
                           <Form.Check
                             type="switch"
-                            onClick={() => toggleEvents("bill-act-commenced")}
+                            onChange={() => toggleEvents("bill-act-commenced")}
                             checked={billEvents.includes("bill-act-commenced")}
                           />
                         </Col>
@@ -1530,22 +1530,30 @@ function BillTracker() {
                   bills
                 </h2>
                 <table className="w-100">
-                  <tr>
-                    <th>Avg days in parliament:</th>
-                    <td>{getAvgDays()}</td>
-                  </tr>
-                  <tr>
-                    <th>Avg committee meetings:</th>
-                    <td>{getAvgMeetings()}</td>
-                  </tr>
-                  <tr>
-                    <th>Public participation:</th>
-                    <td>{getPublicParticipation()}%</td>
-                  </tr>
-                  <tr>
-                    <th>Avg revisions:</th>
-                    <td>{getRevisions()}</td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <th>Avg days in parliament:</th>
+                      <td>
+                        <Fragment>{getAvgDays()}</Fragment>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Avg committee meetings:</th>
+                      <td>
+                        <Fragment>{getAvgMeetings()}</Fragment>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Public participation:</th>
+                      <td>{getPublicParticipation()}%</td>
+                    </tr>
+                    <tr>
+                      <th>Avg revisions:</th>
+                      <td>
+                        <Fragment>{getRevisions()}</Fragment>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </Col>
