@@ -2,9 +2,6 @@
   "name": "react-starter",
   "version": "1.0.0",
   "license": "MIT",
-  "engines": {
-    "node": "18.x"
-  },
   "scripts": {
     "dev": "parcel src/index.html src/attendance/index.html",
     "build": "parcel build src/index.html src/attendance/index.html",
