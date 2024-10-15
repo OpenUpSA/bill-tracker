@@ -2,29 +2,41 @@
   "name": "react-starter",
   "version": "1.0.0",
   "license": "MIT",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
-    "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html"
+    "dev": "parcel src/index.html src/attendance/index.html",
+    "build": "parcel build src/index.html src/attendance/index.html",
+    "deploy": "netlify deploy"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@lueton/react-sparklines": "^2.0.0",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
+    "@microlink/react-json-view": "^1.23.0",
     "autoprefixer": "^10.4.14",
+    "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "d3": "^7.9.0",
+    "global": "^4.4.0",
+    "netlify-cli": "^17.37.0",
+    "rc-slider": "^11.1.6",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-custom-scrollbars": "^4.2.1",
-    "react-dom": "^18.2.0",
-    "react-multi-select-component": "^4.3.4"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "2.8.3",
+    "@parcel/transformer-sass": "^2.12.0",
+    "buffer": "^5.5.0",
+    "csv-parse": "^5.5.6",
     "parcel": "^2.8.3",
     "process": "^0.11.10"
-  }
+  },
+  "proxy": "https://api.pmg.org.za"
 }

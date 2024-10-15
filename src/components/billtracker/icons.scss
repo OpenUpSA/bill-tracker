@@ -1,0 +1,94 @@
+.event-type-icon {
+    border-radius: 50%;
+    height: 1em;
+    width: 1em;
+    position: relative;
+    transition: all 0.5s;
+
+    &:hover {
+        cursor: pointer;
+        transform: scale(1.2);
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 0.6em;
+        height: 0.6em;
+    }
+    
+}
+
+.committee-meeting {
+    background-color: #999999;
+    height: 0.7em;
+    width: 0.7em;
+    border: 2px solid #ebebeb;
+}
+
+.plenary {
+    background-color: #000000;
+    height: 0.7em;
+    width: 0.7em;
+    border: 2px solid #cccccc;
+}
+
+.media-briefing {
+    background-color: #f5be3d;
+    height: 0.7em;
+    width: 0.7em;
+    border: 2px solid #fdf2d6;
+}
+
+.bill-introduced {
+    background-color: #535353;
+}
+
+.bill-updated {
+    background-color: #ff862d;
+}
+
+.bill-passed {
+    background-color: #0093f2;
+}
+
+.bill-signed {
+    background-color: #c720de;
+}
+
+.bill-enacted {
+    background-color: #5c4079;
+}
+
+.bill-act-commenced {
+    background-color: #009f4e;
+}
+
+
+
+
+
+.circle-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #000;
+    position: relative;
+
+    div {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-weight: 400;
+        font-size: 1.2em;
+        line-height: 0;
+    }
+
+    &.fullscreen, &.reset, &.maximise {
+        background-color: #ebebeb;
+    }
+}
