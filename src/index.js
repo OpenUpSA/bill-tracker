@@ -1,11 +1,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import BillTracker from './components/BillTracker';
+import BillTracker from './components/billtracker';
 
 import './app.scss';
-
-
 
 function App() {
   return (
