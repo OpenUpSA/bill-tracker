@@ -461,16 +461,18 @@ function Attendance() {
   }, [data, selectedParliament, grouping]);
 
   useEffect(() => {
-    filterAttendanceData(dataAttendance);
+    filterAndSortAttendanceData(dataAttendance);
   }, [
     dataAttendance,
     filteredByParties,
     filteredByCommittees,
     filteredByHouses,
     memberSearch,
+    sortedField,
+    sortedDirection,
   ]);
 
-  const filterAttendanceData = (data) => {
+  const filterAndSortAttendanceData = (data) => {
     data = data
       .filter((row) => {
         if (grouping === "members") {
@@ -498,10 +500,7 @@ function Attendance() {
           filteredByHouses.some((house) => row.houses.includes(house))
         );
       });
-    setFilteredAttendance(data);
-  };
 
-  const sortAttendanceData = (data) => {
     if (sortedDirection === "asc") {
       data = data.sort((a, b) => {
         if (sortedField === "label" || sortedField === "party") {
@@ -526,10 +525,6 @@ function Attendance() {
     setSortedField(fieldToSortBy);
     setSortedDirection(sortedDirection === "desc" ? "asc" : "desc");
   };
-
-  useEffect(() => {
-    sortAttendanceData(dataAttendance);
-  }, [sortedField, sortedDirection]);
 
   return (
     <Fragment>
