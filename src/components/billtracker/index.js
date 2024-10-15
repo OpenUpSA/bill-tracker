@@ -125,11 +125,6 @@ function BillTracker() {
   }, []);
 
   useEffect(() => {
-    console.log(bills);
-    prepareBills();
-  }, [bills]);
-
-  useEffect(() => {
     filterBills();
   }, [
     preparedBills,
@@ -687,7 +682,6 @@ function BillTracker() {
         }
       }
     });
-    console.log(values);
   };
 
   return (
