@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 
 import axios from "axios";
 
@@ -458,7 +458,7 @@ function BillTracker() {
         )}
 
         {hoveredEvent.type != "today" && (
-          <>
+          <Fragment>
             <div className="mb-3">{hoveredEvent.title}</div>
 
             <table className="w-100">
@@ -477,7 +477,7 @@ function BillTracker() {
                 </td>
               </tr>
             </table>
-          </>
+          </Fragment>
         )}
       </div>
     );
@@ -685,7 +685,7 @@ function BillTracker() {
   };
 
   return (
-    <>
+    <Fragment>
       <PMHeader />
       <PMTabs active="bill-tracker" />
       <Container fluid className="py-5">
@@ -714,6 +714,7 @@ function BillTracker() {
                         (parliament, index) => {
                           return (
                             <Dropdown.Item
+                              key={index}
                               onClick={() => setSelectedParliament(parliament)}
                             >
                               {lookup.parliaments[parliament].name}
@@ -1234,7 +1235,7 @@ function BillTracker() {
                   <tbody>
                     {groupedBills.length > 0 &&
                       groupedBills.map((group, index) => (
-                        <>
+                        <Fragment>
                           <tr key={index} className="group-header">
                             <th colSpan="5">{lookup[groupBy][group.title]}</th>
                           </tr>
@@ -1296,7 +1297,7 @@ function BillTracker() {
                                       width: `${maxDays * daySizeinPx}px`,
                                     }}
                                   >
-                                    <>
+                                    <Fragment>
                                       {bill.houses.length > 0 &&
                                         bill.houses.map(
                                           (house_group, index) => {
@@ -1323,8 +1324,8 @@ function BillTracker() {
                                             );
                                           }
                                         )}
-                                    </>
-                                    <>
+                                    </Fragment>
+                                    <Fragment>
                                       {
                                         // events
                                         bill.houses.length > 0 &&
@@ -1408,13 +1409,13 @@ function BillTracker() {
                                             }
                                           )
                                       }
-                                    </>
+                                    </Fragment>
                                   </div>
                                 </td>
                               </tr>
                             );
                           })}
-                        </>
+                        </Fragment>
                       ))}
                   </tbody>
                   <tfoot>
@@ -1629,7 +1630,7 @@ function BillTracker() {
           </Scrollbars>
         </Modal.Body>
       </Modal>
-    </>
+    </Fragment>
   );
 }
 
