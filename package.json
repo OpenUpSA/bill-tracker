@@ -18,13 +18,11 @@
     "@lueton/react-sparklines": "^2.0.0",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
-    "@microlink/react-json-view": "^1.23.0",
-    "autoprefixer": "^10.4.14",
+    "@popperjs/core": "^2.11.8",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
     "d3": "^7.9.0",
     "global": "^4.4.0",
-    "netlify-cli": "^17.37.0",
     "rc-slider": "^11.1.6",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
@@ -32,10 +30,14 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.12.0",
+    "@parcel/transformer-sass": "2.12.0",
+    "@types/node": "^22.7.5",
+    "autoprefixer": "^10.4.20",
     "buffer": "^5.5.0",
     "csv-parse": "^5.5.6",
-    "parcel": "^2.8.3",
+    "netlify-cli": "^17.37.0",
+    "parcel": "^2.12.0",
+    "postcss": "^8.1.0",
     "process": "^0.11.10"
   },
   "proxy": "https://api.pmg.org.za"
