@@ -125,6 +125,10 @@ function BillTracker() {
   }, []);
 
   useEffect(() => {
+    prepareBills();
+  }, [bills]);
+
+  useEffect(() => {
     filterBills();
   }, [
     preparedBills,
@@ -1235,8 +1239,8 @@ function BillTracker() {
                   <tbody>
                     {groupedBills.length > 0 &&
                       groupedBills.map((group, index) => (
-                        <Fragment>
-                          <tr key={index} className="group-header">
+                        <Fragment key={index}>
+                          <tr className="group-header">
                             <th colSpan="5">{lookup[groupBy][group.title]}</th>
                           </tr>
 
