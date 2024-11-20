@@ -692,7 +692,7 @@ function BillTracker() {
     <Fragment>
       <PMHeader />
       <PMTabs active="bill-tracker" />
-      <Container fluid className="py-5">
+      <Container fluid className="py-4">
         <div className="bill-tracker-container">
           <Row>
             <Col>
