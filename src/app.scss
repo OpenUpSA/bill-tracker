@@ -75,6 +75,7 @@ h1 {
       display: none;
     }
   }
+
   &.size-sm {
     button {
       padding: 0.25em 0.65em;
@@ -149,5 +150,22 @@ h1 {
   &.btn-link {
     color: #000;
     text-align: left;
+  }
+}
+
+.testing-notice {
+  background-color: #E03C31;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 16.94px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #FFFFFF;
+  padding: 1.4rem;
+  padding-top: 1.5rem;
+
+  strong {
+    color: #fff;
   }
 }

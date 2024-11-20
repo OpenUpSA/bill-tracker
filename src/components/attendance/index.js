@@ -531,7 +531,7 @@ function Attendance() {
       <PMHeader />
 
       <PMTabs active="attendance-tracker" />
-      <Container fluid className="py-5">
+      <Container fluid className="py-4">
         <div className="bill-tracker-container">
           <Row>
             <Col>
