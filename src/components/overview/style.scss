@@ -1,0 +1,36 @@
+@import url(https://db.onlinewebfonts.com/c/7b7a625024c0f39cbca2cf9674f51d94?family=General+Sans+Variable);
+
+
+
+body {
+    background-color: #f3f3f3;
+    font-family: sans-serif;
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.scroll-area {
+    position: relative;
+}
+
+.scroll-area::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    height: 20px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.06) 100%);
+}
+
+.dropdown-toggle .party-pill {
+    display: inline-block;
+}
+
+.form-label {
+    font-size: 12px;
+}

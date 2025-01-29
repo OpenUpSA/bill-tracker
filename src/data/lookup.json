@@ -95,5 +95,46 @@
             "group": "attended",
             "label": "Arrived Late and Departed Early"
         }
-    }
+    },
+    "parties": [
+        {
+            "party": "ANC",
+            "name": "African National Congress",
+            "color": "#fb9905",
+            "text_color": "#fff"
+        },
+        {
+            "party": "DA",
+            "name": "Democratic Alliance",
+            "color": "#fb9905"
+        },
+        {
+            "party": "EFF",
+            "name": "Economic Freedom Fighters",
+            "color": "#fb9905"
+        },
+        {
+            "party": "IFP",
+            "name": "Inkatha Freedom Party",
+            "color": "#fb9905"
+        },
+        {
+            "party": "UDM",
+            "name": "United Democratic Movement",
+            "color": "#fb9905"
+        },
+        {
+            "party": "ACDP",
+            "name": "African Christian Democratic Party",
+            "color": "#fb9905"
+        },
+        {
+            "party": "FF+",
+            "name": "Freedom Front Plus",
+            "color": "#fb9905"
+        }
+       
+    ]
+        
+    
 }

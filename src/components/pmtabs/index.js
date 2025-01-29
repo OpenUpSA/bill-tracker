@@ -22,12 +22,18 @@ function PMTabs(props) {
           >
             Attendance Tracker
           </a>
+          <a
+            className={`tab ${active === "overview" ? "active" : ""}`}
+            href="/overview"
+          >
+            Performance Overview
+          </a>
         </Container>
       </div>
       <Container fluid className="pt-3">
-        <div className="testing-notice">
+        {/* <div className="testing-notice">
           <strong>Notice:</strong> The data on this dashboard is for testing purposes only and is not accurate.
-        </div>
+        </div> */}
       </Container>
     </Fragment>
   );

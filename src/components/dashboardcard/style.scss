@@ -1,0 +1,106 @@
+.dashboard-card {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    height: 100%;
+}
+
+h3 {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+}
+
+.party-pill {
+    padding: 4px 8px;
+    background-color: #999;
+    border-radius: 16px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #000;
+}
+
+.card-big-text {
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.card-badge {
+    background-color: rgba(0,0,0,0.1);
+    padding: 5px;
+    font-size: 11px;
+    font-weight: 400;
+    display: inline-block;
+    border-radius: 5px;
+    position: relative;
+    top: -4px;
+}
+
+.card-bar {
+    background-color: #ee9b8a;
+    border-radius: 2px;
+    position: relative;
+    height: 4px;
+    transform: translateY(100%);
+}
+
+.card-bar-fill {
+    background-color: #b7eb9f;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 4px;
+    border-radius: 2px;
+}
+
+.card-bar-mark {
+    position: absolute;
+    height: 8;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    background-color: #000;
+}
+
+.card-help {
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    top: -12px;
+    right: -12px;
+    color: #fff;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: #000;
+    transition: all .5s;
+    cursor: pointer;
+
+    .question {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .card-help-content {
+        display: none;
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.party_member_badge {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #000;
+    display: inline-block;
+    margin: 0 10px 0 0;
+}
+
