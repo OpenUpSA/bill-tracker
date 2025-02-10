@@ -66,6 +66,18 @@
             "end": "2014-05-20"
         }
     },
+    "parliamentsAttendance": {
+        "all": {
+            "name": "All Parliaments",
+            "start": "2009-05-21",
+            "end": "2029-05-20"
+        },
+        "7th-parliament": {
+            "name": "7th Parliament",
+            "start": "2024-05-21",
+            "end": "2029-05-20"
+        }
+    },
     "attendance-states": {
         "P": {
             "group": "attended",
