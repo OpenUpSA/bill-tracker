@@ -557,7 +557,7 @@ function Attendance() {
                       <Dropdown.Toggle>
                         <Row>
                           <Col>
-                            {lookup.parliaments[selectedParliament].name}
+                            {lookup.parliamentsAttendance[selectedParliament].name}
                           </Col>
                           <Col xs="auto">
                             <FontAwesomeIcon icon={faChevronDown} />
@@ -565,16 +565,16 @@ function Attendance() {
                         </Row>
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        {Object.keys(lookup.parliaments).map(
+                        {Object.keys(lookup.parliamentsAttendance).map(
                           (parliament, index) => {
                             return (
                               <Dropdown.Item
-                                key={lookup.parliaments[parliament].name}
+                                key={lookup.parliamentsAttendance[parliament].name}
                                 onClick={() =>
                                   setSelectedParliament(parliament)
                                 }
                               >
-                                {lookup.parliaments[parliament].name}
+                                {lookup.parliamentsAttendance[parliament].name}
                               </Dropdown.Item>
                             );
                           }
