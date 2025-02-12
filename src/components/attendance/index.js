@@ -17,6 +17,8 @@ import {
   faArrowPointer,
   faUser,
   faFilter,
+  faDownload,
+  faComment
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./index.scss";
@@ -119,6 +121,18 @@ function Attendance() {
     }
   };
 
+  const downloadJSON = () => {
+    const jsonString = JSON.stringify(filteredAttendance, (key, value) => {
+      return (value instanceof Set ? [...value] : value)
+    });
+
+    const blob = new Blob([jsonString], { type: 'text/json;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'parlimeter-attendance.json';
+    link.click();
+  };
+
   const AttendanceTooltip = () => {
     const attendedGroup = tooltipAttendance["grouped-attendance"]?.find(
       (a) => a.group === "attended"
@@ -202,7 +216,7 @@ function Attendance() {
                           {Math.round(
                             (attendance.count /
                               tooltipAttendance["attendance-count"]) *
-                              100
+                            100
                           )}
                           %)
                         </td>
@@ -671,9 +685,9 @@ function Attendance() {
                                   setFilteredByParties(
                                     filteredByParties.includes(party)
                                       ? filteredByParties.filter(
-                                          (selectedParty) =>
-                                            selectedParty !== party
-                                        )
+                                        (selectedParty) =>
+                                          selectedParty !== party
+                                      )
                                       : [...filteredByParties, party]
                                   )
                                 }
@@ -732,9 +746,9 @@ function Attendance() {
                                     setFilteredByCommittees(
                                       filteredByCommittees.includes(committee)
                                         ? filteredByCommittees.filter(
-                                            (selectedCommittee) =>
-                                              selectedCommittee !== committee
-                                          )
+                                          (selectedCommittee) =>
+                                            selectedCommittee !== committee
+                                        )
                                         : [...filteredByCommittees, committee]
                                     )
                                   }
@@ -795,9 +809,9 @@ function Attendance() {
                                     setFilteredByHouses(
                                       filteredByHouses.includes(house)
                                         ? filteredByHouses.filter(
-                                            (selectedHouse) =>
-                                              selectedHouse !== house
-                                          )
+                                          (selectedHouse) =>
+                                            selectedHouse !== house
+                                        )
                                         : [...filteredByHouses, house]
                                     )
                                   }
@@ -833,9 +847,8 @@ function Attendance() {
                 {filteredAttendance.length})
               </h2>
               <table
-                className={`${
-                  ChartTypes[selectedChartType].detailed ? "detailed" : ""
-                }`}
+                className={`${ChartTypes[selectedChartType].detailed ? "detailed" : ""
+                  }`}
               >
                 <thead>
                   <tr>
@@ -952,45 +965,43 @@ function Attendance() {
                         <Fragment>
                           <td width="50%" className="no-padding-horizontal">
                             <div
-                              className={`bar-background no-border-radius-right half ${
-                                getDifferentToAveragePercentage(
-                                  row["attendance-percentage"]
-                                ) <= 0 && "align-right"
-                              }`}
+                              className={`bar-background no-border-radius-right half ${getDifferentToAveragePercentage(
+                                row["attendance-percentage"]
+                              ) <= 0 && "align-right"
+                                }`}
                             >
                               {getDifferentToAveragePercentage(
                                 row["attendance-percentage"]
                               ) <= 0 && (
-                                <div
-                                  className={`bar state-${
-                                    getDifferentToAveragePercentage(
+                                  <div
+                                    className={`bar state-${getDifferentToAveragePercentage(
                                       row["attendance-percentage"]
                                     ) > 0
                                       ? "more-than-average"
                                       : "less-than-average"
-                                  }`}
-                                  style={{
-                                    width: `${Math.min(
-                                      Math.abs(
-                                        getDifferentToAveragePercentage(
-                                          row["attendance-percentage"]
-                                        )
-                                      ),
-                                      100
-                                    )}%`,
-                                  }}
-                                >
-                                  {getDifferentToAveragePercentage(
-                                    row["attendance-percentage"]
-                                  ) > 0 && "+"}
-                                  {Math.round(
-                                    getDifferentToAveragePercentage(
+                                      }`}
+                                    style={{
+                                      width: `${Math.min(
+                                        Math.abs(
+                                          getDifferentToAveragePercentage(
+                                            row["attendance-percentage"]
+                                          )
+                                        ),
+                                        100
+                                      )}%`,
+                                    }}
+                                  >
+                                    {getDifferentToAveragePercentage(
                                       row["attendance-percentage"]
-                                    )
-                                  )}
-                                  %
-                                </div>
-                              )}
+                                    ) > 0 && "+"}
+                                    {Math.round(
+                                      getDifferentToAveragePercentage(
+                                        row["attendance-percentage"]
+                                      )
+                                    )}
+                                    %
+                                  </div>
+                                )}
                               &nbsp;
                             </div>
                           </td>
@@ -1003,45 +1014,43 @@ function Attendance() {
                           </td>
                           <td width="50%" className="no-padding-horizontal">
                             <div
-                              className={`bar-background no-border-radius-left half ${
-                                getDifferentToAveragePercentage(
-                                  row["attendance-percentage"]
-                                ) <= 0 && "align-right"
-                              }`}
+                              className={`bar-background no-border-radius-left half ${getDifferentToAveragePercentage(
+                                row["attendance-percentage"]
+                              ) <= 0 && "align-right"
+                                }`}
                             >
                               {getDifferentToAveragePercentage(
                                 row["attendance-percentage"]
                               ) > 0 && (
-                                <div
-                                  className={`bar state-${
-                                    getDifferentToAveragePercentage(
+                                  <div
+                                    className={`bar state-${getDifferentToAveragePercentage(
                                       row["attendance-percentage"]
                                     ) > 0
                                       ? "more-than-average"
                                       : "less-than-average"
-                                  }`}
-                                  style={{
-                                    width: `${Math.min(
-                                      Math.abs(
-                                        getDifferentToAveragePercentage(
-                                          row["attendance-percentage"]
-                                        )
-                                      ),
-                                      100
-                                    )}%`,
-                                  }}
-                                >
-                                  {getDifferentToAveragePercentage(
-                                    row["attendance-percentage"]
-                                  ) > 0 && "+"}
-                                  {Math.round(
-                                    getDifferentToAveragePercentage(
+                                      }`}
+                                    style={{
+                                      width: `${Math.min(
+                                        Math.abs(
+                                          getDifferentToAveragePercentage(
+                                            row["attendance-percentage"]
+                                          )
+                                        ),
+                                        100
+                                      )}%`,
+                                    }}
+                                  >
+                                    {getDifferentToAveragePercentage(
                                       row["attendance-percentage"]
-                                    )
-                                  )}
-                                  %
-                                </div>
-                              )}
+                                    ) > 0 && "+"}
+                                    {Math.round(
+                                      getDifferentToAveragePercentage(
+                                        row["attendance-percentage"]
+                                      )
+                                    )}
+                                    %
+                                  </div>
+                                )}
                               &nbsp;
                             </div>
                           </td>
@@ -1090,37 +1099,33 @@ function Attendance() {
                                       attendance.state
                                     )
                                   }
-                                  className={`bar state-${
-                                    attendance.state
-                                  } state-grouping-${
-                                    ChartTypes[selectedChartType].detailed
+                                  className={`bar state-${attendance.state
+                                    } state-grouping-${ChartTypes[selectedChartType].detailed
                                       ? attendanceStates[attendance.state].group
                                       : attendance.group
-                                  } ${
-                                    highlightedAttendanceState ===
-                                    attendance.state
+                                    } ${highlightedAttendanceState ===
+                                      attendance.state
                                       ? "state-highlighted"
                                       : ""
-                                  }`}
+                                    }`}
                                   style={{
-                                    width: `${
-                                      (attendance.count /
-                                        (ChartTypes[selectedChartType]
-                                          .percentage
-                                          ? row["attendance-count"]
-                                          : maxAttendance)) *
+                                    width: `${(attendance.count /
+                                      (ChartTypes[selectedChartType]
+                                        .percentage
+                                        ? row["attendance-count"]
+                                        : maxAttendance)) *
                                       100
-                                    }%`,
+                                      }%`,
                                   }}
                                 >
                                   {ChartTypes[selectedChartType].percentage
                                     ? `${Math.round(
-                                        parseFloat(
-                                          (attendance.count /
-                                            row["attendance-count"]) *
-                                            100
-                                        )
-                                      )}%`
+                                      parseFloat(
+                                        (attendance.count /
+                                          row["attendance-count"]) *
+                                        100
+                                      )
+                                    )}%`
                                     : attendance.count.toLocaleString()}
                                 </div>
                               ))}
@@ -1167,18 +1172,16 @@ function Attendance() {
                                   .map((state) => (
                                     <li
                                       key={state}
-                                      className={`state-${state} ${
-                                        highlightedAttendanceState === state
-                                          ? "state-highlighted"
-                                          : ""
-                                      }`}
+                                      className={`state-${state} ${highlightedAttendanceState === state
+                                        ? "state-highlighted"
+                                        : ""
+                                        }`}
                                     >
                                       <span
-                                        className={`bar state-${state} ${
-                                          highlightedAttendanceState === state
-                                            ? "state-highlighted"
-                                            : ""
-                                        }`}
+                                        className={`bar state-${state} ${highlightedAttendanceState === state
+                                          ? "state-highlighted"
+                                          : ""
+                                          }`}
                                       >
                                         {state}
                                       </span>{" "}
@@ -1207,7 +1210,7 @@ function Attendance() {
                         </ul>
                         {selectedChartType !== "average" &&
                           ChartTypes[selectedChartType].detailed && (
-                            <Fragment>
+                            <Fragment className="mx-auto">
                               <FontAwesomeIcon
                                 style={{ marginLeft: "auto" }}
                                 icon={faArrowPointer}
@@ -1215,6 +1218,19 @@ function Attendance() {
                               <div>Click to isolate a category</div>
                             </Fragment>
                           )}
+                        <Button size="sm" onClick={downloadJSON}>
+                          <FontAwesomeIcon icon={faDownload} className="me-2" />
+                          Download Data
+                        </Button>
+                        <a
+                          className="btn btn-primary btn-sm"
+                          href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform?usp=pp_url&entry.1431082534=Attendance+Tracker"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FontAwesomeIcon icon={faComment} className="me-2" />
+                          Provide Feedback
+                        </a>
                       </Stack>
                     </td>
                   </tr>
@@ -1225,15 +1241,6 @@ function Attendance() {
           </Row>
         </div>
       </Container>
-
-      <a
-        className="provideFeedback"
-        href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform?usp=pp_url&entry.1431082534=Attendance+Tracker"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Povide feedback
-      </a>
     </Fragment>
   );
 }
