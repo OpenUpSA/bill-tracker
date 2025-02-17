@@ -1,36 +1,228 @@
-@import url(https://db.onlinewebfonts.com/c/7b7a625024c0f39cbca2cf9674f51d94?family=General+Sans+Variable);
-
-
-
 body {
-    background-color: #f3f3f3;
-    font-family: sans-serif;
+	background-color: #f3f3f3;
+	font-family: sans-serif;
 }
 
 h2 {
-    font-size: 22px;
-    font-weight: 600;
+	font-size: 22px;
+	font-weight: 600;
+}
+
+.party-pill {
+	padding: 4px 8px;
+	background-color: #fb9905;
+	border-radius: 16px;
+	font-size: 10px;
+	font-weight: 600;
+	color: #000;
+
+	&.all-parties {
+		background-color: #000;
+		color: #fff;
+	}
+}
+
+.dashboard-nav {
+	position: sticky;
+	top: 0;
+	background-color: #f3f3f3;
+	z-index: 999;
+}
+
+.nav-button {
+	display: inline-block;
+	background-color: #e0e0e0;
+	color: #000;
+	border-radius: 16px;
+	text-decoration: none;
+	padding: 1em 2em;
+	margin: 0 0.5em 0 0;
+	font-size: 1.1em;
+}
+
+.nav-button-direction {
+	display: inline-block;
+	background-color: #e0e0e0;
+	color: #000;
+	border-radius: 50%;
+	text-decoration: none;
+	padding: 1em 1.1em;
+	margin: 0 0 0 0.5em;
+	font-size: 1em;
+	cursor: pointer;
+
+	&:hover {
+		background-color: #000;
+		color: #fff;
+	}
 }
 
 .scroll-area {
-    position: relative;
+	position: relative;
 }
 
 .scroll-area::after {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    height: 20px;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.06) 100%);
+	content: "";
+	display: block;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	height: 20px;
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.06) 100%);
 }
 
 .dropdown-toggle .party-pill {
-    display: inline-block;
+	display: inline-block;
 }
 
 .form-label {
-    font-size: 12px;
+	font-size: 12px;
+}
+
+.card-help {
+	position: absolute;
+	height: 24px;
+	width: 24px;
+	top: -12px;
+	right: -12px;
+	color: #fff;
+	padding: 5px;
+	border-radius: 8px;
+	background-color: #000;
+	transition: all .5s;
+	cursor: pointer;
+
+	.question {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		color: #fff;
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	.card-help-content {
+		display: none;
+	}
+
+	&:hover {
+		transform: scale(1.1);
+	}
+}
+
+.toggleButtonGroup {
+	border-radius: 20px;
+	background-color: #dbdbdb;
+	white-space: nowrap;
+
+	button {
+		border: none;
+		width: Fixed (100px) px;
+		height: Fill (36px) px;
+		padding: 12px 20px 12px 20px;
+		gap: 10px;
+		border-radius: 35px;
+		display: inline-block;
+		background-color: #dbdbdb;
+
+		&.active {
+			background-color: #000000;
+			color: #ffffff;
+		}
+	}
+}
+
+.date-picker input {
+	padding: 1em 1.2em;
+	border-radius: 35px;
+	border: none;
+	width: 100%;
+	text-align: left;
+	background-color: rgba(0, 0, 0, 0.05);
+	color: #000;
+	font-size: 1rem;
+	cursor: pointer;
+}
+
+
+
+.date-picker.size-sm input {
+	padding: 0.25em 0.65em;
+}
+
+.date-picker.width-auto input {
+	width: auto;
+}
+
+.section-header {
+	height: 170px;
+	background-color: #e7e7e7;
+	border-radius: 18px;
+	overflow: hidden;
+}
+
+.header-img-container {
+	height: 170px;
+	overflow: hidden;
+	background-color: #FB9905;
+	position: relative;
+	border-radius: 18px;
+
+	h2 {
+		position: absolute;
+		top: 50%;
+		left: 5%;
+		transform: translateY(-50%);
+		color: #fff;
+	}
+}
+
+
+.header-img {
+	
+	background-size: cover;
+	background-position: center;
+	height: 170px;
+	filter: grayscale(100%);
+	mix-blend-mode: multiply;
+	
+}
+
+.section-intro {
+	font-size: 14px;
+	padding: 0 3em 0 2em;
+}
+
+.card-bar {
+    background-color: #ee9b8a;
+    border-radius: 2px;
+    position: relative;
+    height: 4px;
+    transform: translateY(100%);
+}
+
+.card-bar-fill {
+    background-color: #b7eb9f;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 4px;
+    border-radius: 2px;
+}
+
+.card-bar-mark {
+    position: absolute;
+    height: 8;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    background-color: #000;
+}
+
+
+.current-party td {
+	background-color: #fbf5ec;
+	border-color: #fbd9a7
 }

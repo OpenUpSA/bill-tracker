@@ -11,6 +11,12 @@ function PMTabs(props) {
       <div className="tabs">
         <Container fluid>
           <a
+            className={`tab ${active === "overview" ? "active" : ""}`}
+            href="/overview"
+          >
+            Overview
+          </a>
+          <a
             className={`tab ${active === "bill-tracker" ? "active" : ""}`}
             href="/"
           >
@@ -22,12 +28,7 @@ function PMTabs(props) {
           >
             Attendance Tracker
           </a>
-          <a
-            className={`tab ${active === "overview" ? "active" : ""}`}
-            href="/overview"
-          >
-            Performance Overview
-          </a>
+          
         </Container>
       </div>
       <Container fluid className="pt-3">
