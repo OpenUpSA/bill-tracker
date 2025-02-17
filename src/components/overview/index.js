@@ -167,7 +167,7 @@ function Overview() {
                 pic = 'ASA';
             }
 
-            return <div className="party_member_badge" style={{ backgroundImage: `url(./party-logos/${pic}.png)` }}></div>;
+            return <div className="party_member_badge" style={{ backgroundImage: `url(party-logos/${pic}.png)` }}></div>;
         }
 
         return <div className="party_member_badge" style={{ backgroundImage: `url(https://static.pmg.org.za/${props.pic})` }}></div>;
@@ -1079,7 +1079,7 @@ function Overview() {
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <span className="card-big-text">{block_totalScheduledMeetings.total}</span>
-                                        <span>{block_totalScheduledMeetings.per_day}</span>
+                                        <span className="card-subtext">{block_totalScheduledMeetings.per_day} per day</span>
                                     </CardSubtitle>
                                     <CardContent>
                                         <CardHelp metric="totalScheduledMeetings" />
@@ -1260,7 +1260,7 @@ function Overview() {
                                     <CardTitle>Committees with the best attendance</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
-                                        <span className="card-big-text">{parseInt(block_committeesWithBestAttendance.avg)}%</span>
+                                        
                                     </CardSubtitle>
 
                                     <CardContent>
@@ -1309,7 +1309,7 @@ function Overview() {
                                     <CardTitle>Parties with the best attendance</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
-                                        <span className="card-big-text">{parseInt(block_partiesWithBestAttendance.avg)}%</span>
+                                        
                                     </CardSubtitle>
 
                                     <CardContent>
@@ -1353,7 +1353,7 @@ function Overview() {
                                     <CardTitle>Members with the best attendance</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
-                                        <span className="card-big-text">{parseInt(block_membersWithBestAttendance.avg)}%</span>
+                                        
                                     </CardSubtitle>
 
                                     <CardContent>
