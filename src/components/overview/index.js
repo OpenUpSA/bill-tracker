@@ -156,7 +156,18 @@ function Overview() {
     function Badge(props) {
 
         if (props.party) {
-            return <div className="party_member_badge" style={{ backgroundImage: `url(./party-logos/${props.pic}.png)` }}></div>;
+
+            let pic = props.pic;
+
+            if(props.pic == 'Al Jama-ah') {
+                pic = 'ALJ';
+            } else if (props.pic == 'RISE Mzansi') {
+                pic = 'RISE';
+            } else if (props.pic == 'Action SA') {
+                pic = 'ASA';
+            }
+
+            return <div className="party_member_badge" style={{ backgroundImage: `url(./party-logos/${pic}.png)` }}></div>;
         }
 
         return <div className="party_member_badge" style={{ backgroundImage: `url(https://static.pmg.org.za/${props.pic})` }}></div>;
