@@ -106,7 +106,7 @@ export default function BubbleChart2({ data, referenceLines }) {
                         r={sizeScale(d.size)}
                         stroke="black"
                         strokeWidth={1}
-                        fill="transparent"
+                        fill="#fff"
                         onMouseEnter={(event) => {
                             showTooltip({
                                 tooltipLeft: xScale(d.x),

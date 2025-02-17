@@ -1,11 +1,25 @@
+
+$general_sans_400: 'General Sans Regular', sans-serif;
+$general_sans_400_italic: 'General Sans Italic', sans-serif;
+$general_sans_200: 'General Sans Extralight', sans-serif;
+$general_sans_200_italic: 'General Sans Extralight Italic', sans-serif;
+$general_sans_300: 'General Sans Light', sans-serif;
+$general_sans_300_italic: 'General Sans Light Italic', sans-serif;
+$general_sans_500: 'General Sans Medium', sans-serif;
+$general_sans_500_italic: 'General Sans Medium Italic', sans-serif;
+$general_sans_600: 'General Sans Semibold', sans-serif;
+$general_sans_600_italic: 'General Sans Semibold Italic', sans-serif;
+$general_sans_700: 'General Sans Bold', sans-serif;
+$general_sans_700_italic: 'General Sans Bold Italic', sans-serif;
+
+
 body {
 	background-color: #f3f3f3;
-	font-family: sans-serif;
 }
 
 h2 {
-	font-size: 22px;
-	font-weight: 600;
+	font-size: 24px;
+	font-family: $general_sans_600 !important;
 }
 
 .party-pill {
@@ -33,6 +47,7 @@ h2 {
 	display: inline-block;
 	background-color: #e0e0e0;
 	color: #000;
+	font-family: $general_sans_500 !important;
 	border-radius: 16px;
 	text-decoration: none;
 	padding: 1em 2em;
@@ -72,12 +87,17 @@ h2 {
 	background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.06) 100%);
 }
 
+.dropdown-select {
+	font-family: $general_sans_500 !important;
+}
+
 .dropdown-toggle .party-pill {
 	display: inline-block;
 }
 
 .form-label {
-	font-size: 12px;
+	font-size: 14px;
+	font-family: $general_sans_500 !important;
 }
 
 .card-help {
@@ -191,7 +211,7 @@ h2 {
 }
 
 .section-intro {
-	font-size: 14px;
+	font-family: $general_sans_500 !important;
 	padding: 0 3em 0 2em;
 }
 
@@ -225,4 +245,18 @@ h2 {
 .current-party td {
 	background-color: #fbf5ec;
 	border-color: #fbd9a7
+}
+
+thead {
+	font-size: 12px;
+	font-family: $general_sans_500 !important;
+
+	th {
+		font-weight: 500;
+	}
+}
+
+tbody {
+	font-size: 12px;
+	font-family: $general_sans_400 !important;
 }

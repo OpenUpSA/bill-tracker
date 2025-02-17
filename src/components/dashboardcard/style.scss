@@ -1,3 +1,16 @@
+$general_sans_400: 'General Sans Regular', sans-serif;
+$general_sans_400_italic: 'General Sans Italic', sans-serif;
+$general_sans_200: 'General Sans Extralight', sans-serif;
+$general_sans_200_italic: 'General Sans Extralight Italic', sans-serif;
+$general_sans_300: 'General Sans Light', sans-serif;
+$general_sans_300_italic: 'General Sans Light Italic', sans-serif;
+$general_sans_500: 'General Sans Medium', sans-serif;
+$general_sans_500_italic: 'General Sans Medium Italic', sans-serif;
+$general_sans_600: 'General Sans Semibold', sans-serif;
+$general_sans_600_italic: 'General Sans Semibold Italic', sans-serif;
+$general_sans_700: 'General Sans Bold', sans-serif;
+$general_sans_700_italic: 'General Sans Bold Italic', sans-serif;
+
 .dashboard-card {
     background-color: #fff;
     border-radius: 16px;
@@ -11,16 +24,16 @@
 }
 
 h3 {
+    font-family: $general_sans_500 !important;
     font-size: 14px;
-    font-weight: 500;
     margin: 0;
 }
 
 
 
 .card-big-text {
-    font-size: 21px;
-    font-weight: 500;
+    font-size: 24px;
+    font-family: $general_sans_500 !important;
 }
 
 .card-badge {

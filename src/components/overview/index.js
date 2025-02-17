@@ -155,8 +155,8 @@ function Overview() {
 
     function Badge(props) {
 
-        if(props.party) {
-            return <div className="party_member_badge" style={{ backgroundImage: `url(./party-logos/${props.pic}.png)` }}></div>; 
+        if (props.party) {
+            return <div className="party_member_badge" style={{ backgroundImage: `url(./party-logos/${props.pic}.png)` }}></div>;
         }
 
         return <div className="party_member_badge" style={{ backgroundImage: `url(https://static.pmg.org.za/${props.pic})` }}></div>;
@@ -178,22 +178,22 @@ function Overview() {
                 <div className="card-help">
                     <div className="question">?</div>
                 </div>
-          </OverlayTrigger>
+            </OverlayTrigger>
 
-)
+        )
     }
 
     function CardBar(props) {
         return (
             <div className="card-bar">
-                <div className="card-bar-fill" style={{width: `${parseFloat(props.value)}%`}}></div>
-                <div className="card-bar-mark" style={{left: `${parseFloat(props.avg)}%`}}></div>
+                <div className="card-bar-fill" style={{ width: `${parseFloat(props.value)}%` }}></div>
+                <div className="card-bar-mark" style={{ left: `${parseFloat(props.avg)}%` }}></div>
             </div>
         );
     }
 
     function CardSparkline(props) {
-        
+
 
         let sparklineData = [];
 
@@ -201,14 +201,14 @@ function Overview() {
 
 
         // return 'hi';
-        
+
         return <SparklinesLine
             stroke="#999"
             fill="none"
             data={sparklineData.length > 0 ? sparklineData : [0]}
             height={20}
             width={40}
-            
+
         />
     }
 
@@ -275,34 +275,34 @@ function Overview() {
 
     function filterHistoricalData() {
 
-            if(!historicalDateRange) {
-                return;
-            }
+        if (!historicalDateRange) {
+            return;
+        }
 
-            let historical_earliest_month = parseInt(historicalDateRange.earliest.split('-')[0], 10);
-            let historical_earliest_year = parseInt(historicalDateRange.earliest.split('-')[1], 10);
-            let historical_latest_month = parseInt(historicalDateRange.latest.split('-')[0], 10);
-            let historical_latest_year = parseInt(historicalDateRange.latest.split('-')[1], 10);
-            
-            let filteredData_Calc;
+        let historical_earliest_month = parseInt(historicalDateRange.earliest.split('-')[0], 10);
+        let historical_earliest_year = parseInt(historicalDateRange.earliest.split('-')[1], 10);
+        let historical_latest_month = parseInt(historicalDateRange.latest.split('-')[0], 10);
+        let historical_latest_year = parseInt(historicalDateRange.latest.split('-')[1], 10);
 
-            // filter by historical date range
-            filteredData_Calc = attendanceData.filter(attendance => {
-                let [day, month, year] = attendance.event_date.split('-');
-                return (parseInt(month, 10) >= historical_earliest_month && parseInt(year, 10) >= historical_earliest_year) && (parseInt(month, 10) <= historical_latest_month && parseInt(year, 10) <= historical_latest_year);
-            });
+        let filteredData_Calc;
 
-            setHistoricalData_allParties(filteredData_Calc);
+        // filter by historical date range
+        filteredData_Calc = attendanceData.filter(attendance => {
+            let [day, month, year] = attendance.event_date.split('-');
+            return (parseInt(month, 10) >= historical_earliest_month && parseInt(year, 10) >= historical_earliest_year) && (parseInt(month, 10) <= historical_latest_month && parseInt(year, 10) <= historical_latest_year);
+        });
 
-            if (party === "All") {
-                setHistoricalData(filteredData_Calc);
-            } else {
-                let partyMembers = membersData.filter(member => member.party_id === party);
-                let partyMemberIds = partyMembers.map(member => member.id);
-                filteredData_Calc = filteredData_Calc.filter(attendance => partyMemberIds.includes(attendance.member_id));
-                setHistoricalData(filteredData_Calc);
-            }
-    
+        setHistoricalData_allParties(filteredData_Calc);
+
+        if (party === "All") {
+            setHistoricalData(filteredData_Calc);
+        } else {
+            let partyMembers = membersData.filter(member => member.party_id === party);
+            let partyMemberIds = partyMembers.map(member => member.id);
+            filteredData_Calc = filteredData_Calc.filter(attendance => partyMemberIds.includes(attendance.member_id));
+            setHistoricalData(filteredData_Calc);
+        }
+
     }
 
     function changeMonth(month) {
@@ -390,32 +390,32 @@ function Overview() {
     }
 
     function calc_historical_dateRange() {
-        
+
         if (!dateRange) {
             return;
         }
 
         let [earliestMonth, earliestYear] = dateRange.earliest.split('-').map(Number);
-    
+
         let selectedDate = new Date(selectedYear, selectedMonth - 1, 1);
-    
+
         let historicalStart = new Date(selectedDate);
         historicalStart.setMonth(historicalStart.getMonth() - 6);
-    
+
         let earliestAvailable = new Date(earliestYear, earliestMonth - 1, 1);
         if (historicalStart < earliestAvailable) {
             historicalStart = earliestAvailable;
         }
-    
+
         let formattedHistoricalStart = `${historicalStart.getMonth() + 1}-${historicalStart.getFullYear()}`;
-       
+
         setHistoricalDateRange({ earliest: formattedHistoricalStart, latest: selectedMonth + "-" + selectedYear });
 
     }
 
     function groupMeetings(data) {
 
-       
+
 
 
         let groupedMeetings = {};
@@ -550,7 +550,7 @@ function Overview() {
             avg_scheduled: parseInt(total_meetings_scheduled_length / total_meetings),
             data: chart_data.scheduled
         })
-        
+
 
     }
 
@@ -560,10 +560,10 @@ function Overview() {
         let chart_data = [];
 
         grouped_meetings.forEach(meeting => {
-            
-            if(meeting.scheduled_length && meeting.actual_length) {
+
+            if (meeting.scheduled_length && meeting.actual_length) {
                 meeting.diff = parseFloat(meeting.actual_length) - parseFloat(meeting.scheduled_length);
-                if(meeting.diff > 0) {
+                if (meeting.diff > 0) {
                     meeting.late = true;
                 }
             } else {
@@ -583,7 +583,7 @@ function Overview() {
             late_count: chart_data.filter(d => d.late).length,
             data: chart_data
         })
-        
+
     }
 
     function block_meetings_per_committee() {
@@ -614,7 +614,7 @@ function Overview() {
         let historicalAverages = {};
 
         let historical_grouped_meetings = groupMeetings(historicalData);
-        
+
         historical_grouped_meetings.forEach(meeting => {
             let [day, month, year] = meeting.event_date.split('-').map(Number);
             let key = `${year}-${month}`;
@@ -643,29 +643,29 @@ function Overview() {
     }
 
     function block_meetings_that_overlapped() {
-        let grouped_meetings = groupMeetings(filteredData); 
-    
+        let grouped_meetings = groupMeetings(filteredData);
+
         let overlapping_meetings = [];
-    
+
         grouped_meetings.forEach(meeting => {
             let { event_date, scheduled_start_time, scheduled_end_time } = meeting;
-    
+
             let formatted_date = event_date.split('-').reverse().join('-'); // Convert to YYYY-MM-DD
             let start_time = new Date(`${formatted_date} ${scheduled_start_time}`);
             let end_time = new Date(`${formatted_date} ${scheduled_end_time}`);
-    
+
             grouped_meetings.forEach(other_meeting => {
                 let { event_date: other_date, scheduled_start_time: other_start_time, scheduled_end_time: other_end_time } = other_meeting;
-                
+
                 let other_formatted_date = other_date.split('-').reverse().join('-');
                 let other_start = new Date(`${other_formatted_date} ${other_start_time}`);
                 let other_end = new Date(`${other_formatted_date} ${other_end_time}`);
-    
+
                 if (start_time < other_end && end_time > other_start) {
                     // Avoid adding duplicates
-                    
-                        overlapping_meetings.push(meeting);
-                   
+
+                    overlapping_meetings.push(meeting);
+
                 }
             });
         });
@@ -680,23 +680,23 @@ function Overview() {
             overlap_counts[committee_id] += 1;
         });
 
-        
+
         let overlap_array = Object.keys(overlap_counts).map(committee => {
             return {
                 committee: committee,
                 count: overlap_counts[committee]
             }
         }).sort((a, b) => b.count - a.count);
-    
+
         setBlock_meetingsThatOverlapped({
             avg: overlapping_meetings.length,
             counts: overlap_array
         });
-    
+
     }
 
     function block_overall_attendance() {
-        
+
         let grouped_attendance = [
             {
                 P: 0,
@@ -740,13 +740,13 @@ function Overview() {
 
     function block_committees_with_best_attendance() {
         let grouped_meetings = groupMeetings(filteredData);
-    
+
         let attendance_present = ['P', 'DE', 'L', 'LDE'];
-    
+
         grouped_meetings.forEach(meeting => {
             meeting.attendance_count = 0;
             meeting.absent_count = 0;
-    
+
             let { attendance } = meeting;
             attendance.forEach(member => {
                 if (attendance_present.includes(member.attendance)) {
@@ -756,7 +756,7 @@ function Overview() {
                 }
             });
         });
-    
+
         let committees = {};
         grouped_meetings.forEach(meeting => {
             let { committee_id, attendance_count, absent_count } = meeting;
@@ -774,10 +774,10 @@ function Overview() {
             committees[committee_id].meetings += 1;
             committees[committee_id].percentage = parseFloat((committees[committee_id].attended / (committees[committee_id].attended + committees[committee_id].absent)) * 100).toFixed(2);
         });
-    
+
         committees = Object.values(committees);
-    
-        
+
+
         let avg = committees.reduce((sum, c) => sum + parseFloat(c.percentage), 0) / committees.length;
         avg = parseFloat(avg.toFixed(2));
 
@@ -785,7 +785,7 @@ function Overview() {
             committees: committees,
             avg: avg
         });
-    
+
     }
 
     function block_parties_with_best_attendance() {
@@ -842,10 +842,10 @@ function Overview() {
 
     function block_members_with_best_attendance() {
         let grouped_attendance_members = {};
-    
+
         filteredData.forEach(attendance => {
             let { member_id, attendance: status } = attendance;
-    
+
             if (!grouped_attendance_members[member_id]) {
                 grouped_attendance_members[member_id] = {
                     meetings: [],
@@ -854,25 +854,25 @@ function Overview() {
                     percentage: 0
                 };
             }
-    
+
             if (['P', 'DE', 'L', 'LDE'].includes(status)) {
                 grouped_attendance_members[member_id].attended += 1;
             } else {
                 grouped_attendance_members[member_id].absent += 1;
             }
-    
+
             if (!grouped_attendance_members[member_id].meetings.includes(attendance.meeting_id)) {
                 grouped_attendance_members[member_id].meetings.push(attendance.meeting_id);
             }
         });
-    
+
         Object.keys(grouped_attendance_members).forEach(member => {
             let { attended, absent } = grouped_attendance_members[member];
             let total = attended + absent;
             let percentage = total > 0 ? parseFloat((attended / total) * 100).toFixed(2) : 0;
             grouped_attendance_members[member].percentage = parseFloat(percentage);
         });
-    
+
         // Convert to array with member_id
         let members = Object.keys(grouped_attendance_members).map(member => {
             return {
@@ -880,19 +880,19 @@ function Overview() {
                 ...grouped_attendance_members[member]
             };
         });
-    
+
         // Compute the average attendance percentage across all members
-        let avg = members.length > 0 
-            ? parseFloat((members.reduce((sum, m) => sum + m.percentage, 0) / members.length).toFixed(2)) 
+        let avg = members.length > 0
+            ? parseFloat((members.reduce((sum, m) => sum + m.percentage, 0) / members.length).toFixed(2))
             : 0;
 
         setBlock_membersWithBestAttendance({
             members: members,
             avg: avg
         });
-    
+
     }
-    
+
 
     // UseEffects //////////////////
 
@@ -910,7 +910,7 @@ function Overview() {
     useEffect(() => {
         filterData();
         calc_historical_dateRange();
-        
+
     }, [dateRange, party, selectedMonth, selectedYear]);
 
     useEffect(() => {
@@ -942,7 +942,7 @@ function Overview() {
                 <div className="overview-container">
                     <Row>
                         <Col>
-                            <h1>Parliamentary Overview</h1>
+                            <h1>Parliamentary overview</h1>
                         </Col>
                     </Row>
                 </div>
@@ -1067,7 +1067,7 @@ function Overview() {
                         <Row>
                             <Col>
                                 <DashboardCard>
-                                   
+
                                     <CardTitle>Total scheduled meetings</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
@@ -1075,7 +1075,7 @@ function Overview() {
                                         <span>{block_totalScheduledMeetings.per_day}</span>
                                     </CardSubtitle>
                                     <CardContent>
-                                    <CardHelp metric="totalScheduledMeetings"/>
+                                        <CardHelp metric="totalScheduledMeetings" />
                                         {
                                             block_totalScheduledMeetings.data.length > 0 &&
                                             <LineChart data={block_totalScheduledMeetings.data} width={400} height={150} referenceY={block_totalScheduledMeetings.per_day} />
@@ -1086,7 +1086,7 @@ function Overview() {
 
                             <Col>
                                 <DashboardCard>
-                                    
+
                                     <CardTitle>Average length of a single meeting</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
@@ -1104,7 +1104,7 @@ function Overview() {
                             </Col>
                             <Col>
                                 <DashboardCard>
-                                    
+
                                     <CardTitle>Number of meetings that ended late</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
@@ -1112,7 +1112,7 @@ function Overview() {
 
                                     </CardSubtitle>
                                     <CardContent>
-                                        <CardHelp metric="meetingsThatEndedLate"/>
+                                        <CardHelp metric="meetingsThatEndedLate" />
                                         <BubbleChart2 data={block_meetingsThatEndedLate.data} />
                                     </CardContent>
                                 </DashboardCard>
@@ -1125,7 +1125,7 @@ function Overview() {
 
                             <Col>
                                 <DashboardCard>
-                                    
+
                                     <CardTitle>Meetings per committee</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
@@ -1156,8 +1156,8 @@ function Overview() {
                                                                 <tr key={index}>
                                                                     <td>{index + 1}</td>
                                                                     <td>{committeesData.find(c => c.id === committee.committee).name}</td>
-                                                                    <td className="text-end">{committee.count}</td>
-                                                                    <td className="text-end">{committee.total_time}</td>
+                                                                    <td>{committee.count}</td>
+                                                                    <td>{committee.total_time}</td>
                                                                     <td></td>
                                                                 </tr>
                                                             )
@@ -1173,14 +1173,14 @@ function Overview() {
                             </Col>
                             <Col>
                                 <DashboardCard>
-                                    
+
                                     <CardTitle>Scheduled meetings that overlapped</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <span className="card-big-text">{block_meetingsThatOverlapped.avg}</span>
                                     </CardSubtitle>
                                     <CardContent>
-                                        <CardHelp metric="meetingsThatOverlapped"/>
+                                        <CardHelp metric="meetingsThatOverlapped" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
                                                 <Table>
@@ -1199,8 +1199,8 @@ function Overview() {
                                                                 <tr key={index}>
                                                                     <td>{index + 1}</td>
                                                                     <td>{committeesData.find(c => c.id === committee.committee).name}</td>
-                                                                    <td className="text-end">{block_meetingsPerCommittee.committees.find(c => c.committee === committee.committee)?.count}</td>
-                                                                    <td className="text-end">{committee.count}</td>
+                                                                    <td>{block_meetingsPerCommittee.committees.find(c => c.committee === committee.committee)?.count}</td>
+                                                                    <td>{committee.count}</td>
                                                                     <td></td>
                                                                 </tr>
                                                             )
@@ -1241,13 +1241,13 @@ function Overview() {
                                     </CardSubtitle>
 
                                     <CardContent>
-                                        <CardHelp metric="overallAttendance"/>
+                                        <CardHelp metric="overallAttendance" />
                                         <div className="mt-3">
                                             <StackedBarChart data={block_overallAttendance.data} />
                                         </div>
                                     </CardContent>
                                 </DashboardCard>
-                            
+
                             </Col>
                             <Col>
                                 <DashboardCard>
@@ -1258,7 +1258,7 @@ function Overview() {
                                     </CardSubtitle>
 
                                     <CardContent>
-                                        <CardHelp metric="commiteesWithBestAttendance"/>
+                                        <CardHelp metric="commiteesWithBestAttendance" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
                                                 <Table>
@@ -1278,9 +1278,9 @@ function Overview() {
                                                                 <tr key={index}>
                                                                     <td>{index + 1}</td>
                                                                     <td>{committeesData.find(c => c.id === committee.committee).name}</td>
-                                                                    <td className="text-end">{committee.meetings}</td>
-                                                                    <td className="text-end">{parseInt(committee.percentage)}%</td>
-                                                                    <td><CardBar value={parseInt(committee.percentage)} avg={block_committeesWithBestAttendance.avg}/></td>
+                                                                    <td>{committee.meetings}</td>
+                                                                    <td>{parseInt(committee.percentage)}%</td>
+                                                                    <td><CardBar value={parseInt(committee.percentage)} avg={block_committeesWithBestAttendance.avg} /></td>
                                                                     <td></td>
                                                                 </tr>
                                                             )
@@ -1299,7 +1299,7 @@ function Overview() {
                         <Row className="mt-4">
                             <Col>
                                 <DashboardCard>
-                                    
+
                                     <CardTitle>Parties with the best attendance</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
@@ -1307,7 +1307,7 @@ function Overview() {
                                     </CardSubtitle>
 
                                     <CardContent>
-                                        <CardHelp metric="partiesWithBestAttendance"/>
+                                        <CardHelp metric="partiesWithBestAttendance" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
                                                 <Table>
@@ -1324,12 +1324,12 @@ function Overview() {
                                                     <tbody>
                                                         {
                                                             block_partiesWithBestAttendance.parties.sort((a, b) => b.percentage - a.percentage).map((p, index) =>
-                                                                <tr key={index} className={party == p.party ? 'current-party' : '' }>
+                                                                <tr key={index} className={party == p.party ? 'current-party' : ''}>
                                                                     <td>{index + 1}</td>
-                                                                    <td><Badge party pic={partiesData.find(c => c.id === p.party).party}/>{partiesData.find(c => c.id === p.party).party}</td>
-                                                                    <td className="text-end">{p.meetings.length}</td>
-                                                                    <td className="text-end">{parseInt(p.percentage)}%</td>
-                                                                    <td><CardBar value={parseInt(p.percentage)} avg={block_partiesWithBestAttendance.avg}/></td>
+                                                                    <td><Badge party pic={partiesData.find(c => c.id === p.party).party} />{partiesData.find(c => c.id === p.party).party}</td>
+                                                                    <td>{p.meetings.length}</td>
+                                                                    <td>{parseInt(p.percentage)}%</td>
+                                                                    <td><CardBar value={parseInt(p.percentage)} avg={block_partiesWithBestAttendance.avg} /></td>
                                                                     <td></td>
                                                                 </tr>
                                                             )
@@ -1351,7 +1351,7 @@ function Overview() {
                                     </CardSubtitle>
 
                                     <CardContent>
-                                        <CardHelp metric="membersWithBestAttendance"/>
+                                        <CardHelp metric="membersWithBestAttendance" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
                                                 <Table>
@@ -1372,12 +1372,12 @@ function Overview() {
                                                             block_membersWithBestAttendance.members.sort((a, b) => b.percentage - a.percentage).map((member, index) =>
                                                                 <tr key={index}>
                                                                     <td>{index + 1}</td>
-                                                                    <td><Badge pic={membersData.find(c => c.id === member.member)?.profile_pic}/>{membersData.find(c => c.id === member.member)?.member}</td>
+                                                                    <td><Badge pic={membersData.find(c => c.id === member.member)?.profile_pic} />{membersData.find(c => c.id === member.member)?.member}</td>
                                                                     <td>{partiesData.find(c => c.id === membersData.find(m => m.id === member.member)?.party_id)?.party}</td>
-                                                                    <td className="text-end">{member.meetings.length}</td>
-                                                                    <td className="text-end"></td>
+                                                                    <td>{member.meetings.length}</td>
+                                                                    <td></td>
                                                                     <td>{parseInt(member.percentage)}%</td>
-                                                                    <td><CardBar value={parseInt(member.percentage)} avg={block_membersWithBestAttendance.avg}/></td>
+                                                                    <td><CardBar value={parseInt(member.percentage)} avg={block_membersWithBestAttendance.avg} /></td>
                                                                     <td></td>
                                                                 </tr>
                                                             )
@@ -1399,21 +1399,7 @@ function Overview() {
                         </Row>
                     </section>
 
-                    {/* <section className="section-header mt-4">
-                        <Row>
-                            <Col>
-                                <div className="header-img-container">
-                                    <div className="header-img" style={{ backgroundImage: "url('member-activities.jpeg')" }}></div>
-                                    <h2>Member and minister activities</h2>
-                                </div>
-                            </Col>
-                            <Col className="d-flex align-items-center">
-                                <div className="section-intro">In this section we look at activities undertaken by MPs and ministers that show that they are engaging with parliamentary processes and procedures. While no single metric can tell this entire story, they do help us know where to look for leading voices in parliament.</div>
-                            </Col>
-                        </Row>
-                    </section>
 
-                    <section className="activities mt-4"></section> */}
 
                 </div>
             </Container>

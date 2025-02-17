@@ -1,20 +1,19 @@
-import { AxisBottom } from '@visx/axis';
 import { curveNatural } from '@visx/curve';
 import { scaleLinear } from '@visx/scale';
-import { LinePath } from '@visx/shape';
+import { LinePath, Line, Circle } from '@visx/shape';
 import { useTooltip, Tooltip, defaultStyles } from '@visx/tooltip';
 import { localPoint } from '@visx/event';
 import { bisector } from 'd3-array';
-import { Line, Circle } from '@visx/shape';
 import { useState, useEffect, useRef } from 'react';
+import { timeFormat, timeParse } from 'd3-time-format';
 
 export default function LineChart({ data, referenceY }) {
     const containerRef = useRef(null);
     const [chartWidth, setChartWidth] = useState(100);
-    const height = 150;
+    const height = 180;
     const padding = 20;
 
-    // Resize observer to track changes in width
+    // Resize observer
     useEffect(() => {
         const resizeObserver = new ResizeObserver((entries) => {
             if (entries[0].contentRect.width) {
@@ -36,7 +35,7 @@ export default function LineChart({ data, referenceY }) {
     });
 
     const yScale = scaleLinear({
-        domain: [0, Math.max(...data.map((d) => d.y)) + 0],
+        domain: [0, Math.max(...data.map((d) => d.y)) + 10],
         range: [height - padding, padding],
     });
 
@@ -60,9 +59,24 @@ export default function LineChart({ data, referenceY }) {
         });
     };
 
+    // Fix: Correct date format for your dataset (MM/DD/YYYY)
+    const parseDate = timeParse('%m/%d/%Y');
+    const formatDate = timeFormat('%b %d'); // e.g., "Jan 15"
+
+    // Filter out Mondays
+    const mondayData = data
+        .map((d, i) => ({
+            ...d,
+            index: i,
+            parsedDate: parseDate(d.date), // Convert string to Date object
+        }))
+        .filter((d) => {
+            return d.parsedDate && d.parsedDate.getDay() === 1; // Monday = 1
+        });
+
     return (
         <div ref={containerRef} style={{ width: '100%', position: 'relative' }}>
-            <svg width={chartWidth} height={height} onMouseMove={handleMouseMove} onMouseLeave={hideTooltip}>
+            <svg width={chartWidth} height={height + 30} onMouseMove={handleMouseMove} onMouseLeave={hideTooltip}>
                 {/* Line Path */}
                 <LinePath
                     data={data}
@@ -73,9 +87,6 @@ export default function LineChart({ data, referenceY }) {
                     curve={curveNatural}
                 />
 
-                {/* X-Axis */}
-                {/* <AxisBottom scale={xScale} top={height - padding} /> */}
-
                 {/* Permanent Horizontal Reference Line */}
                 <Line
                     from={{ x: padding, y: yScale(referenceY) }}
@@ -85,7 +96,32 @@ export default function LineChart({ data, referenceY }) {
                     strokeDasharray="6,3"
                 />
 
-                {/* Vertical Reference Line (for tooltip) */}
+                {/* Monday Grid Lines */}
+                {mondayData.map((d, i) => {
+                    const xPos = xScale(d.index);
+                    return (
+                        <g key={i}>
+                            <Line
+                                from={{ x: xPos, y: padding }}
+                                to={{ x: xPos, y: height - padding }}
+                                stroke="#dadada"
+                                strokeWidth={1}
+                            />
+                            {/* Moved the label to the TOP */}
+                            <text
+                                x={xPos}
+                                y={padding - 5} // Adjusted position to be above the chart
+                                fontSize={10}
+                                textAnchor="middle"
+                                fill="#868686"
+                            >
+                                Mon
+                            </text>
+                        </g>
+                    );
+                })}
+
+                {/* Tooltip vertical line */}
                 {tooltipData && (
                     <Line
                         from={{ x: tooltipLeft, y: padding }}
@@ -100,34 +136,9 @@ export default function LineChart({ data, referenceY }) {
                 {tooltipData && (
                     <Circle cx={tooltipLeft} cy={tooltipTop} r={5} fill="black" />
                 )}
-
-                {/* Vertical Grid Lines */}
-                {[...Array(5)].map((_, i) => {
-                    const xPos = xScale((data.length - 1) * (i / 4)); // Adjusting for specific intervals
-                    return (
-                        <g key={i}>
-                            <Line
-                                from={{ x: xPos, y: padding }}
-                                to={{ x: xPos, y: height - padding }}
-                                stroke="lightgray"
-                                strokeWidth={1}
-                                strokeDasharray="4,4"
-                            />
-                            <text
-                                x={xPos}
-                                y={height - padding + 15}
-                                fontSize={10}
-                                textAnchor="middle"
-                                fill="black"
-                            >
-                                {Math.round((data.length - 1) * (i / 4))}
-                            </text>
-                        </g>
-                    );
-                })}
             </svg>
 
-            {/* Tooltip rendered outside the SVG */}
+            {/* Tooltip */}
             {tooltipData && (
                 <Tooltip
                     left={tooltipLeft + 10}
@@ -135,10 +146,28 @@ export default function LineChart({ data, referenceY }) {
                     style={{ ...defaultStyles, position: 'absolute', backgroundColor: 'white', border: '1px solid black', padding: '5px' }}
                 >
                     <div>
-                        <strong>x:</strong> {tooltipData.x}, <strong>y:</strong> {tooltipData.y}
+                        <strong>Date:</strong> {tooltipData.date ? formatDate(parseDate(tooltipData.date)) : "N/A"}
+                    </div>
+                    <div>
+                        <strong>x:</strong> {tooltipData.x}
+                    </div>
+                    <div>
+                        <strong>y:</strong> {tooltipData.y}
                     </div>
                 </Tooltip>
             )}
+
+            {/* Legend */}
+            {/* <div className="chart-legend">
+                <div className="legend-item">
+                    <div className="legend-color" style={{ backgroundColor: '#000' }}></div>
+                    <div className="legend-label">Data</div>
+                </div>
+                <div className="legend-item">
+                    <div className="legend-color" style={{ backgroundColor: '#fb9905' }}></div>
+                    <div className="legend-label">Reference</div>
+                </div>
+            </div> */}
         </div>
     );
 }
