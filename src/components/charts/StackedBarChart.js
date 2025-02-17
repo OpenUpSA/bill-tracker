@@ -33,11 +33,6 @@ export default function StackedBarChart(props) {
     });
 
 
-    console.log(chart_data);
-
-
-    
-
 
 
     return (
@@ -83,7 +78,7 @@ export default function StackedBarChart(props) {
                         }
                        
                         <div className="attendance-separator">
-                            <div className="attendance-separator-arrow"></div>
+                            <div className="attendance-separator-arrow">{index == 0 ? '▼' : '▲'}</div>
                             <div className="attendance-separator-present">Present ({parseInt(item.present_percentage)}%)</div>
                             <div className="attendance-separator-absent">Absent ({parseInt(item.absent_percentage)}%)</div>
                         </div>

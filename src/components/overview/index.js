@@ -741,12 +741,13 @@ function Overview() {
             grouped_attendance[1][status] += 1;
         });
 
+        let total = grouped_attendance[0].P + grouped_attendance[0].U + grouped_attendance[0].A + grouped_attendance[0].AP + grouped_attendance[0].DE + grouped_attendance[0].L + grouped_attendance[0].LDE;
+        let present_percentage = parseFloat(((grouped_attendance[0].P + grouped_attendance[0].L + grouped_attendance[0].DE + grouped_attendance[0].LDE) / total) * 100).toFixed(2);
+
         setBlock_overallAttendance({
+            avg: present_percentage,
             data: grouped_attendance
         })
-
-
-
     }
 
     function block_committees_with_best_attendance() {
@@ -959,8 +960,6 @@ function Overview() {
                 </div>
             </Container>
 
-
-
             <Container fluid className="dashboard-nav mt-3 py-2">
                 <div className="overview-container">
 
@@ -1078,7 +1077,6 @@ function Overview() {
                         <Row>
                             <Col>
                                 <DashboardCard>
-
                                     <CardTitle>Total scheduled meetings</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
@@ -1120,7 +1118,6 @@ function Overview() {
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <span className="card-big-text">{block_meetingsThatEndedLate.late_count}</span>
-
                                     </CardSubtitle>
                                     <CardContent>
                                         <CardHelp metric="meetingsThatEndedLate" />
@@ -1136,7 +1133,6 @@ function Overview() {
 
                             <Col>
                                 <DashboardCard>
-
                                     <CardTitle>Meetings per committee</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
@@ -1249,6 +1245,7 @@ function Overview() {
                                     <CardTitle>Overall meeting attendance</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
+                                        <span className="card-big-text">{parseInt(block_overallAttendance.avg)}%</span>
                                     </CardSubtitle>
 
                                     <CardContent>

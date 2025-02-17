@@ -77,14 +77,16 @@
 .attendance-separator {
     position: absolute;
     right: 0;
-    height: 150px;
+    height: 145px;
     bottom: 0;
     border-right: 1px solid #000;
     width: 0;
 
     .attendance-separator-arrow {
-        
-       
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -60%);
     }
 
     .attendance-separator-present {
@@ -108,6 +110,12 @@
     height: 20px;
     top: 0;
     bottom: unset;
+
+    .attendance-separator-arrow {
+        top: unset;
+        bottom: 0;
+        transform: translate(-50%,60%);
+    }
 
     .attendance-separator-present {
         display: none;
