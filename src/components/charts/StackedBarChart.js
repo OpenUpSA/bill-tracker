@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+
 import './style.scss';
 
 export default function StackedBarChart(props) {
@@ -37,10 +40,11 @@ export default function StackedBarChart(props) {
 
     return (
         <>
+        <div className="attendance-breakdown-header">{props.party}</div>
         {
             chart_data.map((item, index) => 
                 <div className={`attendance-breakdown ${index > 0 && 'all-parties'}`} key={index}>
-
+                    <OverlayTrigger placement="top" delay={{ show: 50, hide: 50 }} overlay={<Tooltip>Attended: {item.P}</Tooltip>}>
                     <div className="attendance-block attendance-attended" style={{ width: `${item.P_percentage}%` }}>
                         {
                             item.P_percentage > 5 &&                            
@@ -50,6 +54,8 @@ export default function StackedBarChart(props) {
                             </div>
                         }
                     </div>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="top" delay={{ show: 50, hide: 50 }} overlay={<Tooltip>Arrived Late: {item.L}</Tooltip>}>
                     <div className="attendance-block attendance-arrived-late" style={{ width: `${item.L_percentage}%` }}>
                         {
                             item.L_percentage > 5 &&
@@ -59,6 +65,8 @@ export default function StackedBarChart(props) {
                             </div>
                         }
                     </div>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="top" delay={{ show: 50, hide: 50 }} overlay={<Tooltip>Arrived Late & Departed Early: {item.LDE}</Tooltip>}>
                     <div className="attendance-block attendance-arrived-late-departed-early" style={{ width: `${item.LDE_percentage}%` }}>
                         {
                             item.LDE_percentage > 5 &&
@@ -68,6 +76,8 @@ export default function StackedBarChart(props) {
                             </div>
                         }   
                     </div>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="top" delay={{ show: 50, hide: 50 }} overlay={<Tooltip>Departed Early: {item.DE}</Tooltip>}>
                     <div className="attendance-block attendance-departed-early" style={{ width: `${item.DE_percentage}%` }}>
                         {
                             item.DE_percentage > 5 &&
@@ -84,7 +94,8 @@ export default function StackedBarChart(props) {
                         </div>
                       
                     </div>
-
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="top" delay={{ show: 50, hide: 50 }} overlay={<Tooltip>Absent with Apologies: {item.AP}</Tooltip>}>
                     <div className="attendance-block attendance-absent-with-apologies" style={{ width: `${item.AP_percentage}%` }}>
                         {
                             item.AP_percentage > 5 &&
@@ -94,6 +105,8 @@ export default function StackedBarChart(props) {
                             </div>
                         }
                     </div>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="top" delay={{ show: 50, hide: 50 }} overlay={<Tooltip>Absent: {item.A}</Tooltip>}>
                     <div className="attendance-block attendance-absent" style={{ width: `${item.A_percentage}%` }}>
                         {
                             item.A_percentage > 5 &&
@@ -103,10 +116,11 @@ export default function StackedBarChart(props) {
                             </div>
                         }
                     </div>
-
+                    </OverlayTrigger>
                 </div>
             )
         }
+        <div className="attendance-breakdown-footer">All Parties</div>
         </>
     );
 }

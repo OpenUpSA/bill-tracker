@@ -490,7 +490,6 @@ function Overview() {
             });
         }
 
-
         Object.keys(groupByDate(filteredData)).forEach(date => {
             let corrected_date = date.split('-');
             let new_date = `${corrected_date[1]}/${corrected_date[0]}/${corrected_date[2]}`;
@@ -905,7 +904,6 @@ function Overview() {
 
     }
 
-
     // UseEffects //////////////////
 
     useEffect(() => {
@@ -1063,7 +1061,7 @@ function Overview() {
                         <Row>
                             <Col>
                                 <div className="header-img-container">
-                                    <div className="header-img" style={{ backgroundImage: "url('scheduling.jpeg')" }}></div>
+                                    <div className="header-img" style={{ backgroundImage: "url('../scheduling.jpeg')" }}></div>
                                     <h2>Scheduling of committee meetings</h2>
                                 </div>
                             </Col>
@@ -1228,7 +1226,7 @@ function Overview() {
                         <Row>
                             <Col>
                                 <div className="header-img-container">
-                                    <div className="header-img" style={{ backgroundImage: "url('committee-meeting-attendance.jpeg')" }}></div>
+                                    <div className="header-img" style={{ backgroundImage: "url('../committee-meeting-attendance.jpeg')" }}></div>
                                     <h2>Attendance of committee meetings</h2>
                                 </div>
                             </Col>
@@ -1251,7 +1249,7 @@ function Overview() {
                                     <CardContent>
                                         <CardHelp metric="overallAttendance" />
                                         <div className="mt-3">
-                                            <StackedBarChart data={block_overallAttendance.data} />
+                                            <StackedBarChart data={block_overallAttendance.data} party={partiesData.find(p => p.id === party)?.party || "All"}/>
                                         </div>
                                     </CardContent>
                                 </DashboardCard>
