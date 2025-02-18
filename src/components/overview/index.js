@@ -59,13 +59,22 @@ function Overview() {
     const [historicalData, setHistoricalData] = useState([]);
     const [historicalData_allParties, setHistoricalData_allParties] = useState([]);
 
-    const [block_totalScheduledMeetings, setBlock_totalScheduledMeetings] = useState({
-        total: 0,
-        by_date: [],
-        data: [],
-        per_day: 0,
-        month_days: 0
-    });
+    const [block_totalScheduledMeetings, setBlock_totalScheduledMeetings] = useState([
+        {
+            total: 0,
+            by_date: [],
+            data: [],
+            per_day: 0,
+            month_days: 0
+        },
+        {
+            total: 0,
+            by_date: [],
+            data: [],
+            per_day: 0,
+            month_days: 0
+        }
+    ]);
 
     const [block_lengthOfMeeting, setBlock_lengthOfMeeting] = useState({
         avg_actual: 0,
@@ -167,7 +176,7 @@ function Overview() {
                 pic = 'ASA';
             }
 
-            return <div className="party_member_badge" style={{ backgroundImage: `url(party-logos/${pic}.png)` }}></div>;
+            return <div className="party_member_badge" style={{ backgroundImage: `url(../assets/party-logos/${pic}.png)` }}></div>;
         }
 
         return <div className="party_member_badge" style={{ backgroundImage: `url(https://static.pmg.org.za/${props.pic})` }}></div>;
@@ -475,12 +484,9 @@ function Overview() {
         return grouped_by_date;
     }
 
-    // Block Calculations //////////////////
-
-    function block_total_scheduled_meetings() {
-
+    function calc_scheduled_meetings(data) {
         let period_array = [];
-
+    
         for (let i = 1; i <= new Date(selectedYear, selectedMonth, 0).getDate(); i++) {
             let new_date = `${selectedMonth}/${i}/${selectedYear}`;
             period_array.push({
@@ -489,33 +495,84 @@ function Overview() {
                 y: 0
             });
         }
-
-        Object.keys(groupByDate(filteredData)).forEach(date => {
+    
+        let groupedByDate = groupByDate(data);
+    
+        Object.keys(groupedByDate).forEach(date => {
             let corrected_date = date.split('-');
             let new_date = `${corrected_date[1]}/${corrected_date[0]}/${corrected_date[2]}`;
-
+    
             let index = period_array.findIndex(item => item.date === new_date);
-
+    
             if (index >= 0) {
-                period_array[index].y = groupByDate(filteredData)[date].length;
+                period_array[index].y = groupedByDate[date].length;
             }
         });
-
-        const formatted_data = period_array;
-
-        let grouped_meetings = groupMeetings(filteredData);
+    
+        let grouped_meetings = groupMeetings(data);
         let days_in_period = new Date(selectedYear, selectedMonth, 0).getDate();
-
-        let total_scheduled_meetings = {
+    
+        return {
             total: grouped_meetings.length,
-            by_date: groupByDate(filteredData),
-            data: formatted_data.length > 0 ? formatted_data : [],
+            by_date: groupedByDate,
+            data: period_array.length > 0 ? period_array : [],
             per_day: parseFloat(grouped_meetings.length / days_in_period).toFixed(2),
             month_days: days_in_period
-        }
+        };
+    }
 
-        setBlock_totalScheduledMeetings(total_scheduled_meetings);
+    // Block Calculations //////////////////
 
+    // function block_total_scheduled_meetings() {
+
+    //     let period_array = [];
+
+    //     for (let i = 1; i <= new Date(selectedYear, selectedMonth, 0).getDate(); i++) {
+    //         let new_date = `${selectedMonth}/${i}/${selectedYear}`;
+    //         period_array.push({
+    //             date: new_date,
+    //             x: i,
+    //             y: 0
+    //         });
+    //     }
+
+    //     Object.keys(groupByDate(filteredData)).forEach(date => {
+    //         let corrected_date = date.split('-');
+    //         let new_date = `${corrected_date[1]}/${corrected_date[0]}/${corrected_date[2]}`;
+
+    //         let index = period_array.findIndex(item => item.date === new_date);
+
+    //         if (index >= 0) {
+    //             period_array[index].y = groupByDate(filteredData)[date].length;
+    //         }
+    //     });
+
+    //     const formatted_data = period_array;
+
+    //     let grouped_meetings = groupMeetings(filteredData);
+    //     let days_in_period = new Date(selectedYear, selectedMonth, 0).getDate();
+
+    //     let total_scheduled_meetings = {
+    //         total: grouped_meetings.length,
+    //         by_date: groupByDate(filteredData),
+    //         data: formatted_data.length > 0 ? formatted_data : [],
+    //         per_day: parseFloat(grouped_meetings.length / days_in_period).toFixed(2),
+    //         month_days: days_in_period
+    //     }
+
+    //     setBlock_totalScheduledMeetings(total_scheduled_meetings);
+
+    // }
+
+    function block_total_scheduled_meetings() {
+        const result = [
+            calc_scheduled_meetings(filteredData),
+            calc_scheduled_meetings(filteredData_allParties)
+        ];
+
+        
+    
+        setBlock_totalScheduledMeetings(result);
     }
 
     function block_length_of_meeting() {
@@ -654,55 +711,55 @@ function Overview() {
 
     function block_meetings_that_overlapped() {
         let grouped_meetings = groupMeetings(filteredData);
-
-        let overlapping_meetings = [];
-
-        grouped_meetings.forEach(meeting => {
-            let { event_date, scheduled_start_time, scheduled_end_time } = meeting;
-
-            let formatted_date = event_date.split('-').reverse().join('-'); // Convert to YYYY-MM-DD
+        let seen_pairs = new Set();
+        let unique_overlapping_meetings = new Set();
+    
+        grouped_meetings.forEach((meeting, i) => {
+            let { event_date, scheduled_start_time, scheduled_end_time, meeting_id } = meeting;
+            let formatted_date = event_date.split('-').reverse().join('-');
             let start_time = new Date(`${formatted_date} ${scheduled_start_time}`);
             let end_time = new Date(`${formatted_date} ${scheduled_end_time}`);
-
-            grouped_meetings.forEach(other_meeting => {
-                let { event_date: other_date, scheduled_start_time: other_start_time, scheduled_end_time: other_end_time } = other_meeting;
-
+    
+            grouped_meetings.forEach((other_meeting, j) => {
+                if (i === j) return; // Skip self-comparison
+    
+                let { event_date: other_date, scheduled_start_time: other_start_time, scheduled_end_time: other_end_time, meeting_id: other_id } = other_meeting;
                 let other_formatted_date = other_date.split('-').reverse().join('-');
                 let other_start = new Date(`${other_formatted_date} ${other_start_time}`);
                 let other_end = new Date(`${other_formatted_date} ${other_end_time}`);
-
-                if (start_time < other_end && end_time > other_start) {
-                    // Avoid adding duplicates
-
-                    overlapping_meetings.push(meeting);
-
+    
+                let pair_key = [meeting_id, other_id].sort().join('-'); // Ensure unique pair tracking
+    
+                if (start_time < other_end && end_time > other_start && !seen_pairs.has(pair_key)) {
+                    seen_pairs.add(pair_key); // Mark pair as counted
+                    unique_overlapping_meetings.add(meeting_id);
+                    unique_overlapping_meetings.add(other_id);
                 }
             });
         });
-
-        let overlap_counts = {}
-
-        overlapping_meetings.forEach(meeting => {
+    
+        let overlap_counts = {};
+    
+        unique_overlapping_meetings.forEach(meeting_id => {
+            let meeting = grouped_meetings.find(m => m.meeting_id === meeting_id);
             let { committee_id } = meeting;
             if (!overlap_counts[committee_id]) {
                 overlap_counts[committee_id] = 0;
             }
             overlap_counts[committee_id] += 1;
         });
-
-
+    
         let overlap_array = Object.keys(overlap_counts).map(committee => {
             return {
                 committee: committee,
                 count: overlap_counts[committee]
-            }
+            };
         }).sort((a, b) => b.count - a.count);
-
+    
         setBlock_meetingsThatOverlapped({
-            avg: overlapping_meetings.length,
+            count: unique_overlapping_meetings.size, // Correct count of unique meetings that overlapped
             counts: overlap_array
         });
-
     }
 
     function block_overall_attendance() {
@@ -1061,7 +1118,7 @@ function Overview() {
                         <Row>
                             <Col>
                                 <div className="header-img-container">
-                                    <div className="header-img" style={{ backgroundImage: "url('../scheduling.jpeg')" }}></div>
+                                    <div className="header-img" style={{ backgroundImage: "url('../assets/scheduling.jpeg')" }}></div>
                                     <h2>Scheduling of committee meetings</h2>
                                 </div>
                             </Col>
@@ -1078,14 +1135,16 @@ function Overview() {
                                     <CardTitle>Total scheduled meetings</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
-                                        <span className="card-big-text">{block_totalScheduledMeetings.total}</span>
-                                        <span className="card-subtext">{block_totalScheduledMeetings.per_day} per day</span>
+                                        <span className="card-big-text">{block_totalScheduledMeetings[0]?.total}</span>
+                                        <span className="card-subtext">{block_totalScheduledMeetings[0]?.per_day} per day</span>
                                     </CardSubtitle>
                                     <CardContent>
                                         <CardHelp metric="totalScheduledMeetings" />
                                         {
-                                            block_totalScheduledMeetings.data.length > 0 &&
-                                            <LineChart data={block_totalScheduledMeetings.data} width={400} height={150} referenceY={block_totalScheduledMeetings.per_day} />
+                                            party === "All" ?
+                                                <LineChart data={block_totalScheduledMeetings[0].data} width={400} height={150} referenceY={block_totalScheduledMeetings[0].per_day} />
+                                            :
+                                                <LineChart data={block_totalScheduledMeetings[1].data} width={400} height={150} referenceY={block_totalScheduledMeetings[0].per_day} data2={block_totalScheduledMeetings[0].data} party={partiesData.find(p => p.id === party)?.party } />
                                         }
                                     </CardContent>
                                 </DashboardCard>
@@ -1162,7 +1221,7 @@ function Overview() {
                                                                     <td>{index + 1}</td>
                                                                     <td>{committeesData.find(c => c.id === committee.committee).name}</td>
                                                                     <td>{committee.count}</td>
-                                                                    <td>{committee.total_time}</td>
+                                                                    <td>{parseInt(committee.total_time / 60)}h {committee.total_time % 60}m</td>
                                                                     <td></td>
                                                                 </tr>
                                                             )
@@ -1182,7 +1241,7 @@ function Overview() {
                                     <CardTitle>Scheduled meetings that overlapped</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
-                                        <span className="card-big-text">{block_meetingsThatOverlapped.avg}</span>
+                                        <span className="card-big-text">{block_meetingsThatOverlapped.count}</span> of <span className="card-big-text">{block_totalScheduledMeetings.total}</span>
                                     </CardSubtitle>
                                     <CardContent>
                                         <CardHelp metric="meetingsThatOverlapped" />
@@ -1226,7 +1285,7 @@ function Overview() {
                         <Row>
                             <Col>
                                 <div className="header-img-container">
-                                    <div className="header-img" style={{ backgroundImage: "url('../committee-meeting-attendance.jpeg')" }}></div>
+                                    <div className="header-img" style={{ backgroundImage: "url('../assets/committee-meeting-attendance.jpeg')" }}></div>
                                     <h2>Attendance of committee meetings</h2>
                                 </div>
                             </Col>

@@ -126,4 +126,28 @@
     }
 }
 
+.chart-legend {
+    font-size: 11px;
+    text-align: center;
+
+    .legend-item {
+        display: inline-block;
+        margin-right: 10px;
+
+        .legend-color {
+            width: 12px;
+            height: 2px;
+            position:relative;
+            top: -3px;
+            border: 1px solid;
+            display: inline-block;
+        }
+
+        .legend-label {
+            display: inline-block;
+            margin-left: 5px;
+        }
+    }
+}
+
 

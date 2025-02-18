@@ -7,7 +7,7 @@ import { bisector } from 'd3-array';
 import { useState, useEffect, useRef } from 'react';
 import { timeFormat, timeParse } from 'd3-time-format';
 
-export default function LineChart({ data, referenceY }) {
+export default function LineChart({ data, referenceY, data2 = null, party = null }) {
     const containerRef = useRef(null);
     const [chartWidth, setChartWidth] = useState(100);
     const height = 180;
@@ -36,7 +36,7 @@ export default function LineChart({ data, referenceY }) {
 
     const yScale = scaleLinear({
         domain: [0, Math.max(...data.map((d) => d.y)) + 10],
-        range: [height - padding, padding],
+        range: [height - 10, 10],
     });
 
     const { showTooltip, hideTooltip, tooltipData, tooltipLeft, tooltipTop } = useTooltip();
@@ -87,14 +87,27 @@ export default function LineChart({ data, referenceY }) {
                     curve={curveNatural}
                 />
 
+                {
+                    data2 && (
+                        <LinePath
+                            data={data2}
+                            x={(d) => xScale(d.x)}
+                            y={(d) => yScale(d.y)}
+                            stroke='#fb9905'
+                            strokeWidth={1}
+                            curve={curveNatural}
+                        />
+                    )
+                }
+
                 {/* Permanent Horizontal Reference Line */}
-                <Line
+                {/* <Line
                     from={{ x: padding, y: yScale(referenceY) }}
                     to={{ x: chartWidth - padding, y: yScale(referenceY) }}
                     stroke="#fb9905"
                     strokeWidth={1}
                     strokeDasharray="6,3"
-                />
+                /> */}
 
                 {/* Monday Grid Lines */}
                 {mondayData.map((d, i) => {
@@ -134,7 +147,7 @@ export default function LineChart({ data, referenceY }) {
 
                 {/* Circle at Hovered Point */}
                 {tooltipData && (
-                    <Circle cx={tooltipLeft} cy={tooltipTop} r={5} fill="black" />
+                    <Circle cx={tooltipLeft} cy={tooltipTop} r={3} fill="black" />
                 )}
             </svg>
 
@@ -143,31 +156,32 @@ export default function LineChart({ data, referenceY }) {
                 <Tooltip
                     left={tooltipLeft + 10}
                     top={tooltipTop - 30}
-                    style={{ ...defaultStyles, position: 'absolute', backgroundColor: 'white', border: '1px solid black', padding: '5px' }}
+                    style={{ ...defaultStyles, position: 'absolute', backgroundColor: '#000', borderRadius: "5px", color: "#fff", padding: '5px', fontSize: "11px", lineHeight: "13px" }}
                 >
                     <div>
                         <strong>Date:</strong> {tooltipData.date ? formatDate(parseDate(tooltipData.date)) : "N/A"}
                     </div>
                     <div>
-                        <strong>x:</strong> {tooltipData.x}
-                    </div>
-                    <div>
-                        <strong>y:</strong> {tooltipData.y}
+                        <strong>meetings:</strong> {tooltipData.y}
                     </div>
                 </Tooltip>
             )}
 
             {/* Legend */}
-            {/* <div className="chart-legend">
+            <div className="chart-legend">
+                {
+                    data2 && (
+                        <div className="legend-item">
+                            <div className="legend-color" style={{ borderColor: '#fb9905' }}></div>
+                            <div className="legend-label">{party}</div>
+                        </div>
+                    )
+                }
                 <div className="legend-item">
-                    <div className="legend-color" style={{ backgroundColor: '#000' }}></div>
-                    <div className="legend-label">Data</div>
+                    <div className="legend-color" style={{ borderColor: '#000' }}></div>
+                    <div className="legend-label">All Parties</div>
                 </div>
-                <div className="legend-item">
-                    <div className="legend-color" style={{ backgroundColor: '#fb9905' }}></div>
-                    <div className="legend-label">Reference</div>
-                </div>
-            </div> */}
+            </div>
         </div>
     );
 }

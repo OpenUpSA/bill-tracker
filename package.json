@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel src/index.html src/attendance/index.html src/overview/index.html",
-    "build": "parcel build src/index.html src/attendance/index.html src/overview/index.html",
-    "deploy": "netlify deploy"
+    "dev": "parcel src/index.html src/attendance/index.html src/overview/index.html && npm run copy",
+    "build": "parcel build src/index.html src/attendance/index.html src/overview/index.html && npm run copy",
+    "deploy": "netlify deploy",
+    "copy": "cp -r src/data dist && cp -r src/assets dist"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
