@@ -189,6 +189,10 @@
             "body": "The number of meetings scheduled per committee."
         },
         {
+            "metric": "meetingsPerMember",
+            "body": "The number of scheduled meetings per member for the selected period."
+        },
+        {
             "metric": "meetingsThatOverlapped",
             "body": "The number of meetings that overlapped with other meetings."
         },

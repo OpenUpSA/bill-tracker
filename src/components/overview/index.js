@@ -12,7 +12,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Dropdown from "react-bootstrap/Dropdown";
 import Table from 'react-bootstrap/Table';
-import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -36,8 +35,10 @@ import Papa from "papaparse";
 import LineChart from "../charts/LineChart";
 import BubbleChart from "../charts/BubbleChart";
 import BubbleChart2 from "../charts/BubbleChart2";
+import BubbleChart3 from "../charts/BubbleChart3";
 import StackedBarChart from "../charts/StackedBarChart";
 import { SparklinesLine } from "@lueton/react-sparklines";
+import { set } from "d3";
 
 
 function Overview() {
@@ -79,6 +80,11 @@ function Overview() {
     const [block_lengthOfMeeting, setBlock_lengthOfMeeting] = useState({
         avg_actual: 0,
         avg_scheduled: 0,
+        data: []
+    });
+
+    const [block_meetingsPerMember, setBlock_meetingsPerMember] = useState({
+        avg: 0,
         data: []
     });
 
@@ -233,11 +239,6 @@ function Overview() {
     }
 
     // Functions //////////////////
-
-    function toggleModal(show, metric = "") {
-        setModalMetric(metric);
-        setShowModal(show);
-    }
 
     function loadData(csv_set) {
         fetch(csv_set)
@@ -523,46 +524,7 @@ function Overview() {
 
     // Block Calculations //////////////////
 
-    // function block_total_scheduled_meetings() {
-
-    //     let period_array = [];
-
-    //     for (let i = 1; i <= new Date(selectedYear, selectedMonth, 0).getDate(); i++) {
-    //         let new_date = `${selectedMonth}/${i}/${selectedYear}`;
-    //         period_array.push({
-    //             date: new_date,
-    //             x: i,
-    //             y: 0
-    //         });
-    //     }
-
-    //     Object.keys(groupByDate(filteredData)).forEach(date => {
-    //         let corrected_date = date.split('-');
-    //         let new_date = `${corrected_date[1]}/${corrected_date[0]}/${corrected_date[2]}`;
-
-    //         let index = period_array.findIndex(item => item.date === new_date);
-
-    //         if (index >= 0) {
-    //             period_array[index].y = groupByDate(filteredData)[date].length;
-    //         }
-    //     });
-
-    //     const formatted_data = period_array;
-
-    //     let grouped_meetings = groupMeetings(filteredData);
-    //     let days_in_period = new Date(selectedYear, selectedMonth, 0).getDate();
-
-    //     let total_scheduled_meetings = {
-    //         total: grouped_meetings.length,
-    //         by_date: groupByDate(filteredData),
-    //         data: formatted_data.length > 0 ? formatted_data : [],
-    //         per_day: parseFloat(grouped_meetings.length / days_in_period).toFixed(2),
-    //         month_days: days_in_period
-    //     }
-
-    //     setBlock_totalScheduledMeetings(total_scheduled_meetings);
-
-    // }
+   
 
     function block_total_scheduled_meetings() {
         const result = [
@@ -614,7 +576,7 @@ function Overview() {
 
         setBlock_lengthOfMeeting({
             avg_actual: parseInt(total_meetings_actual_length / total_meetings),
-            avg_scheduled: parseInt(total_meetings_scheduled_length / total_meetings),
+            avg_scheduled: parseInt((total_meetings_scheduled_length / total_meetings) / 60) + 'h' + parseInt((total_meetings_scheduled_length / total_meetings) % 60)   + 'm',
             data: chart_data.scheduled
         })
 
@@ -707,6 +669,35 @@ function Overview() {
             sparklineData
         });
 
+    }
+
+    function block_meetings_per_member() {
+        const grouped_meetings = filteredData.reduce((acc, meeting) => {
+            const { member_id } = meeting;
+            if (!acc[member_id]) {
+                acc[member_id] = { member_id, count: 0 };
+            }
+            acc[member_id].count += 1;
+            return acc;
+        }, {});
+    
+        const countMap = Object.values(grouped_meetings).reduce((acc, { member_id, count }) => {
+            if (!acc[count]) {
+                acc[count] = { x: count, y: 5, size: 0, members: [] };
+            }
+            acc[count].size += 1;
+            acc[count].members.push(member_id);
+            return acc;
+        }, {});
+    
+        const result = Object.values(countMap);
+    
+        console.log(result);
+    
+        setBlock_meetingsPerMember({
+            avg: result.reduce((sum, r) => sum + r.x, 0) / result.length,
+            data: result
+        });
     }
 
     function block_meetings_that_overlapped() {
@@ -898,10 +889,16 @@ function Overview() {
             }
         });
 
+        parties.sort((a, b) => {
+            let scoreA = a.percentage * Math.log(1 + a.meetings.length);
+            let scoreB = b.percentage * Math.log(1 + b.meetings.length);
+            return scoreB - scoreA; // Descending order
+        });
+
         let avg = parties.length > 0 ? parseFloat((parties.reduce((sum, p) => sum + p.percentage, 0) / parties.length).toFixed(2)) : 0;
 
         setBlock_partiesWithBestAttendance({
-            parties: parties,
+            parties: [...parties],
             avg: avg
         })
 
@@ -981,10 +978,12 @@ function Overview() {
     }, [dateRange, party, selectedMonth, selectedYear]);
 
     useEffect(() => {
+        console.log(filteredData);
         block_total_scheduled_meetings();
         block_length_of_meeting();
         block_meetings_that_ended_late();
         block_meetings_per_committee();
+        block_meetings_per_member();
         block_meetings_that_overlapped();
         block_overall_attendance();
         block_committees_with_best_attendance();
@@ -997,7 +996,6 @@ function Overview() {
     }, [historicalDateRange]);
 
     useEffect(() => {
-        console.log(historicalData);
     }, [historicalData]);
 
     return (
@@ -1164,9 +1162,23 @@ function Overview() {
                                             height={150}
                                             data={block_lengthOfMeeting.data}
                                             referenceLines={[116, 134]}
+                                            party={partiesData.find(p => p.id === party)?.party || "All"}
                                         />
                                     </CardContent>
                                 </DashboardCard>
+                            </Col>
+                            <Col>
+                                <DashboardCard>
+                                    <CardTitle>Average meetings per member</CardTitle>
+                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardSubtitle>
+                                        <span className="card-big-text">{block_meetingsPerMember.avg}</span>
+                                    </CardSubtitle>
+                                    <CardContent>
+                                        <CardHelp metric="meetingsPerMember"></CardHelp>
+                                        <BubbleChart3 data={block_meetingsPerMember.data} party={partiesData.find(p => p.id === party)?.party || "All"} />
+                                    </CardContent>
+                                </DashboardCard>   
                             </Col>
                             <Col>
                                 <DashboardCard>
@@ -1178,7 +1190,7 @@ function Overview() {
                                     </CardSubtitle>
                                     <CardContent>
                                         <CardHelp metric="meetingsThatEndedLate" />
-                                        <BubbleChart2 data={block_meetingsThatEndedLate.data} />
+                                        <BubbleChart2 data={block_meetingsThatEndedLate.data} party={partiesData.find(p => p.id === party)?.party || "All"} />
                                     </CardContent>
                                 </DashboardCard>
 
@@ -1241,7 +1253,7 @@ function Overview() {
                                     <CardTitle>Scheduled meetings that overlapped</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
-                                        <span className="card-big-text">{block_meetingsThatOverlapped.count}</span> of <span className="card-big-text">{block_totalScheduledMeetings.total}</span>
+                                        <span className="card-big-text">{block_meetingsThatOverlapped.count}</span> of <span className="card-big-text">{block_totalScheduledMeetings[0].total}</span>
                                     </CardSubtitle>
                                     <CardContent>
                                         <CardHelp metric="meetingsThatOverlapped" />

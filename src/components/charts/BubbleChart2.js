@@ -6,7 +6,7 @@ import { localPoint } from '@visx/event';
 import { bisector } from 'd3-array';
 import { useState, useEffect, useRef } from 'react';
 
-export default function BubbleChart2({ data, referenceLines }) {
+export default function BubbleChart2({ data, referenceLines, party=null }) {
     const containerRef = useRef(null);
     const [chartWidth, setChartWidth] = useState(100);
     const height = 150;
@@ -97,6 +97,31 @@ export default function BubbleChart2({ data, referenceLines }) {
 
                 {/* <AxisBottom scale={xScale} top={height - padding} /> */}
 
+                {/* Vertical Grid Lines at 30-minute intervals */}
+                {tickValues.map((xVal, i) => {
+                    const xPos = xScale(xVal);
+                    return (
+                        <g key={i}>
+                            <Line
+                                from={{ x: xPos, y: padding }}
+                                to={{ x: xPos, y: height - padding }}
+                                stroke="lightgray"
+                                strokeWidth={1}
+                                strokeDasharray="4,4"
+                            />
+                            <text
+                                x={xPos}
+                                y={height - padding + 15}
+                                fontSize={10}
+                                textAnchor="middle"
+                                fill="black"
+                            >
+                                {xVal}min
+                            </text>
+                        </g>
+                    );
+                })}
+
                 {/* Bubble Circles */}
                 {data.map((d, i) => (
                     <Circle
@@ -137,30 +162,7 @@ export default function BubbleChart2({ data, referenceLines }) {
 
 
 
-                {/* Vertical Grid Lines at 30-minute intervals */}
-                {tickValues.map((xVal, i) => {
-                    const xPos = xScale(xVal);
-                    return (
-                        <g key={i}>
-                            <Line
-                                from={{ x: xPos, y: padding }}
-                                to={{ x: xPos, y: height - padding }}
-                                stroke="lightgray"
-                                strokeWidth={1}
-                                strokeDasharray="4,4"
-                            />
-                            <text
-                                x={xPos}
-                                y={height - padding + 15}
-                                fontSize={10}
-                                textAnchor="middle"
-                                fill="black"
-                            >
-                                {xVal}
-                            </text>
-                        </g>
-                    );
-                })}
+                
 
 
 
@@ -171,13 +173,29 @@ export default function BubbleChart2({ data, referenceLines }) {
                 <Tooltip
                     left={tooltipLeft + 10}
                     top={tooltipTop - 30}
-                    style={defaultStyles}
+                    style={{backgroundColor: '#000',
+                        position: 'absolute',
+                        borderRadius: "5px",
+                        color: "#fff",
+                        padding: '5px',
+                        fontSize: "11px",
+                        lineHeight: "14px",
+                        maxWidth: "180px", 
+                        }}
                 >
                     <div>
-                        <strong>x:</strong> {tooltipData.x}, <strong>y:</strong> {tooltipData.y}, <strong>size:</strong> {tooltipData.size}
+                        <strong>Difference:</strong> {tooltipData.x}<br/><strong>Meetings:</strong> {tooltipData.size}
                     </div>
                 </Tooltip>
             )}
+            {/* Legend */}
+            <div className="chart-legend mt-4">
+                
+                <div className="legend-item">
+                    <div className="legend-color" style={{ borderColor: '#000' }}></div>
+                    <div className="legend-label">{party}</div>
+                </div>
+            </div>
         </div>
     );
 }

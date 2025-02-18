@@ -42,7 +42,7 @@ export default function StackedBarChart(props) {
         <>
         <div className="attendance-breakdown-header">{props.party}</div>
         {
-            chart_data.map((item, index) => 
+            chart_data.length > 0 && chart_data.map((item, index) => 
                 <div className={`attendance-breakdown ${index > 0 && 'all-parties'}`} key={index}>
                     <OverlayTrigger placement="top" delay={{ show: 50, hide: 50 }} overlay={<Tooltip>Attended: {item.P}</Tooltip>}>
                     <div className="attendance-block attendance-attended" style={{ width: `${item.P_percentage}%` }}>
@@ -86,7 +86,7 @@ export default function StackedBarChart(props) {
                                 <div className="attendance-label">Departed Early</div>
                             </div>
                         }
-                       
+                      
                         <div className="attendance-separator">
                             <div className="attendance-separator-arrow">{index == 0 ? '▼' : '▲'}</div>
                             <div className="attendance-separator-present">Present ({parseInt(item.present_percentage)}%)</div>

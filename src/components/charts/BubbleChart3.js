@@ -6,7 +6,7 @@ import { localPoint } from '@visx/event';
 import { bisector } from 'd3-array';
 import { useState, useEffect, useRef } from 'react';
 
-export default function BubbleChart({ data, referenceLines, party=null }) {
+export default function BubbleChart3({ data, referenceLines, party=null }) {
     const containerRef = useRef(null);
     const [chartWidth, setChartWidth] = useState(100);
     const height = 150;
@@ -46,14 +46,12 @@ export default function BubbleChart({ data, referenceLines, party=null }) {
     const { showTooltip, hideTooltip, tooltipData, tooltipLeft, tooltipTop } = useTooltip();
     const bisectX = bisector((d) => d.x).left;
 
-    // Generate 30-minute interval ticks
+    // Generate 1, 2, 3, ... tick values
     const xMin = Math.min(...data.map((d) => d.x));
     const xMax = Math.max(...data.map((d) => d.x));
 
-    // Find the closest multiple of 30 to start from
-    const firstTick = Math.ceil(xMin / 60) * 60;
     const tickValues = [];
-    for (let tick = firstTick; tick <= xMax; tick += 60) {
+    for (let tick = Math.ceil(xMin); tick <= xMax; tick++) {
         tickValues.push(tick);
     }
 
@@ -116,7 +114,7 @@ export default function BubbleChart({ data, referenceLines, party=null }) {
                                 textAnchor="middle"
                                 fill="black"
                             >
-                                {xVal}min
+                                {xVal}
                             </text>
                         </g>
                     );
@@ -181,9 +179,10 @@ export default function BubbleChart({ data, referenceLines, party=null }) {
                         fontSize: "11px",
                         lineHeight: "14px",
                         maxWidth: "180px", 
-                        }}>
+                        }}
+                >
                     <div>
-                        <strong>Length:</strong> {tooltipData.x}<br/><strong>Meetings:</strong> {tooltipData.size}
+                        <strong>Difference:</strong> {tooltipData.x}<br/><strong>Meetings:</strong> {tooltipData.size}
                     </div>
                 </Tooltip>
             )}

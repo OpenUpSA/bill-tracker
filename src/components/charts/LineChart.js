@@ -10,7 +10,7 @@ import { timeFormat, timeParse } from 'd3-time-format';
 export default function LineChart({ data, referenceY, data2 = null, party = null }) {
     const containerRef = useRef(null);
     const [chartWidth, setChartWidth] = useState(100);
-    const height = 180;
+    const height = 150;
     const padding = 20;
 
     // Resize observer
@@ -42,20 +42,51 @@ export default function LineChart({ data, referenceY, data2 = null, party = null
     const { showTooltip, hideTooltip, tooltipData, tooltipLeft, tooltipTop } = useTooltip();
     const bisectX = bisector((d) => d.x).left;
 
+    // const handleMouseMove = (event) => {
+    //     const { x } = localPoint(event) || { x: 0 };
+    //     const x0 = xScale.invert(x);
+    //     const index = bisectX(data, x0, 1);
+    //     const d0 = data[index - 1];
+    //     const d1 = data[index];
+    //     if (!d0 || !d1) return;
+
+    //     const d = x0 - d0.x > d1.x - x0 ? d1 : d0;
+
+    //     showTooltip({
+    //         tooltipLeft: xScale(d.x),
+    //         tooltipTop: yScale(d.y),
+    //         tooltipData: d,
+    //     });
+    // };
+
     const handleMouseMove = (event) => {
         const { x } = localPoint(event) || { x: 0 };
         const x0 = xScale.invert(x);
-        const index = bisectX(data, x0, 1);
-        const d0 = data[index - 1];
-        const d1 = data[index];
+
+        // Find the closest data point in the first dataset
+        const index1 = bisectX(data, x0, 1);
+        const d0 = data[index1 - 1];
+        const d1 = data[index1];
         if (!d0 || !d1) return;
 
-        const d = x0 - d0.x > d1.x - x0 ? d1 : d0;
+        const dPrimary = x0 - d0.x > d1.x - x0 ? d1 : d0;
+
+        let dSecondary = null;
+        if (data2) {
+            // Find the closest data point in the second dataset
+            const index2 = bisectX(data2, x0, 1);
+            const d2_0 = data2[index2 - 1];
+            const d2_1 = data2[index2];
+
+            if (d2_0 && d2_1) {
+                dSecondary = x0 - d2_0.x > d2_1.x - x0 ? d2_1 : d2_0;
+            }
+        }
 
         showTooltip({
-            tooltipLeft: xScale(d.x),
-            tooltipTop: yScale(d.y),
-            tooltipData: d,
+            tooltipLeft: xScale(dPrimary.x), // Align tooltip to primary x value
+            tooltipTop: yScale(dPrimary.y),
+            tooltipData: { primary: dPrimary, secondary: dSecondary },
         });
     };
 
@@ -84,7 +115,7 @@ export default function LineChart({ data, referenceY, data2 = null, party = null
                     y={(d) => yScale(d.y)}
                     stroke='#000'
                     strokeWidth={1}
-                    curve={curveNatural}
+                    
                 />
 
                 {
@@ -95,7 +126,7 @@ export default function LineChart({ data, referenceY, data2 = null, party = null
                             y={(d) => yScale(d.y)}
                             stroke='#fb9905'
                             strokeWidth={1}
-                            curve={curveNatural}
+                            
                         />
                     )
                 }
@@ -134,38 +165,53 @@ export default function LineChart({ data, referenceY, data2 = null, party = null
                     );
                 })}
 
-                {/* Tooltip vertical line */}
-                {tooltipData && (
-                    <Line
-                        from={{ x: tooltipLeft, y: padding }}
-                        to={{ x: tooltipLeft, y: height - padding }}
-                        stroke="gray"
-                        strokeWidth={1}
-                        strokeDasharray="4,4"
-                    />
-                )}
-
-                {/* Circle at Hovered Point */}
+                {/* Circle at Hovered Point for First Line */}
                 {tooltipData && (
                     <Circle cx={tooltipLeft} cy={tooltipTop} r={3} fill="black" />
                 )}
+
+                {/* Circle at Hovered Point for Second Line (if exists) */}
+                {tooltipData?.secondary && (
+                    <Circle
+                        cx={xScale(tooltipData.secondary.x)}
+                        cy={yScale(tooltipData.secondary.y)}
+                        r={3}
+                        fill="#fb9905"
+                    />
+                )}
             </svg>
 
-            {/* Tooltip */}
-            {tooltipData && (
-                <Tooltip
-                    left={tooltipLeft + 10}
-                    top={tooltipTop - 30}
-                    style={{ ...defaultStyles, position: 'absolute', backgroundColor: '#000', borderRadius: "5px", color: "#fff", padding: '5px', fontSize: "11px", lineHeight: "13px" }}
-                >
-                    <div>
-                        <strong>Date:</strong> {tooltipData.date ? formatDate(parseDate(tooltipData.date)) : "N/A"}
-                    </div>
-                    <div>
-                        <strong>meetings:</strong> {tooltipData.y}
-                    </div>
-                </Tooltip>
-            )}
+            {/* Calculate tooltip position dynamically */}
+{tooltipData && (
+    <Tooltip
+        left={tooltipLeft + 10 > chartWidth - 100 ? tooltipLeft - 180 : tooltipLeft + 10} 
+        top={tooltipTop - 30 < 10 ? tooltipTop + 10 : tooltipTop - 30} 
+        style={{
+            ...defaultStyles,
+            position: 'absolute',
+            backgroundColor: '#000',
+            borderRadius: "5px",
+            color: "#fff",
+            padding: '5px',
+            fontSize: "11px",
+            lineHeight: "14px",
+            maxWidth: "180px", 
+            whiteSpace: "nowrap"
+        }}
+    >
+        <div>
+            <strong>Date:</strong> {tooltipData.primary.date ? formatDate(parseDate(tooltipData.primary.date)) : "N/A"}
+        </div>
+        <div>
+            <strong>Meetings (All):</strong> {tooltipData.primary.y}
+        </div>
+        {tooltipData.secondary && (
+            <div>
+                <strong>Meetings ({party}):</strong> {tooltipData.secondary.y}
+            </div>
+        )}
+    </Tooltip>
+)}
 
             {/* Legend */}
             <div className="chart-legend">
