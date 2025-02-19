@@ -1,16 +1,153 @@
-.chart-container {
-    width: 100%;
-    max-width: 900px;
-    margin: auto;
+.attendance-breakdown {
+   height: 120px;
 }
 
-.chart-container h3 {
-    margin: 2em 0 1em;
-    font-size:12px;
+.attendance-breakdown.all-parties {
+    height: 20px;
+    margin-top: 1em;
+}
+
+.attendance-category {
+    display: inline-block;
+    height: 100%;
 }
 
 
-.grid line {
-    stroke: #eeeeee;
+.attendance-block {
+    position: relative;
+    height: 100%;
+    display: inline-block;
+}
+
+.attendance-block-inner {
+    position: absolute;
+    bottom: -13px;
+    width: 120px;
+    transform: rotate(-90deg);
+    transform-origin: 0 0;
+    display: flex;
+
+
+    .attendance-label {
+        width: 50%;
+        text-align: center;
+        text-wrap: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right:10px;
+        font-size: 12px;
+    }
+
+    .attendance-count {
+        width: 50%;
+        text-align: left;
+    }
+
 
 }
+
+.all-parties .attendance-block-inner {
+    display: none;
+}
+
+.attendance-attended {
+    background-color: #b7eb9f;
+}
+
+.attendance-arrived-late {
+    background-color: #ad7aed;
+}
+
+.attendance-arrived-late-departed-early {
+    background-color: #76a8f2;
+}
+
+.attendance-departed-early {
+    background-color: #77efc5;
+}
+
+.attendance-absent-with-apologies {
+    background-color: #ffc794;
+}
+
+.attendance-absent {
+    background-color: #ffa694;
+}
+
+.attendance-separator {
+    position: absolute;
+    right: 0;
+    height: 145px;
+    bottom: 0;
+    border-right: 1px solid #000;
+    width: 0;
+
+    .attendance-separator-arrow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(-50%, -60%);
+    }
+
+    .attendance-separator-present {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateX(-110%);
+        white-space: nowrap;
+    }
+
+    .attendance-separator-absent {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateX(10%);
+        white-space: nowrap;
+    }
+}
+
+.all-parties .attendance-separator {
+    height: 20px;
+    top: 0;
+    bottom: unset;
+
+    .attendance-separator-arrow {
+        top: unset;
+        bottom: 0;
+        transform: translate(-50%,60%);
+    }
+
+    .attendance-separator-present {
+        display: none;
+    }
+
+    .attendance-separator-absent {
+        display: none;
+    }
+}
+
+.chart-legend {
+    font-size: 11px;
+    text-align: center;
+
+    .legend-item {
+        display: inline-block;
+        margin-right: 10px;
+
+        .legend-color {
+            width: 12px;
+            height: 2px;
+            position:relative;
+            top: -3px;
+            border: 1px solid;
+            display: inline-block;
+        }
+
+        .legend-label {
+            display: inline-block;
+            margin-left: 5px;
+        }
+    }
+}
+
+

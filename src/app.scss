@@ -1,4 +1,99 @@
-$primary: rgb(235, 235, 235);
+@font-face {
+	font-family: 'General Sans Regular';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-Regular.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Italic';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-Italic.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Extralight';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-Extralight.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Extralight Italic';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-ExtralightItalic.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Light';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-Light.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Light Italic';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-LightItalic.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Medium';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-Medium.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Medium Italic';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-MediumItalic.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Semibold';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-Semibold.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Semibold Italic';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-SemiboldItalic.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Bold';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-Bold.woff') format('woff');
+}
+
+
+@font-face {
+	font-family: 'General Sans Bold Italic';
+	font-style: normal;
+	font-weight: normal;
+	src: url('./assets/fonts/GeneralSans-BoldItalic.woff') format('woff');
+}
+
+$primary: #dbdbdb;
 $theme-colors: (
   "primary": $primary,
   "dark": rgb(0, 0, 0),
@@ -8,26 +103,30 @@ $border-radius: 6px;
 
 @import "bootstrap/scss/bootstrap";
 
+$general_sans_400: 'General Sans Regular', sans-serif;
+$general_sans_400_italic: 'General Sans Italic', sans-serif;
+$general_sans_200: 'General Sans Extralight', sans-serif;
+$general_sans_200_italic: 'General Sans Extralight Italic', sans-serif;
+$general_sans_300: 'General Sans Light', sans-serif;
+$general_sans_300_italic: 'General Sans Light Italic', sans-serif;
+$general_sans_500: 'General Sans Medium', sans-serif;
+$general_sans_500_italic: 'General Sans Medium Italic', sans-serif;
+$general_sans_600: 'General Sans Semibold', sans-serif;
+$general_sans_600_italic: 'General Sans Semibold Italic', sans-serif;
+$general_sans_700: 'General Sans Bold', sans-serif;
+$general_sans_700_italic: 'General Sans Bold Italic', sans-serif;
 
-font-face {
-  font-family: "General Sans Variable";
-  src: url("https://db.onlinewebfonts.com/t/7b7a625024c0f39cbca2cf9674f51d94.eot");
-  src: url("https://db.onlinewebfonts.com/t/7b7a625024c0f39cbca2cf9674f51d94.eot?#iefix")format("embedded-opentype"),
-  url("https://db.onlinewebfonts.com/t/7b7a625024c0f39cbca2cf9674f51d94.woff2")format("woff2"),
-  url("https://db.onlinewebfonts.com/t/7b7a625024c0f39cbca2cf9674f51d94.woff")format("woff"),
-  url("https://db.onlinewebfonts.com/t/7b7a625024c0f39cbca2cf9674f51d94.ttf")format("truetype"),
-  url("https://db.onlinewebfonts.com/t/7b7a625024c0f39cbca2cf9674f51d94.svg#General Sans Variable")format("svg");
-}
+
 
 
 html {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 body {
   margin: 0;
   background-color: rgb(255, 255, 255);
-  font-family: 'General Sans Variable', sans-serif;
+  font-family: $general_sans_400 !important;
   color: #000;
 }
 
@@ -36,8 +135,8 @@ body {
 }
 
 h1 {
-  font-size: 2em;
-  font-weight: 600;
+  font-size: 32px;
+  font-family: $general_sans_600 !important;
 }
 
 .accordion {
@@ -46,7 +145,7 @@ h1 {
 
     .accordion-header {
       button {
-        font-weight: 600;
+        font-family: $general_sans_600 !important;
         padding: 1em 0;
         border: none;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -77,6 +176,7 @@ h1 {
   button {
     padding: 1em 1.2em;
     border-radius: 35px;
+    border-color: transparent;
     width: 100%;
     text-align: left;
     background-color: rgba(0, 0, 0, 0.05);
@@ -179,3 +279,4 @@ h1 {
     color: #fff;
   }
 }
+

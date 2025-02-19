@@ -29,7 +29,6 @@ import PMHeader from "../pmheader";
 import PMTabs from "../pmtabs";
 
 import * as data from "../../data/attendance/all-time.json";
-import * as lookup from "../../data/lookup.json";
 
 const ChartTypes = {
   "numeric-simple": {

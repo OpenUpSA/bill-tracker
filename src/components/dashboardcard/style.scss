@@ -1,3 +1,16 @@
+$general_sans_400: 'General Sans Regular', sans-serif;
+$general_sans_400_italic: 'General Sans Italic', sans-serif;
+$general_sans_200: 'General Sans Extralight', sans-serif;
+$general_sans_200_italic: 'General Sans Extralight Italic', sans-serif;
+$general_sans_300: 'General Sans Light', sans-serif;
+$general_sans_300_italic: 'General Sans Light Italic', sans-serif;
+$general_sans_500: 'General Sans Medium', sans-serif;
+$general_sans_500_italic: 'General Sans Medium Italic', sans-serif;
+$general_sans_600: 'General Sans Semibold', sans-serif;
+$general_sans_600_italic: 'General Sans Semibold Italic', sans-serif;
+$general_sans_700: 'General Sans Bold', sans-serif;
+$general_sans_700_italic: 'General Sans Bold Italic', sans-serif;
+
 .dashboard-card {
     background-color: #fff;
     border-radius: 16px;
@@ -6,24 +19,26 @@
     height: 100%;
 }
 
+.faded {
+    opacity: 0.3;
+}
+
 h3 {
-    font-size: 14px;
-    font-weight: 500;
+    font-family: $general_sans_500 !important;
+    font-size: 16px;
     margin: 0;
 }
 
-.party-pill {
-    padding: 4px 8px;
-    background-color: #999;
-    border-radius: 16px;
-    font-size: 10px;
-    font-weight: 600;
-    color: #000;
-}
+
 
 .card-big-text {
-    font-size: 21px;
-    font-weight: 500;
+    font-size: 24px;
+    font-family: $general_sans_500 !important;
+}
+
+.card-subtext {
+    font-size: 18px;
+    margin: 0 0 0 0.5em;
 }
 
 .card-badge {
@@ -37,64 +52,6 @@ h3 {
     top: -4px;
 }
 
-.card-bar {
-    background-color: #ee9b8a;
-    border-radius: 2px;
-    position: relative;
-    height: 4px;
-    transform: translateY(100%);
-}
-
-.card-bar-fill {
-    background-color: #b7eb9f;
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 4px;
-    border-radius: 2px;
-}
-
-.card-bar-mark {
-    position: absolute;
-    height: 8;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1px;
-    background-color: #000;
-}
-
-.card-help {
-    position: absolute;
-    height: 24px;
-    width: 24px;
-    top: -12px;
-    right: -12px;
-    color: #fff;
-    padding: 5px;
-    border-radius: 8px;
-    background-color: #000;
-    transition: all .5s;
-    cursor: pointer;
-
-    .question {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        color: #fff;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .card-help-content {
-        display: none;
-    }
-
-    &:hover {
-        transform: scale(1.1);
-    }
-}
-
 .party_member_badge {
     width: 20px;
     height: 20px;
@@ -102,5 +59,6 @@ h3 {
     background-color: #000;
     display: inline-block;
     margin: 0 10px 0 0;
+    background-size: cover;
 }
 
