@@ -29,10 +29,31 @@ h2 {
 	font-size: 10px;
 	font-weight: 600;
 	color: #000;
+	display: inline-block;
 
 	&.all-parties {
 		background-color: #000;
 		color: #fff;
+	}
+}
+
+.card-alert {
+	display: inline-block;
+	background-color: #000;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px; 
+	position: relative;
+	top: 5px;
+	left: 5px;
+	cursor: pointer;
+
+	.alert {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		color:#fff;
 	}
 }
 
@@ -260,3 +281,66 @@ tbody {
 	font-size: 12px;
 	font-family: $general_sans_400 !important;
 }
+
+
+.dashboard-card {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    height: 100%;
+}
+
+.faded {
+    opacity: 0.3;
+}
+
+h3 {
+    font-family: $general_sans_500 !important;
+    font-size: 16px;
+    margin: 0;
+}
+
+h4 {
+    font-size: 14px;
+    font-family: $general_sans_500 !important;
+}
+
+
+
+.card-big-text {
+    font-size: 24px;
+    font-family: $general_sans_500 !important;
+    display: inline-block;
+}
+
+.card-subtext {
+    font-size: 18px;
+    margin: 0 0 0 0.8em;
+    display: inline-block;
+}
+
+.card-badge {
+    background-color: rgba(0,0,0,0.1);
+    padding: 5px;
+    font-size: 11px;
+    font-weight: 400;
+    display: inline-block;
+    border-radius: 5px;
+    
+}
+
+.party_member_badge {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #000;
+    display: inline-block;
+    margin: 0 10px 0 0;
+    background-size: cover;
+}
+
+.seperator {
+    border-top: 1px solid #eeeeee;
+}
+

@@ -17,8 +17,6 @@ import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
-import { DashboardCard, CardTitle, CardParty, CardSubtitle, CardContent, CardHelp } from "../dashboardcard";
-
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -184,8 +182,20 @@ function Overview() {
     // Sub Components //////////////////
 
     function PartyPill(props) {
+        if(getMemberCount() > 10) {
+            return <div className={`party-pill ${props.party == 'All' && 'all-parties'}`}>{props.children}</div>;
+        } else {
+            return <><div className={`party-pill ${props.party == 'All' && 'all-parties'}`}>{props.children}</div>
+            <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }}
+                overlay={<Tooltip>{partiesData.find(p => p.id === party)?.party} is a small party</Tooltip>}>
+                    <div className="card-alert"><div className="alert">!</div></div>
+                </OverlayTrigger>
+            </>
+        }
 
-        return <div className={`party-pill ${props.party == 'All' && 'all-parties'}`}>{props.children}</div>;
+        
+
+        
     }
 
     function Badge(props) {
@@ -256,6 +266,55 @@ function Overview() {
             width={40}
 
         />
+    }
+
+    function CardTitle(props) {
+        return <h3>{props.children}</h3>;
+    }
+    
+    function CardParty(props) {
+        return <h4>{props.children}</h4>;
+    }
+    
+    function CardSubtitle(props) {
+        return props.children;
+    }
+    
+    function CardContent(props) {
+        return props.children;
+    }
+
+    function DashboardCard(props) {
+
+        const children = React.Children.toArray(props.children);
+    
+        // Extract specific child components
+        
+        const title = children.find(child => child.type === CardTitle);
+        const party = children.find(child => child.type === CardParty);
+        const subtitle = children.find(child => child.type === CardSubtitle);
+        const content = children.find(child => child.type === CardContent);
+        
+       
+        return (
+            <div className={`dashboard-card ${props.fade ? 'faded' : ''}`}>
+                
+                <Row>
+                    <Col>{title}</Col>
+                    <Col xs="auto">{party}</Col>
+                </Row>
+                <Row>
+                    <Col>{subtitle}</Col>
+                </Row>
+                <Row>
+                    <Col>
+                        {content}
+                    </Col>
+                </Row>
+                
+            </div>
+            
+        );
     }
 
     // Functions //////////////////
