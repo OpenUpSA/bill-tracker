@@ -909,108 +909,107 @@ function Overview() {
     }
 
     function block_parties_with_best_attendance() {
-
         let grouped_attendance_parties = {};
-
+    
         filteredData_allParties.forEach(attendance => {
             let { party_id, attendance: status } = attendance;
-
+    
             if (!grouped_attendance_parties[party_id]) {
-
                 grouped_attendance_parties[party_id] = {
-                    meetings: [],
-                    attended: 0,
-                    absent: 0,
-                };
-            }
-
-            if (status === 'P' || status === 'DE' || status === 'L' || status === 'LDE') {
-                grouped_attendance_parties[party_id].attended += 1;
-            } else {
-                grouped_attendance_parties[party_id].absent += 1;
-            }
-
-            if (!grouped_attendance_parties[party_id].meetings.includes(attendance.meeting_id)) {
-                grouped_attendance_parties[party_id].meetings.push(attendance.meeting_id);
-            }
-        });
-
-        Object.keys(grouped_attendance_parties).forEach(party => {
-            let { attended, absent } = grouped_attendance_parties[party];
-            let total = attended + absent;
-            let percentage = parseFloat(attended / total * 100).toFixed(2);
-            grouped_attendance_parties[party].percentage = parseInt(percentage);
-        });
-
-        // convert to array with party_id
-        let parties = Object.keys(grouped_attendance_parties).map(party => {
-            return {
-                party,
-                ...grouped_attendance_parties[party]
-            }
-        });
-
-        let avg = parties.length > 0 ? parseFloat((parties.reduce((sum, p) => sum + p.percentage, 0) / parties.length).toFixed(2)) : 0;
-
-        setBlock_partiesWithBestAttendance({
-            parties: parties,
-            avg: avg
-        })
-
-
-    }
-
-    function block_members_with_best_attendance() {
-        let grouped_attendance_members = {};
-
-        filteredData.forEach(attendance => {
-            let { member_id, attendance: status } = attendance;
-
-            if (!grouped_attendance_members[member_id]) {
-                grouped_attendance_members[member_id] = {
-                    meetings: [],
+                    meetings: new Set(), 
                     attended: 0,
                     absent: 0,
                     percentage: 0
                 };
             }
+    
+            if (['P', 'DE', 'L', 'LDE'].includes(status)) {
+                grouped_attendance_parties[party_id].attended += 1;
+            } else {
+                grouped_attendance_parties[party_id].absent += 1;
+            }
+    
+            grouped_attendance_parties[party_id].meetings.add(attendance.meeting_id);
+        });
+    
+        Object.keys(grouped_attendance_parties).forEach(party => {
+            let { attended, absent, meetings } = grouped_attendance_parties[party];
+            let total = attended + absent;
+            let percentage = total > 0 ? parseFloat((attended / total) * 100).toFixed(2) : 0;
+    
+            grouped_attendance_parties[party].percentage = parseFloat(percentage);
+            grouped_attendance_parties[party].meeting_count = meetings.size; 
+        });
+    
+        
+        let parties = Object.keys(grouped_attendance_parties)
+            .map(party => ({
+                party,
+                ...grouped_attendance_parties[party]
+            }))
+            .sort((a, b) => Number(b.attended) - Number(a.attended)); 
+    
+        
+        let avg = parties.length > 0
+            ? parseFloat((parties.reduce((sum, p) => sum + p.percentage, 0) / parties.length).toFixed(2))
+            : 0;
+    
+        setBlock_partiesWithBestAttendance({
+            parties: parties,
+            avg: avg
+        });
+    }
 
+    function block_members_with_best_attendance() {
+        let grouped_attendance_members = {};
+    
+        filteredData.forEach(attendance => {
+            let { member_id, attendance: status } = attendance;
+    
+            if (!grouped_attendance_members[member_id]) {
+                grouped_attendance_members[member_id] = {
+                    meetings: new Set(), 
+                    attended: 0,
+                    absent: 0,
+                    percentage: 0
+                };
+            }
+    
             if (['P', 'DE', 'L', 'LDE'].includes(status)) {
                 grouped_attendance_members[member_id].attended += 1;
             } else {
                 grouped_attendance_members[member_id].absent += 1;
             }
-
-            if (!grouped_attendance_members[member_id].meetings.includes(attendance.meeting_id)) {
-                grouped_attendance_members[member_id].meetings.push(attendance.meeting_id);
-            }
+    
+            grouped_attendance_members[member_id].meetings.add(attendance.meeting_id);
         });
-
+    
         Object.keys(grouped_attendance_members).forEach(member => {
-            let { attended, absent } = grouped_attendance_members[member];
+            let { attended, absent, meetings } = grouped_attendance_members[member];
             let total = attended + absent;
             let percentage = total > 0 ? parseFloat((attended / total) * 100).toFixed(2) : 0;
+    
             grouped_attendance_members[member].percentage = parseFloat(percentage);
+            grouped_attendance_members[member].meeting_count = meetings.size; 
         });
-
-        // Convert to array with member_id
-        let members = Object.keys(grouped_attendance_members).map(member => {
-            return {
+    
+        
+        let members = Object.keys(grouped_attendance_members)
+            .map(member => ({
                 member,
                 ...grouped_attendance_members[member]
-            };
-        });
-
-        // Compute the average attendance percentage across all members
+            }))
+            .sort((a, b) => b.present - a.present);
+    
+        
         let avg = members.length > 0
             ? parseFloat((members.reduce((sum, m) => sum + m.percentage, 0) / members.length).toFixed(2))
             : 0;
-
+    
         setBlock_membersWithBestAttendance({
             members: members,
             avg: avg
         });
-
     }
 
     function block_attendance_by_gender() {
@@ -1462,14 +1461,16 @@ function Overview() {
                                     <CardTitle>Meetings per committee</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
-                                        <Row>
+                                        <Row className="justify-content-between">
                                             <Col><span className="card-big-text">{parseInt(block_meetingsPerCommittee.avg)}</span></Col>
-                                            <Col xs="auto">
-                                                <CardSparkline data={block_meetingsPerCommittee.sparklineData} />
+                                            <Col xs="auto" className="d-flex align-items-center">
+                                                <div className="card-badge">20% vs longterm</div>
                                             </Col>
                                         </Row>
                                     </CardSubtitle>
                                     <CardContent>
+                                        <div className="seperator my-3"></div>
+                                        <h4 className="mb-3">Committees ordered by total meetings</h4>
                                         <CardHelp metric="meetingsPerCommittee"></CardHelp>
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
@@ -1511,9 +1512,17 @@ function Overview() {
                                     <CardTitle>Scheduled meetings that overlapped</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
-                                        <span className="card-big-text">{block_meetingsThatOverlapped.count}</span> of <span className="card-big-text">{block_totalScheduledMeetings.total}</span>
+                                        <Row className="justify-content-between">
+                                            <Col><span className="card-big-text">{block_meetingsThatOverlapped.count}</span> of <span className="card-big-text">{block_totalScheduledMeetings[0].total}</span></Col>
+                                            <Col xs="auto" className="d-flex align-items-center">
+                                                <div className="card-badge">20% vs longterm</div>
+                                            </Col>
+                                        </Row>
+                                        
                                     </CardSubtitle>
                                     <CardContent>
+                                        <div className="seperator my-3"></div>
+                                        <h4 className="mb-3">Committees ordered by overlapping meetings</h4>
                                         <CardHelp metric="meetingsThatOverlapped" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
@@ -1635,13 +1644,14 @@ function Overview() {
                             <Col>
                                 <DashboardCard>
 
-                                    <CardTitle>Parties with the best attendance</CardTitle>
+                                    <CardTitle>Parties ordered by meetings attended</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
 
                                     </CardSubtitle>
 
                                     <CardContent>
+                                        
                                         <CardHelp metric="partiesWithBestAttendance" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
@@ -1652,17 +1662,19 @@ function Overview() {
                                                             <th style={{ width: '50%' }}>Party</th>
                                                             <th>Meetings</th>
                                                             <th>Present</th>
+                                                            <th>%</th>
                                                             <th>% vs avg</th>
                                                             <th></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            block_partiesWithBestAttendance.parties.sort((a, b) => b.percentage - a.percentage).map((p, index) =>
+                                                            block_partiesWithBestAttendance.parties.map((p, index) =>
                                                                 <tr key={index} className={party == p.party ? 'current-party' : ''}>
                                                                     <td>{index + 1}</td>
                                                                     <td><Badge party pic={partiesData.find(c => c.id === p.party).party} />{partiesData.find(c => c.id === p.party).party}</td>
-                                                                    <td>{p.meetings.length}</td>
+                                                                    <td>{p.meeting_count}</td>
+                                                                    <td>{p.attended}</td>
                                                                     <td>{parseInt(p.percentage)}%</td>
                                                                     <td><CardBar value={parseInt(p.percentage)} avg={block_partiesWithBestAttendance.avg} /></td>
                                                                     <td></td>
@@ -1679,13 +1691,14 @@ function Overview() {
                             </Col>
                             <Col>
                                 <DashboardCard>
-                                    <CardTitle>Members with the best attendance</CardTitle>
+                                    <CardTitle>Members ordered by meetings attended</CardTitle>
                                     <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
 
                                     </CardSubtitle>
 
                                     <CardContent>
+                                       
                                         <CardHelp metric="membersWithBestAttendance" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
@@ -1704,13 +1717,13 @@ function Overview() {
                                                     </thead>
                                                     <tbody>
                                                         {
-                                                            block_membersWithBestAttendance.members.sort((a, b) => b.percentage - a.percentage).map((member, index) =>
+                                                            block_membersWithBestAttendance.members.map((member, index) =>
                                                                 <tr key={index}>
                                                                     <td>{index + 1}</td>
                                                                     <td><Badge pic={membersData.find(c => c.id === member.member)?.profile_pic} />{membersData.find(c => c.id === member.member)?.surname}, {membersData.find(c => c.id === member.member)?.initial}</td>
                                                                     <td>{partiesData.find(c => c.id === membersData.find(m => m.id === member.member)?.party_id)?.party}</td>
-                                                                    <td>{member.meetings.length}</td>
-                                                                    <td></td>
+                                                                    <td>{member.meeting_count}</td>
+                                                                    <td>{member.attended}</td>
                                                                     <td>{parseInt(member.percentage)}%</td>
                                                                     <td><CardBar value={parseInt(member.percentage)} avg={block_membersWithBestAttendance.avg} /></td>
                                                                     <td></td>
