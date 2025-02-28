@@ -5,6 +5,7 @@ $joint: #f7b267;
 
 body {
     overflow-x: hidden;
+    font-size: 12px;
 }
 
 .sidebar {
@@ -66,7 +67,7 @@ body {
     
 
     h2 {
-        font-size: 1em;
+        font-size: 14px;
         font-weight: 600;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         padding: 1em 0;
@@ -103,6 +104,7 @@ body {
 .bills-table {
     width: 100%;
     position: relative;
+    
 
     thead {
         position: sticky;
