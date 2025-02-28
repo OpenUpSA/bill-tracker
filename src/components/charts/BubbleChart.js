@@ -79,7 +79,7 @@ export default function BubbleChart({ data, data2 = null, party = null, xType = 
     return (
         <div ref={containerRef} style={{ width: '100%', position: 'relative' }}>
             <svg width={chartWidth} height={height} onMouseLeave={hideTooltip}>
-                {/* Vertical Grid Lines & Hover Triggers */}
+                
                 {tickValues.map((xVal, i) => {
                     const xPos = xScale(xVal);
                     return (
@@ -102,6 +102,31 @@ export default function BubbleChart({ data, data2 = null, party = null, xType = 
                         </g>
                     );
                 })}
+
+
+                {
+                    xType == "late" &&  
+                    <>
+                        <text
+                            x={0}
+                            y={height - padding[2]}
+                            fontSize={12}
+                            textAnchor="start"
+                            fill="#868686"
+                        >
+                            ← Ended Early
+                        </text>
+                        <text
+                            x={chartWidth}
+                            y={height - padding[2]}
+                            fontSize={12}
+                            textAnchor="end"
+                            fill="#868686"
+                        >
+                            Ended late →
+                        </text>
+                    </>
+                }
 
                 {data.map((d, i) => (
                     <Circle
