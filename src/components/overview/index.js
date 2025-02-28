@@ -999,7 +999,7 @@ function Overview() {
                 member,
                 ...grouped_attendance_members[member]
             }))
-            .sort((a, b) => b.present - a.present);
+            .sort((a, b) => b.attended - a.attended);
     
         
         let avg = members.length > 0
