@@ -627,19 +627,22 @@ function Overview() {
         // Group meetings by unique meeting_id
         let grouped_meetings = groupMeetings(data);
     
-        // Helper function to bin values into 15-minute intervals
+        // Helper function to bin values into 30-minute intervals
         function binValue(value) {
-            return Math.round(value / 30) * 30; // Round to nearest multiple of 15 minutes (can be negative)
+            return Math.round(value / 30) * 30; // Round to nearest multiple of 30 minutes (can be negative)
         }
     
         // Store binned results
         let lateMeetingsMap = new Map();
+        let late_count = 0; // Initialize late count
     
         grouped_meetings.forEach(meeting => {
             let actual_length = parseFloat(meeting.actual_length) || 0;
             let scheduled_length = parseFloat(meeting.scheduled_length) || 0;
             
             let diff = actual_length - scheduled_length; // Can be negative if the meeting ended early
+    
+            if (diff > 0) late_count++; // Only count meetings that ended late
     
             let binnedValue = binValue(diff);
     
@@ -651,7 +654,8 @@ function Overview() {
         });
     
         return {
-            data: Array.from(lateMeetingsMap.values()) // Convert Map to Array for BubbleChart
+            data: Array.from(lateMeetingsMap.values()), // Convert Map to Array for BubbleChart
+            late_count 
         };
     }
     
