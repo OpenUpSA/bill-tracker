@@ -29,16 +29,23 @@ h3 {
     margin: 0;
 }
 
+h4 {
+    font-size: 14px;
+    font-family: $general_sans_500 !important;
+}
+
 
 
 .card-big-text {
     font-size: 24px;
     font-family: $general_sans_500 !important;
+    display: inline-block;
 }
 
 .card-subtext {
     font-size: 18px;
-    margin: 0 0 0 0.5em;
+    margin: 0 0 0 0.8em;
+    display: inline-block;
 }
 
 .card-badge {
@@ -48,8 +55,7 @@ h3 {
     font-weight: 400;
     display: inline-block;
     border-radius: 5px;
-    position: relative;
-    top: -4px;
+    
 }
 
 .party_member_badge {
@@ -60,5 +66,9 @@ h3 {
     display: inline-block;
     margin: 0 10px 0 0;
     background-size: cover;
+}
+
+.seperator {
+    border-top: 1px solid #eeeeee;
 }
 

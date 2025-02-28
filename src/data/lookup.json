@@ -184,6 +184,10 @@
             "body": "All committee meetings scheduled for the selected period."
         },
         {
+            "metric": "meetingsPerMember",        
+            "body": "Meetings per member"
+        },
+        {
             "metric": "lengthOfMeeting",
             "body": "The scheduled length of meetings."
         },
@@ -214,6 +218,10 @@
         {
             "metric": "membersWithBestAttendance",
             "body": "The members with the best attendance."
+        },
+        {
+            "metric": "attendanceByGender",
+            "body": "Attendance by gender for the selected period."
         }
 
 
