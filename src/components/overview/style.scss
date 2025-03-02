@@ -521,6 +521,36 @@ h4 {
 	 white-space: nowrap;
 	 z-index: 9999;
  }
+
+.modal-header {
+	border-bottom: none; 
+}
+
+.modal-body {
+
+	padding: 1em 2em;
+
+	h2 {
+		font-size: 18px;
+	}
+
+	input {
+		background-color: #d9d9d9;
+	}
+
+	button {
+		background-color: #000;
+		color: #fff;
+		padding: 10px 25px;
+		border-radius: 30px;
+		font-family: $general_sans_500 !important;
+
+		&:hover {
+			background-color: #fff;
+			color: #000;
+		}
+	}
+}
  
  
  

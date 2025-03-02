@@ -16,6 +16,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import Form from 'react-bootstrap/Form';
 
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,7 +25,8 @@ import {
     faArrowDown,
     faArrowLeft,
     faArrowRight,
-    faChevronDown
+    faChevronDown,
+    faUsers
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Scrollbars } from "react-custom-scrollbars";
@@ -184,7 +186,7 @@ function Overview() {
 
     function PartyPill(props) {
 
-        if (getMemberCount() > 10) {
+        if (getMemberCount() > 9 || document.cookie.includes('disclaimer=hide')) {
             return <div className={`party-pill ${props.party == 'All' && 'all-parties'}`}>{props.children}</div>;
         } else {
             return <><div className={`party-pill ${props.party == 'All' && 'all-parties'}`}>{props.children}</div>
@@ -742,7 +744,9 @@ function Overview() {
         };
     }
 
-
+    function setDisclaimerCookie() {
+        document.cookie = "disclaimer=hide; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+    }
 
 
 
@@ -1894,19 +1898,21 @@ function Overview() {
                 </div>
             </Container>
 
-            <Modal show={showModal} onHide={handleModalClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary">
-                        Close
-                    </Button>
-                    <Button variant="primary">
-                        Save Changes
-                    </Button>
-                </Modal.Footer>
+            <Modal show={showModal} onHide={handleModalClose} size="lg" centered>
+                <Modal.Header closeButton/>
+                <Modal.Body>
+                    <h2 className="mt-2"><FontAwesomeIcon icon={faUsers} color="#fb9905" className="me-2"/> Small party disclaimer</h2>
+                    <p className="mt-4">The party you have selected ({partyName}) has fewer than 10 members. Smaller parties often do not have enough members to have a representative in every committee. When viewing this data, it is important to bare this in mind.</p>
+                    <p><a href="#" className="text-black">Learn more about the challenges faced by small parties</a></p>
+                    <Row className="justify-content-between my-4">
+                        <Col className="d-flex align-items-center">
+                            <Form.Check type="checkbox" onClick={() => setDisclaimerCookie()} label="Don't show this disclaimer again"/>
+                        </Col>
+                        <Col xs="auto"><Button onClick={() => setShowModal(false)}>I understand</Button></Col>
+                    </Row>
+
+
+                </Modal.Body>
             </Modal>
 
 
