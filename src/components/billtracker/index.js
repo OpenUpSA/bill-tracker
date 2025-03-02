@@ -68,8 +68,7 @@ function BillTracker() {
 	const [selectedStatuses, setSelectedStatuses] = useState([
 		"na",
 		"ncop",
-		"president",
-		"concourt"
+		"president"
 	]);
 
 	const [groupBy, setGroupBy] = useState("status");
@@ -222,7 +221,7 @@ function BillTracker() {
 			// It is still ongoing and needs to show today.
 
 			if (["na", "ncop", "president"].includes(bill.status)) {
-				if (lastHouse.toLowerCase() != bill.status.toLowerCase()) {
+				if (lastHouse?.toLowerCase() != bill.status.toLowerCase()) {
 					// add a house
 					let lastDate = bill.events[bill.events.length - 1]?.date;
 					let startDate = new Date(lastDate + 1);
@@ -436,7 +435,7 @@ function BillTracker() {
 						<th>Days since last event:</th>
 						<td>
 							{getDateDifferenceInDays(
-								hoveredBill.events[hoveredBill.events.length - 1].date,
+								hoveredBill.events[hoveredBill.events.length - 1]?.date,
 								new Date()
 							)}
 						</td>
@@ -1350,8 +1349,7 @@ function BillTracker() {
 																											className="event"
 																											style={{
 																												left: `${getDateDifferenceInDays(
-																													bill.houses[0][0]
-																														.date,
+																													bill.houses[0][0]?.date,
 																													event.date
 																												) * daySizeinPx
 																													}px`,

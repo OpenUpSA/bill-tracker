@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import * as d3 from "d3";
 
-import "./style.scss";
 
 const AttendanceChart = (props) => {
 	const chartRefTop = useRef();

@@ -28,12 +28,12 @@ export default function BubbleChart({ data, data2 = null, party = null, xType = 
 
     // Define xScale based on xType (count, time, or late)
     const xDomain = xType === "count"
-    ? [1, Math.max(...(data?.map((d) => d.x) || [1]), ...(data2?.map((d) => d.x) || [1]))]
-    : [
-        Math.min(...(data?.map((d) => d.x) || [0]), ...(data2?.map((d) => d.x) || [0])),
-        Math.max(...(data?.map((d) => d.x) || [0]), ...(data2?.map((d) => d.x) || [0]))
-    ];
-    
+        ? [1, Math.max(...(data?.map((d) => d.x) || [1]), ...(data2?.map((d) => d.x) || [1]))]
+        : [
+            Math.min(...(data?.map((d) => d.x) || [0]), ...(data2?.map((d) => d.x) || [0])),
+            Math.max(...(data?.map((d) => d.x) || [0]), ...(data2?.map((d) => d.x) || [0]))
+        ];
+
     const xScale = scaleLinear({
         domain: xDomain,
         range: [padding[3], chartWidth - padding[1]],
@@ -51,7 +51,7 @@ export default function BubbleChart({ data, data2 = null, party = null, xType = 
         ],
         range: [5, 20], // Keeps small values small
     });
-    
+
 
     const { showTooltip, hideTooltip, tooltipData, tooltipLeft, tooltipTop } = useTooltip();
 
@@ -72,14 +72,14 @@ export default function BubbleChart({ data, data2 = null, party = null, xType = 
         }
     }
 
-   
+
 
 
 
     return (
         <div ref={containerRef} style={{ width: '100%', position: 'relative' }}>
             <svg width={chartWidth} height={height} onMouseLeave={hideTooltip}>
-                
+
                 {tickValues.map((xVal, i) => {
                     const xPos = xScale(xVal);
                     return (
@@ -105,7 +105,7 @@ export default function BubbleChart({ data, data2 = null, party = null, xType = 
 
 
                 {
-                    xType == "late" &&  
+                    xType == "late" &&
                     <>
                         <text
                             x={0}

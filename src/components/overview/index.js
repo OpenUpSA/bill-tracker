@@ -145,6 +145,7 @@ function Overview() {
 
 
     const [party, setParty] = useState("All");
+    const [partyName, setPartyName] = useState("All")
 
     const [selectedMonth, setSelectedMonth] = useState(1);
     const [selectedYear, setSelectedYear] = useState(2025);
@@ -182,20 +183,17 @@ function Overview() {
     // Sub Components //////////////////
 
     function PartyPill(props) {
-        if(getMemberCount() > 10) {
+
+        if (getMemberCount() > 10) {
             return <div className={`party-pill ${props.party == 'All' && 'all-parties'}`}>{props.children}</div>;
         } else {
             return <><div className={`party-pill ${props.party == 'All' && 'all-parties'}`}>{props.children}</div>
-            <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }}
-                overlay={<Tooltip>{partiesData.find(p => p.id === party)?.party} is a small party</Tooltip>}>
-                    <div className="card-alert"><div className="alert">!</div></div>
+                <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }}
+                    overlay={<Tooltip>{partyName} is a small party</Tooltip>}>
+                    <div className="card-alert" onClick={() => setShowModal(!showModal)}><div className="alert">!</div></div>
                 </OverlayTrigger>
             </>
         }
-
-        
-
-        
     }
 
     function Badge(props) {
@@ -271,15 +269,15 @@ function Overview() {
     function CardTitle(props) {
         return <h3>{props.children}</h3>;
     }
-    
+
     function CardParty(props) {
         return <h4>{props.children}</h4>;
     }
-    
+
     function CardSubtitle(props) {
         return props.children;
     }
-    
+
     function CardContent(props) {
         return props.children;
     }
@@ -287,18 +285,18 @@ function Overview() {
     function DashboardCard(props) {
 
         const children = React.Children.toArray(props.children);
-    
+
         // Extract specific child components
-        
+
         const title = children.find(child => child.type === CardTitle);
         const party = children.find(child => child.type === CardParty);
         const subtitle = children.find(child => child.type === CardSubtitle);
         const content = children.find(child => child.type === CardContent);
-        
-       
+
+
         return (
             <div className={`dashboard-card ${props.fade ? 'faded' : ''}`}>
-                
+
                 <Row>
                     <Col>{title}</Col>
                     <Col xs="auto">{party}</Col>
@@ -311,9 +309,9 @@ function Overview() {
                         {content}
                     </Col>
                 </Row>
-                
+
             </div>
-            
+
         );
     }
 
@@ -322,6 +320,10 @@ function Overview() {
     function toggleModal(show, metric = "") {
         setModalMetric(metric);
         setShowModal(show);
+    }
+
+    function handleModalClose() {
+        setShowModal(false);
     }
 
     function loadData(csv_set) {
@@ -352,6 +354,28 @@ function Overview() {
         } else {
             return membersData.filter(member => member.party_id === party).length;
         }
+    }
+
+    function getPartyName() {
+        
+        let party_name = 'All';
+
+        if(party != 'All') {
+        
+            party_name = partiesData.find(p => p.id === party)?.party;
+            if (party_name == 'RISE Mzansi') {
+                party_name = 'Rise';
+            } else if(party_name == 'Al Jama-ah') {
+                party_name = 'ALJ';
+            } else if(party_name == 'Action SA') {
+                party_name = 'ASA';
+            }
+
+        }
+
+        setPartyName(party_name);
+
+        
     }
 
     function filterData() {
@@ -636,30 +660,30 @@ function Overview() {
     function calc_length_of_meeting(data) {
         let grouped_meetings = groupMeetings(data);
         let total_meetings = grouped_meetings.length;
-    
+
         let total_meetings_actual_length = 0;
         let total_meetings_scheduled_length = 0;
-    
+
         let chart_data = {
             actual: [],
             scheduled: []
         };
-    
-       
+
+
         function binValue(value) {
-            return Math.round(value / 30) * 30; 
+            return Math.round(value / 30) * 30;
         }
-    
+
         grouped_meetings.forEach(meeting => {
             let length_actual = parseFloat(meeting.actual_length);
             let length_scheduled = parseFloat(meeting.scheduled_length);
-    
+
             if (isNaN(length_actual) || length_actual < 0) length_actual = 0;
             if (isNaN(length_scheduled) || length_scheduled < 0) length_scheduled = 0;
-    
+
             total_meetings_actual_length += length_actual;
             total_meetings_scheduled_length += length_scheduled;
-    
+
             function updateChartData(array, value) {
                 let binnedValue = binValue(value);
                 let entry = array.find(d => d.x === binnedValue);
@@ -669,11 +693,11 @@ function Overview() {
                     array.push({ x: binnedValue, y: 5, size: 1 });
                 }
             }
-    
+
             updateChartData(chart_data.actual, length_actual);
             updateChartData(chart_data.scheduled, length_scheduled);
         });
-    
+
         return {
             avg_actual: total_meetings > 0 ? parseInt(total_meetings_actual_length / total_meetings) : 0,
             avg_scheduled: total_meetings > 0 ? parseInt(total_meetings_scheduled_length / total_meetings) : 0,
@@ -685,41 +709,41 @@ function Overview() {
     function calc_meetings_that_ended_late(data) {
         // Group meetings by unique meeting_id
         let grouped_meetings = groupMeetings(data);
-    
+
         // Helper function to bin values into 30-minute intervals
         function binValue(value) {
             return Math.round(value / 30) * 30; // Round to nearest multiple of 30 minutes (can be negative)
         }
-    
+
         // Store binned results
         let lateMeetingsMap = new Map();
         let late_count = 0; // Initialize late count
-    
+
         grouped_meetings.forEach(meeting => {
             let actual_length = parseFloat(meeting.actual_length) || 0;
             let scheduled_length = parseFloat(meeting.scheduled_length) || 0;
-            
+
             let diff = actual_length - scheduled_length; // Can be negative if the meeting ended early
-    
+
             if (diff > 0) late_count++; // Only count meetings that ended late
-    
+
             let binnedValue = binValue(diff);
-    
+
             if (lateMeetingsMap.has(binnedValue)) {
                 lateMeetingsMap.get(binnedValue).size += 1; // Count more meetings in this bin
             } else {
                 lateMeetingsMap.set(binnedValue, { x: binnedValue, y: 5, size: 1 });
             }
         });
-    
+
         return {
             data: Array.from(lateMeetingsMap.values()), // Convert Map to Array for BubbleChart
-            late_count 
+            late_count
         };
     }
-    
-    
-    
+
+
+
 
 
     // Block Calculations //////////////////
@@ -969,50 +993,50 @@ function Overview() {
 
     function block_parties_with_best_attendance() {
         let grouped_attendance_parties = {};
-    
+
         filteredData_allParties.forEach(attendance => {
             let { party_id, attendance: status } = attendance;
-    
+
             if (!grouped_attendance_parties[party_id]) {
                 grouped_attendance_parties[party_id] = {
-                    meetings: new Set(), 
+                    meetings: new Set(),
                     attended: 0,
                     absent: 0,
                     percentage: 0
                 };
             }
-    
+
             if (['P', 'DE', 'L', 'LDE'].includes(status)) {
                 grouped_attendance_parties[party_id].attended += 1;
             } else {
                 grouped_attendance_parties[party_id].absent += 1;
             }
-    
+
             grouped_attendance_parties[party_id].meetings.add(attendance.meeting_id);
         });
-    
+
         Object.keys(grouped_attendance_parties).forEach(party => {
             let { attended, absent, meetings } = grouped_attendance_parties[party];
             let total = attended + absent;
             let percentage = total > 0 ? parseFloat((attended / total) * 100).toFixed(2) : 0;
-    
+
             grouped_attendance_parties[party].percentage = parseFloat(percentage);
-            grouped_attendance_parties[party].meeting_count = meetings.size; 
+            grouped_attendance_parties[party].meeting_count = meetings.size;
         });
-    
-        
+
+
         let parties = Object.keys(grouped_attendance_parties)
             .map(party => ({
                 party,
                 ...grouped_attendance_parties[party]
             }))
-            .sort((a, b) => Number(b.attended) - Number(a.attended)); 
-    
-        
+            .sort((a, b) => Number(b.attended) - Number(a.attended));
+
+
         let avg = parties.length > 0
             ? parseFloat((parties.reduce((sum, p) => sum + p.percentage, 0) / parties.length).toFixed(2))
             : 0;
-    
+
         setBlock_partiesWithBestAttendance({
             parties: parties,
             avg: avg
@@ -1021,50 +1045,50 @@ function Overview() {
 
     function block_members_with_best_attendance() {
         let grouped_attendance_members = {};
-    
+
         filteredData.forEach(attendance => {
             let { member_id, attendance: status } = attendance;
-    
+
             if (!grouped_attendance_members[member_id]) {
                 grouped_attendance_members[member_id] = {
-                    meetings: new Set(), 
+                    meetings: new Set(),
                     attended: 0,
                     absent: 0,
                     percentage: 0
                 };
             }
-    
+
             if (['P', 'DE', 'L', 'LDE'].includes(status)) {
                 grouped_attendance_members[member_id].attended += 1;
             } else {
                 grouped_attendance_members[member_id].absent += 1;
             }
-    
+
             grouped_attendance_members[member_id].meetings.add(attendance.meeting_id);
         });
-    
+
         Object.keys(grouped_attendance_members).forEach(member => {
             let { attended, absent, meetings } = grouped_attendance_members[member];
             let total = attended + absent;
             let percentage = total > 0 ? parseFloat((attended / total) * 100).toFixed(2) : 0;
-    
+
             grouped_attendance_members[member].percentage = parseFloat(percentage);
-            grouped_attendance_members[member].meeting_count = meetings.size; 
+            grouped_attendance_members[member].meeting_count = meetings.size;
         });
-    
-        
+
+
         let members = Object.keys(grouped_attendance_members)
             .map(member => ({
                 member,
                 ...grouped_attendance_members[member]
             }))
             .sort((a, b) => b.attended - a.attended);
-    
-        
+
+
         let avg = members.length > 0
             ? parseFloat((members.reduce((sum, m) => sum + m.percentage, 0) / members.length).toFixed(2))
             : 0;
-    
+
         setBlock_membersWithBestAttendance({
             members: members,
             avg: avg
@@ -1144,6 +1168,7 @@ function Overview() {
     }, [attendanceData]);
 
     useEffect(() => {
+        getPartyName();
         filterData();
         calc_historical_dateRange();
 
@@ -1201,7 +1226,7 @@ function Overview() {
                                     <Dropdown className="dropdown-select">
                                         <Dropdown.Toggle>
                                             <Row>
-                                                <Col><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></Col>
+                                                <Col xs={3}><PartyPill party={party}>{partyName}</PartyPill></Col>
                                                 <Col>({getMemberCount()} members)</Col>
                                                 <Col xs="auto">
                                                     <FontAwesomeIcon icon={faChevronDown} />
@@ -1304,7 +1329,7 @@ function Overview() {
                             <Col>
                                 <DashboardCard>
                                     <CardTitle>Total scheduled meetings</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <Row className="justify-content-between">
                                             <Col>
@@ -1327,11 +1352,11 @@ function Overview() {
                                                 <LineChart data={block_totalScheduledMeetings[1].data} width={400} height={150} referenceY={block_totalScheduledMeetings[0].per_day} data2={block_totalScheduledMeetings[0].data} party={partiesData.find(p => p.id === party)?.party} />
                                         }
                                         <div className="chart-legend mt-4">
-                                            { 
+                                            {
                                                 party != "All" && (
                                                     <div className="legend-item">
                                                         <div className="legend-color" style={{ borderColor: '#fb9905' }}></div>
-                                                        <div className="legend-label">{partiesData.find(p => p.id === party)?.party}</div>
+                                                        <div className="legend-label">{partyName}</div>
                                                     </div>
                                                 )
                                             }
@@ -1347,7 +1372,7 @@ function Overview() {
                                 <DashboardCard>
 
                                     <CardTitle>Avg. meetings per member</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <Row className="justify-content-between">
                                             <Col>
@@ -1377,17 +1402,17 @@ function Overview() {
                                                     data2={block_meetingsPerMember[0].data}
                                                     width={400}
                                                     height={150}
-                                                    party={partiesData.find(p => p.id === party)?.party}
+                                                    party={partyName}
                                                     xType="count"
                                                 />
                                             )
                                         }
                                         <div className="chart-legend mt-4">
-                                            { 
+                                            {
                                                 party != "All" && (
                                                     <div className="legend-item">
                                                         <div className="legend-color legend-circle" style={{ borderColor: '#000', backgroundColor: '#fb9905' }}></div>
-                                                        <div className="legend-label">{partiesData.find(p => p.id === party)?.party}</div>
+                                                        <div className="legend-label">{partyName}</div>
                                                     </div>
                                                 )
                                             }
@@ -1396,8 +1421,6 @@ function Overview() {
                                                 <div className="legend-label">All Parties</div>
                                             </div>
                                         </div>
-
-
                                     </CardContent>
                                 </DashboardCard>
                             </Col>
@@ -1405,7 +1428,7 @@ function Overview() {
                                 <DashboardCard>
 
                                     <CardTitle>Avg. length of a single meeting</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName || "All"}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <Row className="justify-content-between">
                                             <Col>
@@ -1439,11 +1462,11 @@ function Overview() {
                                             )
                                         }
                                         <div className="chart-legend mt-4">
-                                            { 
+                                            {
                                                 party != "All" && (
                                                     <div className="legend-item">
                                                         <div className="legend-color legend-circle" style={{ borderColor: '#000', backgroundColor: '#fb9905' }}></div>
-                                                        <div className="legend-label">{partiesData.find(p => p.id === party)?.party}</div>
+                                                        <div className="legend-label">{partyName}</div>
                                                     </div>
                                                 )
                                             }
@@ -1460,7 +1483,7 @@ function Overview() {
                                 <DashboardCard>
 
                                     <CardTitle>Number of meetings that ended late</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <Row className="justify-content-between">
                                             <Col>
@@ -1470,7 +1493,7 @@ function Overview() {
                                                 <div className="card-badge">20% vs longterm</div>
                                             </Col>
                                         </Row>
-                                        
+
                                     </CardSubtitle>
                                     <CardContent>
                                         <div className="seperator my-3"></div>
@@ -1487,16 +1510,16 @@ function Overview() {
                                                     data={block_meetingsThatEndedLate[1]?.data || []}
                                                     data2={block_meetingsThatEndedLate[0]?.data || []}
                                                     xType="late"
-                                                    party={partiesData.find(p => p.id === party)?.party}
+                                                    party={partyName}
                                                 />
                                             )
                                         }
                                         <div className="chart-legend mt-4">
-                                            { 
+                                            {
                                                 party != "All" && (
                                                     <div className="legend-item">
                                                         <div className="legend-color legend-circle" style={{ borderColor: '#000', backgroundColor: '#fb9905' }}></div>
-                                                        <div className="legend-label">{partiesData.find(p => p.id === party)?.party}</div>
+                                                        <div className="legend-label">{partyName}</div>
                                                     </div>
                                                 )
                                             }
@@ -1518,7 +1541,7 @@ function Overview() {
                             <Col>
                                 <DashboardCard>
                                     <CardTitle>Meetings per committee</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <Row className="justify-content-between">
                                             <Col><span className="card-big-text">{parseInt(block_meetingsPerCommittee.avg)}</span></Col>
@@ -1569,7 +1592,7 @@ function Overview() {
                                 <DashboardCard>
 
                                     <CardTitle>Scheduled meetings that overlapped</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <Row className="justify-content-between">
                                             <Col><span className="card-big-text">{block_meetingsThatOverlapped.count}</span> of <span className="card-big-text">{block_totalScheduledMeetings[0].total}</span></Col>
@@ -1577,7 +1600,7 @@ function Overview() {
                                                 <div className="card-badge">20% vs longterm</div>
                                             </Col>
                                         </Row>
-                                        
+
                                     </CardSubtitle>
                                     <CardContent>
                                         <div className="seperator my-3"></div>
@@ -1638,7 +1661,7 @@ function Overview() {
                             <Col>
                                 <DashboardCard>
                                     <CardTitle>Overall meeting attendance</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <span className="card-big-text">{parseInt(block_overallAttendance.avg)}%</span>
                                     </CardSubtitle>
@@ -1646,7 +1669,7 @@ function Overview() {
                                     <CardContent>
                                         <CardHelp metric="overallAttendance" />
                                         <div className="mt-3">
-                                            <StackedBarChart data={block_overallAttendance.data} party={partiesData.find(p => p.id === party)?.party || "All"} />
+                                            <StackedBarChart data={block_overallAttendance.data} party={partyName} />
                                         </div>
                                     </CardContent>
                                 </DashboardCard>
@@ -1655,7 +1678,7 @@ function Overview() {
                             <Col>
                                 <DashboardCard>
                                     <CardTitle>Committees with the best attendance</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
 
                                     </CardSubtitle>
@@ -1704,13 +1727,13 @@ function Overview() {
                                 <DashboardCard>
 
                                     <CardTitle>Parties ordered by meetings attended</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
 
                                     </CardSubtitle>
 
                                     <CardContent>
-                                        
+
                                         <CardHelp metric="partiesWithBestAttendance" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
@@ -1731,7 +1754,7 @@ function Overview() {
                                                             block_partiesWithBestAttendance.parties.map((p, index) =>
                                                                 <tr key={index} className={party == p.party ? 'current-party' : ''}>
                                                                     <td>{index + 1}</td>
-                                                                    <td><Badge party pic={partiesData.find(c => c.id === p.party).party} />{partiesData.find(c => c.id === p.party).party}</td>
+                                                                    <td><Badge party pic={partiesData.find(c => c.id === p.party).party} />{partyName}</td>
                                                                     <td>{p.meeting_count}</td>
                                                                     <td>{p.attended}</td>
                                                                     <td>{parseInt(p.percentage)}%</td>
@@ -1751,13 +1774,13 @@ function Overview() {
                             <Col>
                                 <DashboardCard>
                                     <CardTitle>Members ordered by meetings attended</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
 
                                     </CardSubtitle>
 
                                     <CardContent>
-                                       
+
                                         <CardHelp metric="membersWithBestAttendance" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
@@ -1804,7 +1827,7 @@ function Overview() {
                             <Col>
                                 <DashboardCard>
                                     <CardTitle>Attendance by gender</CardTitle>
-                                    <CardParty><PartyPill party={party}>{partiesData.find(p => p.id === party)?.party || "All"}</PartyPill></CardParty>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
 
                                     </CardSubtitle>
@@ -1870,6 +1893,21 @@ function Overview() {
 
                 </div>
             </Container>
+
+            <Modal show={showModal} onHide={handleModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary">
+                        Close
+                    </Button>
+                    <Button variant="primary">
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
 
         </Fragment>

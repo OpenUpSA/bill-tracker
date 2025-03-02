@@ -3,8 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
-import './style.scss';
-
 export default function StackedBarChart(props) {
 
 
