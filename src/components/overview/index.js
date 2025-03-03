@@ -939,8 +939,6 @@ function Overview() {
             calc_meetings_that_ended_late(filteredData_allParties)
         ];
 
-        console.log(result);
-
         setBlock_meetingsThatEndedLate(result);
     }
 
@@ -1381,8 +1379,6 @@ function Overview() {
         let total = grouped_questions.reduce((sum, q) => sum + q.count, 0);
         let avg = grouped_questions.length > 0 ? parseFloat(total / grouped_questions.length).toFixed(2) : 0;
 
-        console.log(membersData);
-        console.log(grouped_questions);
 
         setBlock_QuestionsByMembers({
             avg: avg,
