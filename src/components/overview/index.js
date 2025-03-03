@@ -67,6 +67,10 @@ function Overview() {
     const [filteredQuestionsData, setFilteredQuestionsData] = useState([]);
     const [filteredQuestionsData_allParties, setFilteredQuestionsData_allParties] = useState([]);
 
+    const [averages, setAverages] = useState({
+        scheduled_meetings: 0,
+    });
+
     const [block_totalScheduledMeetings, setBlock_totalScheduledMeetings] = useState([
         {
             total: 0,
@@ -194,14 +198,6 @@ function Overview() {
     ];
 
     const [showModal, setShowModal] = useState(false);
-    const [modalMetric, setModalMetric] = useState("Representation in meetings");
-
-    const dummyData = [
-        { label: 'Attended', value: 2371, color: 'lightgreen' },
-        { label: 'Arrived Late', value: 300, color: 'purple' },
-        { label: 'Departed Early', value: 200, color: 'blue' },
-        { label: 'Absent', value: 1251, color: 'salmon' },
-    ];
 
 
     // Sub Components //////////////////
@@ -340,11 +336,7 @@ function Overview() {
     }
 
     // Functions //////////////////
-
-    function toggleModal(show, metric = "") {
-        setModalMetric(metric);
-        setShowModal(show);
-    }
+   
 
     function handleModalClose() {
         setShowModal(false);
@@ -776,7 +768,7 @@ function Overview() {
         const startLimit = new Date('2024-03-01');
         const endLimit = new Date('2024-03-31');
         return date < startLimit || date > endLimit;
-    };
+    }
 
     function filterQuestionsData() {    
         
@@ -801,6 +793,60 @@ function Overview() {
         
     
     }
+
+    function calc_longterm_averages() {
+
+        // Scheduled Meetings
+
+
+        let grouped_meetings = groupMeetings(attendanceData);
+
+        let today = new Date();
+        let sixMonthsAgo = new Date(today);
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+        let longterm_avg_meetings = grouped_meetings.filter(meeting => {
+            let [day, month, year] = meeting.event_date.split('-').map(Number);
+            let meeting_date = new Date(year, month - 1, day);
+            return meeting_date >= sixMonthsAgo;
+        });
+
+        let longterm_avg_length = longterm_avg_meetings.length / 6;
+
+
+        // Meetings per member
+
+        let longterm_avg_length_members = calc_meetings_per_member(attendanceData).avg / 6;
+
+        setAverages({
+            scheduled_meetings: parseInt(longterm_avg_length),
+            meetings_per_members: parseInt(longterm_avg_length_members)
+        });
+
+
+
+
+
+
+    }
+
+    function vs_avg(value, avg) {
+
+        let diff = value - avg;
+        let percentage = (diff / avg) * 100;
+
+        let icon = faArrowUp;
+
+        if (percentage < 0) {
+            icon = faArrowDown;
+        }
+
+        
+
+        return <><FontAwesomeIcon icon={icon} /> {Math.abs(percentage).toFixed(0)}% vs long-term avg ({avg})</>;
+    
+    }
+
 
 
     // Block Calculations //////////////////
@@ -1308,6 +1354,7 @@ function Overview() {
 
     useEffect(() => {
         calc_dateRange();
+        calc_longterm_averages();
     }, [attendanceData]);
 
     useEffect(() => {
@@ -1512,7 +1559,7 @@ function Overview() {
                                                 <span className="card-subtext">{block_totalScheduledMeetings[0]?.per_day} per day</span>
                                             </Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                <div className="card-badge">20% vs longterm avg</div>
+                                                <div className="card-badge">{vs_avg(block_totalScheduledMeetings[0]?.total, averages.scheduled_meetings)}</div>
                                             </Col>
                                         </Row>
                                     </CardSubtitle>
@@ -1554,7 +1601,7 @@ function Overview() {
                                                 <span className="card-big-text">{parseInt(block_meetingsPerMember[0].avg)}</span>
                                             </Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                <div className="card-badge">20% vs longterm</div>
+                                                <div className="card-badge">{vs_avg(block_meetingsPerMember[0].avg, averages.meetings_per_members)}</div>
                                             </Col>
                                         </Row>
 
@@ -1611,7 +1658,7 @@ function Overview() {
                                                     {parseInt(block_lengthOfMeeting[0].avg_scheduled / 60)}h {block_lengthOfMeeting[0].avg_scheduled % 60}m</span>
                                             </Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                <div className="card-badge">20% vs longterm</div>
+                                                
                                             </Col>
                                         </Row>
 
@@ -1665,7 +1712,7 @@ function Overview() {
                                                 <span className="card-big-text">{block_meetingsThatEndedLate[0]?.late_count}</span>
                                             </Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                <div className="card-badge">20% vs longterm</div>
+                                                
                                             </Col>
                                         </Row>
 
@@ -1721,7 +1768,7 @@ function Overview() {
                                         <Row className="justify-content-between">
                                             <Col><span className="card-big-text">{parseInt(block_meetingsPerCommittee.avg)}</span></Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                <div className="card-badge">20% vs longterm</div>
+                                                
                                             </Col>
                                         </Row>
                                     </CardSubtitle>
@@ -1772,7 +1819,7 @@ function Overview() {
                                         <Row className="justify-content-between">
                                             <Col><span className="card-big-text">{block_meetingsThatOverlapped.count}</span> of <span className="card-big-text">{block_totalScheduledMeetings[0].total}</span></Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                <div className="card-badge">20% vs longterm</div>
+                                                
                                             </Col>
                                         </Row>
 
