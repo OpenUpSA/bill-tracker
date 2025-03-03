@@ -832,13 +832,46 @@ function Overview() {
 
         let longterm_avg_length_late_count = longterm_avg_length_late.data.length;
 
+        // meetings per committee
+        
+        let meetings_committee = {};
+
+        let longterm_meetings = grouped_meetings.filter(meeting => {
+            let [day, month, year] = meeting.event_date.split('-').map(Number);
+            let meeting_date = new Date(year, month - 1, day);
+            return meeting_date >= sixMonthsAgo;
+        });
+
+        longterm_meetings.forEach(meeting => {
+            let { committee_id, actual_length } = meeting;
+            if (!meetings_committee[committee_id]) {
+                meetings_committee[committee_id] = {
+                    committee: committee_id,
+                    meetings: [],
+                    count: 0,
+                    total_time: 0
+                };
+            }
+            meetings_committee[committee_id].meetings.push(meeting);
+            meetings_committee[committee_id].count += 1;
+            meetings_committee[committee_id].total_time += parseFloat(actual_length) || 0;
+        });
+
+        let committees = Object.values(meetings_committee);
+        let total_meetings = committees.reduce((sum, c) => sum + c.count, 0);
+        let longterm_avg_meetings_per_committee = committees.length > 0 ? total_meetings / committees.length : 0;
+
+
+
+
         
         
         setAverages({
             scheduled_meetings: parseInt(longterm_avg_length),
             meetings_per_members: parseInt(longterm_avg_length_members),
             length_of_meeting: parseInt(longterm_avg_length_meeting_scheduled),
-            meetings_that_ended_late: parseInt(longterm_avg_length_late_count)
+            meetings_that_ended_late: parseInt(longterm_avg_length_late_count),
+            meetings_per_committee: parseInt(longterm_avg_meetings_per_committee)
         });
 
 
@@ -863,7 +896,7 @@ function Overview() {
 
         
 
-        return <><FontAwesomeIcon icon={icon} /> {Math.abs(percentage).toFixed(0)}% vs long-term avg</>;
+        return <><FontAwesomeIcon icon={icon} /> {Math.abs(percentage).toFixed(0)}% vs long-term avg ({avg})</>;
     
     }
 
@@ -936,33 +969,32 @@ function Overview() {
         let avg_time = committees.length > 0 ? committees.reduce((sum, c) => sum + c.total_time, 0) / committees.length : 0;
 
         // Calculate historical averages for sparkline
-        let historicalAverages = {};
+        // let historicalAverages = {};
 
-        let historical_grouped_meetings = groupMeetings(historicalData);
+        // let historical_grouped_meetings = groupMeetings(historicalData);
 
-        historical_grouped_meetings.forEach(meeting => {
-            let [day, month, year] = meeting.event_date.split('-').map(Number);
-            let key = `${year}-${month}`;
+        // historical_grouped_meetings.forEach(meeting => {
+        //     let [day, month, year] = meeting.event_date.split('-').map(Number);
+        //     let key = `${year}-${month}`;
 
-            if (!historicalAverages[key]) {
-                historicalAverages[key] = { count: 0, committees: new Set() };
-            }
+        //     if (!historicalAverages[key]) {
+        //         historicalAverages[key] = { count: 0, committees: new Set() };
+        //     }
 
-            historicalAverages[key].count += 1;
-            historicalAverages[key].committees.add(meeting.committee_id);
-        });
+        //     historicalAverages[key].count += 1;
+        //     historicalAverages[key].committees.add(meeting.committee_id);
+        // });
 
-        let sparklineData = Object.keys(historicalAverages).map(key => {
-            let { count, committees } = historicalAverages[key];
-            let avgPerCommittee = committees.size > 0 ? count / committees.size : 0;
-            return { date: key, avg: avgPerCommittee };
-        }).sort((a, b) => new Date(a.date) - new Date(b.date));
+        // let sparklineData = Object.keys(historicalAverages).map(key => {
+        //     let { count, committees } = historicalAverages[key];
+        //     let avgPerCommittee = committees.size > 0 ? count / committees.size : 0;
+        //     return { date: key, avg: avgPerCommittee };
+        // }).sort((a, b) => new Date(a.date) - new Date(b.date));
 
         setBlock_meetingsPerCommittee({
             avg,
             avg_time,
-            committees,
-            sparklineData
+            committees
         });
 
     }
@@ -1433,6 +1465,7 @@ function Overview() {
                         <Col>
                             <a href="#scheduling" className="nav-button">Scheduling</a>
                             <a href="#attendance" className="nav-button">Attendance</a>
+                            <a href="#activities" className="nav-button">Activities</a>
                         </Col>
                         <Col>
                             <Row className="justify-content-end">
@@ -1782,13 +1815,13 @@ function Overview() {
 
                             <Col>
                                 <DashboardCard>
-                                    <CardTitle>Meetings per committee</CardTitle>
+                                    <CardTitle>Avg. meetings per committee</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <Row className="justify-content-between">
                                             <Col><span className="card-big-text">{parseInt(block_meetingsPerCommittee.avg)}</span></Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                
+                                                <div className="card-badge">{vs_avg(block_meetingsPerCommittee.avg, averages.meetings_per_committee)} </div>
                                             </Col>
                                         </Row>
                                     </CardSubtitle>
@@ -2136,7 +2169,7 @@ function Overview() {
                                         <Row className="justify-content-between">
                                             <Col><span className="card-big-text">{block_QuestionsToMinisters.total}</span></Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                <div className="card-badge">20% vs longterm</div>
+                                                
                                             </Col>
                                         </Row>
                                     </CardSubtitle>
@@ -2185,7 +2218,7 @@ function Overview() {
                                         <Row className="justify-content-between">
                                             <Col><span className="card-big-text">{block_QuestionsByMembers.total}</span></Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                <div className="card-badge">20% vs longterm</div>
+                                                
                                             </Col>
                                         </Row>
                                     </CardSubtitle>
