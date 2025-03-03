@@ -818,10 +818,30 @@ function Overview() {
 
         let longterm_avg_length_members = calc_meetings_per_member(attendanceData).avg / 6;
 
+        
+        // Length per meeting
+
+        let longterm_avg_length_meeting = calc_length_of_meeting(attendanceData);
+
+        let longterm_avg_length_meeting_scheduled = longterm_avg_length_meeting.avg_scheduled;
+
+        
+        // Meetings that ended late
+
+        let longterm_avg_length_late = calc_meetings_that_ended_late(attendanceData);
+
+        let longterm_avg_length_late_count = longterm_avg_length_late.data.length;
+
+        
+        
         setAverages({
             scheduled_meetings: parseInt(longterm_avg_length),
-            meetings_per_members: parseInt(longterm_avg_length_members)
+            meetings_per_members: parseInt(longterm_avg_length_members),
+            length_of_meeting: parseInt(longterm_avg_length_meeting_scheduled),
+            meetings_that_ended_late: parseInt(longterm_avg_length_late_count)
         });
+
+
 
 
 
@@ -843,7 +863,7 @@ function Overview() {
 
         
 
-        return <><FontAwesomeIcon icon={icon} /> {Math.abs(percentage).toFixed(0)}% vs long-term avg ({avg})</>;
+        return <><FontAwesomeIcon icon={icon} /> {Math.abs(percentage).toFixed(0)}% vs long-term avg</>;
     
     }
 
@@ -1658,7 +1678,7 @@ function Overview() {
                                                     {parseInt(block_lengthOfMeeting[0].avg_scheduled / 60)}h {block_lengthOfMeeting[0].avg_scheduled % 60}m</span>
                                             </Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                
+                                                <div className="card-badge">{vs_avg(block_lengthOfMeeting[0].avg_scheduled, averages.length_of_meeting)}</div>
                                             </Col>
                                         </Row>
 
@@ -1712,7 +1732,7 @@ function Overview() {
                                                 <span className="card-big-text">{block_meetingsThatEndedLate[0]?.late_count}</span>
                                             </Col>
                                             <Col xs="auto" className="d-flex align-items-center">
-                                                
+                                                <div className="card-badge">{vs_avg(block_meetingsThatEndedLate[0]?.late_count, averages.meetings_that_ended_late)}</div>
                                             </Col>
                                         </Row>
 
