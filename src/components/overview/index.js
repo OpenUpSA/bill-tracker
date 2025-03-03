@@ -2175,7 +2175,7 @@ function Overview() {
                                     </CardSubtitle>
 
                                     <CardContent>
-                                        <CardHelp metric="questionsAsked" />
+                                        <CardHelp metric="writtenQuestions" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
                                                 <Table>
@@ -2224,7 +2224,7 @@ function Overview() {
                                     </CardSubtitle>
 
                                     <CardContent>
-                                        <CardHelp metric="questionsAsked" />
+                                        <CardHelp metric="questionsByMembers" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
                                                 <Table>

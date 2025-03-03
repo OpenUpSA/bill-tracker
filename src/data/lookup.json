@@ -222,6 +222,14 @@
         {
             "metric": "attendanceByGender",
             "body": "Attendance by gender for the selected period."
+        },
+        {
+            "metric": "writtenQuestions",
+            "body": "The number of written questions submitted."
+        },
+        {
+            "metric": "questionsByMembers",
+            "body": "The number of questions submitted by members."
         }
 
 
