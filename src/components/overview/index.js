@@ -33,22 +33,30 @@ import { Scrollbars } from "react-custom-scrollbars";
 
 import Papa from "papaparse";
 
+import { SparklinesLine } from "@lueton/react-sparklines";
+
 import LineChart from "../charts/LineChart";
 import BubbleChart from "../charts/BubbleChart";
 import StackedBarChart from "../charts/StackedBarChart";
-import { SparklinesLine } from "@lueton/react-sparklines";
+
+import DateRangePicker from 'rsuite/DateRangePicker';
+import 'rsuite/DateRangePicker/styles/index.css';
+import { set } from "rsuite/esm/internals/utils/date";
 
 function Overview() {
     const attendance_data_csv = "/data/attendance.csv";
     const members_data_csv = "/data/members-parties.csv";
     const parties_data_csv = "/data/parties.csv";
     const committees_data_csv = "/data/committees.csv";
+    const questions_data_csv = "/data/questions.csv";
 
     const [attendanceData, setAttendanceData] = useState([]);
     const [membersData, setMembersData] = useState([]);
     const [partiesData, setPartiesData] = useState([]);
     const [committeesData, setCommitteesData] = useState([]);
+    const [questionsData, setQuestionsData] = useState([]);
 
+    const [period, setPeriod] = useState("month");
     const [dateRange, setDateRange] = useState();
     const [historicalDateRange, setHistoricalDateRange] = useState();
 
@@ -56,6 +64,8 @@ function Overview() {
     const [filteredData_allParties, setFilteredData_allParties] = useState([]);
     const [historicalData, setHistoricalData] = useState([]);
     const [historicalData_allParties, setHistoricalData_allParties] = useState([]);
+    const [filteredQuestionsData, setFilteredQuestionsData] = useState([]);
+    const [filteredQuestionsData_allParties, setFilteredQuestionsData_allParties] = useState([]);
 
     const [block_totalScheduledMeetings, setBlock_totalScheduledMeetings] = useState([
         {
@@ -144,6 +154,18 @@ function Overview() {
     const [block_AttendanceByGender, setBlock_AttendanceByGender] = useState({
         data: []
     });
+
+    const [block_QuestionsToMinisters, setBlock_QuestionsToMinisters] = useState({
+        total: 0,
+        data: []
+    });
+
+    const [block_QuestionsByMembers, setBlock_QuestionsByMembers] = useState({
+        total: 0,
+        avg: 0,
+        data: []
+    });
+
 
 
     const [party, setParty] = useState("All");
@@ -344,6 +366,8 @@ function Overview() {
                             setPartiesData(result.data);
                         } else if (csv_set === committees_data_csv) {
                             setCommitteesData(result.data);
+                        } else if (csv_set === questions_data_csv) {
+                            setQuestionsData(result.data);
                         }
                     },
                 });
@@ -366,7 +390,7 @@ function Overview() {
         
             party_name = partiesData.find(p => p.id === party)?.party;
             if (party_name == 'RISE Mzansi') {
-                party_name = 'Rise';
+                party_name = 'RISE';
             } else if(party_name == 'Al Jama-ah') {
                 party_name = 'ALJ';
             } else if(party_name == 'Action SA') {
@@ -748,6 +772,35 @@ function Overview() {
         document.cookie = "disclaimer=hide; expires=Fri, 31 Dec 9999 23:59:59 GMT";
     }
 
+    const disabledDates = (date) => {
+        const startLimit = new Date('2024-03-01');
+        const endLimit = new Date('2024-03-31');
+        return date < startLimit || date > endLimit;
+    };
+
+    function filterQuestionsData() {    
+        
+        let filteredQuestionsData_Calc;
+
+        // filter by selected month and year
+        filteredQuestionsData_Calc = questionsData.filter(question => {
+            let [day, month, year] = question.Date.split('/');
+            return parseInt(month, 10) === selectedMonth && parseInt(year, 10) === selectedYear;
+        });
+
+        setFilteredQuestionsData_allParties(filteredQuestionsData_Calc);
+
+        if (party === "All") {
+            setFilteredQuestionsData(filteredQuestionsData_Calc);
+        } else {
+            let partyMembers = membersData.filter(member => member.party_id === party);
+            let partyMemberIds = partyMembers.map(member => member.id);
+            filteredQuestionsData_Calc = filteredQuestionsData_Calc.filter(question => partyMemberIds.includes(question.member_id));
+            setFilteredQuestionsData(filteredQuestionsData_Calc);
+        }
+        
+    
+    }
 
 
     // Block Calculations //////////////////
@@ -1158,6 +1211,91 @@ function Overview() {
         });
     }
 
+    function block_questions_to_ministers() {
+
+        // grooup questions by minister
+        let grouped_questions = {};
+
+        filteredQuestionsData.forEach(question => {
+            let { question_to } = question;
+
+            if (!grouped_questions[question_to]) {
+                grouped_questions[question_to] = 0;
+            }
+
+            grouped_questions[question_to] += 1;
+
+        })
+
+        // convert grouped questions to array
+        grouped_questions = Object.keys(grouped_questions).map(minister => {
+            return {
+                minister,
+                count: grouped_questions[minister]
+            };
+        }).sort((a, b) => b.count - a.count);
+
+        // work out avg
+        let total = grouped_questions.reduce((sum, q) => sum + q.count, 0);
+        let avg = grouped_questions.length > 0 ? parseFloat(total / grouped_questions.length).toFixed(2) : 0;
+        
+
+
+        setBlock_QuestionsToMinisters({
+            avg: avg,
+            total: filteredQuestionsData.length,
+            data: grouped_questions
+        });
+    }
+
+    function block_questions_by_member() {
+        let grouped_questions = {};
+
+        filteredQuestionsData.forEach(question => {
+            let { member_id } = question;
+
+            if (!grouped_questions[member_id]) {
+                grouped_questions[member_id] = 0;
+            }
+
+            grouped_questions[member_id] += 1;
+
+        })
+
+        grouped_questions = Object.keys(grouped_questions).map(member => {
+
+
+
+            let member_name = membersData.find(m => m.id === member)?.surname + ', ' + membersData.find(m => m.id === member)?.initial;
+            let profile_pic = membersData.find(m => m.id === member)?.profile_pic;
+            let party_id = membersData.find(m => m.id === member)?.party_id;
+
+            return {
+                member,
+                member_name,
+                profile_pic,
+                party_id,
+                count: grouped_questions[member]
+            };
+        }).sort((a, b) => b.count - a.count);
+
+        // work out avg
+        let total = grouped_questions.reduce((sum, q) => sum + q.count, 0);
+        let avg = grouped_questions.length > 0 ? parseFloat(total / grouped_questions.length).toFixed(2) : 0;
+
+        console.log(membersData);
+        console.log(grouped_questions);
+
+        setBlock_QuestionsByMembers({
+            avg: avg,
+            total: filteredQuestionsData.length,
+            data: grouped_questions
+        });
+
+    }
+
+
+
     // UseEffects //////////////////
 
     useEffect(() => {
@@ -1165,6 +1303,7 @@ function Overview() {
         loadData(members_data_csv);
         loadData(parties_data_csv);
         loadData(committees_data_csv);
+        loadData(questions_data_csv);
     }, []);
 
     useEffect(() => {
@@ -1174,8 +1313,8 @@ function Overview() {
     useEffect(() => {
         getPartyName();
         filterData();
+        filterQuestionsData();
         calc_historical_dateRange();
-
     }, [dateRange, party, selectedMonth, selectedYear]);
 
     useEffect(() => {
@@ -1193,11 +1332,16 @@ function Overview() {
     }, [filteredData])
 
     useEffect(() => {
+        block_questions_to_ministers();
+        block_questions_by_member();
+    }, [filteredQuestionsData]);
+
+    useEffect(() => {
         filterHistoricalData();
     }, [historicalDateRange]);
 
     useEffect(() => {
-        console.log(historicalData);
+        
     }, [historicalData]);
 
     return (
@@ -1251,61 +1395,88 @@ function Overview() {
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
-                                <Col xs="auto" className="d-flex align-items-center justify-content-end text-nowrap"><span className="form-label">Time Period:</span></Col>
+                                <Col xs="auto" className="d-flex align-items-center justify-content-end text-nowrap"><span className="form-label">Period:</span></Col>
                                 <Col xs="auto">
                                     <Dropdown className="dropdown-select">
                                         <Dropdown.Toggle>
                                             <Row>
-                                                <Col>{selectedYear}</Col>
+                                                <Col>{period}</Col>
                                                 <Col xs="auto">
                                                     <FontAwesomeIcon icon={faChevronDown} />
                                                 </Col>
                                             </Row>
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                            {years.map(
-                                                (year, index) => {
-                                                    return (
-                                                        <Dropdown.Item key={index} onClick={() => changeYear(year)}>
-                                                            {year}
-                                                        </Dropdown.Item>
-                                                    );
-                                                }
-                                            )}
+                                            <Dropdown.Item onClick={() => setPeriod("month")}>month</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => setPeriod("custom")}>custom</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
-                                <Col md="auto">
-                                    <Dropdown className="dropdown-select">
-                                        <Dropdown.Toggle>
-                                            <Row>
-                                                <Col>{months.find(m => m.month === selectedMonth).name}</Col>
-                                                <Col xs="auto">
-                                                    <FontAwesomeIcon icon={faChevronDown} />
-                                                </Col>
-                                            </Row>
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                            {months.map(
-                                                (month, index) => {
-                                                    return (
-                                                        <Dropdown.Item key={index} onClick={() => changeMonth(month.month)}>
-                                                            {month.name}
-                                                        </Dropdown.Item>
-                                                    );
-                                                }
-                                            )}
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </Col>
-                                <Col md="auto">
-                                    <div className="nav-button-direction" onClick={() => changeMonth(selectedMonth - 1)}>
-                                        <FontAwesomeIcon icon={faArrowLeft} />
-                                    </div>
-                                    <div className="nav-button-direction" onClick={() => changeMonth(selectedMonth + 1)}>
-                                        <FontAwesomeIcon icon={faArrowRight} />
-                                    </div>
-                                </Col>
+                                {
+                                    period === "custom" && (
+                                        <Col xs="auto">
+                                            <DateRangePicker placement="bottomEnd"  ranges={[]}/>
+                                        </Col>
+                                    )
+                                }
+                                { period === "month" && (
+                                    <>
+                                    <Col xs="auto">
+                                        <Dropdown className="dropdown-select">
+                                            <Dropdown.Toggle>
+                                                <Row>
+                                                    <Col>{selectedYear}</Col>
+                                                    <Col xs="auto">
+                                                        <FontAwesomeIcon icon={faChevronDown} />
+                                                    </Col>
+                                                </Row>
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu>
+                                                {years.map(
+                                                    (year, index) => {
+                                                        return (
+                                                            <Dropdown.Item key={index} onClick={() => changeYear(year)}>
+                                                                {year}
+                                                            </Dropdown.Item>
+                                                        );
+                                                    }
+                                                )}
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                    </Col>
+                                    <Col md="auto">
+                                        <Dropdown className="dropdown-select">
+                                            <Dropdown.Toggle>
+                                                <Row>
+                                                    <Col>{months.find(m => m.month === selectedMonth).name}</Col>
+                                                    <Col xs="auto">
+                                                        <FontAwesomeIcon icon={faChevronDown} />
+                                                    </Col>
+                                                </Row>
+                                            </Dropdown.Toggle>
+                                            <Dropdown.Menu>
+                                                {months.map(
+                                                    (month, index) => {
+                                                        return (
+                                                            <Dropdown.Item key={index} onClick={() => changeMonth(month.month)}>
+                                                                {month.name}
+                                                            </Dropdown.Item>
+                                                        );
+                                                    }
+                                                )}
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                    </Col>
+                                    <Col md="auto">
+                                        <div className="nav-button-direction" onClick={() => changeMonth(selectedMonth - 1)}>
+                                            <FontAwesomeIcon icon={faArrowLeft} />
+                                        </div>
+                                        <div className="nav-button-direction" onClick={() => changeMonth(selectedMonth + 1)}>
+                                            <FontAwesomeIcon icon={faArrowRight} />
+                                        </div>
+                                    </Col>
+                                    </>
+                                )}
                             </Row>
                         </Col>
                     </Row>
@@ -1889,7 +2060,109 @@ function Overview() {
                     </section>
 
                     <section className="activities mt-4">
+                        <Row>
+                            <Col>
+                                <DashboardCard>
+                                    <CardTitle>Written questions sent to ministers</CardTitle>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
+                                    <CardSubtitle>
+                                        <Row className="justify-content-between">
+                                            <Col><span className="card-big-text">{block_QuestionsToMinisters.total}</span></Col>
+                                            <Col xs="auto" className="d-flex align-items-center">
+                                                <div className="card-badge">20% vs longterm</div>
+                                            </Col>
+                                        </Row>
+                                    </CardSubtitle>
 
+                                    <CardContent>
+                                        <CardHelp metric="questionsAsked" />
+                                        <div className="scroll-area mt-4">
+                                            <Scrollbars style={{ height: "250px" }}>
+                                                <Table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th style={{ width: '80%' }}>Minister</th>
+                                                            <th>Questions</th>
+                                                            
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            block_QuestionsToMinisters.data.map((question, index) =>
+                                                                <tr key={index}>
+                                                                    <td>{index + 1}</td>
+                                                                    <td>{question.minister}</td>
+                                                                    <td>{question.count}</td>
+                                                                    
+                                                                    <td></td>
+                                                                </tr>
+                                                            )    
+                                                        }
+                                                    </tbody>
+
+                                                </Table>
+                                            </Scrollbars>
+                                        </div>
+                                    </CardContent>
+                                </DashboardCard>
+
+                            </Col>
+                            <Col>
+
+                                <DashboardCard>
+                                    <CardTitle>Members who submitted the most written questions</CardTitle>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
+                                    <CardSubtitle>
+                                        <Row className="justify-content-between">
+                                            <Col><span className="card-big-text">{block_QuestionsByMembers.total}</span></Col>
+                                            <Col xs="auto" className="d-flex align-items-center">
+                                                <div className="card-badge">20% vs longterm</div>
+                                            </Col>
+                                        </Row>
+                                    </CardSubtitle>
+
+                                    <CardContent>
+                                        <CardHelp metric="questionsAsked" />
+                                        <div className="scroll-area mt-4">
+                                            <Scrollbars style={{ height: "250px" }}>
+                                                <Table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th style={{ width: '60%' }}>Member</th>
+                                                            <th>Party</th>
+                                                            <th>Questions</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {
+                                                            block_QuestionsByMembers.data.map((question, index) =>
+                                                                <tr key={index}>
+                                                                    <td>{index + 1}</td>
+                                                                    <td><Badge pic={question.profile_pic} />{question.member_name}</td>
+                                                                    <td>{partiesData.find(c => c.id === question.party_id)?.party}</td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td>{question.count}</td>
+                                                                    
+                                                                    <td></td>
+                                                                </tr>
+                                                            )    
+                                                        }
+                                                    </tbody>
+
+                                                </Table>
+                                            </Scrollbars>
+                                        </div>
+                                    </CardContent>
+                                </DashboardCard>
+                               
+
+                            </Col>
+                        </Row>
 
                     </section>
 

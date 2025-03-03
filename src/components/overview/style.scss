@@ -551,7 +551,46 @@ h4 {
 		}
 	}
 }
- 
+
+.rs-picker-popup {
+	z-index: 1000 !important;
+
+	.rs-calendar-header-error {
+		color: #000;
+		--rs-btn-subtle-text: #000;
+		--rs-btn-subtle-hover-bg: #000;
+		--rs-btn-subtle-hover-text: #fff;
+		--rs-btn-subtle-active-bg: #000;
+		--rs-btn-subtle-active-text: #fff;
+	}
+
+	.rs-btn-primary:disabled, .rs-btn-primary.rs-btn-disabled, .rs-btn-primary {
+		background-color: #000;
+		color: #fff;
+	}
+
+	.rs-calendar-table-cell-selected .rs-calendar-table-cell-content {
+		color: #fff;
+		background-color: #fb9905;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+
+	.rs-calendar-table-cell-in-range:before {
+		background-color: rgba(0,0,0,0.1);
+	}
+
+	
+}
+
+.rs-input-group.rs-input-group-inside, .rs-input {
+	background-color: #e7e7e7 !important;
+	color: #000;
+	border-radius: 30px !important;
+	padding: 1px 0;
+}
+
+
  
  
 

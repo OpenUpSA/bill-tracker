@@ -38,7 +38,8 @@
     "react-bootstrap": "^2.10.2",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^18.2.0",
-    "react-use-measure": "^2.1.7"
+    "react-use-measure": "^2.1.7",
+    "rsuite": "^5.78.0"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "2.13.3",
