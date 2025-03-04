@@ -1463,11 +1463,9 @@ function Overview() {
                                     <Dropdown className="dropdown-select">
                                         <Dropdown.Toggle>
                                             <Row>
-                                                <Col xs={3}><PartyPill party={party} dropdown>{partyName}</PartyPill></Col>
+                                                <Col xs="auto"><PartyPill party={party} dropdown>{partyName}</PartyPill></Col>
                                                 <Col>({getMemberCount()} members)</Col>
-                                                <Col xs="auto">
-                                                    <FontAwesomeIcon icon={faChevronDown} />
-                                                </Col>
+                                                <Col xs="auto"><FontAwesomeIcon icon={faChevronDown} /></Col>
                                             </Row>
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
