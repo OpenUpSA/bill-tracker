@@ -1071,13 +1071,7 @@ function BillTracker() {
 										</Accordion.Body>
 									</Accordion.Item>
 								</Accordion>
-								<a
-									className="feedback-btn"
-									target="_blank"
-									href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform"
-								>
-									Provide feedback
-								</a>
+								
 							</div>
 						</Col>
 						<Col

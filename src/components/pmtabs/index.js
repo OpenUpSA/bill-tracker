@@ -28,8 +28,8 @@ function PMTabs(props) {
           >
             Bill Tracker
           </a>
-          
-          <a className="feedback-btn" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform">Provide feedback</a>
+
+          <a className="feedback-btn" target="_blank" href="https://us13.list-manage.com/survey?u=0f09f0a8e93f804d1f920c778&id=bc6029e198&attribution=false">Provide feedback</a>
           
         </Container>
       </div>

@@ -1221,15 +1221,7 @@ function Attendance() {
                           <FontAwesomeIcon icon={faDownload} className="me-2" />
                           Download Data
                         </Button>
-                        <a
-                          className="btn btn-primary btn-sm"
-                          href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform?usp=pp_url&entry.1431082534=Attendance+Tracker"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          <FontAwesomeIcon icon={faComment} className="me-2" />
-                          Provide Feedback
-                        </a>
+                        
                       </Stack>
                     </td>
                   </tr>
