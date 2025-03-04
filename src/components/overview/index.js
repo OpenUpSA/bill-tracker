@@ -58,6 +58,7 @@ function Overview() {
 
     const [period, setPeriod] = useState("month");
     const [dateRange, setDateRange] = useState();
+    const [customDateRange, setCustomDateRange] = useState();
     const [historicalDateRange, setHistoricalDateRange] = useState();
 
     const [filteredData, setFilteredData] = useState([]);
@@ -169,8 +170,6 @@ function Overview() {
         avg: 0,
         data: []
     });
-
-
 
     const [party, setParty] = useState("All");
     const [partyName, setPartyName] = useState("All")
@@ -339,6 +338,23 @@ function Overview() {
 
     // Functions //////////////////
    
+    function changeDateRange(value) {
+        
+
+        const formatDate = (date) => {
+            const day = date.getDate();
+            const month = date.getMonth() + 1; // Months are zero-based
+            const year = date.getFullYear();
+            return `${day}-${month}-${year}`;
+          };
+          
+        const formattedDates = value?.map(formatDate);
+
+        setCustomDateRange(formattedDates);
+
+    
+    }
+
 
     function handleModalClose() {
         setShowModal(false);
@@ -399,17 +415,31 @@ function Overview() {
     }
 
     function filterData() {
-
         let filteredData_Calc;
-
-        // filter by selected month and year
-        filteredData_Calc = attendanceData.filter(attendance => {
-            let [day, month, year] = attendance.event_date.split('-');
-            return parseInt(month, 10) === selectedMonth && parseInt(year, 10) === selectedYear;
-        });
-
+    
+        if (period === 'month') {
+            // Filter by selected month and year
+            filteredData_Calc = attendanceData.filter(attendance => {
+                let [day, month, year] = attendance.event_date.split('-');
+                return parseInt(month, 10) === selectedMonth && parseInt(year, 10) === selectedYear;
+            });
+        } else if (period === 'custom' && customDateRange) {
+            // Convert custom date range to a comparable format
+            let [startDate, endDate] = customDateRange.map(date => {
+                let [day, month, year] = date.split('-');
+                return new Date(year, month - 1, day); // Convert to Date object for comparison
+            });
+    
+            // Filter attendanceData within the custom date range
+            filteredData_Calc = attendanceData.filter(attendance => {
+                let [day, month, year] = attendance.event_date.split('-');
+                let attendanceDate = new Date(year, month - 1, day);
+                return attendanceDate >= startDate && attendanceDate <= endDate;
+            });
+        }
+    
         setFilteredData_allParties(filteredData_Calc);
-
+    
         if (party === "All") {
             setFilteredData(filteredData_Calc);
         } else {
@@ -418,8 +448,6 @@ function Overview() {
             filteredData_Calc = filteredData_Calc.filter(attendance => partyMemberIds.includes(attendance.member_id));
             setFilteredData(filteredData_Calc);
         }
-
-
     }
 
     function filterHistoricalData() {
@@ -773,17 +801,31 @@ function Overview() {
     }
 
     function filterQuestionsData() {    
-        
         let filteredQuestionsData_Calc;
-
-        // filter by selected month and year
-        filteredQuestionsData_Calc = questionsData.filter(question => {
-            let [day, month, year] = question.Date.split('/');
-            return parseInt(month, 10) === selectedMonth && parseInt(year, 10) === selectedYear;
-        });
-
+    
+        if (period === 'month') {
+            // Filter by selected month and year
+            filteredQuestionsData_Calc = questionsData.filter(question => {
+                let [day, month, year] = question.Date.split('/');
+                return parseInt(month, 10) === selectedMonth && parseInt(year, 10) === selectedYear;
+            });
+        } else if (period === 'custom' && customDateRange) {
+            // Convert custom date range to a comparable format
+            let [startDate, endDate] = customDateRange.map(date => {
+                let [day, month, year] = date.split('-'); // Assuming "DD-MM-YYYY" format
+                return new Date(year, month - 1, day); // Convert to Date object for comparison
+            });
+    
+            // Filter questionsData within the custom date range
+            filteredQuestionsData_Calc = questionsData.filter(question => {
+                let [day, month, year] = question.Date.split('/');
+                let questionDate = new Date(year, month - 1, day);
+                return questionDate >= startDate && questionDate <= endDate;
+            });
+        }
+    
         setFilteredQuestionsData_allParties(filteredQuestionsData_Calc);
-
+    
         if (party === "All") {
             setFilteredQuestionsData(filteredQuestionsData_Calc);
         } else {
@@ -792,8 +834,6 @@ function Overview() {
             filteredQuestionsData_Calc = filteredQuestionsData_Calc.filter(question => partyMemberIds.includes(question.member_id));
             setFilteredQuestionsData(filteredQuestionsData_Calc);
         }
-        
-    
     }
 
     function calc_longterm_averages() {
@@ -892,8 +932,6 @@ function Overview() {
         return <><FontAwesomeIcon icon={icon} /> {Math.abs(percentage).toFixed(0)}% vs long-term avg ({avg})</>;
     
     }
-
-
 
     // Block Calculations //////////////////
 
@@ -1399,11 +1437,13 @@ function Overview() {
     }, [attendanceData]);
 
     useEffect(() => {
-        getPartyName();
-        filterData();
-        filterQuestionsData();
-        calc_historical_dateRange();
-    }, [dateRange, party, selectedMonth, selectedYear]);
+        if(period === "month" || (period === "custom" && customDateRange)) {
+            getPartyName();
+            filterData();
+            filterQuestionsData();
+            calc_historical_dateRange();
+        }
+    }, [period, dateRange, party, selectedMonth, selectedYear, customDateRange]);
 
     useEffect(() => {
         block_total_scheduled_meetings();
@@ -1502,7 +1542,7 @@ function Overview() {
                                 {
                                     period === "custom" && (
                                         <Col xs="auto">
-                                            <DateRangePicker placement="bottomEnd"  ranges={[]}/>
+                                            <DateRangePicker placement="bottomEnd"  ranges={[]} onChange={e => changeDateRange(e)} disabledDates={disabledDates} />
                                         </Col>
                                     )
                                 }
