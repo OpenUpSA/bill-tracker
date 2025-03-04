@@ -224,6 +224,10 @@
             "body": "Attendance by gender for the selected period."
         },
         {
+            "metric": "attendanceByAge",
+            "body": "Attendance by age for the selected period data is not yet available."
+        },
+        {
             "metric": "writtenQuestions",
             "body": "The number of written questions submitted."
         },

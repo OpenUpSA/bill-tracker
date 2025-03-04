@@ -2126,9 +2126,81 @@ function Overview() {
 
                                     </CardContent>
                                 </DashboardCard>
-
                             </Col>
-                            <Col></Col>
+                            <Col>
+                                <DashboardCard>
+                                    <CardTitle>Attendance by age</CardTitle>
+                                    <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
+                                    <CardSubtitle></CardSubtitle>
+
+                                    <CardContent>
+                                        <CardHelp metric="attendanceByAge" />
+                                        <div className="scroll-area mt-4" style={{opacity: 0.4}}>
+                                            <Scrollbars style={{ height: "250px" }}>
+                                                <Table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th style={{ width: '40%' }}>Age range</th>
+                                                            <th>Meetings</th>
+                                                            <th>Present</th>
+                                                            <th>%</th>
+                                                            <th>% vs avg</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>18-24</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>25-34</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>35-49</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>50-64</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>65-80</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                            <td>-</td>
+                                                        </tr>
+                                                      
+                                                    </tbody>
+
+                                                </Table>
+                                            </Scrollbars>
+                                        </div>
+
+
+                                    </CardContent>
+                                </DashboardCard>
+                            
+                            </Col>
                         </Row>
                     </section>
 
