@@ -37,6 +37,10 @@ h2 {
 	}
 }
 
+.dropdown-toggle .party-pill {
+	padding: 2px 6px;
+}
+
 
 .card-alert {
 	display: inline-block;
@@ -113,9 +117,7 @@ h2 {
 	font-family: $general_sans_500 !important;
 }
 
-.dropdown-toggle .party-pill {
-	display: inline-block;
-}
+
 
 .form-label {
 	font-size: 12px;

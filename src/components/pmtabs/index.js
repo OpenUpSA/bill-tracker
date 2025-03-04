@@ -29,14 +29,11 @@ function PMTabs(props) {
             Bill Tracker
           </a>
           
+          <a className="feedback-btn" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSfaMxpxAx4TxaDcGZv2NySfZBir-nRblwMnNWiYhrxsnwsudg/viewform">Provide feedback</a>
           
         </Container>
       </div>
-      <Container fluid className="pt-3">
-        {/* <div className="testing-notice">
-          <strong>Notice:</strong> The data on this dashboard is for testing purposes only and is not accurate.
-        </div> */}
-      </Container>
+      
     </Fragment>
   );
 }

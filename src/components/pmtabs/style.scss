@@ -32,3 +32,16 @@ $general_sans_700_italic: 'General Sans Bold Italic', sans-serif;
     }
 
 }
+
+.feedback-btn {
+    float: right;
+    margin-top: 0.5em;
+    border-radius: 100px;
+    background: linear-gradient(0deg, #001489 0%, #001489 100%), #FFF;
+    display: inline-flex;
+    padding: 8px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}

@@ -208,10 +208,12 @@ function Overview() {
             return <div className={`party-pill ${props.party == 'All' && 'all-parties'}`}>{props.children}</div>;
         } else {
             return <><div className={`party-pill ${props.party == 'All' && 'all-parties'}`}>{props.children}</div>
-                <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }}
-                    overlay={<Tooltip>{partyName} is a small party</Tooltip>}>
-                    <div className="card-alert" onClick={() => setShowModal(!showModal)}><div className="alert">!</div></div>
-                </OverlayTrigger>
+                { !props.dropdown && 
+                    <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }}
+                        overlay={<Tooltip>{partyName} is a small party</Tooltip>}>
+                        <div className="card-alert" onClick={() => setShowModal(!showModal)}><div className="alert">!</div></div>
+                    </OverlayTrigger>
+            }
             </>
         }
     }
@@ -764,7 +766,7 @@ function Overview() {
         document.cookie = "disclaimer=hide; expires=Fri, 31 Dec 9999 23:59:59 GMT";
     }
 
-    const disabledDates = (date) => {
+    function disabledDates(date) {
         const startLimit = new Date('2024-03-01');
         const endLimit = new Date('2024-03-31');
         return date < startLimit || date > endLimit;
@@ -860,10 +862,6 @@ function Overview() {
         let committees = Object.values(meetings_committee);
         let total_meetings = committees.reduce((sum, c) => sum + c.count, 0);
         let longterm_avg_meetings_per_committee = committees.length > 0 ? total_meetings / committees.length : 0;
-
-
-
-
         
         
         setAverages({
@@ -873,11 +871,6 @@ function Overview() {
             meetings_that_ended_late: parseInt(longterm_avg_length_late_count),
             meetings_per_committee: parseInt(longterm_avg_meetings_per_committee)
         });
-
-
-
-
-
 
 
 
@@ -1470,7 +1463,7 @@ function Overview() {
                                     <Dropdown className="dropdown-select">
                                         <Dropdown.Toggle>
                                             <Row>
-                                                <Col xs={3}><PartyPill party={party}>{partyName}</PartyPill></Col>
+                                                <Col xs={3}><PartyPill party={party} dropdown>{partyName}</PartyPill></Col>
                                                 <Col>({getMemberCount()} members)</Col>
                                                 <Col xs="auto">
                                                     <FontAwesomeIcon icon={faChevronDown} />
@@ -2274,9 +2267,7 @@ function Overview() {
                     <p className="mt-4">The party you have selected ({partyName}) has fewer than 10 members. Smaller parties often do not have enough members to have a representative in every committee. When viewing this data, it is important to bare this in mind.</p>
                     <p><a href="#" className="text-black">Learn more about the challenges faced by small parties</a></p>
                     <Row className="justify-content-between my-4">
-                        <Col className="d-flex align-items-center">
-                            <Form.Check type="checkbox" onClick={() => setDisclaimerCookie()} label="Don't show this disclaimer again"/>
-                        </Col>
+                        <Col></Col>
                         <Col xs="auto"><Button onClick={() => setShowModal(false)}>I understand</Button></Col>
                     </Row>
 
