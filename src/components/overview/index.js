@@ -1962,7 +1962,7 @@ function Overview() {
                         <Row>
                             <Col>
                                 <DashboardCard>
-                                    <CardTitle>Overall meeting attendance</CardTitle>
+                                    <CardTitle>Overall committee meeting attendance</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <span className="card-big-text">{parseInt(block_overallAttendance.avg)}%</span>
