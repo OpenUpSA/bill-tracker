@@ -1873,7 +1873,7 @@ function Overview() {
                                                             block_meetingsPerCommittee.committees.sort((a, b) => b.count - a.count).map((committee, index) =>
                                                                 <tr key={index}>
                                                                     <td>{index + 1}</td>
-                                                                    <td>{committeesData.find(c => c.id === committee.committee).name}</td>
+                                                                    <td>{committeesData.find(c => c.id === committee.committee)?.name}</td>
                                                                     <td>{committee.count}</td>
                                                                     <td>{parseInt(committee.total_time / 60)}h {committee.total_time % 60}m</td>
                                                                     <td></td>
