@@ -14,11 +14,9 @@ import {
   faChevronDown,
   faSquareCheck,
   faSquare,
-  faArrowPointer,
   faUser,
   faFilter,
   faDownload,
-  faComment
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./index.scss";
@@ -66,7 +64,7 @@ const ChartTypes = {
 };
 
 function Attendance() {
-  const [selectedParliament, setSelectedParliament] = useState("all");
+  const [selectedParliament, setSelectedParliament] = useState("7th-parliament");
   const [filteredAttendance, setFilteredAttendance] = useState([]);
 
   const [allParties, setAllParties] = useState([]);
