@@ -2056,7 +2056,7 @@ function Overview() {
                                                             block_partiesWithBestAttendance.parties.map((p, index) =>
                                                                 <tr key={index} className={party == p.party ? 'current-party' : ''}>
                                                                     <td>{index + 1}</td>
-                                                                    <td><Badge party pic={partiesData.find(c => c.id === p.party)?.party} />{partyName}</td>
+                                                                    <td><Badge party pic={partiesData.find(c => c.id === p.party)?.party} />{partiesData.find(c => c.id === p.party)?.party}</td>
                                                                     <td>{p.meeting_count}</td>
                                                                     <td>{p.attended}</td>
                                                                     <td>{parseInt(p.percentage)}%</td>
