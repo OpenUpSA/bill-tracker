@@ -355,7 +355,6 @@ function Overview() {
     
     }
 
-
     function handleModalClose() {
         setShowModal(false);
     }
@@ -539,15 +538,15 @@ function Overview() {
         if (attendanceData.length === 0) {
             return;
         }
-
+    
         const parseDate = (dateStr) => {
             let [day, month, year] = dateStr?.split('-');
             return new Date(`${year}-${month}-${day}`);
         };
-
+    
         let earliest = parseDate(attendanceData[0].event_date);
         let latest = parseDate(attendanceData[0].event_date);
-
+    
         attendanceData.forEach(attendance => {
             let date = parseDate(attendance.event_date);
             if (date < earliest) {
@@ -557,13 +556,20 @@ function Overview() {
                 latest = date;
             }
         });
+    
+        // Format for setDateRange: "m-yyyy"
+        const formattedEarliest = `${earliest.getMonth() + 1}-${earliest.getFullYear()}`;
+        const formattedLatest = `${latest.getMonth() + 1}-${latest.getFullYear()}`;
+    
+        setDateRange({ earliest: formattedEarliest, latest: formattedLatest });
+    
+        // Format for setCustomDateRange: "yyyy-mm-dd"
+        const earliest_date = `${earliest.getFullYear()}-${String(earliest.getMonth() + 1).padStart(2, '0')}-${String(earliest.getDate()).padStart(2, '0')}`;
+        const latest_date = `${latest.getFullYear()}-${String(latest.getMonth() + 1).padStart(2, '0')}-${String(latest.getDate()).padStart(2, '0')}`;
+    
+        console.log(earliest_date, latest_date);
 
-
-
-        earliest = `${earliest.getMonth() + 1}-${earliest.getFullYear()}`;
-        latest = `${latest.getMonth() + 1}-${latest.getFullYear()}`;
-
-        setDateRange({ earliest, latest });
+        setCustomDateRange([earliest_date, latest_date]);
     }
 
     function calc_historical_dateRange() {
@@ -795,8 +801,8 @@ function Overview() {
     }
 
     function disabledDates(date) {
-        const startLimit = new Date('2024-03-01');
-        const endLimit = new Date('2024-03-31');
+        const startLimit = new Date(customDateRange[0]);
+        const endLimit = new Date(customDateRange[1]);
         return date < startLimit || date > endLimit;
     }
 
@@ -1542,7 +1548,7 @@ function Overview() {
                                 {
                                     period === "custom" && (
                                         <Col xs="auto">
-                                            <DateRangePicker placement="bottomEnd"  ranges={[]} onChange={e => changeDateRange(e)} disabledDates={disabledDates} />
+                                            <DateRangePicker placement="bottomEnd"  ranges={[]} onChange={e => changeDateRange(e)} shouldDisableDate={disabledDates} />
                                         </Col>
                                     )
                                 }
@@ -2030,9 +2036,7 @@ function Overview() {
 
                                     <CardTitle>Parties ordered by meetings attended</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
-                                    <CardSubtitle>
-
-                                    </CardSubtitle>
+                                    <CardSubtitle></CardSubtitle>
 
                                     <CardContent>
 
