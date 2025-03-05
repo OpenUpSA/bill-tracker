@@ -1,14 +1,22 @@
 /* Converts to JSON the SQL CSV output of:
-select
-    member.id,
-    member.name as member_name,
-    party.name as party_name,
-    committee_meeting_attendance.created_at,
-    attendance
-from
-    committee_meeting_attendance
-    inner join member on committee_meeting_attendance.member_id = member.id
-    inner join party on member.party_id = party.id;
+SELECT
+  "public"."committee_meeting_attendance"."attendance" AS "attendance",
+  "Member"."name" AS "Member__name",
+  "Member"."id" AS "Member__id",
+  "Event - Meeting"."date" AS "Event - Meeting__date",
+  "Party"."name" AS "Party__name",
+  "Committee"."name" AS "Committee__name",
+  "House"."name" AS "House__name"
+FROM
+  "public"."committee_meeting_attendance"
+ 
+LEFT JOIN "public"."member" AS "Member" ON "public"."committee_meeting_attendance"."member_id" = "Member"."id"
+  LEFT JOIN "public"."event" AS "Event - Meeting" ON "public"."committee_meeting_attendance"."meeting_id" = "Event - Meeting"."id"
+  LEFT JOIN "public"."party" AS "Party" ON "Member"."party_id" = "Party"."id"
+  LEFT JOIN "public"."committee" AS "Committee" ON "Event - Meeting"."committee_id" = "Committee"."id"
+  LEFT JOIN "public"."house" AS "House" ON "Member"."house_id" = "House"."id"
+ORDER BY
+  "Committee"."name" ASC
 */
 
 const fs = require("fs");
