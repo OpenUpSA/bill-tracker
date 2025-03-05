@@ -75,7 +75,7 @@ function Attendance() {
 
   const [filteredByParties, setFilteredByParties] = useState([]);
   const [filteredByCommittees, setFilteredByCommittees] = useState([]);
-  const [filteredByHouses, setFilteredByHouses] = useState([]);
+  const [filteredByHouses, setFilteredByHouses] = useState(['National Assembly']);
 
   const changeParliament = (parliament) => {
     setSelectedParliament(parliament);
@@ -1221,7 +1221,7 @@ function Attendance() {
                           <FontAwesomeIcon icon={faDownload} className="me-2" />
                           Download Data
                         </Button>
-                        
+
                       </Stack>
                     </td>
                   </tr>
