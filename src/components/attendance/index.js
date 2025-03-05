@@ -243,7 +243,7 @@ function Attendance() {
     setMemberSearch("");
     setFilteredByParties([]);
     setFilteredByCommittees([]);
-    setFilteredByHouses([]);
+    setFilteredByHouses(['National Assembly']);
   };
 
   const setupData = () => {
@@ -506,10 +506,13 @@ function Attendance() {
         );
       })
       .filter((row) => {
-        return (
-          filteredByHouses.length === 0 ||
-          filteredByHouses.some((house) => row.houses.includes(house))
-        );
+        if (grouping === "members") {
+          return (
+            filteredByHouses.length === 0 ||
+            filteredByHouses.some((house) => row.houses.includes(house))
+          )
+        }
+        return true;
       });
 
     if (sortedDirection === "asc") {
