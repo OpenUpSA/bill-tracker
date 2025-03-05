@@ -559,7 +559,7 @@ function Attendance() {
             >
               <Stack direction="horizontal" gap={3}>
                 <Form.Group as={Row}>
-                  <Form.Label column md="auto" className="mt-2">
+                  <Form.Label column md="auto" className="mt-1">
                     Parliament:
                   </Form.Label>
                   <Col>
@@ -872,7 +872,8 @@ function Attendance() {
                     {grouping === "members" && (
                       <SortedColumn
                         sortThisfield="committees-count"
-                        heading="Committee Memberships"
+                        heading="CMs"
+                        title="Committee Memberships"
                         setSort={setSort}
                         sortedField={sortedField}
                         sortedDirection={sortedDirection}
@@ -881,7 +882,8 @@ function Attendance() {
 
                     <SortedColumn
                       sortThisfield="attendance-count"
-                      heading="Possible Meetings"
+                      heading="PMs"
+                      title="Possible Meetings"
                       setSort={setSort}
                       sortedField={sortedField}
                       sortedDirection={sortedDirection}
@@ -889,7 +891,8 @@ function Attendance() {
 
                     <SortedColumn
                       sortThisfield="attended-count"
-                      heading="Attended (value)"
+                      heading="Att. (v)"
+                      title="Attended (value)"
                       setSort={setSort}
                       sortedField={sortedField}
                       sortedDirection={sortedDirection}
@@ -897,7 +900,8 @@ function Attendance() {
 
                     <SortedColumn
                       sortThisfield="attendance-percentage"
-                      heading="Attended (%)"
+                      heading="Att. (%)"
+                      title="Attended (%)"
                       setSort={setSort}
                       sortedField={sortedField}
                       sortedDirection={sortedDirection}
@@ -1207,7 +1211,7 @@ function Attendance() {
                               </Fragment>
                             )}
                         </ul>
-                        <Button className="ml-auto" size="sm" onClick={downloadJSON}>
+                        <Button className="ml-auto" onClick={downloadJSON}>
                           <FontAwesomeIcon icon={faDownload} className="me-2" />
                           Download Data
                         </Button>
