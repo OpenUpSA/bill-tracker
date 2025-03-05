@@ -559,7 +559,7 @@ function Attendance() {
             >
               <Stack direction="horizontal" gap={3}>
                 <Form.Group as={Row}>
-                  <Form.Label column md="auto" className="mt-2">
+                  <Form.Label column md="auto" className="mt-1">
                     Parliament:
                   </Form.Label>
                   <Col>
@@ -1207,7 +1207,7 @@ function Attendance() {
                               </Fragment>
                             )}
                         </ul>
-                        <Button className="ml-auto" size="sm" onClick={downloadJSON}>
+                        <Button className="ml-auto" onClick={downloadJSON}>
                           <FontAwesomeIcon icon={faDownload} className="me-2" />
                           Download Data
                         </Button>
