@@ -75,7 +75,7 @@ function Attendance() {
 
   const [filteredByParties, setFilteredByParties] = useState([]);
   const [filteredByCommittees, setFilteredByCommittees] = useState([]);
-  const [filteredByHouses, setFilteredByHouses] = useState([]);
+  const [filteredByHouses, setFilteredByHouses] = useState(['National Assembly']);
 
   const changeParliament = (parliament) => {
     setSelectedParliament(parliament);
@@ -1207,21 +1207,10 @@ function Attendance() {
                               </Fragment>
                             )}
                         </ul>
-                        {selectedChartType !== "average" &&
-                          ChartTypes[selectedChartType].detailed && (
-                            <Fragment className="mx-auto">
-                              <FontAwesomeIcon
-                                style={{ marginLeft: "auto" }}
-                                icon={faArrowPointer}
-                              />
-                              <div>Click to isolate a category</div>
-                            </Fragment>
-                          )}
-                        <Button size="sm" onClick={downloadJSON}>
+                        <Button className="ml-auto" size="sm" onClick={downloadJSON}>
                           <FontAwesomeIcon icon={faDownload} className="me-2" />
                           Download Data
                         </Button>
-                        
                       </Stack>
                     </td>
                   </tr>
