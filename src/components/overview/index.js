@@ -541,7 +541,7 @@ function Overview() {
         }
 
         const parseDate = (dateStr) => {
-            let [day, month, year] = dateStr.split('-');
+            let [day, month, year] = dateStr?.split('-');
             return new Date(`${year}-${month}-${day}`);
         };
 
