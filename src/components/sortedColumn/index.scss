@@ -5,7 +5,7 @@ table {
         &.sortable {
           white-space: nowrap;
           cursor: pointer;
-          span {
+          .heading {
             display: inline-block;
             padding-right: 8px;
           }

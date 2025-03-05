@@ -872,7 +872,8 @@ function Attendance() {
                     {grouping === "members" && (
                       <SortedColumn
                         sortThisfield="committees-count"
-                        heading="Committee Memberships"
+                        heading="CMs"
+                        title="Committee Memberships"
                         setSort={setSort}
                         sortedField={sortedField}
                         sortedDirection={sortedDirection}
@@ -881,7 +882,8 @@ function Attendance() {
 
                     <SortedColumn
                       sortThisfield="attendance-count"
-                      heading="Possible Meetings"
+                      heading="PMs"
+                      title="Possible Meetings"
                       setSort={setSort}
                       sortedField={sortedField}
                       sortedDirection={sortedDirection}
@@ -889,7 +891,8 @@ function Attendance() {
 
                     <SortedColumn
                       sortThisfield="attended-count"
-                      heading="Attended (value)"
+                      heading="Att. (v)"
+                      title="Attended (value)"
                       setSort={setSort}
                       sortedField={sortedField}
                       sortedDirection={sortedDirection}
@@ -897,7 +900,8 @@ function Attendance() {
 
                     <SortedColumn
                       sortThisfield="attendance-percentage"
-                      heading="Attended (%)"
+                      heading="Att. (%)"
+                      title="Attended (%)"
                       setSort={setSort}
                       sortedField={sortedField}
                       sortedDirection={sortedDirection}
