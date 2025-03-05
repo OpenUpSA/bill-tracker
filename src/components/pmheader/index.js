@@ -19,7 +19,7 @@ function PMHeader() {
 			<Container fluid>
 				<Row>
 					<Col>
-						<a href="/">
+						<a href="https://www.parlimeter.co.za">
 							<img src={ParliMeterLogo} alt="ParliMeter Dashboard" />
 						</a>
 						<img src={DashboardBanner} alt="ParliMeter Dashboard" />
@@ -27,16 +27,16 @@ function PMHeader() {
 					<Col>
 						<Nav className="justify-content-end">
 							<Nav.Item>
-								<Nav.Link href="https://parlimeter.co.za">ParliMeter Home</Nav.Link>
+								<Nav.Link href="https://www.parlimeter.co.za">ParliMeter Home</Nav.Link>
 							</Nav.Item>
 							<Nav.Item>
-								<Nav.Link href="https://parlimeter.co.za/about">About</Nav.Link>
+								<Nav.Link href="https://www.parlimeter.co.za/about">About</Nav.Link>
 							</Nav.Item>
 							<Nav.Item>
-								<Nav.Link href="https://parlimeter.co.za/blog">Blog</Nav.Link>
+								<Nav.Link href="https://www.parlimeter.co.za/blog">Blog</Nav.Link>
 							</Nav.Item>
 							<Nav.Item>
-								<Nav.Link href="https://parlimeter.co.za/recommendations">Recommendations</Nav.Link>
+								<Nav.Link href="https://www.parlimeter.co.za/recommendations">Recommendations</Nav.Link>
 							</Nav.Item>
 						</Nav>
 					</Col>
