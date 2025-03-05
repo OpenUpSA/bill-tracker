@@ -68,7 +68,7 @@
         }
     },
     "parliamentsAttendance": {
-        "all": {
+        "7th-parliament": {
             "name": "7th Parliament",
             "start": "2024-05-21",
             "end": "2029-05-20"

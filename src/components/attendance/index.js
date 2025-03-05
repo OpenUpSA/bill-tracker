@@ -14,11 +14,9 @@ import {
   faChevronDown,
   faSquareCheck,
   faSquare,
-  faArrowPointer,
   faUser,
   faFilter,
   faDownload,
-  faComment
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./index.scss";
@@ -66,7 +64,7 @@ const ChartTypes = {
 };
 
 function Attendance() {
-  const [selectedParliament, setSelectedParliament] = useState("all");
+  const [selectedParliament, setSelectedParliament] = useState("7th-parliament");
   const [filteredAttendance, setFilteredAttendance] = useState([]);
 
   const [allParties, setAllParties] = useState([]);
@@ -245,7 +243,7 @@ function Attendance() {
     setMemberSearch("");
     setFilteredByParties([]);
     setFilteredByCommittees([]);
-    setFilteredByHouses([]);
+    setFilteredByHouses(['National Assembly']);
   };
 
   const setupData = () => {
@@ -508,10 +506,13 @@ function Attendance() {
         );
       })
       .filter((row) => {
-        return (
-          filteredByHouses.length === 0 ||
-          filteredByHouses.some((house) => row.houses.includes(house))
-        );
+        if (grouping === "members") {
+          return (
+            filteredByHouses.length === 0 ||
+            filteredByHouses.some((house) => row.houses.includes(house))
+          )
+        }
+        return true;
       });
 
     if (sortedDirection === "asc") {
