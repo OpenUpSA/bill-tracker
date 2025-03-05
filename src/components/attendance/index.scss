@@ -9,13 +9,13 @@ header {
 
 table {
   width: 100%;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
   border-bottom: solid 1px rgba(0, 0, 0, 0.1);
 
   tr {
     td {
-      padding: 2px 18px 2px 2px;
+      padding: 1px 18px 1px 2px;
 
       &.no-padding-horizontal {
         padding-right: 0;
@@ -31,10 +31,11 @@ table {
   thead {
     position: sticky;
     top: 0;
+
     tr {
       th {
         background-color: rgba(255, 255, 255, 0.9);
-        font-size: 10px;
+        font-size: 12px;
         font-weight: 400;
         line-height: 12.1px;
         text-align: left;
@@ -83,6 +84,7 @@ table {
       td {
         background-color: rgba(255, 255, 255, 0.9);
         padding: 10px 0 20px 0;
+
         .stateLegend {
           display: flex;
           padding: 0;
@@ -92,7 +94,7 @@ table {
           li {
             display: flex;
             align-items: center;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 400;
             line-height: 12.1px;
             padding: 5px 10px 0 0;
@@ -157,7 +159,7 @@ table {
   background-color: #0000000a;
   border-radius: 2px;
   width: 100%;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 16px;
   display: flex;
@@ -238,6 +240,7 @@ table {
     &.align-right {
       direction: rtl;
     }
+
     .bar {
       cursor: pointer !important;
       margin-right: 1px;
@@ -290,6 +293,7 @@ table {
 }
 
 .state-highlighting-on {
+
   .state-P,
   .state-A,
   .state-AP,
@@ -398,7 +402,7 @@ h2 {
     border-radius: 100px;
     color: #fff;
     display: inline-block;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
     line-height: 12px;
     margin-bottom: 6px;
@@ -497,6 +501,7 @@ h2 {
 .no-button {
   .accordion-button {
     pointer-events: none;
+
     &::after {
       background-image: unset;
     }
@@ -506,4 +511,8 @@ h2 {
 .dropdown-item {
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.ml-auto {
+  margin-left: auto;
 }
