@@ -1,7 +1,5 @@
 # Bill Tracker
 
-
-
 ## Install
 
 ```
