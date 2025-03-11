@@ -42,6 +42,7 @@ import StackedBarChart from "../charts/StackedBarChart";
 import DateRangePicker from 'rsuite/DateRangePicker';
 import 'rsuite/DateRangePicker/styles/index.css';
 import { set } from "rsuite/esm/internals/utils/date";
+import { filter } from "d3";
 
 function Overview() {
     const attendance_data_csv = "/data/attendance.csv";
@@ -1205,6 +1206,7 @@ function Overview() {
             grouped_attendance_parties[party_id].meetings.add(attendance.meeting_id);
         });
 
+
         Object.keys(grouped_attendance_parties).forEach(party => {
             let { attended, absent, meetings } = grouped_attendance_parties[party];
             let total = attended + absent;
@@ -1226,6 +1228,7 @@ function Overview() {
         let avg = parties.length > 0
             ? parseFloat((parties.reduce((sum, p) => sum + p.percentage, 0) / parties.length).toFixed(2))
             : 0;
+
 
         setBlock_partiesWithBestAttendance({
             parties: parties,
@@ -1430,10 +1433,10 @@ function Overview() {
     // UseEffects //////////////////
 
     useEffect(() => {
-        loadData(attendance_data_csv);
         loadData(members_data_csv);
         loadData(parties_data_csv);
         loadData(committees_data_csv);
+        loadData(attendance_data_csv);
         loadData(questions_data_csv);
     }, []);
 
@@ -1452,6 +1455,7 @@ function Overview() {
     }, [period, dateRange, party, selectedMonth, selectedYear, customDateRange]);
 
     useEffect(() => {
+        console.log("filteredData", filteredData_allParties);
         block_total_scheduled_meetings();
         block_length_of_meeting();
         block_meetings_that_ended_late();
@@ -1497,14 +1501,14 @@ function Overview() {
                 <div className="overview-container">
 
                     <Row className="justify-content-between">
-                        <Col>
+                        <Col className="d-none d-md-block">
                             <a href="#scheduling" className="nav-button">Scheduling</a>
                             <a href="#attendance" className="nav-button">Attendance</a>
                             <a href="#activities" className="nav-button">Activities</a>
                         </Col>
                         <Col>
-                            <Row className="justify-content-end">
-                                <Col xs="auto" className="d-flex align-items-center"><span className="form-label">Party:</span></Col>
+                            <Row className="justify-content-md-end">
+                                <Col xs="auto" className="d-none d-md-flex align-items-center"><span className="form-label">Party:</span></Col>
                                 <Col xs="auto">
                                     <Dropdown className="dropdown-select">
                                         <Dropdown.Toggle>
@@ -1528,8 +1532,8 @@ function Overview() {
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
-                                <Col xs="auto" className="d-flex align-items-center justify-content-end text-nowrap"><span className="form-label">Period:</span></Col>
-                                <Col xs="auto">
+                                <Col xs="auto" className="d-none d-md-flex align-items-center justify-content-end text-nowrap"><span className="form-label">Period:</span></Col>
+                                <Col xs="auto" className="d-none d-md-flex">
                                     <Dropdown className="dropdown-select">
                                         <Dropdown.Toggle>
                                             <Row>
@@ -1634,7 +1638,7 @@ function Overview() {
 
                     <section className="scheduling mt-4">
                         <Row>
-                            <Col>
+                            <Col md={6} lg={3} className="mb-sm-4 mb-lg-0">
                                 <DashboardCard>
                                     <CardTitle>Total scheduled meetings</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
@@ -1676,7 +1680,7 @@ function Overview() {
                                     </CardContent>
                                 </DashboardCard>
                             </Col>
-                            <Col>
+                            <Col md={6} lg={3} className="mb-sm-4 mb-lg-0">
                                 <DashboardCard>
 
                                     <CardTitle>Avg. meetings per member</CardTitle>
@@ -1732,7 +1736,7 @@ function Overview() {
                                     </CardContent>
                                 </DashboardCard>
                             </Col>
-                            <Col>
+                            <Col md={6} lg={3} className="mb-sm-4 mb-lg-0">
                                 <DashboardCard>
 
                                     <CardTitle>Avg. length of a single meeting</CardTitle>
@@ -1787,7 +1791,7 @@ function Overview() {
                                 </DashboardCard>
                             </Col>
 
-                            <Col>
+                            <Col md={6} lg={3}>
                                 <DashboardCard>
 
                                     <CardTitle>Number of meetings that ended late</CardTitle>
@@ -1846,7 +1850,7 @@ function Overview() {
                         </Row>
                         <Row className="mt-4">
 
-                            <Col>
+                            <Col md={12} lg={6} className="mb-sm-4 mb-lg-0">
                                 <DashboardCard>
                                     <CardTitle>Avg. meetings per committee</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
@@ -1896,7 +1900,7 @@ function Overview() {
                                 </DashboardCard>
                             </Col>
 
-                            <Col>
+                            <Col md={12} lg={6}>
                                 <DashboardCard>
 
                                     <CardTitle>Scheduled meetings that overlapped</CardTitle>
@@ -1966,7 +1970,7 @@ function Overview() {
 
                     <section className="attendance mt-4">
                         <Row>
-                            <Col>
+                            <Col md={12} lg={6} className="mb-sm-4 mb-lg-0">
                                 <DashboardCard>
                                     <CardTitle>Overall committee meeting attendance</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
@@ -1983,7 +1987,7 @@ function Overview() {
                                 </DashboardCard>
 
                             </Col>
-                            <Col>
+                            <Col md={12} lg={6}>
                                 <DashboardCard>
                                     <CardTitle>Committees with the best attendance</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
@@ -2031,7 +2035,7 @@ function Overview() {
                             </Col>
                         </Row>
                         <Row className="mt-4">
-                            <Col>
+                            <Col md={12} lg={6} className="mb-md-4 mb-lg-0">
                                 <DashboardCard>
 
                                     <CardTitle>Parties ordered by meetings attended</CardTitle>
@@ -2077,7 +2081,7 @@ function Overview() {
                                     </CardContent>
                                 </DashboardCard>
                             </Col>
-                            <Col>
+                            <Col md={12} lg={6}>
                                 <DashboardCard>
                                     <CardTitle>Members ordered by meetings attended</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
@@ -2130,7 +2134,7 @@ function Overview() {
                             </Col>
                         </Row>
                         <Row className="mt-4">
-                            <Col>
+                            <Col md={12} lg={6} className="mb-sm-4 mb-lg-0">
                                 <DashboardCard>
                                     <CardTitle>Attendance by gender</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
@@ -2171,7 +2175,7 @@ function Overview() {
                                     </CardContent>
                                 </DashboardCard>
                             </Col>
-                            <Col>
+                            <Col md={12} lg={6}>
                                 <DashboardCard>
                                     <CardTitle>Attendance by age</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
@@ -2264,7 +2268,7 @@ function Overview() {
 
                     <section className="activities mt-4">
                         <Row>
-                            <Col>
+                            <Col md={12} lg={6} className="mb-sm-4 mb-lg-0">
                                 <DashboardCard>
                                     <CardTitle>Written questions sent to ministers</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
@@ -2312,7 +2316,7 @@ function Overview() {
                                 </DashboardCard>
 
                             </Col>
-                            <Col>
+                            <Col md={12} lg={6}>
 
                                 <DashboardCard>
                                     <CardTitle>Members who submitted the most written questions</CardTitle>
