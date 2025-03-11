@@ -1501,7 +1501,7 @@ function Overview() {
                 <div className="overview-container">
 
                     <Row className="justify-content-between">
-                        <Col className="d-none d-md-block">
+                        <Col xs="auto" className="d-none d-md-block">
                             <a href="#scheduling" className="nav-button">Scheduling</a>
                             <a href="#attendance" className="nav-button">Attendance</a>
                             <a href="#activities" className="nav-button">Activities</a>
