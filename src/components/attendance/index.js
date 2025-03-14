@@ -74,6 +74,7 @@ function Attendance() {
   const [filteredByParties, setFilteredByParties] = useState([]);
   const [filteredByCommittees, setFilteredByCommittees] = useState([]);
   const [filteredByHouses, setFilteredByHouses] = useState(['National Assembly']);
+  const [filteredByCurrent, setFiltereedByCurrent] = useState(true);
 
   const changeParliament = (parliament) => {
     setSelectedParliament(parliament);
@@ -244,6 +245,7 @@ function Attendance() {
     setFilteredByParties([]);
     setFilteredByCommittees([]);
     setFilteredByHouses(['National Assembly']);
+    setFiltereedByCurrent(true);
   };
 
   const setupData = () => {
@@ -255,6 +257,7 @@ function Attendance() {
       memberAttendance[id] = {
         label: data[id].name,
         party: data[id].party,
+        current: data[id].current === 'true',
         attendance: data[id]["parliamentary-record"][selectedParliament],
       };
 
@@ -478,6 +481,7 @@ function Attendance() {
     filteredByParties,
     filteredByCommittees,
     filteredByHouses,
+    filteredByCurrent,
     memberSearch,
     sortedField,
     sortedDirection,
@@ -510,6 +514,15 @@ function Attendance() {
           return (
             filteredByHouses.length === 0 ||
             filteredByHouses.some((house) => row.houses.includes(house))
+          )
+        }
+        return true;
+      })
+      .filter((row) => {
+        if (grouping === "members") {
+          console.log(row);
+          return (
+            filteredByCurrent ? row.current : true
           )
         }
         return true;
@@ -831,6 +844,21 @@ function Attendance() {
                             </Dropdown.Menu>
                           </Dropdown>
                         )}
+
+                        {grouping === "members" && (
+                          <Stack direction="horizontal" gap={3}>
+                            <div className="status-toggle">
+                              <Form.Check
+                                id="onlyCurrentMPs"
+                                type="switch"
+                                onChange={() => setFiltereedByCurrent(!filteredByCurrent)}
+                                checked={filteredByCurrent}
+                              />
+                            </div>
+                            <label className="pt-2 fs-7" htmlFor="onlyCurrentMPs">Only Current Members</label>
+                          </Stack>
+                        )}
+
                         <Button variant="link" onClick={clearFilters}>
                           Clear all
                         </Button>
