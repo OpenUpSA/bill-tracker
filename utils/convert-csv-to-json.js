@@ -3,6 +3,7 @@ SELECT
   "public"."committee_meeting_attendance"."attendance" AS "attendance",
   "Member"."name" AS "Member__name",
   "Member"."id" AS "Member__id",
+  "Member"."current" AS "Member__current",
   "Event - Meeting"."date" AS "Event - Meeting__date",
   "Party"."name" AS "Party__name",
   "Committee"."name" AS "Committee__name",
