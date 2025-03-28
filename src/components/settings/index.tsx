@@ -16,7 +16,8 @@ export const loadSettings = () => {
 }
 
 export const defaultSettings = {
-  includeAlternates: false
+  includeAlternates: false,
+  includePermanents: true
 }
 
 const saveSettings = (settings) => {
@@ -26,11 +27,13 @@ const saveSettings = (settings) => {
 export const SettingsModal = (props) => {
 
   const { modalSettingsOpen, setModalSettingsOpen, callback, settings } = props;
-  const [includeAlternates, setFiltereedByAlternates] = useState(settings.includeAlternates);
+  const [includeAlternates, setIncludeAlternates] = useState(settings.includeAlternates);
+  const [includePermanents, setIncludePermanents] = useState(settings.includePermanents);
 
   const saveSettingsAndClose = () => {
     const settings = {
-      includeAlternates: includeAlternates
+      includeAlternates: includeAlternates,
+      includePermanents: includePermanents
     };
     saveSettings(settings);
     setModalSettingsOpen(false);
@@ -49,15 +52,26 @@ export const SettingsModal = (props) => {
           Settings
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className="bill-stats">
-
+      <Modal.Body>
+        <div className="status-toggle mb-4">
+          <Stack direction="horizontal" gap={3}>
+            <label className="pt-2 fs-6" htmlFor="includePermanents">Include full committee memberships data</label>
+            <Form.Check
+              id="includePermanents"
+              type="switch"
+              onChange={() => setIncludePermanents(!includePermanents)}
+              checked={includePermanents}
+              className="ms-auto"
+            />
+          </Stack>
+        </div>
         <div className="status-toggle mb-4">
           <Stack direction="horizontal" gap={3}>
             <label className="pt-2 fs-6" htmlFor="includeAlternates">Include alternate committee memberships data</label>
             <Form.Check
               id="includeAlternates"
               type="switch"
-              onChange={() => setFiltereedByAlternates(!includeAlternates)}
+              onChange={() => setIncludeAlternates(!includeAlternates)}
               checked={includeAlternates}
               className="ms-auto"
             />
