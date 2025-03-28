@@ -8,6 +8,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Stack from "react-bootstrap/Stack";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
+import { SettingsModal, loadSettings } from "../../components/settings";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,6 +18,7 @@ import {
   faUser,
   faFilter,
   faDownload,
+  faSliders
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./index.scss";
@@ -64,6 +66,7 @@ const ChartTypes = {
 };
 
 function Attendance() {
+  const [settings, setSettings] = useState(loadSettings());
   const [selectedParliament, setSelectedParliament] = useState("7th-parliament");
   const [filteredAttendance, setFilteredAttendance] = useState([]);
 
@@ -75,6 +78,7 @@ function Attendance() {
   const [filteredByCommittees, setFilteredByCommittees] = useState([]);
   const [filteredByHouses, setFilteredByHouses] = useState(['National Assembly']);
   const [filteredByCurrent, setFiltereedByCurrent] = useState(true);
+  const [filteredByAlternates, setFiltereedByAlternates] = useState(settings.filteredByAlternates);
 
   const changeParliament = (parliament) => {
     setSelectedParliament(parliament);
@@ -86,6 +90,7 @@ function Attendance() {
   const [maxAttendance, setMaxAttendance] = useState(0);
   const [dataAttendance, setDataAttendance] = useState([]);
   const [grouping, setGrouping] = useState("members");
+  const [modalSettingsOpen, setModalSettingsOpen] = useState(false);
   const [sortedDirection, setSortedDirection] = useState("desc");
   const [sortedField, setSortedField] = useState("attendance-count");
   const [tooltipShown, setTooltipShown] = useState(true);
@@ -247,6 +252,10 @@ function Attendance() {
     setFilteredByHouses(['National Assembly']);
     setFiltereedByCurrent(true);
   };
+
+  const onSettingsChange = (settings) => {
+    setFiltereedByAlternates(settings.filteredByAlternates);
+  }
 
   const setupData = () => {
     let partyAttendance = {};
@@ -520,7 +529,6 @@ function Attendance() {
       })
       .filter((row) => {
         if (grouping === "members") {
-          console.log(row);
           return (
             filteredByCurrent ? row.current : true
           )
@@ -625,6 +633,13 @@ function Attendance() {
                     Parties
                   </button>
                 </div>
+                <button
+                  className="toolbarButton"
+                  onClick={() => setModalSettingsOpen(true)}
+                >
+                  <FontAwesomeIcon icon={faSliders} className="mx-2" />
+                  Settings
+                </button>
               </Stack>
             </Col>
           </Row>
@@ -1254,6 +1269,11 @@ function Attendance() {
           </Row>
         </div>
       </Container>
+      <SettingsModal
+        modalSettingsOpen={modalSettingsOpen}
+        setModalSettingsOpen={setModalSettingsOpen}
+        callback={onSettingsChange}
+        settings={settings} />
     </Fragment>
   );
 }
