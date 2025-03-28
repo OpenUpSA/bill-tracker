@@ -1,247 +1,316 @@
 {
-    "house": {
-        "NA": "National Assembly",
-        "NCOP": "National Council of Provinces",
-        "President": "President",
-        "Joint": "Joint NA/NCOP"
+  "house": {
+    "NA": "National Assembly",
+    "NCOP": "National Council of Provinces",
+    "President": "President",
+    "Joint": "Joint NA/NCOP"
+  },
+  "status": {
+    "na": "National Assembly",
+    "ncop": "National Council of Provinces",
+    "president": "President",
+    "concourt": "Concourt",
+    "rejected": "Rejected",
+    "withdrawn": "Withdrawn",
+    "act-partly-commenced": "Partly commenced",
+    "act-commenced": "Commenced",
+    "lapsed": "Lapsed",
+    "draft": "Draft",
+    "enacted": "Enacted"
+  },
+  "event_types": {
+    "committee-meeting": "Committee Meeting",
+    "bill-introduced": "Bill Introduced",
+    "bill-passed": "Bill Passed",
+    "plenary": "Plenary",
+    "bill-enacted": "Bill Enacted",
+    "bill-act-commenced": "Act Commenced",
+    "bill-updated": "Bill Updated",
+    "bill-signed": "Bill Signed",
+    "today": "Today"
+  },
+  "type": {
+    "S75": "Section 75",
+    "S77": "Section 77",
+    "S76": "Section 76",
+    "S74": "Section 74",
+    "Draft": "Draft",
+    "Private Member Bill": "Private Member Bill",
+    "Private Member Bill: S75": "Private Member Bill: Section 75",
+    "Private Member Bill: S76": "Private Member Bill: Section 76",
+    "Private Member Bill: S74": "Private Member Bill: Section 74"
+  },
+  "parliaments": {
+    "all": {
+      "name": "All Parliaments",
+      "start": "2009-05-21",
+      "end": "2029-05-20"
     },
-    "status": {
-        "na": "National Assembly",
-        "ncop": "National Council of Provinces",
-        "president": "President",
-        "concourt": "Concourt",
-        "rejected": "Rejected",
-        "withdrawn": "Withdrawn",
-        "act-partly-commenced": "Partly commenced",
-        "act-commenced": "Commenced",
-        "lapsed": "Lapsed",
-        "draft": "Draft",
-        "enacted": "Enacted"
+    "7th-parliament": {
+      "name": "7th Parliament",
+      "start": "2024-05-21",
+      "end": "2029-05-20"
     },
-    "event_types": {
-        "committee-meeting": "Committee Meeting",
-        "bill-introduced": "Bill Introduced",
-        "bill-passed": "Bill Passed",
-        "plenary": "Plenary",
-        "bill-enacted": "Bill Enacted",
-        "bill-act-commenced": "Act Commenced",
-        "bill-updated": "Bill Updated",
-        "bill-signed": "Bill Signed",
-        "today": "Today"
+    "6th-parliament": {
+      "name": "6th Parliament",
+      "start": "2019-05-21",
+      "end": "2024-05-20"
     },
-    "type": {
-        "S75": "Section 75",
-        "S77": "Section 77",
-        "S76": "Section 76",
-        "S74": "Section 74",
-        "Draft": "Draft",
-        "Private Member Bill": "Private Member Bill",
-        "Private Member Bill: S75": "Private Member Bill: Section 75",
-        "Private Member Bill: S76": "Private Member Bill: Section 76",
-        "Private Member Bill: S74": "Private Member Bill: Section 74"
+    "5th-parliament": {
+      "name": "5th Parliament",
+      "start": "2014-05-21",
+      "end": "2019-05-20"
     },
-    "parliaments": {
-        "all": {
-            "name": "All Parliaments",
-            "start": "2009-05-21",
-            "end": "2029-05-20"
-        },
-        "7th-parliament": {
-            "name": "7th Parliament",
-            "start": "2024-05-21",
-            "end": "2029-05-20"
-        },
-        "6th-parliament": {
-            "name": "6th Parliament",
-            "start": "2019-05-21",
-            "end": "2024-05-20"
-        },
-        "5th-parliament": {
-            "name": "5th Parliament",
-            "start": "2014-05-21",
-            "end": "2019-05-20"
-        },
-        "4th-parliament": {
-            "name": "4th Parliament",
-            "start": "2009-05-21",
-            "end": "2014-05-20"
-        }
+    "4th-parliament": {
+      "name": "4th Parliament",
+      "start": "2009-05-21",
+      "end": "2014-05-20"
+    }
+  },
+  "parliamentsAttendance": {
+    "7th-parliament": {
+      "name": "7th Parliament",
+      "start": "2024-05-21",
+      "end": "2029-05-20"
+    }
+  },
+  "attendance-states": {
+    "P": {
+      "group": "attended",
+      "label": "Present",
+      "alternate": false,
+      "legend": true,
+      "exclude": false
     },
-    "parliamentsAttendance": {
-        "7th-parliament": {
-            "name": "7th Parliament",
-            "start": "2024-05-21",
-            "end": "2029-05-20"
-        }
+    "U": {
+      "group": "unknown",
+      "label": "Unknown",
+      "alternate": false,
+      "legend": false,
+      "exclude": true
     },
-    "attendance-states": {
-        "P": {
-            "group": "attended",
-            "label": "Present"
-        },
-        "U": {
-            "group": "unknown",
-            "label": "Unknown"
-        },
-        "A": {
-            "group": "missed",
-            "label": "Absent"
-        },
-        "AP": {
-            "group": "missed",
-            "label": "Absent with Apologies"
-        },
-        "DE": {
-            "group": "attended",
-            "label": "Departed Early"
-        },
-        "L": {
-            "group": "attended",
-            "label": "Arrived Late"
-        },
-        "LDE": {
-            "group": "attended",
-            "label": "Arrived Late and Departed Early"
-        },
-        "AM": {
-            "group": "attended",
-            "label": "Alternate Memberbship"
-        }
+    "A": {
+      "group": "missed",
+      "label": "Absent",
+      "alternate": false,
+      "legend": true,
+      "exclude": false
     },
-    "parties": [
-        {
-            "party": "ACDP",
-            "name": "African Christian Democratic Party"
-        },
-        {
-            "party": "Action SA",
-            "name": "Action SA"
-        },
-        {
-            "party": "Al Jama-ah",
-            "name": "Al Jama-ah"
-        },
-        {
-            "party": "ANC",
-            "name": "African National Congress"
-        },
-        {
-            "party": "ATM",
-            "name": "African Transformation Movement"
-        },
-        {
-            "party": "BOSA",
-            "name": "Build One South Africa"
-        },
-        {
-            "party": "DA",
-            "name": "Democratic Alliance"
-        },
-        {
-            "party": "EFF",
-            "name": "Economic Freedom Fighters"
-        },
-        {
-            "party": "FF+",
-            "name": "Freedom Front Plus"
-        },
-        {
-            "party": "GOOD",
-            "name": "Good"
-        },
-        {
-            "party": "IFP",
-            "name": "Inkatha Freedom Party"
-        },
-        {
-            "party": "MK",
-            "name": "Umkonto We Sizwe"
-        },
-        {
-            "party": "NCC",
-            "name": ""
-        },
-        {
-            "party": "PA",
-            "name": "Patriotic Alliance"
-        },
-        {
-            "party": "PAC",
-            "name": "Pan Africanist Congress of Azania"
-        },
-        {
-            "party": "RISE Mzanzi",
-            "name": "RISE Mzanzi"
-        },
-        {
-            "party": "UAT",
-            "name": ""
-        },
-        {
-            "party": "UDM",
-            "name": "United Democratic Movement"
-        }
-    ],
-    "help": [
-        {
-            "metric": "totalScheduledMeetings",        
-            "body": "All committee meetings scheduled for the selected period."
-        },
-        {
-            "metric": "meetingsPerMember",        
-            "body": "Meetings per member"
-        },
-        {
-            "metric": "lengthOfMeeting",
-            "body": "The scheduled length of meetings."
-        },
-        {
-            "metric": "meetingsThatEndedLate",
-            "body": "The number of meetings that ended later or earlier than scheduled."
-        },
-        {
-            "metric": "meetingsPerCommittee",
-            "body": "The number of meetings scheduled per committee."
-        },
-        {
-            "metric": "meetingsThatOverlapped",
-            "body": "The number of meetings that overlapped with other meetings."
-        },
-        {
-            "metric": "overallAttendance",
-            "body": "The overall attendance of members at meetings."
-        },
-        {
-            "metric": "commiteesWithBestAttendance",
-            "body": "The committees with the best attendance."
-        },
-        {
-            "metric": "partiesWithBestAttendance",
-            "body": "The parties with the best attendance."
-        },
-        {
-            "metric": "membersWithBestAttendance",
-            "body": "The members with the best attendance."
-        },
-        {
-            "metric": "attendanceByGender",
-            "body": "Attendance by gender for the selected period."
-        },
-        {
-            "metric": "attendanceByAge",
-            "body": "Attendance by age for the selected period data is not yet available."
-        },
-        {
-            "metric": "writtenQuestions",
-            "body": "The number of written questions submitted."
-        },
-        {
-            "metric": "questionsByMembers",
-            "body": "The number of questions submitted by members."
-        }
-
-
-    ]
-        
-    
+    "AP": {
+      "group": "missed",
+      "label": "Absent with Apologies",
+      "alternate": false,
+      "legend": true,
+      "exclude": false
+    },
+    "DE": {
+      "group": "attended",
+      "label": "Departed Early",
+      "alternate": false,
+      "legend": true,
+      "exclude": false
+    },
+    "L": {
+      "group": "attended",
+      "label": "Arrived Late",
+      "alternate": false,
+      "legend": true,
+      "exclude": false
+    },
+    "LDE": {
+      "group": "attended",
+      "label": "Arrived Late and Departed Early",
+      "alternate": false,
+      "legend": true,
+      "exclude": false
+    },
+    "P-AM": {
+      "group": "attended",
+      "label": "Present (alternate)",
+      "alternate": true,
+      "legend": false,
+      "exclude": false
+    },
+    "U-AM": {
+      "group": "unknown",
+      "label": "Unknown (alternate)",
+      "alternate": true,
+      "legend": false,
+      "exclude": true
+    },
+    "A-AM": {
+      "group": "missed",
+      "label": "Absent (alternate)",
+      "alternate": true,
+      "legend": false,
+      "exclude": false
+    },
+    "AP-AM": {
+      "group": "missed-am",
+      "label": "Absent with Apologies (alternate)",
+      "alternate": true,
+      "legend": false,
+      "exclude": false
+    },
+    "DE-AM": {
+      "group": "attended-am",
+      "label": "Departed Early (alternate)",
+      "alternate": true,
+      "legend": false,
+      "exclude": false
+    },
+    "L-AM": {
+      "group": "attended-am",
+      "label": "Arrived Late (alternate)",
+      "alternate": true,
+      "legend": false,
+      "exclude": false
+    },
+    "LDE-AM": {
+      "group": "attended-am",
+      "label": "Arrived Late and Departed Early (alternate)",
+      "alternate": true,
+      "legend": false,
+      "exclude": false
+    },
+    "AM-AM": {
+      "group": "attended-am",
+      "label": "Alternate Memberbship (alternate)",
+      "alternate": true,
+      "legend": false,
+      "exclude": false
+    }
+  },
+  "parties": [
+    {
+      "party": "ACDP",
+      "name": "African Christian Democratic Party"
+    },
+    {
+      "party": "Action SA",
+      "name": "Action SA"
+    },
+    {
+      "party": "Al Jama-ah",
+      "name": "Al Jama-ah"
+    },
+    {
+      "party": "ANC",
+      "name": "African National Congress"
+    },
+    {
+      "party": "ATM",
+      "name": "African Transformation Movement"
+    },
+    {
+      "party": "BOSA",
+      "name": "Build One South Africa"
+    },
+    {
+      "party": "DA",
+      "name": "Democratic Alliance"
+    },
+    {
+      "party": "EFF",
+      "name": "Economic Freedom Fighters"
+    },
+    {
+      "party": "FF+",
+      "name": "Freedom Front Plus"
+    },
+    {
+      "party": "GOOD",
+      "name": "Good"
+    },
+    {
+      "party": "IFP",
+      "name": "Inkatha Freedom Party"
+    },
+    {
+      "party": "MK",
+      "name": "Umkonto We Sizwe"
+    },
+    {
+      "party": "NCC",
+      "name": ""
+    },
+    {
+      "party": "PA",
+      "name": "Patriotic Alliance"
+    },
+    {
+      "party": "PAC",
+      "name": "Pan Africanist Congress of Azania"
+    },
+    {
+      "party": "RISE Mzanzi",
+      "name": "RISE Mzanzi"
+    },
+    {
+      "party": "UAT",
+      "name": ""
+    },
+    {
+      "party": "UDM",
+      "name": "United Democratic Movement"
+    }
+  ],
+  "help": [
+    {
+      "metric": "totalScheduledMeetings",
+      "body": "All committee meetings scheduled for the selected period."
+    },
+    {
+      "metric": "meetingsPerMember",
+      "body": "Meetings per member"
+    },
+    {
+      "metric": "lengthOfMeeting",
+      "body": "The scheduled length of meetings."
+    },
+    {
+      "metric": "meetingsThatEndedLate",
+      "body": "The number of meetings that ended later or earlier than scheduled."
+    },
+    {
+      "metric": "meetingsPerCommittee",
+      "body": "The number of meetings scheduled per committee."
+    },
+    {
+      "metric": "meetingsThatOverlapped",
+      "body": "The number of meetings that overlapped with other meetings."
+    },
+    {
+      "metric": "overallAttendance",
+      "body": "The overall attendance of members at meetings."
+    },
+    {
+      "metric": "commiteesWithBestAttendance",
+      "body": "The committees with the best attendance."
+    },
+    {
+      "metric": "partiesWithBestAttendance",
+      "body": "The parties with the best attendance."
+    },
+    {
+      "metric": "membersWithBestAttendance",
+      "body": "The members with the best attendance."
+    },
+    {
+      "metric": "attendanceByGender",
+      "body": "Attendance by gender for the selected period."
+    },
+    {
+      "metric": "attendanceByAge",
+      "body": "Attendance by age for the selected period data is not yet available."
+    },
+    {
+      "metric": "writtenQuestions",
+      "body": "The number of written questions submitted."
+    },
+    {
+      "metric": "questionsByMembers",
+      "body": "The number of questions submitted by members."
+    }
+  ]
 }

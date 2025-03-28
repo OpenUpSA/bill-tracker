@@ -1,5 +1,76 @@
-$state-AM: #ff0000;
+$state-P: #8ae561;
+$state-A: #ffa694;
+$state-AP: #ffc794;
+$state-DE: #77efc4;
+$state-L: #77a8f2;
+$state-LDE: #ad7aed;
+$state-U: #b5b5b5;
 
+$state-attended: #8ae56199;
+$state-missed: #ffa694;
+
+// Convert colors to 50% opacity
+$state-P-AM: rgba($state-P, 0.5);
+$state-A-AM: rgba($state-A, 0.5);
+$state-AP-AM: rgba($state-AP, 0.5);
+$state-DE-AM: rgba($state-DE, 0.5);
+$state-L-AM: rgba($state-L, 0.5);
+$state-LDE-AM: rgba($state-LDE, 0.5);
+$state-U-AM: rgba($state-U, 0.5);
+
+$state-attended-am: rgba($state-attended, 0.25);
+$state-missed-am: rgba($state-missed, 0.25);
+
+// Cross-hatch pattern (diagonal lines)
+$cross-hatch: repeating-linear-gradient(-45deg,
+    rgba(128, 128, 128, 0.2) 0px,
+    rgba(128, 128, 128, 0.1) 1px,
+    transparent 2px,
+    transparent 6px);
+
+// Mixin to apply both the background and the cross-hatch
+@mixin cross-hatch($color) {
+  background-color: $color;
+  background-image: $cross-hatch;
+  background-blend-mode: multiply; // Ensures the cross-hatch blends with the background
+}
+
+// Apply the effect to `-AM` states
+.state-P-AM {
+  @include cross-hatch($state-P-AM);
+}
+
+.state-A-AM {
+  @include cross-hatch($state-A-AM);
+}
+
+.state-AP-AM {
+  @include cross-hatch($state-AP-AM);
+}
+
+.state-DE-AM {
+  @include cross-hatch($state-DE-AM);
+}
+
+.state-L-AM {
+  @include cross-hatch($state-L-AM);
+}
+
+.state-LDE-AM {
+  @include cross-hatch($state-LDE-AM);
+}
+
+.state-U-AM {
+  @include cross-hatch($state-U-AM);
+}
+
+.state-attended-am {
+  @include cross-hatch($state-attended-am);
+}
+
+.state-missed-am {
+  @include cross-hatch($state-missed-am);
+}
 
 * {
   color: rgba(0, 0, 0, 1);
@@ -111,38 +182,76 @@ table {
               background-color: #f0f0f0;
               margin-right: 5px;
 
-              &.state-P,
               &.state-attended {
-                background-color: #8ae56199;
+                background-color: $state-attended;
               }
 
-              &.state-A,
+              &.state-attended-am {
+                background-color: $state-attended-am;
+              }
+
               &.state-missed {
-                background-color: #ffa694;
+                background-color: $state-missed;
+              }
+
+              &.state-missed-am {
+                background-color: $state-missed-am;
+              }
+
+              &.state-P {
+                background-color: $state-P;
+              }
+
+              &.state-A {
+                background-color: $state-A;
               }
 
               &.state-AP {
-                background-color: #ffc794;
+                background-color: $state-AP;
               }
 
               &.state-DE {
-                background-color: #77efc4;
+                background-color: $state-DE;
               }
 
               &.state-L {
-                background-color: #77a8f2;
+                background-color: $state-L;
               }
 
               &.state-LDE {
-                background-color: #ad7aed;
-              }
-
-              &.state-AM {
-                background-color: $state-AM;
+                background-color: $state-LDE;
               }
 
               &.state-U {
-                background-color: #b5b5b5;
+                background-color: $state-U;
+              }
+
+              &.state-P-AM {
+                background-color: $state-P-AM;
+              }
+
+              &.state-A-AM {
+                background-color: $state-A-AM;
+              }
+
+              &.state-AP-AM {
+                background-color: $state-AP-AM;
+              }
+
+              &.state-DE-AM {
+                background-color: $state-DE-AM;
+              }
+
+              &.state-L-AM {
+                background-color: $state-L;
+              }
+
+              &.state-LDE-AM {
+                background-color: $state-LDE;
+              }
+
+              &.state-U-AM {
+                background-color: $state-U;
               }
             }
           }
@@ -213,15 +322,23 @@ table {
     text-overflow: ellipsis;
 
     &.state-grouping-missed {
-      background-color: #ffa694;
+      background-color: $state-missed;
+    }
+
+    &.state-grouping-missed-am {
+      background-color: $state-missed-am;
     }
 
     &.state-grouping-attended {
-      background-color: #8ae56199;
+      background-color: $state-attended;
+    }
+
+    &.state-grouping-attended-am {
+      background-color: $state-attended-am;
     }
 
     &.state-grouping-unknown {
-      background-color: #b5b5b5;
+      background-color: $state-U;
     }
 
     &.state-P {
@@ -269,35 +386,59 @@ table {
       }
 
       &.state-P {
-        background-color: #8ae56199;
+        background-color: $state-P;
       }
 
       &.state-A {
-        background-color: #ffa694;
+        background-color: $state-A;
       }
 
       &.state-AP {
-        background-color: #ffc794;
+        background-color: $state-AP;
       }
 
       &.state-DE {
-        background-color: #77efc4;
+        background-color: $state-DE;
       }
 
       &.state-L {
-        background-color: #77a8f2;
+        background-color: $state-L;
       }
 
       &.state-LDE {
-        background-color: #ad7aed;
+        background-color: $state-LDE;
       }
 
       &.state-U {
-        background-color: #b5b5b5;
+        background-color: $state-U;
       }
 
-      &.state-AM {
-        background-color: $state-AM;
+      &.state-P-AM {
+        background-color: $state-P-AM;
+      }
+
+      &.state-A-AM {
+        background-color: $state-A-AM;
+      }
+
+      &.state-AP-AM {
+        background-color: $state-AP-AM;
+      }
+
+      &.state-DE-AM {
+        background-color: $state-DE-AM;
+      }
+
+      &.state-L-AM {
+        background-color: $state-L;
+      }
+
+      &.state-LDE-AM {
+        background-color: $state-LDE;
+      }
+
+      &.state-U-AM {
+        background-color: $state-U;
       }
     }
   }
@@ -312,7 +453,13 @@ table {
   .state-L,
   .state-LDE,
   .state-U,
-  .state-AM {
+  .state-P-AM,
+  .state-A-AM,
+  .state-AP-AM,
+  .state-DE-AM,
+  .state-L-AM,
+  .state-LDE-AM,
+  .state-U-AM {
     opacity: 0.25;
   }
 
@@ -389,7 +536,7 @@ h2 {
   top: 50%;
   transform: translate(-50%, -100%);
   white-space: normal;
-  max-width: 300px;
+  max-width: 375px;
 
   .tooltip-title {
     font-weight: 600;
@@ -445,53 +592,111 @@ h2 {
           }
         }
 
-        &.state-P,
         &.state-attended {
           td {
             background-color: #8ae56199;
           }
         }
 
-        &.state-A,
+        &.state-attended-am {
+          td {
+            background-color: $state-attended-am;
+          }
+        }
+
         &.state-missed {
           td {
-            background-color: #ffa694;
+            background-color: $state-missed;
+          }
+        }
+
+        &.state-missed-am {
+          td {
+            background-color: $state-missed-am;
+          }
+        }
+
+        &.state-P {
+          td {
+            background-color: $state-P;
+          }
+        }
+
+        &.state-A {
+          td {
+            background-color: $state-A;
           }
         }
 
         &.state-AP {
           td {
-            background-color: #ffc794;
+            background-color: $state-AP;
           }
         }
 
         &.state-DE {
           td {
-            background-color: #77efc4;
+            background-color: $state-DE;
           }
         }
 
         &.state-L {
           td {
-            background-color: #77a8f2;
+            background-color: $state-L;
           }
         }
 
         &.state-LDE {
           td {
-            background-color: #ad7aed;
-          }
-        }
-
-        &.state-AM {
-          td {
-            background-color: $state-AM;
+            background-color: $state-LDE;
           }
         }
 
         &.state-U {
           td {
-            background-color: #b5b5b5;
+            background-color: $state-U;
+          }
+        }
+
+        &.state-P-AM {
+          td {
+            background-color: $state-P-AM;
+          }
+        }
+
+        &.state-A-AM {
+          td {
+            background-color: $state-A-AM;
+          }
+        }
+
+        &.state-AP-AM {
+          td {
+            background-color: $state-AP-AM;
+          }
+        }
+
+        &.state-DE-AM {
+          td {
+            background-color: $state-DE-AM;
+          }
+        }
+
+        &.state-L-AM {
+          td {
+            background-color: $state-L;
+          }
+        }
+
+        &.state-LDE-AM {
+          td {
+            background-color: $state-LDE;
+          }
+        }
+
+        &.state-U-AM {
+          td {
+            background-color: $state-U;
           }
         }
       }

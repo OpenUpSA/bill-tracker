@@ -143,6 +143,12 @@ function Attendance() {
     const missedGroup = tooltipAttendance["grouped-attendance"]?.find(
       (a) => a.group === "missed"
     );
+    const attendedAMGroup = tooltipAttendance["grouped-attendance"]?.find(
+      (a) => a.group === "attended-am"
+    );
+    const missedAMGroup = tooltipAttendance["grouped-attendance"]?.find(
+      (a) => a.group === "missed-am"
+    );
     return (
       <div
         className="attendance-tooltip"
@@ -183,6 +189,21 @@ function Attendance() {
                         <td>({Math.round(attendedGroup.percentage)}%)</td>
                       </tr>
                     )}
+                    {attendedAMGroup && (
+                      <tr
+                        className={
+                          tooltipAttendanceState === "attended-am"
+                            ? "state-attended-am"
+                            : ""
+                        }
+                      >
+                        <td>Meetings attended (alternate):</td>
+                        <td className="text-align-right">
+                          {attendedAMGroup.count.toLocaleString()}
+                        </td>
+                        <td>({Math.round(attendedAMGroup.percentage)}%)</td>
+                      </tr>
+                    )}
                     {missedGroup && (
                       <tr
                         className={
@@ -196,6 +217,21 @@ function Attendance() {
                           {missedGroup.count.toLocaleString()}
                         </td>
                         <td>({Math.round(missedGroup.percentage)}%)</td>
+                      </tr>
+                    )}
+                    {missedAMGroup && (
+                      <tr
+                        className={
+                          tooltipAttendanceState === "missed-am"
+                            ? "state-missed-am"
+                            : ""
+                        }
+                      >
+                        <td>Meetings missed (alternate):</td>
+                        <td className="text-align-right">
+                          {missedAMGroup.count.toLocaleString()}
+                        </td>
+                        <td>({Math.round(missedAMGroup.percentage)}%)</td>
                       </tr>
                     )}
                   </Fragment>
@@ -339,10 +375,10 @@ function Attendance() {
       activeAttendance = Object.values(memberAttendance);
     }
 
-    // Filter out attendnace.state = 'U'
+    // Filter out excluded attendance states e.g. Unknown (U)
     activeAttendance.forEach((row) => {
       row["attendance"] = row["attendance"]?.filter(
-        (attendance) => attendance.state !== "U"
+        (attendance) => !attendanceStates[attendance.state].exclude
       );
     });
 
@@ -1215,7 +1251,7 @@ function Attendance() {
                             ChartTypes[selectedChartType].detailed && (
                               <Fragment>
                                 {Object.keys(attendanceStates)
-                                  .filter((state) => state !== "U")
+                                  .filter((state) => attendanceStates[state].legend)
                                   .map((state) => (
                                     <li
                                       key={state}
@@ -1247,10 +1283,22 @@ function Attendance() {
                                   Meetings attended
                                 </li>
                                 <li>
+                                  <span className="bar state-attended-am">
+                                    Attended (alternate)
+                                  </span>{" "}
+                                  Meetings attended (alternate)
+                                </li>
+                                <li>
                                   <span className="bar state-missed">
                                     Missed
                                   </span>{" "}
                                   Meetings missed
+                                </li>
+                                <li>
+                                  <span className="bar state-missed-am">
+                                    Missed (alternate)
+                                  </span>{" "}
+                                  Meetings missed (alternate)
                                 </li>
                               </Fragment>
                             )}

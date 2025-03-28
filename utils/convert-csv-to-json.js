@@ -71,7 +71,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
 
     // Alternate membership is counted as a different type of attendance: AM
     if (alternate) {
-      attendance = 'AM'
+      attendance = `${attendance}-AM`
     }
 
     // Add to existing member or create new one

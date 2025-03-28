@@ -16,7 +16,7 @@ export const loadSettings = () => {
 }
 
 export const defaultSettings = {
-  filteredByAlternates: false
+  includeAlternates: false
 }
 
 const saveSettings = (settings) => {
@@ -26,11 +26,11 @@ const saveSettings = (settings) => {
 export const SettingsModal = (props) => {
 
   const { modalSettingsOpen, setModalSettingsOpen, callback, settings } = props;
-  const [filteredByAlternates, setFiltereedByAlternates] = useState(settings.filteredByAlternates);
+  const [includeAlternates, setFiltereedByAlternates] = useState(settings.includeAlternates);
 
   const saveSettingsAndClose = () => {
     const settings = {
-      filteredByAlternates: filteredByAlternates
+      includeAlternates: includeAlternates
     };
     saveSettings(settings);
     setModalSettingsOpen(false);
@@ -57,8 +57,8 @@ export const SettingsModal = (props) => {
             <Form.Check
               id="includeAlternates"
               type="switch"
-              onChange={() => setFiltereedByAlternates(!filteredByAlternates)}
-              checked={filteredByAlternates}
+              onChange={() => setFiltereedByAlternates(!includeAlternates)}
+              checked={includeAlternates}
               className="ms-auto"
             />
           </Stack>
