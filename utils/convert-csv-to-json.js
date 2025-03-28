@@ -1,6 +1,7 @@
 /* Converts to JSON the SQL CSV output of:
 SELECT
   "public"."committee_meeting_attendance"."attendance" AS "attendance",
+  "public"."committee_meeting_attendance"."alternate_member" AS "alternate_member",
   "Member"."name" AS "Member__name",
   "Member"."id" AS "Member__id",
   "Member"."current" AS "Member__current",
@@ -61,11 +62,17 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
     const name = row[1];
     const party = row[2];
     const createdAt = dateToEpoch(new Date(row[3]));
-    const attendance = row[4];
+    let attendance = row[4];
     const committee = row[5];
     const house = row[6];
     const current = row[7];
+    const alternate = row[8] === 'true';
     const parliamentKey = lookupParliamentFromCreatedAt(createdAt);
+
+    // Alternate membership is counted as a different type of attendance: AM
+    if (alternate) {
+      attendance = 'AM'
+    }
 
     // Add to existing member or create new one
     if (data[id]) {

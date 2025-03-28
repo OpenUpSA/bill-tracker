@@ -102,6 +102,10 @@
         "LDE": {
             "group": "attended",
             "label": "Arrived Late and Departed Early"
+        },
+        "AM": {
+            "group": "attended",
+            "label": "Alternate Memberbship"
         }
     },
     "parties": [

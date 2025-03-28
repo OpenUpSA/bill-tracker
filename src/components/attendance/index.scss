@@ -1,3 +1,6 @@
+$state-AM: #ff0000;
+
+
 * {
   color: rgba(0, 0, 0, 1);
 }
@@ -132,6 +135,10 @@ table {
 
               &.state-LDE {
                 background-color: #ad7aed;
+              }
+
+              &.state-AM {
+                background-color: $state-AM;
               }
 
               &.state-U {
@@ -288,6 +295,10 @@ table {
       &.state-U {
         background-color: #b5b5b5;
       }
+
+      &.state-AM {
+        background-color: $state-AM;
+      }
     }
   }
 }
@@ -300,7 +311,8 @@ table {
   .state-DE,
   .state-L,
   .state-LDE,
-  .state-U {
+  .state-U,
+  .state-AM {
     opacity: 0.25;
   }
 
@@ -468,6 +480,12 @@ h2 {
         &.state-LDE {
           td {
             background-color: #ad7aed;
+          }
+        }
+
+        &.state-AM {
+          td {
+            background-color: $state-AM;
           }
         }
 
