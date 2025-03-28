@@ -568,8 +568,6 @@ function Overview() {
         const earliest_date = `${earliest.getFullYear()}-${String(earliest.getMonth() + 1).padStart(2, '0')}-${String(earliest.getDate()).padStart(2, '0')}`;
         const latest_date = `${latest.getFullYear()}-${String(latest.getMonth() + 1).padStart(2, '0')}-${String(latest.getDate()).padStart(2, '0')}`;
     
-        console.log(earliest_date, latest_date);
-
         setCustomDateRange([earliest_date, latest_date]);
     }
 
@@ -1455,7 +1453,6 @@ function Overview() {
     }, [period, dateRange, party, selectedMonth, selectedYear, customDateRange]);
 
     useEffect(() => {
-        console.log("filteredData", filteredData_allParties);
         block_total_scheduled_meetings();
         block_length_of_meeting();
         block_meetings_that_ended_late();
