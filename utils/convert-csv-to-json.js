@@ -3,6 +3,7 @@ SELECT
   "public"."committee_meeting_attendance"."attendance" AS "attendance",
   "Member"."name" AS "Member__name",
   "Member"."id" AS "Member__id",
+  "Member"."current" AS "Member__current",
   "Event - Meeting"."date" AS "Event - Meeting__date",
   "Party"."name" AS "Party__name",
   "Committee"."name" AS "Committee__name",
@@ -56,13 +57,14 @@ function lookupParliamentFromCreatedAt(createdAt) {
 fs.createReadStream("./data/member-attendance-all-time.csv")
   .pipe(parse({ delimiter: ",", from_line: 2 }))
   .on("data", function (row) {
-    id = row[0];
-    name = row[1];
-    party = row[2];
-    createdAt = dateToEpoch(new Date(row[3]));
-    attendance = row[4];
-    committee = row[5];
-    house = row[6];
+    const id = row[0];
+    const name = row[1];
+    const party = row[2];
+    const createdAt = dateToEpoch(new Date(row[3]));
+    const attendance = row[4];
+    const committee = row[5];
+    const house = row[6];
+    const current = row[7];
     const parliamentKey = lookupParliamentFromCreatedAt(createdAt);
 
     // Add to existing member or create new one
@@ -125,6 +127,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
       const newMember = {
         name: name,
         party: party,
+        current: current,
         "parliamentary-record": {},
       };
       newMember["parliamentary-record"][parliamentKey] = [
