@@ -78,7 +78,7 @@ function Attendance() {
   const [filteredByCommittees, setFilteredByCommittees] = useState([]);
   const [filteredByHouses, setFilteredByHouses] = useState(['National Assembly']);
   const [filteredByCurrent, setFiltereedByCurrent] = useState(true);
-  const [filteredByAlternates, setFiltereedByAlternates] = useState(settings.filteredByAlternates);
+  const [includeAlternates, setIncludeAlternates] = useState(settings.includeAlternates);
 
   const changeParliament = (parliament) => {
     setSelectedParliament(parliament);
@@ -290,7 +290,7 @@ function Attendance() {
   };
 
   const onSettingsChange = (settings) => {
-    setFiltereedByAlternates(settings.filteredByAlternates);
+    setIncludeAlternates(settings.includeAlternates);
   }
 
   const setupData = () => {
@@ -381,6 +381,15 @@ function Attendance() {
         (attendance) => !attendanceStates[attendance.state].exclude
       );
     });
+
+    if (!includeAlternates) {
+      // Filter out alternate data
+      activeAttendance.forEach((row) => {
+        row["attendance"] = row["attendance"]?.filter(
+          (attendance) => !attendanceStates[attendance.state].alternate
+        );
+      });
+    }
 
     // filter out empty activeAttendance.attendance
     activeAttendance = activeAttendance.filter(
@@ -517,7 +526,7 @@ function Attendance() {
 
   useEffect(() => {
     setupData();
-  }, [data, selectedParliament, grouping]);
+  }, [data, selectedParliament, grouping, includeAlternates]);
 
   useEffect(() => {
     filterAndSortAttendanceData(dataAttendance);
