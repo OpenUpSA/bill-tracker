@@ -1,0 +1,33 @@
+.toolbarButton {
+  border: none;
+  width: Fixed (100px) px;
+  height: Fill (36px) px;
+  padding: 12px 20px 12px 20px;
+  gap: 10px;
+  border-radius: 35px;
+
+  &:hover {
+    background-color: #dfdfdf;
+  }
+
+  &.primary {
+    background-color: #000;
+    color: #fff;
+
+    &:hover {
+      background-color: #333;
+    }
+  }
+}
+
+.mr-2 {
+  margin-right: 1rem !important;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.color-foreground-muted {
+  color: #777;
+}
