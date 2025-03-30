@@ -66,7 +66,7 @@ const ChartTypes = {
 };
 
 function Attendance() {
-  const [settings, setSettings] = useState(loadSettings());
+  const settings = loadSettings();
   const [selectedParliament, setSelectedParliament] = useState("7th-parliament");
   const [filteredAttendance, setFilteredAttendance] = useState([]);
 
