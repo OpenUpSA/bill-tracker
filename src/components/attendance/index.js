@@ -8,6 +8,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Stack from "react-bootstrap/Stack";
 import Accordion from "react-bootstrap/Accordion";
 import Button from "react-bootstrap/Button";
+import { SettingsModal, loadSettings } from "../../components/settings";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,6 +18,7 @@ import {
   faUser,
   faFilter,
   faDownload,
+  faSliders
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./index.scss";
@@ -64,6 +66,7 @@ const ChartTypes = {
 };
 
 function Attendance() {
+  const settings = loadSettings();
   const [selectedParliament, setSelectedParliament] = useState("7th-parliament");
   const [filteredAttendance, setFilteredAttendance] = useState([]);
 
@@ -75,6 +78,8 @@ function Attendance() {
   const [filteredByCommittees, setFilteredByCommittees] = useState([]);
   const [filteredByHouses, setFilteredByHouses] = useState(['National Assembly']);
   const [filteredByCurrent, setFiltereedByCurrent] = useState(true);
+  const [includeAlternates, setIncludeAlternates] = useState(settings.includeAlternates);
+  const [includePermanents, setIncludePermanents] = useState(settings.includePermanents);
 
   const changeParliament = (parliament) => {
     setSelectedParliament(parliament);
@@ -86,6 +91,7 @@ function Attendance() {
   const [maxAttendance, setMaxAttendance] = useState(0);
   const [dataAttendance, setDataAttendance] = useState([]);
   const [grouping, setGrouping] = useState("members");
+  const [modalSettingsOpen, setModalSettingsOpen] = useState(false);
   const [sortedDirection, setSortedDirection] = useState("desc");
   const [sortedField, setSortedField] = useState("attendance-count");
   const [tooltipShown, setTooltipShown] = useState(true);
@@ -138,6 +144,12 @@ function Attendance() {
     const missedGroup = tooltipAttendance["grouped-attendance"]?.find(
       (a) => a.group === "missed"
     );
+    const attendedAMGroup = tooltipAttendance["grouped-attendance"]?.find(
+      (a) => a.group === "attended-am"
+    );
+    const missedAMGroup = tooltipAttendance["grouped-attendance"]?.find(
+      (a) => a.group === "missed-am"
+    );
     return (
       <div
         className="attendance-tooltip"
@@ -178,6 +190,21 @@ function Attendance() {
                         <td>({Math.round(attendedGroup.percentage)}%)</td>
                       </tr>
                     )}
+                    {attendedAMGroup && (
+                      <tr
+                        className={
+                          tooltipAttendanceState === "attended-am"
+                            ? "state-attended-am"
+                            : ""
+                        }
+                      >
+                        <td>Meetings attended (alternate):</td>
+                        <td className="text-align-right">
+                          {attendedAMGroup.count.toLocaleString()}
+                        </td>
+                        <td>({Math.round(attendedAMGroup.percentage)}%)</td>
+                      </tr>
+                    )}
                     {missedGroup && (
                       <tr
                         className={
@@ -191,6 +218,21 @@ function Attendance() {
                           {missedGroup.count.toLocaleString()}
                         </td>
                         <td>({Math.round(missedGroup.percentage)}%)</td>
+                      </tr>
+                    )}
+                    {missedAMGroup && (
+                      <tr
+                        className={
+                          tooltipAttendanceState === "missed-am"
+                            ? "state-missed-am"
+                            : ""
+                        }
+                      >
+                        <td>Meetings missed (alternate):</td>
+                        <td className="text-align-right">
+                          {missedAMGroup.count.toLocaleString()}
+                        </td>
+                        <td>({Math.round(missedAMGroup.percentage)}%)</td>
                       </tr>
                     )}
                   </Fragment>
@@ -247,6 +289,11 @@ function Attendance() {
     setFilteredByHouses(['National Assembly']);
     setFiltereedByCurrent(true);
   };
+
+  const onSettingsChange = (settings) => {
+    setIncludeAlternates(settings.includeAlternates);
+    setIncludePermanents(settings.includePermanents);
+  }
 
   const setupData = () => {
     let partyAttendance = {};
@@ -330,12 +377,31 @@ function Attendance() {
       activeAttendance = Object.values(memberAttendance);
     }
 
-    // Filter out attendnace.state = 'U'
+    // Filter out excluded attendance states e.g. Unknown (U)
     activeAttendance.forEach((row) => {
       row["attendance"] = row["attendance"]?.filter(
-        (attendance) => attendance.state !== "U"
+        (attendance) => !attendanceStates[attendance.state].exclude
       );
     });
+
+    if (!includeAlternates) {
+      // Filter out alternate data
+      activeAttendance.forEach((row) => {
+        row["attendance"] = row["attendance"]?.filter(
+          (attendance) => !attendanceStates[attendance.state].alternate
+        );
+      });
+    }
+
+    if (!includePermanents) {
+      // Filter out permanent data
+      activeAttendance.forEach((row) => {
+        row["attendance"] = row["attendance"]?.filter(
+          (attendance) => attendanceStates[attendance.state].alternate
+        );
+      });
+    }
+
 
     // filter out empty activeAttendance.attendance
     activeAttendance = activeAttendance.filter(
@@ -472,7 +538,7 @@ function Attendance() {
 
   useEffect(() => {
     setupData();
-  }, [data, selectedParliament, grouping]);
+  }, [data, selectedParliament, grouping, includeAlternates, includePermanents]);
 
   useEffect(() => {
     filterAndSortAttendanceData(dataAttendance);
@@ -520,7 +586,6 @@ function Attendance() {
       })
       .filter((row) => {
         if (grouping === "members") {
-          console.log(row);
           return (
             filteredByCurrent ? row.current : true
           )
@@ -625,6 +690,13 @@ function Attendance() {
                     Parties
                   </button>
                 </div>
+                <button
+                  className="toolbarButton"
+                  onClick={() => setModalSettingsOpen(true)}
+                >
+                  <FontAwesomeIcon icon={faSliders} className="mx-2" />
+                  Settings
+                </button>
               </Stack>
             </Col>
           </Row>
@@ -1200,7 +1272,7 @@ function Attendance() {
                             ChartTypes[selectedChartType].detailed && (
                               <Fragment>
                                 {Object.keys(attendanceStates)
-                                  .filter((state) => state !== "U")
+                                  .filter((state) => attendanceStates[state].legend)
                                   .map((state) => (
                                     <li
                                       key={state}
@@ -1232,10 +1304,22 @@ function Attendance() {
                                   Meetings attended
                                 </li>
                                 <li>
+                                  <span className="bar state-attended-am">
+                                    Attended (alternate)
+                                  </span>{" "}
+                                  Meetings attended (alternate)
+                                </li>
+                                <li>
                                   <span className="bar state-missed">
                                     Missed
                                   </span>{" "}
                                   Meetings missed
+                                </li>
+                                <li>
+                                  <span className="bar state-missed-am">
+                                    Missed (alternate)
+                                  </span>{" "}
+                                  Meetings missed (alternate)
                                 </li>
                               </Fragment>
                             )}
@@ -1254,6 +1338,11 @@ function Attendance() {
           </Row>
         </div>
       </Container>
+      <SettingsModal
+        modalSettingsOpen={modalSettingsOpen}
+        setModalSettingsOpen={setModalSettingsOpen}
+        callback={onSettingsChange}
+        settings={settings} />
     </Fragment>
   );
 }
