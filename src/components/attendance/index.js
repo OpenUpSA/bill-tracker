@@ -625,10 +625,17 @@ function Attendance() {
       <PMTabs active="attendance-tracker" />
       <Container fluid className="py-4">
         <div className="bill-tracker-container">
-          <Row>
-            <Col>
+          <Row className="mb-4">
+          <Col>
               <h1>Overall recorded meeting attendance</h1>
             </Col>
+            <Col xs="auto">
+              <div className="badge text-bg-dark py-1 px-2">Data till 30 May 2025</div>
+            </Col>
+          </Row>
+          <Row>
+            
+            
             <Col
               style={{
                 display: "flex",
@@ -637,6 +644,7 @@ function Attendance() {
               }}
             >
               <Stack direction="horizontal" gap={3}>
+              
                 <Form.Group as={Row}>
                   <Form.Label column md="auto" className="mt-1">
                     Parliament:
@@ -697,7 +705,9 @@ function Attendance() {
                   <FontAwesomeIcon icon={faSliders} className="mx-2" />
                   Settings
                 </button>
+                
               </Stack>
+              
             </Col>
           </Row>
           <Row className="mt-3">
