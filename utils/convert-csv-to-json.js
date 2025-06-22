@@ -69,51 +69,76 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
     const alternate = row[8] === 'true';
     const parliamentKey = lookupParliamentFromCreatedAt(createdAt);
 
-    // Alternate membership is counted as a different type of attendance: AM
-    if (alternate) {
-      attendance = `${attendance}-AM`
-    }
+    if (house === 'National Council of Provinces' || house === 'National Assembly') {
+      // Alternate membership is counted as a different type of attendance: AM
+      if (alternate) {
+        attendance = `${attendance}-AM`
+      }
 
-    // Add to existing member or create new one
-    if (data[id]) {
-      if (data[id]["parliamentary-record"][parliamentKey]) {
-        const record = data[id]["parliamentary-record"][parliamentKey];
-        const recordIndex = record.findIndex((r) => r.state === attendance);
-        if (recordIndex > -1) {
-          record[recordIndex].count += 1;
-          record[recordIndex].committees.push(committee);
-          record[recordIndex].committees = [
-            ...new Set(record[recordIndex].committees),
-          ];
-          record[recordIndex].houses.push(house);
-          record[recordIndex].houses = [
-            ...new Set(record[recordIndex].houses),
-          ];
-        } else {
-          record.push({
-            state: attendance,
-            count: 1,
-            committees: [committee],
-            houses: [house]
-          });
-        }
+      // Add to existing member or create new one
+      if (data[id]) {
+        if (data[id]["parliamentary-record"][parliamentKey]) {
+          const record = data[id]["parliamentary-record"][parliamentKey];
+          const recordIndex = record.findIndex((r) => r.state === attendance);
+          if (recordIndex > -1) {
+            record[recordIndex].count += 1;
+            record[recordIndex].committees.push(committee);
+            record[recordIndex].committees = [
+              ...new Set(record[recordIndex].committees),
+            ];
+            record[recordIndex].houses.push(house);
+            record[recordIndex].houses = [
+              ...new Set(record[recordIndex].houses),
+            ];
+          } else {
+            record.push({
+              state: attendance,
+              count: 1,
+              committees: [committee],
+              houses: [house]
+            });
+          }
 
-        const recordAll = data[id]["parliamentary-record"]["all"];
-        const recordIndexAll = recordAll.findIndex(
-          (r) => r.state === attendance
-        );
-        if (recordIndexAll > -1) {
-          recordAll[recordIndexAll].count += 1;
+          const recordAll = data[id]["parliamentary-record"]["all"];
+          const recordIndexAll = recordAll.findIndex(
+            (r) => r.state === attendance
+          );
+          if (recordIndexAll > -1) {
+            recordAll[recordIndexAll].count += 1;
+          } else {
+            recordAll.push({
+              state: attendance,
+              count: 1,
+              committees: [committee],
+              houses: [house]
+            });
+          }
         } else {
-          recordAll.push({
-            state: attendance,
-            count: 1,
-            committees: [committee],
-            houses: [house]
-          });
+          data[id]["parliamentary-record"][parliamentKey] = [
+            {
+              state: attendance,
+              count: 1,
+              committees: [committee],
+              houses: [house]
+            },
+          ];
+          data[id]["parliamentary-record"]["all"] = [
+            {
+              state: attendance,
+              count: 1,
+              committees: [committee],
+              houses: [house]
+            },
+          ];
         }
       } else {
-        data[id]["parliamentary-record"][parliamentKey] = [
+        const newMember = {
+          name: name,
+          party: party,
+          current: current,
+          "parliamentary-record": {},
+        };
+        newMember["parliamentary-record"][parliamentKey] = [
           {
             state: attendance,
             count: 1,
@@ -121,7 +146,7 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
             houses: [house]
           },
         ];
-        data[id]["parliamentary-record"]["all"] = [
+        newMember["parliamentary-record"]["all"] = [
           {
             state: attendance,
             count: 1,
@@ -129,31 +154,8 @@ fs.createReadStream("./data/member-attendance-all-time.csv")
             houses: [house]
           },
         ];
+        data[id] = newMember;
       }
-    } else {
-      const newMember = {
-        name: name,
-        party: party,
-        current: current,
-        "parliamentary-record": {},
-      };
-      newMember["parliamentary-record"][parliamentKey] = [
-        {
-          state: attendance,
-          count: 1,
-          committees: [committee],
-          houses: [house]
-        },
-      ];
-      newMember["parliamentary-record"]["all"] = [
-        {
-          state: attendance,
-          count: 1,
-          committees: [committee],
-          houses: [house]
-        },
-      ];
-      data[id] = newMember;
     }
     console.log(row);
   })
