@@ -18,7 +18,10 @@ LEFT JOIN "public"."member" AS "Member" ON "public"."committee_meeting_attendanc
   LEFT JOIN "public"."committee" AS "Committee" ON "Event - Meeting"."committee_id" = "Committee"."id"
   LEFT JOIN "public"."house" AS "House" ON "Member"."house_id" = "House"."id"
 ORDER BY
-  "Committee"."name" ASC
+  "Committee"."name" ASC;
+
+Or use Metabase:
+https://metabase.pmg.org.za/question/34-attendance-data-sql/
 */
 
 const fs = require("fs");
