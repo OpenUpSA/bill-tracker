@@ -6,7 +6,8 @@
     "dev": "parcel src/index.html src/attendance/index.html src/bill-tracker/index.html src/overview/index.html && npm run copy",
     "build": "parcel build src/index.html src/attendance/index.html src/bill-tracker/index.html src/overview/index.html && npm run copy",
     "deploy": "netlify deploy",
-    "copy": "cp -r src/data dist && cp -r src/assets dist"
+    "copy": "cp -r src/data dist && cp -r src/assets dist",
+    "attendance:convert": "node utils/convert-csv-to-json.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
