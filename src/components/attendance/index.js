@@ -45,7 +45,7 @@ const ChartTypes = {
     detailed: true,
     default: false,
   },
-  "pecentage-simple": {
+  "percentage-simple": {
     label: "Percentage (Simple)",
     percentage: true,
     detailed: false,
@@ -77,7 +77,7 @@ function Attendance() {
   const [filteredByParties, setFilteredByParties] = useState([]);
   const [filteredByCommittees, setFilteredByCommittees] = useState([]);
   const [filteredByHouses, setFilteredByHouses] = useState(['National Assembly']);
-  const [filteredByCurrent, setFiltereedByCurrent] = useState(true);
+  const [filteredByCurrent, setFilteredByCurrent] = useState(true);
   const [includeAlternates, setIncludeAlternates] = useState(settings.includeAlternates);
   const [includePermanents, setIncludePermanents] = useState(settings.includePermanents);
 
@@ -287,7 +287,7 @@ function Attendance() {
     setFilteredByParties([]);
     setFilteredByCommittees([]);
     setFilteredByHouses(['National Assembly']);
-    setFiltereedByCurrent(true);
+    setFilteredByCurrent(true);
   };
 
   const onSettingsChange = (settings) => {
@@ -317,55 +317,59 @@ function Attendance() {
           attendance: [],
         };
       }
-      partyAttendance[data[id].party]["member-count"] += 1;
-      data[id]["parliamentary-record"][selectedParliament] &&
-        data[id]["parliamentary-record"][selectedParliament].forEach(
-          (attendance) => {
-            const recordIndex = partyAttendance[
-              data[id].party
-            ].attendance.findIndex((r) => r.state === attendance.state);
-            if (recordIndex > -1) {
-              partyAttendance[data[id].party].attendance[recordIndex].count +=
-                attendance.count;
-              partyAttendance[data[id].party].committees.push(
-                attendance.committees
-              );
-              partyAttendance[data[id].party].committees = [
-                ...new Set(
-                  partyAttendance[data[id].party].committees.flat(Infinity)
-                ),
-              ];
-              partyAttendance[data[id].party]["committees-count"] =
-                partyAttendance[data[id].party].committees.length;
-              partyAttendance[data[id].party].committees.push(
-                attendance.committees
-              );
-              partyAttendance[data[id].party].committees = [
-                ...new Set(
-                  partyAttendance[data[id].party].committees.flat(Infinity)
-                ),
-              ];
 
-              partyAttendance[data[id].party].houses.push(attendance.houses);
-              partyAttendance[data[id].party].houses = [
-                ...new Set(
-                  partyAttendance[data[id].party].houses.flat(Infinity)
-                ),
-              ];
-            } else {
-              partyAttendance[data[id].party].attendance.push({
-                state: attendance.state,
-                count: attendance.count,
-              });
-              partyAttendance[data[id].party].committees =
-                attendance.committees;
+      if ((!filteredByCurrent || (filteredByCurrent && data[id].current === 'true')) && (selectedParliament in data[id]['parliamentary-record'])) {
+        partyAttendance[data[id].party]["member-count"] += 1;
 
-              partyAttendance[data[id].party].houses = attendance.houses;
-              partyAttendance[data[id].party]["committees-count"] =
-                partyAttendance[data[id].party].committees.length;
+        data[id]["parliamentary-record"][selectedParliament] &&
+          data[id]["parliamentary-record"][selectedParliament].forEach(
+            (attendance) => {
+              const recordIndex = partyAttendance[
+                data[id].party
+              ].attendance.findIndex((r) => r.state === attendance.state);
+              if (recordIndex > -1) {
+                partyAttendance[data[id].party].attendance[recordIndex].count +=
+                  attendance.count;
+                partyAttendance[data[id].party].committees.push(
+                  attendance.committees
+                );
+                partyAttendance[data[id].party].committees = [
+                  ...new Set(
+                    partyAttendance[data[id].party].committees.flat(Infinity)
+                  ),
+                ];
+                partyAttendance[data[id].party]["committees-count"] =
+                  partyAttendance[data[id].party].committees.length;
+                partyAttendance[data[id].party].committees.push(
+                  attendance.committees
+                );
+                partyAttendance[data[id].party].committees = [
+                  ...new Set(
+                    partyAttendance[data[id].party].committees.flat(Infinity)
+                  ),
+                ];
+
+                partyAttendance[data[id].party].houses.push(attendance.houses);
+                partyAttendance[data[id].party].houses = [
+                  ...new Set(
+                    partyAttendance[data[id].party].houses.flat(Infinity)
+                  ),
+                ];
+              } else {
+                partyAttendance[data[id].party].attendance.push({
+                  state: attendance.state,
+                  count: attendance.count,
+                });
+                partyAttendance[data[id].party].committees =
+                  attendance.committees;
+
+                partyAttendance[data[id].party].houses = attendance.houses;
+                partyAttendance[data[id].party]["committees-count"] =
+                  partyAttendance[data[id].party].committees.length;
+              }
             }
-          }
-        );
+          );
+      }
     });
 
     let activeAttendance = [];
@@ -482,10 +486,6 @@ function Attendance() {
         }
       });
 
-      if (!item["attendance-percentage"]) {
-        item["attendance-percentage"] = 0;
-      }
-
       // Make grouped-attendance an array
       item["grouped-attendance"] = Object.values(item["grouped-attendance"]);
     });
@@ -538,7 +538,7 @@ function Attendance() {
 
   useEffect(() => {
     setupData();
-  }, [data, selectedParliament, grouping, includeAlternates, includePermanents]);
+  }, [selectedParliament, grouping, includeAlternates, includePermanents, filteredByCurrent]);
 
   useEffect(() => {
     filterAndSortAttendanceData(dataAttendance);
@@ -626,7 +626,7 @@ function Attendance() {
       <Container fluid className="py-4">
         <div className="bill-tracker-container">
           <Row className="mb-4">
-          <Col>
+            <Col>
               <h1>Overall recorded meeting attendance</h1>
             </Col>
             <Col xs="auto">
@@ -634,8 +634,8 @@ function Attendance() {
             </Col>
           </Row>
           <Row>
-            
-            
+
+
             <Col
               style={{
                 display: "flex",
@@ -644,7 +644,7 @@ function Attendance() {
               }}
             >
               <Stack direction="horizontal" gap={3}>
-              
+
                 <Form.Group as={Row}>
                   <Form.Label column md="auto" className="mt-1">
                     Parliament:
@@ -705,9 +705,9 @@ function Attendance() {
                   <FontAwesomeIcon icon={faSliders} className="mx-2" />
                   Settings
                 </button>
-                
+
               </Stack>
-              
+
             </Col>
           </Row>
           <Row className="mt-3">
@@ -927,19 +927,18 @@ function Attendance() {
                           </Dropdown>
                         )}
 
-                        {grouping === "members" && (
-                          <Stack direction="horizontal" gap={3}>
-                            <div className="status-toggle">
-                              <Form.Check
-                                id="onlyCurrentMPs"
-                                type="switch"
-                                onChange={() => setFiltereedByCurrent(!filteredByCurrent)}
-                                checked={filteredByCurrent}
-                              />
-                            </div>
-                            <label className="pt-2 fs-7" htmlFor="onlyCurrentMPs">Only Current Members</label>
-                          </Stack>
-                        )}
+                        <Stack direction="horizontal" gap={3}>
+                          <div className="status-toggle">
+                            <Form.Check
+                              id="onlyCurrentMPs"
+                              type="switch"
+                              onChange={() => setFilteredByCurrent(!filteredByCurrent)}
+                              checked={filteredByCurrent}
+                            />
+                          </div>
+                          <label className="pt-2 fs-7" htmlFor="onlyCurrentMPs">Only Current Members</label>
+                        </Stack>
+
 
                         <Button variant="link" onClick={clearFilters}>
                           Clear all
