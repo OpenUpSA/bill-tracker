@@ -1341,8 +1341,10 @@ function Overview() {
         let femaleAvg = femaleCount > 0 ? parseFloat((femaleTotal / femaleCount).toFixed(2)) : 0;
 
         setBlock_AttendanceByGender({
-            male: maleAvg,
-            female: femaleAvg
+            male_avg: maleAvg,
+            male_total: maleCount,
+            female_avg: femaleAvg,
+            female_total: femaleCount
         });
     }
 
@@ -2159,7 +2161,8 @@ function Overview() {
                                                 <Table>
                                                     <thead>
                                                         <tr>
-                                                            <th style={{ width: '80%' }}>Gender</th>
+                                                            <th style={{ width: '60%' }}>Gender</th>
+                                                            <th style={{ width: '20%' }}>Member Count</th>
                                                             <th style={{ width: '10%' }}>Present</th>
                                                             <th></th>
                                                         </tr>
@@ -2167,12 +2170,14 @@ function Overview() {
                                                     <tbody>
                                                         <tr>
                                                             <td>Female</td>
-                                                            <td>{parseInt(block_AttendanceByGender.female)}%</td>
+                                                            <td>{block_AttendanceByGender.female_total}</td>
+                                                            <td>{parseInt(block_AttendanceByGender.female_avg)}%</td>
                                                             <td></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Male</td>
-                                                            <td>{parseInt(block_AttendanceByGender.male)}%</td>
+                                                            <td>{block_AttendanceByGender.male_total}</td>
+                                                            <td>{parseInt(block_AttendanceByGender.male_avg)}%</td>
                                                             <td></td>
                                                         </tr>
                                                     </tbody>
