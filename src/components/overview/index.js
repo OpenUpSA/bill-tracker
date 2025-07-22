@@ -1796,7 +1796,7 @@ function Overview() {
                             <Col md={6} lg={3}>
                                 <DashboardCard>
 
-                                    <CardTitle>Number of meetings that ended late</CardTitle>
+                                    <CardTitle>Actual vs. scheduled end-time</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
                                         <Row className="justify-content-between">
