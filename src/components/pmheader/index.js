@@ -17,6 +17,9 @@ import "./style.scss";
 import ParliMeterLogo from '../../assets/parlimeter.png';
 import DashboardBanner from '../../assets/dashboard.png';
 
+import CookieConsent from "../cookie";
+
+
 function PMHeader() {
 	const [showModal, setShowModal] = useState(false);
 
@@ -88,6 +91,8 @@ function PMHeader() {
 
                 </Modal.Body>
             </Modal>
+
+			<CookieConsent />
 		</>
 	);
 }
