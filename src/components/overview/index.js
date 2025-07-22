@@ -175,7 +175,7 @@ function Overview() {
     const [party, setParty] = useState("All");
     const [partyName, setPartyName] = useState("All")
 
-    const [selectedMonth, setSelectedMonth] = useState(5);
+    const [selectedMonth, setSelectedMonth] = useState(6);
     const [selectedYear, setSelectedYear] = useState(2025);
 
     const months = [
@@ -1491,7 +1491,7 @@ function Overview() {
                             <h1>Parliamentary overview</h1>
                         </Col>
                         <Col xs="auto">
-                            <div className="badge text-bg-dark py-1 px-2">Data till 30 May 2025</div>
+                            <div className="badge text-bg-dark py-1 px-2">Data till 18 July 2025</div>
                         </Col>
                     </Row>
                 </div>
