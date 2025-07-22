@@ -646,13 +646,39 @@ function Overview() {
     function calc_scheduled_meetings(data) {
         let period_array = [];
 
-        for (let i = 1; i <= new Date(selectedYear, selectedMonth, 0).getDate(); i++) {
-            let new_date = `${selectedMonth}/${i}/${selectedYear}`;
-            period_array.push({
-                date: new_date,
-                x: i,
-                y: 0
+        if (period === 'month') {
+            for (let i = 1; i <= new Date(selectedYear, selectedMonth, 0).getDate(); i++) {
+                let new_date = `${selectedMonth}/${i}/${selectedYear}`;
+                period_array.push({
+                    date: new_date,
+                    x: i,
+                    y: 0
+                });
+            }
+        } else if (period === 'custom' && customDateRange) {
+            let [startDate, endDate] = customDateRange.map(date => {
+                let [day, month, year] = date.split('-');
+                return new Date(year, month - 1, day);
             });
+
+            let currentDate = new Date(startDate);
+            let dayIndex = 1;
+
+            while (currentDate <= endDate) {
+                let day = currentDate.getDate();
+                let month = currentDate.getMonth() + 1;
+                let year = currentDate.getFullYear();
+                let new_date = `${month}/${day}/${year}`;
+                
+                period_array.push({
+                    date: new_date,
+                    x: dayIndex,
+                    y: 0
+                });
+                
+                currentDate.setDate(currentDate.getDate() + 1);
+                dayIndex++;
+            }
         }
 
         let groupedByDate = groupByDate(data);
@@ -669,7 +695,15 @@ function Overview() {
         });
 
         let grouped_meetings = groupMeetings(data);
-        let days_in_period = new Date(selectedYear, selectedMonth, 0).getDate();
+        let days_in_period;
+        
+        if (period === 'month') {
+            days_in_period = new Date(selectedYear, selectedMonth, 0).getDate();
+        } else if (period === 'custom' && customDateRange) {
+            days_in_period = period_array.length;
+        } else {
+            days_in_period = 1; // fallback to avoid division by zero
+        }
 
         return {
             total: grouped_meetings.length,
