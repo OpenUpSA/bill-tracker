@@ -1212,6 +1212,7 @@ function Overview() {
 
             grouped_attendance_parties[party].percentage = parseFloat(percentage);
             grouped_attendance_parties[party].meeting_count = meetings.size;
+            grouped_attendance_parties[party].member_count = membersData.filter(member => member.party_id === party).length;
         });
 
 
@@ -1340,8 +1341,10 @@ function Overview() {
         let femaleAvg = femaleCount > 0 ? parseFloat((femaleTotal / femaleCount).toFixed(2)) : 0;
 
         setBlock_AttendanceByGender({
-            male: maleAvg,
-            female: femaleAvg
+            male_avg: maleAvg,
+            male_total: maleCount,
+            female_avg: femaleAvg,
+            female_total: femaleCount
         });
     }
 
@@ -1427,7 +1430,6 @@ function Overview() {
     }
 
 
-
     // UseEffects //////////////////
 
     useEffect(() => {
@@ -1478,6 +1480,12 @@ function Overview() {
     useEffect(() => {
         
     }, [historicalData]);
+
+    useEffect(() => {
+        console.log('Members Data:', membersData);
+        console.log('Parties Data:', partiesData);
+        console.log('Committees Data:', committeesData);
+    }, [membersData]);
 
     return (
         <Fragment>
@@ -2054,6 +2062,7 @@ function Overview() {
                                                         <tr>
                                                             <th></th>
                                                             <th style={{ width: '50%' }}>Party</th>
+                                                            <th>No of MPs</th>
                                                             <th>Meetings</th>
                                                             <th>Present</th>
                                                             <th>%</th>
@@ -2067,6 +2076,7 @@ function Overview() {
                                                                 <tr key={index} className={party == p.party ? 'current-party' : ''}>
                                                                     <td>{index + 1}</td>
                                                                     <td><Badge party pic={partiesData.find(c => c.id === p.party)?.party} />{partiesData.find(c => c.id === p.party)?.party}</td>
+                                                                    <td>{p.member_count}</td>
                                                                     <td>{p.meeting_count}</td>
                                                                     <td>{p.attended}</td>
                                                                     <td>{parseInt(p.percentage)}%</td>
@@ -2151,7 +2161,8 @@ function Overview() {
                                                 <Table>
                                                     <thead>
                                                         <tr>
-                                                            <th style={{ width: '80%' }}>Gender</th>
+                                                            <th style={{ width: '60%' }}>Gender</th>
+                                                            <th style={{ width: '20%' }}>Member Count</th>
                                                             <th style={{ width: '10%' }}>Present</th>
                                                             <th></th>
                                                         </tr>
@@ -2159,12 +2170,14 @@ function Overview() {
                                                     <tbody>
                                                         <tr>
                                                             <td>Female</td>
-                                                            <td>{parseInt(block_AttendanceByGender.female)}%</td>
+                                                            <td>{block_AttendanceByGender.female_total}</td>
+                                                            <td>{parseInt(block_AttendanceByGender.female_avg)}%</td>
                                                             <td></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Male</td>
-                                                            <td>{parseInt(block_AttendanceByGender.male)}%</td>
+                                                            <td>{block_AttendanceByGender.male_total}</td>
+                                                            <td>{parseInt(block_AttendanceByGender.male_avg)}%</td>
                                                             <td></td>
                                                         </tr>
                                                     </tbody>
