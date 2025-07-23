@@ -1158,7 +1158,7 @@ function Overview() {
         let grouped_meetings = groupMeetings(filteredData);
         let total_meetings = grouped_meetings.length;
         let total = grouped_attendance[0].P + grouped_attendance[0].U + grouped_attendance[0].A + grouped_attendance[0].AP + grouped_attendance[0].DE + grouped_attendance[0].L + grouped_attendance[0].LDE;
-        let present_percentage = parseFloat(((grouped_attendance[0].P + grouped_attendance[0].L + grouped_attendance[0].DE + grouped_attendance[0].LDE) / total) * 100).toFixed(2);
+        let present_percentage = Math.round(((grouped_attendance[0].P + grouped_attendance[0].L + grouped_attendance[0].DE + grouped_attendance[0].LDE) / total) * 100);
 
         setBlock_overallAttendance({
             avg: present_percentage,
@@ -2022,7 +2022,7 @@ function Overview() {
                                     <CardTitle>Overall committee meeting attendance</CardTitle>
                                     <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                                     <CardSubtitle>
-                                        <span className="card-big-text">{parseInt(block_overallAttendance.avg)}%</span> of <span className="card-big-text">{block_overallAttendance.total}</span>
+                                        <span className="card-big-text">{block_overallAttendance.avg}%</span> of <span className="card-big-text">{block_overallAttendance.total}</span>
                                     </CardSubtitle>
 
                                     <CardContent>
