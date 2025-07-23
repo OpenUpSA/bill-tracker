@@ -16,8 +16,8 @@ export default function StackedBarChart(props) {
         const DE_percentage = (item.DE / total) * 100;
         const AP_percentage = (item.AP / total) * 100;
         const A_percentage = (item.A / total) * 100;
-        const present_percentage = ((item.P + item.L + item.LDE) / total) * 100;
-        const absent_percentage = ((item.DE + item.AP + item.A) / total) * 100;
+        const present_percentage = ((item.P + item.L + item.LDE + item.DE) / total) * 100;
+        const absent_percentage = ((item.AP + item.A) / total) * 100;
 
         chart_data.push({
             ...item,
@@ -87,8 +87,8 @@ export default function StackedBarChart(props) {
                        
                         <div className="attendance-separator">
                             <div className="attendance-separator-arrow">{index == 0 ? '▼' : '▲'}</div>
-                            <div className="attendance-separator-present">Present ({parseInt(item.present_percentage)}%)</div>
-                            <div className="attendance-separator-absent">Absent ({parseInt(item.absent_percentage)}%)</div>
+                            <div className="attendance-separator-present">Present ({Math.round(item.present_percentage)}%)</div>
+                            <div className="attendance-separator-absent">Absent ({Math.round(item.absent_percentage)}%)</div>
                         </div>
                       
                     </div>
