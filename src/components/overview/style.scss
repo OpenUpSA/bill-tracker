@@ -285,6 +285,19 @@ tbody {
 	font-family: $general_sans_400 !important;
 }
 
+.sticky-header-table {
+	thead {
+		position: sticky;
+		top: 0;
+		z-index: 10;
+		
+		th {
+			background-color: #fff;
+			border-bottom: 1px solid #dee2e6;
+		}
+	}
+}
+
 
 .dashboard-card {
     background-color: #fff;

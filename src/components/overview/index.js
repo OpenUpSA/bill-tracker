@@ -1915,7 +1915,7 @@ function Overview() {
                                         <CardHelp metric="meetingsPerCommittee"></CardHelp>
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
-                                                <Table>
+                                                <Table className="sticky-header-table">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
@@ -1967,7 +1967,7 @@ function Overview() {
                                         <CardHelp metric="meetingsThatOverlapped" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
-                                                <Table>
+                                                <Table className="sticky-header-table">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
@@ -2046,7 +2046,7 @@ function Overview() {
                                         <CardHelp metric="commiteesWithBestAttendance" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
-                                                <Table>
+                                                <Table className="sticky-header-table">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
@@ -2094,7 +2094,7 @@ function Overview() {
                                         <CardHelp metric="partiesWithBestAttendance" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
-                                                <Table>
+                                                <Table className="sticky-header-table">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
@@ -2143,7 +2143,7 @@ function Overview() {
                                         <CardHelp metric="membersWithBestAttendance" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
-                                                <Table>
+                                                <Table className="sticky-header-table">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
@@ -2195,7 +2195,7 @@ function Overview() {
                                         <CardHelp metric="attendanceByGender" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
-                                                <Table>
+                                                <Table className="sticky-header-table">
                                                     <thead>
                                                         <tr>
                                                             <th style={{ width: '60%' }}>Gender</th>
@@ -2237,7 +2237,7 @@ function Overview() {
                                         <CardHelp metric="attendanceByAge" />
                                         <div className="scroll-area mt-4" style={{opacity: 0.4}}>
                                             <Scrollbars style={{ height: "250px" }}>
-                                                <Table>
+                                                <Table className="sticky-header-table">
                                                     <thead>
                                                         <tr>
                                                             <th style={{ width: '40%' }}>Age range</th>
@@ -2337,7 +2337,7 @@ function Overview() {
                                         <CardHelp metric="writtenQuestions" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
-                                                <Table>
+                                                <Table className="sticky-header-table">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
@@ -2386,7 +2386,7 @@ function Overview() {
                                         <CardHelp metric="questionsByMembers" />
                                         <div className="scroll-area mt-4">
                                             <Scrollbars style={{ height: "250px" }}>
-                                                <Table>
+                                                <Table className="sticky-header-table">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
