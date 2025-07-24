@@ -77,8 +77,17 @@ export default function LineChart({ data, referenceY, data2 = null, party = null
     
     const parseDate = timeParse('%m/%d/%Y');
     const formatDate = timeFormat('%b %d');
+    const formatMonth = timeFormat('%b');
 
-    // Filter out Mondays
+    // Calculate the period length in months
+    const firstDate = parseDate(data[0]?.date);
+    const lastDate = parseDate(data[data.length - 1]?.date);
+    const periodInMonths = firstDate && lastDate ? 
+        (lastDate.getFullYear() - firstDate.getFullYear()) * 12 + (lastDate.getMonth() - firstDate.getMonth()) : 0;
+
+    // Use monthly markers if period is longer than 2 months, otherwise use Monday markers
+    const useMonthlyMarkers = periodInMonths > 2;
+
     const mondayData = data
         .map((d, i) => ({
             ...d,
@@ -86,7 +95,15 @@ export default function LineChart({ data, referenceY, data2 = null, party = null
             parsedDate: parseDate(d.date), 
         }))
         .filter((d) => {
-            return d.parsedDate && d.parsedDate.getDay() === 1; 
+            if (!d.parsedDate) return false;
+            
+            if (useMonthlyMarkers) {
+                // Filter for first day of each month
+                return d.parsedDate.getDate() === 1;
+            } else {
+                // Filter for Mondays
+                return d.parsedDate.getDay() === 1;
+            }
         });
 
     return (
@@ -110,7 +127,7 @@ export default function LineChart({ data, referenceY, data2 = null, party = null
                                 fontSize={10}
                                 textAnchor="middle"
                                 fill="#868686"
-                            >Mon</text>
+                            >{useMonthlyMarkers ? formatMonth(d.parsedDate) : 'Mon'}</text>
                         </g>
                     );
                 })}
