@@ -1735,7 +1735,7 @@ function Overview() {
                                     <CardSubtitle>
                                         <Row className="justify-content-between">
                                             <Col>
-                                                <span className="card-big-text">{parseInt(block_meetingsPerMember[0].avg)}</span>
+                                                <span className="card-big-text">{block_meetingsPerMember[0].avg}</span>
                                             </Col>
                                             <Col xs="auto" className="d-flex align-items-center">
                                                 <div className="card-badge">{vs_avg(block_meetingsPerMember[0].avg, averages.meetings_per_members)}</div>
