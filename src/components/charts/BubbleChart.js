@@ -62,12 +62,39 @@ export default function BubbleChart({ data, data2 = null, party = null, xType = 
     const xMax = xDomain[1];
     const tickValues = [];
 
+    // Calculate maximum number of ticks based on chart width (minimum 60px between ticks)
+    const maxTicks = Math.floor(chartWidth / 60);
+
     if (xType === "count") {
-        for (let tick = Math.ceil(xMin); tick <= xMax; tick++) {
+        const range = xMax - Math.ceil(xMin) + 1;
+        let step = Math.max(1, Math.ceil(range / maxTicks));
+        
+        // Round step to nice intervals (1, 2, 5, 10, 20, 50, 100, etc.)
+        if (step > 1) {
+            const magnitude = Math.pow(10, Math.floor(Math.log10(step)));
+            const normalized = step / magnitude;
+            if (normalized <= 2) step = 2 * magnitude;
+            else if (normalized <= 5) step = 5 * magnitude;
+            else step = 10 * magnitude;
+        }
+        
+        // Start from a nice round number
+        const startTick = Math.ceil(xMin / step) * step;
+        
+        for (let tick = startTick; tick <= xMax; tick += step) {
             tickValues.push(tick);
         }
+        
+        // Always include the minimum value if it's not already included
+        if (startTick > Math.ceil(xMin)) {
+            tickValues.unshift(Math.ceil(xMin));
+        }
     } else if (xType === "time" || xType === "late") {
-        for (let tick = Math.ceil(xMin / 120) * 120; tick <= xMax; tick += 120) {
+        const baseStep = 120;
+        const range = (xMax - Math.ceil(xMin / baseStep) * baseStep) / baseStep;
+        const step = Math.max(1, Math.ceil(range / maxTicks)) * baseStep;
+        
+        for (let tick = Math.ceil(xMin / baseStep) * baseStep; tick <= xMax; tick += step) {
             tickValues.push(tick);
         }
     }
