@@ -630,7 +630,7 @@ function Attendance() {
               <h1>Overall recorded meeting attendance</h1>
             </Col>
             <Col xs="auto">
-              <div className="badge text-bg-dark py-1 px-2">Data till 4 July 2025</div>
+              <div className="badge text-bg-dark py-1 px-2">Data till 30 July 2025</div>
             </Col>
           </Row>
           <Row>
