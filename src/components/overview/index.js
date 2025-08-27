@@ -232,7 +232,7 @@ function Overview() {
                 pic = 'ASA';
             }
 
-            return <div className="party_member_badge" style={{ backgroundImage: `url(../assets/party-logos/${pic}.png)` }}></div>;
+            return <div className="party_member_badge" style={{ backgroundImage: `url(~/assets/party-logos/${pic}.png)` }}></div>;
         }
 
         return <div className="party_member_badge" style={{ backgroundImage: `url(https://static.pmg.org.za/${props.pic})` }}></div>;
@@ -1673,7 +1673,7 @@ function Overview() {
                         <Row>
                             <Col>
                                 <div className="header-img-container">
-                                    <div className="header-img" style={{ backgroundImage: "url('../assets/scheduling.jpeg')" }}></div>
+                                    <div className="header-img" style={{ backgroundImage: "url('~/assets/scheduling.jpeg')" }}></div>
                                     <h2>Scheduling of committee meetings</h2>
                                 </div>
                             </Col>
@@ -2005,7 +2005,7 @@ function Overview() {
                         <Row>
                             <Col>
                                 <div className="header-img-container">
-                                    <div className="header-img" style={{ backgroundImage: "url('../assets/committee-meeting-attendance.jpeg')" }}></div>
+                                    <div className="header-img" style={{ backgroundImage: "url('~/assets/committee-meeting-attendance.jpeg')" }}></div>
                                     <h2>Attendance of committee meetings</h2>
                                 </div>
                             </Col>
@@ -2308,7 +2308,7 @@ function Overview() {
                         <Row>
                             <Col>
                                 <div className="header-img-container">
-                                    <div className="header-img" style={{ backgroundImage: "url('../assets/member-activities.jpeg')" }}></div>
+                                    <div className="header-img" style={{ backgroundImage: "url('~/assets/member-activities.jpeg')" }}></div>
                                     <h2>Member and minister activities</h2>
                                 </div>
                             </Col>
