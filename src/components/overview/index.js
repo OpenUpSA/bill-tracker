@@ -1404,12 +1404,6 @@ function Overview() {
   useEffect(() => {
   }, [historicalData]);
 
-  useEffect(() => {
-    console.log('Members Data:', membersData);
-    console.log('Parties Data:', partiesData);
-    console.log('Committees Data:', committeesData);
-  }, [membersData]);
-
   return (
     <Fragment>
       <PMHeader />
@@ -1942,7 +1936,7 @@ function Overview() {
                               block_committeesWithBestAttendance.committees.sort((a, b) => b.percentage - a.percentage).map((committee, index) =>
                                 <tr key={index}>
                                   <td>{index + 1}</td>
-                                  <td>{committeesData.find(c => c.id === committee.committee).name}</td>
+                                  <td>{committeesData.find(c => c.id === committee.committee)?.name}</td>
                                   <td>{committee.meetings}</td>
                                   <td>{parseInt(committee.percentage)}%</td>
                                   <td><CardBar value={parseInt(committee.percentage)} avg={block_committeesWithBestAttendance.avg} /></td>
