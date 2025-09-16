@@ -406,7 +406,6 @@ function Attendance() {
       });
     }
 
-
     // filter out empty activeAttendance.attendance
     activeAttendance = activeAttendance.filter(
       (row) => row["attendance"]?.length > 0
@@ -427,6 +426,7 @@ function Attendance() {
 
       item["committees"] = [...new Set(item["committees"].flat(Infinity))];
 
+      console.log(item, item["committees"])
       item["committees-count"] = item["committees"].length;
 
       item["houses"] = [];

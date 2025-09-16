@@ -55,24 +55,32 @@ async function exportAttendanceAndProcess() {
 
     const query = `
       SELECT
-        "Member"."id" AS "Member → ID",
-        "Member"."name" AS "Member → Name",
-        "Party"."name" AS "Party → Name",
-        "Event - Meeting"."date" AS "Event - Meeting → Date",
-        "public"."committee_meeting_attendance"."attendance" AS "Attendance",
-        "Committee"."name" AS "Committee → Name",
-        "House"."name" AS "House → Name",
-        "Member"."current" AS "Member → Current",
-        "public"."committee_meeting_attendance"."alternate_member" AS "Alternate Member"
-      FROM
-        "public"."committee_meeting_attendance"
-        LEFT JOIN "public"."member" AS "Member" ON "public"."committee_meeting_attendance"."member_id" = "Member"."id"
-        LEFT JOIN "public"."event" AS "Event - Meeting" ON "public"."committee_meeting_attendance"."meeting_id" = "Event - Meeting"."id"
-        LEFT JOIN "public"."party" AS "Party" ON "Member"."party_id" = "Party"."id"
-        LEFT JOIN "public"."committee" AS "Committee" ON "Event - Meeting"."committee_id" = "Committee"."id"
-        LEFT JOIN "public"."house" AS "House" ON "Member"."house_id" = "House"."id"
-      ORDER BY
-        "Committee"."name" ASC;
+    "Member"."id" AS "Member → ID",
+    "Member"."name" AS "Member → Name",
+    "Party"."name" AS "Party → Name",
+    "Event - Meeting"."date" AS "Event - Meeting → Date",
+    "public"."committee_meeting_attendance"."attendance" AS "Attendance",
+    "Committee"."name" AS "Committee → Name",
+    "House"."name" AS "House → Name",
+    "Member"."current" AS "Member → Current",
+    "public"."committee_meeting_attendance"."alternate_member" AS "Alternate Member"
+FROM
+    "public"."committee_meeting_attendance"
+    INNER JOIN "public"."member" AS "Member"
+        ON "public"."committee_meeting_attendance"."member_id" = "Member"."id"
+    INNER JOIN "public"."event" AS "Event - Meeting"
+        ON "public"."committee_meeting_attendance"."meeting_id" = "Event - Meeting"."id"
+    INNER JOIN "public"."committee" AS "Committee"
+        ON "Event - Meeting"."committee_id" = "Committee"."id"
+    INNER JOIN "public"."committee_members" AS "CommitteeMembers"
+        ON "CommitteeMembers"."member_id" = "public"."committee_meeting_attendance"."member_id"
+       AND "CommitteeMembers"."committee_id" = "Event - Meeting"."committee_id"
+    LEFT JOIN "public"."party" AS "Party"
+        ON "Member"."party_id" = "Party"."id"
+    LEFT JOIN "public"."house" AS "House"
+        ON "Committee"."house_id" = "House"."id"
+ORDER BY
+    "Committee"."name" ASC;
     `;
 
     const result = await client.query(query);
