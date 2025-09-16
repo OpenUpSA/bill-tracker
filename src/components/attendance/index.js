@@ -406,7 +406,6 @@ function Attendance() {
       });
     }
 
-
     // filter out empty activeAttendance.attendance
     activeAttendance = activeAttendance.filter(
       (row) => row["attendance"]?.length > 0
@@ -427,6 +426,7 @@ function Attendance() {
 
       item["committees"] = [...new Set(item["committees"].flat(Infinity))];
 
+      console.log(item, item["committees"])
       item["committees-count"] = item["committees"].length;
 
       item["houses"] = [];
@@ -1062,7 +1062,7 @@ function Attendance() {
                           : shortPartyName(row["party"])}
                       </td>
                       {grouping === "members" && (
-                        <td>{row["committees-count"]}</td>
+                        <td><abbr title={'- ' + row["committees"].join("\n- ")}>{row["committees-count"]}</abbr></td>
                       )}
                       <td>{row["attendance-count"].toLocaleString()}</td>
                       <td className="no-word-break">
