@@ -1062,7 +1062,7 @@ function Attendance() {
                           : shortPartyName(row["party"])}
                       </td>
                       {grouping === "members" && (
-                        <td>{row["committees-count"]}</td>
+                        <td><abbr title={'- ' + row["committees"].join('\n- ')}>{row["committees-count"]}</abbr></td>
                       )}
                       <td>{row["attendance-count"].toLocaleString()}</td>
                       <td className="no-word-break">
