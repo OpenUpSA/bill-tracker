@@ -55,15 +55,15 @@ async function exportAttendanceAndProcess() {
 
     const query = `
       SELECT
-        "Member"."id" AS "Member → ID",
-        "Member"."name" AS "Member → Name",
-        "Party"."name" AS "Party → Name",
-        "Event - Meeting"."date" AS "Event - Meeting → Date",
-        "public"."committee_meeting_attendance"."attendance" AS "Attendance",
-        "Committee"."name" AS "Committee → Name",
-        "House"."name" AS "House → Name",
-        "Member"."current" AS "Member → Current",
-        "public"."committee_meeting_attendance"."alternate_member" AS "Alternate Member"
+        "Member"."id" AS "member_id",
+        "Member"."name" AS "member_name",
+        "Party"."name" AS "party_Name",
+        "Event - Meeting"."date" AS "event_meeting_ate",
+        "public"."committee_meeting_attendance"."attendance" AS "attendance",
+        "Committee"."name" AS "committee_name",
+        "House"."name" AS "house_name",
+        "Member"."current" AS "member_current",
+        "public"."committee_meeting_attendance"."alternate_member" AS "alternate_member"
       FROM
         "public"."committee_meeting_attendance"
         LEFT JOIN "public"."member" AS "Member" ON "public"."committee_meeting_attendance"."member_id" = "Member"."id"
