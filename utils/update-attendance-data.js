@@ -1,14 +1,14 @@
-require('dotenv').config();
+require('dotenv').config({quiet: true});
 const { Client } = require('pg');
 const fs = require('fs');
 const { format } = require('@fast-csv/format');
 const { parse } = require('csv-parse');
 const lookup = require('../src/data/lookup.json');
 
-const connectionString = process.env.DATABASE_URL;
+const connectionString = process.env.PMG_DATABASE_URL;
 
 if (!connectionString) {
-  console.error('❌ DATABASE_URL not set in .env file');
+  console.error('❌ PMG_DATABASE_URL not set in .env file');
   process.exit(1);
 }
 
