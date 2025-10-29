@@ -1,4 +1,4 @@
-require('dotenv').config({quiet: true});
+require('dotenv').config({ quiet: true });
 const { Client } = require('pg');
 const fs = require('fs');
 const { format } = require('@fast-csv/format');
@@ -55,24 +55,24 @@ async function exportAttendanceAndProcess() {
 
     const query = `
       SELECT
-        "Member"."id" AS "member_id",
-        "Member"."name" AS "member_name",
-        "Party"."name" AS "party_Name",
-        "Event - Meeting"."date" AS "event_meeting_ate",
+        "member"."id" AS "member_id",
+        "member"."name" AS "member_name",
+        "party"."name" AS "party_name",
+        "event"."date" AS "event_meeting_date",
         "public"."committee_meeting_attendance"."attendance" AS "attendance",
-        "Committee"."name" AS "committee_name",
-        "House"."name" AS "house_name",
-        "Member"."current" AS "member_current",
+        "committee"."name" AS "committee_name",
+        "house"."name" AS "house_name",
+        "member"."current" AS "member_current",
         "public"."committee_meeting_attendance"."alternate_member" AS "alternate_member"
       FROM
         "public"."committee_meeting_attendance"
-        LEFT JOIN "public"."member" AS "Member" ON "public"."committee_meeting_attendance"."member_id" = "Member"."id"
-        LEFT JOIN "public"."event" AS "Event - Meeting" ON "public"."committee_meeting_attendance"."meeting_id" = "Event - Meeting"."id"
-        LEFT JOIN "public"."party" AS "Party" ON "Member"."party_id" = "Party"."id"
-        LEFT JOIN "public"."committee" AS "Committee" ON "Event - Meeting"."committee_id" = "Committee"."id"
-        LEFT JOIN "public"."house" AS "House" ON "Member"."house_id" = "House"."id"
+        LEFT JOIN "public"."member" ON "public"."committee_meeting_attendance"."member_id" = "member"."id"
+        LEFT JOIN "public"."event" ON "public"."committee_meeting_attendance"."meeting_id" = "event"."id"
+        LEFT JOIN "public"."party" ON "member"."party_id" = "party"."id"
+        LEFT JOIN "public"."committee" ON "event"."committee_id" = "committee"."id"
+        LEFT JOIN "public"."house" ON "member"."house_id" = "house"."id"
       ORDER BY
-        "Committee"."name" ASC;
+        "committee"."name" ASC;
     `;
 
     const result = await client.query(query);
