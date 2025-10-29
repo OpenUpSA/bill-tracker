@@ -630,7 +630,7 @@ function Attendance() {
               <h1>Overall recorded meeting attendance</h1>
             </Col>
             <Col xs="auto">
-              <div className="badge text-bg-dark py-1 px-2">Data till 1 September 2025</div>
+              <div className="badge text-bg-dark py-1 px-2">Data till 1 October 2025</div>
             </Col>
           </Row>
           <Row>
@@ -1062,7 +1062,7 @@ function Attendance() {
                           : shortPartyName(row["party"])}
                       </td>
                       {grouping === "members" && (
-                        <td>{row["committees-count"]}</td>
+                        <td><abbr title={'- ' + row["committees"].join('\n- ')}>{row["committees-count"]}</abbr></td>
                       )}
                       <td>{row["attendance-count"].toLocaleString()}</td>
                       <td className="no-word-break">

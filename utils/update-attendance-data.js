@@ -1,14 +1,14 @@
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 const { Client } = require('pg');
 const fs = require('fs');
 const { format } = require('@fast-csv/format');
 const { parse } = require('csv-parse');
 const lookup = require('../src/data/lookup.json');
 
-const connectionString = process.env.DATABASE_URL;
+const connectionString = process.env.PMG_DATABASE_URL;
 
 if (!connectionString) {
-  console.error('❌ DATABASE_URL not set in .env file');
+  console.error('❌ PMG_DATABASE_URL not set in .env file');
   process.exit(1);
 }
 
@@ -55,24 +55,24 @@ async function exportAttendanceAndProcess() {
 
     const query = `
       SELECT
-        "Member"."id" AS "Member → ID",
-        "Member"."name" AS "Member → Name",
-        "Party"."name" AS "Party → Name",
-        "Event - Meeting"."date" AS "Event - Meeting → Date",
-        "public"."committee_meeting_attendance"."attendance" AS "Attendance",
-        "Committee"."name" AS "Committee → Name",
-        "House"."name" AS "House → Name",
-        "Member"."current" AS "Member → Current",
-        "public"."committee_meeting_attendance"."alternate_member" AS "Alternate Member"
+        "member"."id" AS "member_id",
+        "member"."name" AS "member_name",
+        "party"."name" AS "party_name",
+        "event"."date" AS "event_meeting_date",
+        "public"."committee_meeting_attendance"."attendance" AS "attendance",
+        "committee"."name" AS "committee_name",
+        "house"."name" AS "house_name",
+        "member"."current" AS "member_current",
+        "public"."committee_meeting_attendance"."alternate_member" AS "alternate_member"
       FROM
         "public"."committee_meeting_attendance"
-        LEFT JOIN "public"."member" AS "Member" ON "public"."committee_meeting_attendance"."member_id" = "Member"."id"
-        LEFT JOIN "public"."event" AS "Event - Meeting" ON "public"."committee_meeting_attendance"."meeting_id" = "Event - Meeting"."id"
-        LEFT JOIN "public"."party" AS "Party" ON "Member"."party_id" = "Party"."id"
-        LEFT JOIN "public"."committee" AS "Committee" ON "Event - Meeting"."committee_id" = "Committee"."id"
-        LEFT JOIN "public"."house" AS "House" ON "Member"."house_id" = "House"."id"
+        LEFT JOIN "public"."member" ON "public"."committee_meeting_attendance"."member_id" = "member"."id"
+        LEFT JOIN "public"."event" ON "public"."committee_meeting_attendance"."meeting_id" = "event"."id"
+        LEFT JOIN "public"."party" ON "member"."party_id" = "party"."id"
+        LEFT JOIN "public"."committee" ON "event"."committee_id" = "committee"."id"
+        LEFT JOIN "public"."house" ON "member"."house_id" = "house"."id"
       ORDER BY
-        "Committee"."name" ASC;
+        "committee"."name" ASC;
     `;
 
     const result = await client.query(query);
