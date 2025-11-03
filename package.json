@@ -17,7 +17,6 @@
     "@lueton/react-sparklines": "^2.1.1",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
-    "@parcel/transformer-sass": "2.15.4",
     "@popperjs/core": "^2.11.8",
     "@visx/annotation": "^3.12.0",
     "@visx/axis": "^3.12.0",
@@ -44,6 +43,8 @@
     "rsuite": "^5.83.3"
   },
   "devDependencies": {
+    "@parcel/config-default": "2.16.0",
+    "@parcel/transformer-sass": "2.16.0",
     "@types/node": "^22.18.0",
     "assert": "^2.1.0",
     "autoprefixer": "^10.4.21",
@@ -53,12 +54,13 @@
     "dotenv": "^17.2.1",
     "fast-csv": "^5.0.5",
     "netlify-cli": "^17.38.1",
-    "parcel": "^2.15.4",
+    "parcel": "2.16.0",
     "path-browserify": "^1.0.1",
     "pg": "^8.16.3",
     "postcss": "^8.5.6",
     "process": "^0.11.10",
     "util": "^0.12.5"
   },
-  "proxy": "https://api.pmg.org.za"
+  "proxy": "https://api.pmg.org.za",
+  "packageManager": "yarn@4.10.3"
 }
