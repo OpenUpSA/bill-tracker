@@ -171,7 +171,7 @@ function Overview() {
   const [party, setParty] = useState("All");
   const [partyName, setPartyName] = useState("All")
 
-  const [selectedMonth, setSelectedMonth] = useState(6);
+  const [selectedMonth, setSelectedMonth] = useState(10);
   const [selectedYear, setSelectedYear] = useState(2025);
 
   const months = [
