@@ -1622,7 +1622,7 @@ function BillTracker() {
 										<tr key={`event-${index}`}>
 											<td>{formatDate(event.date)}</td>
 											<td>{event.house}</td>
-											<td>{event.type}</td>
+											<td>{event.type.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</td>
 											<td>{event.title}</td>
 										</tr>
 									);
