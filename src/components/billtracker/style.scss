@@ -521,3 +521,11 @@ body {
     }
 }
 
+.event-title-link {
+    color: #001489;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
