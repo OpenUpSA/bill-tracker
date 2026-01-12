@@ -1719,7 +1719,7 @@ function Overview() {
               <Col md={6} lg={3}>
                 <DashboardCard>
 
-                  <CardTitle>Actual vs. scheduled end-time</CardTitle>
+                  <CardTitle>Number of meetings that ended late</CardTitle>
                   <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
                   <CardSubtitle>
                     <Row className="justify-content-between">
@@ -1734,7 +1734,7 @@ function Overview() {
                   </CardSubtitle>
                   <CardContent>
                     <div className="seperator my-3"></div>
-                    <h4 className="mb-3">All meetings durations</h4>
+                    <h4 className="mb-3">Actual vs. scheduled end-time</h4>
                     <CardHelp metric="meetingsThatEndedLate" />
                     {
                       party === "All" ? (
@@ -1987,7 +1987,7 @@ function Overview() {
                                   <td><Badge party pic={partiesData.find(c => c.id === p.party)?.party} />{partiesData.find(c => c.id === p.party)?.party}</td>
                                   <td>{p.member_count}</td>
                                   <td>{p.meeting_count}</td>
-                                  <td>{p.attended}</td>
+                                  <td>{p.attended} of {p.attended + p.absent}</td>
                                   <td>{parseInt(p.percentage)}%</td>
                                   <td><CardBar value={parseInt(p.percentage)} avg={block_partiesWithBestAttendance.avg} /></td>
                                   <td></td>
