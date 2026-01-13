@@ -3,16 +3,25 @@ import { Circle, Line } from '@visx/shape';
 import { useTooltip, Tooltip, defaultStyles } from '@visx/tooltip';
 import { localPoint } from '@visx/event';
 import { bisector } from 'd3-array';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 
 export default function BubbleChart({ data, data2 = null, party = null, xType = "count" }) {
     const containerRef = useRef(null);
-    const [chartWidth, setChartWidth] = useState(100);
+    const [chartWidth, setChartWidth] = useState(200);
     const height = 150;
     const padding = [20, 40, 5, 40];
 
-    // Handle resizing
-    useEffect(() => {
+    // Handle initial sizing and resizing
+    useLayoutEffect(() => {
+        const updateWidth = () => {
+            if (containerRef.current) {
+                setChartWidth(containerRef.current.clientWidth);
+            }
+        };
+
+        // Set initial width immediately
+        updateWidth();
+
         const resizeObserver = new ResizeObserver((entries) => {
             if (entries[0].contentRect.width) {
                 setChartWidth(entries[0].contentRect.width);
@@ -24,7 +33,8 @@ export default function BubbleChart({ data, data2 = null, party = null, xType = 
         }
 
         return () => resizeObserver.disconnect();
-    }, []);
+    }, []); // Empty dependency array - only run once on mount
+
 
     // Define xScale based on xType (count, time, or late)
     const xDomain = xType === "count"

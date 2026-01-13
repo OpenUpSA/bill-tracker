@@ -3,7 +3,7 @@ import { LinePath, Line, Circle } from '@visx/shape';
 import { useTooltip, Tooltip, defaultStyles } from '@visx/tooltip';
 import { localPoint } from '@visx/event';
 import { bisector } from 'd3-array';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { timeFormat, timeParse } from 'd3-time-format';
 
 export default function LineChart({ data, referenceY, data2 = null, party = null }) {
@@ -13,8 +13,17 @@ export default function LineChart({ data, referenceY, data2 = null, party = null
     const padding = [20, 20, 5, -10];
     
 
-    // Resize observer
-    useEffect(() => {
+    // Handle initial sizing and resizing
+    useLayoutEffect(() => {
+        const updateWidth = () => {
+            if (containerRef.current) {
+                setChartWidth(containerRef.current.clientWidth);
+            }
+        };
+
+        // Set initial width immediately
+        updateWidth();
+
         const resizeObserver = new ResizeObserver((entries) => {
             if (entries[0].contentRect.width) {
                 setChartWidth(entries[0].contentRect.width);
