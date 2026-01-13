@@ -6,11 +6,31 @@ import { bisector } from 'd3-array';
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { timeFormat, timeParse } from 'd3-time-format';
 
+// Create a global flag to track if any LineChart has ever loaded
+let hasAnyLineChartEverLoaded = false;
+
 export default function LineChart({ data, referenceY, data2 = null, party = null }) {
     const containerRef = useRef(null);
     const [chartWidth, setChartWidth] = useState(100);
+    const [showSkeleton, setShowSkeleton] = useState(!hasAnyLineChartEverLoaded);
+    const [isSkeletonFading, setIsSkeletonFading] = useState(false);
     const height = 150;
     const padding = [20, 20, 5, -10];
+    
+    useEffect(() => {
+        if (data && data.length > 0 && !hasAnyLineChartEverLoaded) {
+            setTimeout(() => {
+                setIsSkeletonFading(true);
+                setTimeout(() => {
+                    setShowSkeleton(false);
+                    setIsSkeletonFading(false);
+                    hasAnyLineChartEverLoaded = true;
+                }, 300);
+            }, 300);
+        } else if (hasAnyLineChartEverLoaded) {
+            setShowSkeleton(false);
+        }
+    }, [data]);
     
 
     // Handle initial sizing and resizing
@@ -114,6 +134,44 @@ export default function LineChart({ data, referenceY, data2 = null, party = null
                 return d.parsedDate.getDay() === 1;
             }
         });
+
+    // Show skeleton loader on initial load
+    if (showSkeleton) {
+        return (
+            <div ref={containerRef} style={{ width: '100%', position: 'relative' }}>
+                <div 
+                    style={{
+                        width: '100%',
+                        height: `${height}px`,
+                        backgroundColor: '#f6f7f8',
+                        borderRadius: '8px',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        opacity: isSkeletonFading ? 0 : 1,
+                        transition: 'opacity 300ms ease-out'
+                    }}
+                >
+                    <div 
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: '-100%',
+                            width: '100%',
+                            height: '100%',
+                            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+                            animation: 'wave 1.5s infinite'
+                        }}
+                    />
+                </div>
+                <style>{`
+                    @keyframes wave {
+                        0% { transform: translateX(-100%); }
+                        100% { transform: translateX(300%); }
+                    }
+                `}</style>
+            </div>
+        );
+    }
 
     return (
         <div ref={containerRef} style={{ width: '100%', position: 'relative'}}>

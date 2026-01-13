@@ -8,8 +8,15 @@ import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 export default function BubbleChart({ data, data2 = null, party = null, xType = "count" }) {
     const containerRef = useRef(null);
     const [chartWidth, setChartWidth] = useState(200);
+    const hasInitiallyLoadedRef = useRef(false);
     const height = 150;
     const padding = [20, 40, 5, 40];
+
+    useEffect(() => {
+        if (data && data.length > 0) {
+            hasInitiallyLoadedRef.current = true;
+        }
+    }, [data]);
 
     // Handle initial sizing and resizing
     useLayoutEffect(() => {
@@ -112,6 +119,41 @@ export default function BubbleChart({ data, data2 = null, party = null, xType = 
 
 
 
+    // Show skeleton loader on initial load
+    if (!hasInitiallyLoadedRef.current || !data || data.length === 0) {
+        return (
+            <div ref={containerRef} style={{ width: '100%', position: 'relative' }}>
+                <div 
+                    style={{
+                        width: '100%',
+                        height: `${height}px`,
+                        backgroundColor: '#f6f7f8',
+                        borderRadius: '8px',
+                        position: 'relative',
+                        overflow: 'hidden'
+                    }}
+                >
+                    <div 
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: '-100%',
+                            width: '100%',
+                            height: '100%',
+                            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+                            animation: 'wave 1.5s infinite'
+                        }}
+                    />
+                </div>
+                <style>{`
+                    @keyframes wave {
+                        0% { transform: translateX(-100%); }
+                        100% { transform: translateX(300%); }
+                    }
+                `}</style>
+            </div>
+        );
+    }
 
     return (
         <div ref={containerRef} style={{ width: '100%', position: 'relative' }}>
