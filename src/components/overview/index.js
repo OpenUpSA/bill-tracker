@@ -171,7 +171,7 @@ function Overview() {
   const [party, setParty] = useState("All");
   const [partyName, setPartyName] = useState("All")
 
-  const [selectedMonth, setSelectedMonth] = useState(10);
+  const [selectedMonth, setSelectedMonth] = useState(12);
   const [selectedYear, setSelectedYear] = useState(2025);
 
   const months = [
@@ -1416,7 +1416,7 @@ function Overview() {
               <h1>Parliamentary overview</h1>
             </Col>
             <Col xs="auto">
-              <div className="badge text-bg-dark py-1 px-2">Data till 31 October 2025</div>
+              <div className="badge text-bg-dark py-1 px-2">Data till 31 December 2025</div>
             </Col>
           </Row>
         </div>
@@ -1856,7 +1856,7 @@ function Overview() {
                               block_meetingsThatOverlapped.counts.map((committee, index) =>
                                 <tr key={index}>
                                   <td>{index + 1}</td>
-                                  <td>{committeesData.find(c => c.id === committee.committee).name}</td>
+                                  <td>{committeesData.find(c => c.id === committee.committee)?.name}</td>
                                   <td>{block_meetingsPerCommittee.committees.find(c => c.committee === committee.committee)?.count}</td>
                                   <td>{committee.count}</td>
                                   <td></td>
