@@ -389,7 +389,10 @@ function Overview() {
     if (period === 'month') {
       // Filter by selected month and year
       filteredData_Calc = attendanceData.filter(attendance => {
-        let [day, month, year] = attendance.event_date.split('-');
+        if (!attendance.event_date) return false; // Skip if no event_date
+        let dateParts = attendance.event_date.split('-');
+        if (dateParts.length !== 3) return false; // Skip if malformed date
+        let [day, month, year] = dateParts;
         return parseInt(month, 10) === selectedMonth && parseInt(year, 10) === selectedYear;
       });
     } else if (period === 'custom' && customDateRange) {
@@ -401,7 +404,10 @@ function Overview() {
 
       // Filter attendanceData within the custom date range
       filteredData_Calc = attendanceData.filter(attendance => {
-        let [day, month, year] = attendance.event_date.split('-');
+        if (!attendance.event_date) return false; // Skip if no event_date
+        let dateParts = attendance.event_date.split('-');
+        if (dateParts.length !== 3) return false; // Skip if malformed date
+        let [day, month, year] = dateParts;
         let attendanceDate = new Date(year, month - 1, day);
         return attendanceDate >= startDate && attendanceDate <= endDate;
       });
@@ -433,7 +439,10 @@ function Overview() {
 
     // filter by historical date range
     filteredData_Calc = attendanceData.filter(attendance => {
-      let [day, month, year] = attendance.event_date.split('-');
+      if (!attendance.event_date) return false; // Skip if no event_date
+      let dateParts = attendance.event_date.split('-');
+      if (dateParts.length !== 3) return false; // Skip if malformed date
+      let [day, month, year] = dateParts;
       return (parseInt(month, 10) >= historical_earliest_month && parseInt(year, 10) >= historical_earliest_year) && (parseInt(month, 10) <= historical_latest_month && parseInt(year, 10) <= historical_latest_year);
     });
 
@@ -505,20 +514,37 @@ function Overview() {
     }
 
     const parseDate = (dateStr) => {
-      let [day, month, year] = dateStr?.split('-');
+      if (!dateStr) return null;
+      let [day, month, year] = dateStr.split('-');
       return new Date(`${year}-${month}-${day}`);
     };
 
-    let earliest = parseDate(attendanceData[0].event_date);
-    let latest = parseDate(attendanceData[0].event_date);
+    // Find the first attendance record with a valid event_date
+    let firstValidDate = null;
+    for (let i = 0; i < attendanceData.length; i++) {
+      const parsedDate = parseDate(attendanceData[i].event_date);
+      if (parsedDate) {
+        firstValidDate = parsedDate;
+        break;
+      }
+    }
+
+    if (!firstValidDate) {
+      return; // No valid dates found
+    }
+
+    let earliest = firstValidDate;
+    let latest = firstValidDate;
 
     attendanceData.forEach(attendance => {
       let date = parseDate(attendance.event_date);
-      if (date < earliest) {
-        earliest = date;
-      }
-      if (date > latest) {
-        latest = date;
+      if (date) { // Only process valid dates
+        if (date < earliest) {
+          earliest = date;
+        }
+        if (date > latest) {
+          latest = date;
+        }
       }
     });
 
@@ -807,7 +833,10 @@ function Overview() {
     if (period === 'month') {
       // Filter by selected month and year
       filteredQuestionsData_Calc = questionsData.filter(question => {
-        let [day, month, year] = question.Date.split('/');
+        if (!question.Date) return false; // Skip if no date
+        let dateParts = question.Date.split('-'); // Changed from '/' to '-'
+        if (dateParts.length !== 3) return false; // Skip if malformed date
+        let [day, month, year] = dateParts;
         return parseInt(month, 10) === selectedMonth && parseInt(year, 10) === selectedYear;
       });
     } else if (period === 'custom' && customDateRange) {
@@ -819,7 +848,10 @@ function Overview() {
 
       // Filter questionsData within the custom date range
       filteredQuestionsData_Calc = questionsData.filter(question => {
-        let [day, month, year] = question.Date.split('/');
+        if (!question.Date) return false; // Skip if no date
+        let dateParts = question.Date.split('-'); // Changed from '/' to '-'
+        if (dateParts.length !== 3) return false; // Skip if malformed date
+        let [day, month, year] = dateParts;
         let questionDate = new Date(year, month - 1, day);
         return questionDate >= startDate && questionDate <= endDate;
       });
@@ -846,7 +878,10 @@ function Overview() {
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
     let longterm_avg_meetings = grouped_meetings.filter(meeting => {
-      let [day, month, year] = meeting.event_date.split('-').map(Number);
+      if (!meeting.event_date) return false; // Skip if no event_date
+      let dateParts = meeting.event_date.split('-');
+      if (dateParts.length !== 3) return false; // Skip if malformed date
+      let [day, month, year] = dateParts.map(Number);
       let meeting_date = new Date(year, month - 1, day);
       return meeting_date >= sixMonthsAgo;
     });
@@ -867,7 +902,10 @@ function Overview() {
     let meetings_committee = {};
 
     let longterm_meetings = grouped_meetings.filter(meeting => {
-      let [day, month, year] = meeting.event_date.split('-').map(Number);
+      if (!meeting.event_date) return false; // Skip if no event_date
+      let dateParts = meeting.event_date.split('-');
+      if (dateParts.length !== 3) return false; // Skip if malformed date
+      let [day, month, year] = dateParts.map(Number);
       let meeting_date = new Date(year, month - 1, day);
       return meeting_date >= sixMonthsAgo;
     });
@@ -1287,25 +1325,28 @@ function Overview() {
   }
 
   function block_questions_to_ministers() {
-    // grooup questions by minister
+    // group questions by minister_id
     let grouped_questions = {};
 
     filteredQuestionsData.forEach(question => {
-      let { question_to } = question;
+      let { minister_id, minister_name } = question;
 
-      if (!grouped_questions[question_to]) {
-        grouped_questions[question_to] = 0;
+      if (!grouped_questions[minister_id]) {
+        grouped_questions[minister_id] = {
+          count: 0,
+          minister_name: minister_name
+        };
       }
 
-      grouped_questions[question_to] += 1;
-
+      grouped_questions[minister_id].count += 1;
     })
 
     // convert grouped questions to array
-    grouped_questions = Object.keys(grouped_questions).map(minister => {
+    grouped_questions = Object.keys(grouped_questions).map(minister_id => {
       return {
-        minister,
-        count: grouped_questions[minister]
+        minister: grouped_questions[minister_id].minister_name,
+        minister_id: minister_id,
+        count: grouped_questions[minister_id].count
       };
     }).sort((a, b) => b.count - a.count);
 
