@@ -645,7 +645,11 @@ function Overview() {
 
     Object.keys(groupedByDate).forEach(date => {
       let corrected_date = date.split('-');
-      let new_date = `${corrected_date[1]}/${corrected_date[0]}/${corrected_date[2]}`;
+      // Remove leading zeros to match period_array format
+      let month = parseInt(corrected_date[1], 10);
+      let day = parseInt(corrected_date[0], 10);
+      let year = corrected_date[2];
+      let new_date = `${month}/${day}/${year}`;
 
       let index = period_array.findIndex(item => item.date === new_date);
 
