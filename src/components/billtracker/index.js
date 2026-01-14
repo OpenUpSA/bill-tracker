@@ -1622,8 +1622,21 @@ function BillTracker() {
 										<tr key={`event-${index}`}>
 											<td>{formatDate(event.date)}</td>
 											<td>{event.house}</td>
-											<td>{event.type}</td>
-											<td>{event.title}</td>
+											<td>{event.type.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</td>
+											<td>
+												{event.type === "committee-meeting" && event.id ? (
+													<a
+														href={`https://pmg.org.za/committee-meeting/${event.id}`}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="event-title-link"
+													>
+														{event.title}
+													</a>
+												) : (
+													event.title
+												)}
+											</td>
 										</tr>
 									);
 								})}
