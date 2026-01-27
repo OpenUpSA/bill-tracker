@@ -1,397 +1,404 @@
-id,member,surname,title,gender,initial,profile_pic,party_id
-1357,"Zungula, Mr V",Zungula,Mr,male,V,zungula.jpg,15
-1967,"Petersen, Ms JS",Petersen,Ms,female,JS,Petersen_JS.jpg,20
-2026,"Sokanyile, Ms T",Sokanyile,Ms,female,T,sokanyile.jpg,1
-708,"Michalakis, Mr G",Michalakis,Mr,male,G,Michalakis.jpg,2
-504,"Didiza, Ms AT",Didiza,Ms,female,AT,images/committee-members/resize/didiza_ms_at-didiza_angela_thokozile.jpg,1
-1387,"Nkabane, Dr NP",Nkabane,Dr,female,NP,ms_nobuhle_pamela_nkabane.jpg,1
-421,"Mazzone, Ms NW",Mazzone,Ms,female,NW,Mazzone.jpg,2
-1807,"Alexander, Ms W",Alexander,Ms,female,W,1/alex.jpg,2
-2324,"Nkosi, Mr V A",Nkosi,Mr,male,VA,Vusumuzi_Alfred_Nkosi.jpg,1
-2329,"Montana, Mr L",Montana,Mr,male,L,montana.jpg,19
-2334,"Mbiko, Ms F",Mbiko,Ms,female,F,fez.jpg,2
-2336,"Lonzi, Mr S",Lonzi,Mr,male,S,lonzi.jpg,11
-2337,"Tagodien, Ms R",Tagodien,Ms,female,R,tt.jpg,20
-2341,"Segede, Mr M",Segede,Mr,male,M,segede.jpeg,1
-2342,"Nchabeleng, Mr A",Nchabeleng,Mr,male,A,nchabeleng.png,19
-2345,"Matiwane, Mr C",Matiwane,Mr,male,C,,11
-1968,"Blose, Mr MB",Blose,Mr,male,MB,Blose_Mzwikayise.jpeg,11
-619,"Whitfield, Mr AG",Whitfield,Mr,male,AG,whitfield.jpg,2
-1908,"Niehaus, Mr CG",Niehaus,Mr,male,CG,neihaus.jpg,11
-651,"Atkinson, Mr P",Atkinson,Mr,male,P,aTKINSON.jpg,2
-2325,"Seate, Ms M O",Seate,Ms,female,MO,Makithing_Olga_Seate.jpg,1
-2248,"Kubheka, Mr TTS",Kubheka,Mr,male,TTS,Thalente_Thuthukani_Sakhike_Khubeka.jpg,19
-2330,"Kobane, Mr G E",Kobane,Mr,male,GE,penny_penny.jpg,19
-2338,"Daniels, Mr M V",Daniels,Mr,male,MV,dd.jpg,20
-2320,"Hlophe, Mr C R",Hlophe,Mr,male,CR,hlophe_R.jpg,1
-2343,"Makhubele, Ms C",Makhubele,Ms,female,C,1/makhubele.png,19
-1929,"Mtolo, Ms NE",Mtolo,Ms,female,NE,Mtolo.jpg,1
-2326,"Matsa, Mr F S",Matsa,Mr,male,FS,Matsa.jpg,19
-2331,"Gama, Mr S I",Gama,Mr,male,SI,gama.jpg,19
-843,"Tolashe, Ms N G",Tolashe,Ms,female,NG,1/tolashe.jpg,1
-2036,"Singh, Ms S",Singh,Ms,female,S,1/singh.jpg,2
-1909,"Gcilishe, Ms S",Gcilishe,Ms,female,S,Gclishe.jpg,11
-2339,"Mathopa, Ms M L",Mathopa,Ms,female,ML,mil.jpg,20
-2178,"Trollip, Mr A",Trollip,Mr,male,A,1/trollip.jpg,21
-959,"Mvana, Ms NQ",Mvana,Ms,female,NQ,mvana.jpg,1
-1970,"Machi, Ms BE",Machi,Ms,female,BE,Machi.jpg,4
-2327,"Shongwe, Mr C V",Shongwe,Mr,male,CV,shongwe....cv.jpg,19
-1799,"Mogale, Mr T",Mogale,Mr,male,T,2/mogale.jpg,11
-2028,"Hala, Mr MM",Hala,Mr,male,MM,Hala.jpg,1
-1930,"Subrathie, Mr SI",Subrathie,Mr,male,SI,Subrathie.jpg,1
-1845,"Manyi, Mr M",Manyi,Mr,male,M,man.jpg,19
-2332,"Gamede, Mr T I",Gamede,Mr,male,TI,gamede.jpg,19
-2340,"van Wyk, Mr SHM",van Wyk,Mr,male,SHM,saintes-harry-mclove-van-wyk.jpg,20
-2029,"Webster, Ms NL",Webster,Ms,female,NL,webster.jpg,23
-1414,"Nzuza, Mr NB",Nzuza,Mr,male,NB,nzuza.jpg,1
-1910,"Mailola, Ms PR",Mailola,Ms,female,PR,poppy.jpg,11
-770,"Labuschagne, Ms C",Labuschagne,Ms,female,C,Labuscaghne.jpg,2
-2031,"Kumbaca, Ms AN",Kumbaca,Ms,female,AN,Kumbaca.jpg,1
-1971,"Buthelezi, Mr NZ",Buthelezi,Mr,male,NZ,N_Buthelezi.jpg,4
-683,"Macpherson, Mr DW",Macpherson,Mr,male,DW,Macpherson.jpg,2
-2032,"Smith, Mr R",Smith,Mr,male,R,SmithR.jpg,2
-2034,"Linde, Ms E",Linde,Ms,female,E,Linde.jpg,2
-1972,"Mhlongo, Ms NH",Mhlongo,Ms,female,NH,mhlongo_nompumelelo.jpg,4
-1940,"Mhlauli, Ms NB",Mhlauli,Ms,female,NB,Mhalauli.jpg,1
-327,"Meshoe, Rev KR",Meshoe,Rev,male,KR,Meshoe.jpg,3
-2030,"Dithebe, Mr SL",Dithebe,Mr,male,SL,Dithebe.jpg,1
-1441,"Lucas, Ms SE",Lucas,Ms,female,SE,Lucas.jpg,1
-295,"Mashatile, Mr SP",Mashatile,Mr,male,SP,P_Mashatile.jpg,1
-2130,"Hlophe, Dr J",Hlophe,Dr,male,J,hlophe_dr.jpg,19
-2039,"Frenchman, Ms S",Frenchman,Ms,female,S,Frenchman.jpg,24
-810,"Maswanganyi, Mr MJ",Maswanganyi,Mr,male,MJ,Maswanganyi.jpg,1
-2038,"Bateman, Mr AG",Bateman,Mr,male,AG,Bateman.jpg,2
-1798,"Van Zyl, Ms A M",Van Zyl,Ms,female,AM,Van_Zyl.jpg,2
-1991,"Makgato, Ms MP",Makgato,Ms,female,MP,Makgato.jpg,1
-2040,"Mofokeng, Ms ML",Mofokeng,Ms,female,ML,mofokeng.jpg,1
-1718,"Mkhonto, Ms C N",Mkhonto,Ms,female,CN,Mkhonto.jpg,11
-838,"Mchunu, Mr ES",Mchunu,Mr,male,ES,Mchunu.jpg,1
-2041,"Freeman, Ms E",Freeman,Ms,female,E,Freeman.jpg,20
-249,"Kubayi, Ms M",Kubayi,Ms,female,M,Kubayi-Ngubane.jpg,1
-1413,"Graham-Maré, Ms SJ",Graham-Maré,Ms,female,SJ,Graham.jpg,2
-1938,"Letlape, Dr TKS",Letlape,Dr,male,TKS,letlape.jpg,21
-580,"Mahlobo, Mr MD",Mahlobo,Mr,male,MD,Mahlobo_MB.jpg,1
-87,"Sithole, Mr KP",Sithole,Mr,male,KP,Sithole_kp.jpg,4
-2043,"James, Ms DE",James,Ms,female,DE,James_de.jpg,21
-1942,"Nalumango, Ms RS",Nalumango,Ms,female,RS,naumango.jpg,1
-1941,"Mgcina, Ms PS",Mgcina,Ms,female,PS,Phumzile_Mgcina.jpg,1
-1935,"Chauke-Adonis, Ms TM",Chauke-Adonis,Ms,female,TM,TM_Chauke.jpg,1
-1914,"Mc Kenzie, Mr G",Mc Kenzie,Mr,male,G,mckenzie.jpg,20
-1937,"Beesley, Mr AD",Beesley,Mr,male,AD,Alan_Beesley.JPG,21
-2044,"Tshotetsi, Mr NT",Tshotetsi,Mr,male,NT,Mr_Noble_Tshiamo_Tshotetsi.JPG,1
-1936,"Kobe, Ms MP",Kobe,Ms,female,MP,Kobe.jpg,21
-1982,"Pholwane, Ms MB",Pholwane,Ms,female,MB,Pholwane.jpg,1
-2075,"Gasa, Mr MM",Gasa,Mr,male,MM,MM_Gasa.jpg,19
-1939,"Godlimpi, Mr Z",Godlimpi,Mr,male,Z,zuko.JPG,1
-2244,"Ligaraba, Ms LE",Ligaraba,Ms,female,LE,Ms_Livhuwani_Ethel_Ligaraba.JPG,1
-1983,"Moela, Mr MS",Moela,Mr,male,MS,Moela.jpg,1
-1915,"Rorke, Ms FS",Rorke,Ms,female,FS,rorke.JPG,20
-51,"Gigaba, Mr M",Gigaba,Mr,male,M,Gigaba.jpg,1
-2076,"Gasa, Ms NM",Gasa,Ms,female,NM,NM_Gasa.jpg,19
-951,"Marawu, Ms TL",Marawu,Ms,female,TL,Marawu_TL.jpg,15
-2229,"Salie, Adv S",Salie,Adv,female,S,SD_Salie.JPG,17
-1943,"Ntuli, Mr M",Ntuli,Mr,male,M,2/ntuli.jpg,1
-2046,"Mmolotsane, Ms ML",Mmolotsane,Ms,female,ML,mmolotsane.jpg,1
-492,"Boshielo, Ms SP",Boshielo,Ms,female,SP,Boshielo.jpg,1
-2077,"Abader, Ms ZS",Abader,Ms,female,ZS,Zelna_Abader.JPG,19
-1944,"Maimela, Ms KJ",Maimela,Ms,female,KJ,Maimela.jpg,1
-2081,"Madlala, Mr EK",Madlala,Mr,male,EK,Madlala.jpg,19
-1985,"Ramaila, Mr KS",Ramaila,Mr,male,KS,Ramaila.jpg,1
-2047,"Bath, Mr EM",Bath,Mr,male,EM,bath.jpg,2
-2078,"Gcwabaza, Rev NB",Gcwabaza,Rev,male,NB,Gcwabaza.jpg,19
-2163,"Cloete, Mr EA",Cloete,Mr,male,EA,Erald_Cloete.JPG,1
-1945,"Neale-May, Ms HE",Neale-May,Ms,female,HE,may.jpg,1
-2048,"Komane, Mr LM",Komane,Mr,male,LM,Komane.jpg,11
-1989,"Sauls, Mr A",Sauls,Mr,male,A,1/sauls.jpg,20
-2049,"Jordaan, Ms C",Jordaan,Ms,female,C,Jordaan.jpg,2
-1134,"Masemola, Mr ND",Masemola,Mr,male,ND,Masemola.jpg,1
-1988,"Ligraba, Ms LE",Ligraba,Ms,female,LE,Ligarabe.jpg,1
-2085,"Matutu, Mr MJ",Matutu,Mr,male,MJ,Mandlenkosi_James_Matutu.JPG,19
-390,"Muthambi, Ms AF",Muthambi,Ms,female,AF,muthambi.jpg,1
-1423,"Hendricks, Mr MGE",Hendricks,Mr,male,MGE,Hendricks_MGE.jpg,17
-2082,"Mafagane, Ms MC",Mafagane,Ms,female,MC,Mafagane.jpg,19
-2050,"Nontenja, Ms TC",Nontenja,Ms,female,TC,Christobel_Thandiwe_Nontenja.JPG,6
-1990,"Bila, Ms TJ",Bila,Ms,female,TJ,Bila_J.jpg,1
-1946,"Govana, Ms Y",Govana,Ms,female,Y,Yanga_Govana.JPG,1
-1948,"Mkutu, Mr L",Mkutu,Mr,male,L,Mkutu.jpg,1
-2083,"Malinga, Mr JS",Malinga,Mr,male,JS,Malinga.jpg,19
-1947,"Shiviti, Ms TG",Shiviti,Ms,female,TG,Tsakani_Goodness_Shiviti.JPG,1
-2052,"Christie, Ms KA",Christie,Ms,female,KA,christie.jpg,2
-2087,"Mchunu, Ms G",Mchunu,Ms,female,G,Mchunu_G.jpg,19
-2086,"Mbele, Ms H",Mbele,Ms,female,H,Mbele.jpg,19
-1177,"Diale, Ms B",Diale,Ms,female,B,1/Diale.jpg,11
-1995,"Adams, Mr, F",Adams,Mr,male,F,adams.jpg,24
-1994,"Mahlangu, Mr S",Mahlangu,Mr,male,S,Mahlangu.jpg,1
-2098,"Motubatse, Mr MP",Motubatse,Mr,male,MP,motubatse.jpg,19
-2058,"Maeco, Mr SM",Maeco,Mr,male,SM,Maeco.jpg,1
-2002,"Khumalo, Ms JQ",Khumalo,Ms,female,JQ,Juliet_Queen_Khumalo.JPG,1
-1350,"Cuthbert, Mr MJ",Cuthbert,Mr,male,MJ,Cuthbert_MJ.jpg,2
-2091,"Mjadu, TS",Mjadu,,male,TS,mjadu.jpg,19
-462,"Matiase, Mr NS",Matiase,Mr,male,NS,Matiase.jpg,11
-2001,"Mahlatsi, Mr LW",Mahlatsi,Mr,male,LW,Mahlatsi.jpg,25
-1998,"Shabangu, Ms FL",Shabangu,Ms,female,FL,Fisani_Lillian_Shabangu.JPG,1
-1480,"Dlelanga, Mr M",Dlelanga,Mr,male,M,Dlelanga.jpg,1
-1999,"Zibi, Mr SS",Zibi,Mr,male,SS,zibi.jpg,22
-2093,"Mkhize, Mr SP",Mkhize,Mr,male,SP,1/Mkhize.jpg,19
-2063,"Gcaleka-Mazibuko, Ms NA",Gcaleka-Mazibuko,Ms,female,NA,molwele.jpg,1
-2059,"Ngobeni, Ms LM",Ngobeni,Ms,female,LM,ngbeni.jpg,21
-2000,"Mokoena, Ms JL",Mokoena,Ms,female,JL,Mokoena_JL.jpg,1
-1321,"Mahlaule, Mr MG",Mahlaule,Mr,male,MG,Mahlaule.jpg,1
-909,"Khanyile, Ms AT",Khanyile,Ms,female,AT,1/Khanyile.jpg,2
-2060,"Wakelin, Mr KS",Wakelin,Mr,male,KS,wakelin.jpg,2
-2105,"Ngubane, Mr JS",Ngubane,Mr,male,JS,ngubane.jpg,19
-2100,"Mtshweni, Ms NA",Mtshweni,Ms,female,NA,mtshweni.jpg,19
-2095,"Moodley, Mr SR",Moodley,Mr,male,SR,moodley.jpg,19
-2061,"Potgieter, Ms LR",Potgieter,Ms,female,LR,Leah_Ruth.JPG,2
-2003,"Klopper, Mr DD",Klopper,Mr,male,DD,Klopper.jpg,2
-2007,"Sompa-Masiu, Ms NS",Sompa-Masiu,Ms,female,NS,Sompa-Masiu.jpg,1
-2064,"Jacobs, Mr LC",Jacobs,Mr,male,LC,Jacobs.jpg,2
-2062,"Ramongalo, Mr TR",Ramongalo,Mr,male,TR,ramongalo.jpg,2
-2065,"Mbiyo, Ms IM",Mbiyo,Ms,female,IM,Mbiyo.jpg,1
-1959,"Mdluli, Mr MM",Mdluli,Mr,male,MM,Mdluli.jpg,2
-2004,"Kegakilwe, Ms BM",Kegakilwe,Ms,female,BM,Kegakilwe.jpg,1
-2104,"Ndhlela, Mr N",Ndhlela,Mr,male,N,ndlela.jpg,19
-2107,"Nomvalo, Mr S",Nomvalo,Mr,male,S,nomvalo.jpg,19
-2005,"Legoete, Mr MD",Legoete,Mr,male,MD,Legoete.jpg,1
-2008,"Kgabo, Mr GD",Kgabo,Mr,male,GD,kgg.jpg,1
-701,"Chance, Mr T",Chance,Mr,male,T,chance.jpg,2
-2102,"Mwali, Mr SG",Mwali,Mr,male,SG,mwali.jpg,19
-2099,"Mthethwa, Mr ZE",Mthethwa,Mr,male,ZE,1/mthethwa.jpg,19
-1273,"Morolong, Mr IK",Morolong,Mr,male,IK,mr_itiseng_kenneth_morolong.jpg,1
-2066,"De Blocq Van Scheltinga, Mr AD",De Blocq Van Scheltinga,Mr,male,AD,Andrew_Dirk_de_Blocq_van_Scheltinga.JPG,2
-1962,"Zondi, Mr S",Zondi,Mr,male,S,Zondi.jpg,2
-2101,"Muhammad, Ms MB",Muhammad,Ms,female,MB,muhammed.jpg,19
-2006,"Tlhong, Ms KC",Tlhong,Ms,female,KC,Tlhong.jpg,1
-2009,"Senne, Ms MM",Senne,Ms,female,MM,Senne.jpg,1
-536,"Kruger, Mr HC",Kruger,Mr,male,HC,kruger.jpg,2
-2109,"Ntshingila, Mr EM",Ntshingila,Mr,male,EM,ntshitgila.jpg,19
-2103,"Ncube, Ms PP",Ncube,Ms,female,PP,ncube.jpg,19
-481,"Mkhaliphi, Ms HO",Mkhaliphi,Ms,female,HO,Mkhaliphi.jpg,11
-2010,"Mosikatsi, Ms S",Mosikatsi,Ms,female,S,Mosikatsi.jpg,1
-2110,"Ntshaba, Ms D",Ntshaba,Ms,female,D,ntshaba.jpg,19
-2011,"Schickerling, Ms LM",Schickerling,Ms,female,LM,Schickerling.jpg,2
-2111,"Nxumalo, Mr NI",Nxumalo,Mr,male,NI,nxumalo.jpg,19
-2012,"Makasi, Ms N",Makasi,Ms,female,N,Makasi.jpg,1
-925,"Mantashe, Mr G",Mantashe,Mr,male,G,Mantashe_GS.jpg,1
-1900,"Vilakazi, Mr S G",Vilakazi,Mr,male,SG,1/vilakazi.jpg,2
-926,"Seabi, Mr M A",Seabi,Mr,male,MA,Seabi.jpg,1
-1966,"Bollman, Ms NJ",Bollman,Ms,female,NJ,bollman...jpg,2
-982,"Tikana-Gxothiwe, Ms W",Tikana-Gxothiwe,Ms,female,W,tikana.jpg,1
-1396,"Modise-Mpya, Ms M",Modise-Mpya,Ms,female,M,modise.jpg,1
-2013,"Plaatjies, Mr WTD",Plaatjies,Mr,male,WTD,Plaatjies.jpg,1
-1897,"Poole, Mr C",Poole,Mr,male,C,poole.jpg,2
-1324,"Swarts, Ms B",Swarts,Ms,female,B,swarts.jpg,1
-1338,"Chabane, Mr MS",Chabane,Mr,male,MS,Chabane.jpg,1
-918,"Maseko, Ms M",Maseko,Ms,female,M,Maseko_LM.jpg,2
-1816,"Ramokgopa, Ms M",Ramokgopa,Ms,female,M,ramokgopa.jpg,1
-2014,"Sapo, Ms L",Sapo,Ms,female,L,Lindelwa_Sapo.JPG,1
-861,"Molefe, Mr B",Molefe,Mr,male,B,molefe.jpg,19
-880,"Nolutshungu, Ms N",Nolutshungu,Ms,female,N,nolutshungu.jpg,11
-1329,"Tito-Duba, Ms LF",Tito-Duba,Ms,female,LF,Tito.jpg,11
-868,"Adams, Ms R C",Adams,Ms,female,RC,R_aDAMS.jpg,1
-1126,"Ndalane, Ms NA",Ndalane,Ms,female,NA,Ndalane.jpg,1
-879,"Skosana, Mr GJ",Skosana,Mr,male,GJ,Skosana.jpg,1
-919,"Davids, Ms S",Davids,Ms,female,S,Davids.jpg,1
-543,"Ntlangwini, Ms EN",Ntlangwini,Ms,female,EN,Ntlangwini.jpg,11
-527,"Kekana, Ms PS",Kekana,Ms,female,PS,Kekana_PS.jpg,1
-949,"Majodina, Ms PC",Majodina,Ms,female,PC,Majodina_PC.jpg,1
-855,"Thembekwayo, Dr S",Thembekwayo,Dr,female,S,1/thembekwayo.jpg,11
-133,"Lotriet, Prof  A",Lotriet,Prof,female,A,Lotriet.jpg,2
-804,"Paulsen, Mr N M",Paulsen,Mr,male,NM,paulsen_mn.jpg,11
-841,"Gungubele, Mr M",Gungubele,Mr,male,M,gungubele.jpg,1
-2015,"Sokopo, Mr MM",Sokopo,Mr,male,MM,Sokopo.jpg,1
-1362,"De Lille, Ms P",De Lille,Ms,female,P,Lille_resized.jpg,16
-878,"Buthelezi, Mr EM",Buthelezi,Mr,male,EM,1/Buthelezi_EM.jpg,4
-903,"Mhaule, Dr R",Mhaule,Dr,female,R,Mhaule.jpg,1
-906,"Botes, Mr A",Botes,Mr,male,A,21.jpg,1
-916,"Dugmore, Mr C",Dugmore,Mr,male,C,dugmore...jpg,1
-2017,"Le Roux, Dr KW",Le Roux,Dr,male,KW,Le_Roux.jpg,2
-904,"Mkhize, Dr Z",Mkhize,Dr,male,Z,Mkhize.jpg,1
-2018,"Kgobisa-Ngcaba, Ms K",Kgobisa-Ngcaba,Ms,female,K,Kgobisa-Ngcaba.jpg,2
-1400,"Nontsele, Mr M",Nontsele,Mr,male,M,notsele.jpg,1
-370,"Motsoaledi, Dr PA",Motsoaledi,Dr,male,PA,motsoaledi.jpg,1
-2024,"Louw, Mr STD",Louw,Mr,male,STD,louw.jpg,1
-1132,"Mathabatha, Mr CS",Mathabatha,Mr,male,CS,Mathabatha.jpg,1
-17,"Phaahla, Dr JM",Phaahla,Dr,male,JM,1/Phaahla.jpg,1
-99,"Steenhuisen, Mr JH",Steenhuisen,Mr,male,JH,1/steenhuisen.jpg,2
-1709,"Tau, Mr P",Tau,Mr,male,P,tau.jpg,1
-1402,"Nqola, Mr X",Nqola,Mr,male,X,nqola.jpg,1
-2019,"Cameron, Mr I",Cameron,Mr,male,I,Cameron.jpg,2
-65,"Lorimer, Mr JR",Lorimer,Mr,male,JR,Lorimer_JR.jpg,2
-108,"Swart, Mr SN",Swart,Mr,male,SN,1/swart.jpg,3
-98,"Sotyu, Ms MM",Sotyu,Ms,female,MM,sotyu.jpg,1
-83,"Singh, Mr N",Singh,Mr,male,N,n_singh.jpg,4
-25,"Pule, Ms DD",Pule,Ms,female,DD,1/pule.jpg,1
-1406,"Ntshavheni, Ms KPS",Ntshavheni,Ms,female,KPS,289.jpg,1
-150,"van der Merwe, Ms LL",van der Merwe,Ms,female,LL,370.jpg,4
-444,"Thring, Mr WM",Thring,Mr,male,WM,thring.jpg,3
-438,"Mohai, Mr S",Mohai,Mr,male,S,mohai.jpg,1
-1268,"Ismail, Ms H",Ismail,Ms,female,H,1/Ismail.jpg,2
-134,"Nemadzinga-Tshabalala, Ms J",Nemadzinga-Tshabalala,Ms,female,J,1/tshabalala.jpg,1
-1775,"Malematja, Mr C N",Malematja,Mr,male,CN,4615.jpg,1
-163,"Van Rooyen, Mr DD",Van Rooyen,Mr,male,DD,van_rooyen.jpg,19
-248,"Chikunga, Ms LS",Chikunga,Ms,female,LS,chikuinga.jpg,1
-1774,"Marais, Ms P",Marais,Ms,female,P,1/Marais_P.jpg,11
-239,"Koornhof, Dr GW",Koornhof,Dr,male,GW,Koornhof.jpg,1
-2020,"Burke, Dr MJ",Burke,Dr,male,MJ,Burke.jpg,2
-386,"Mulder, Dr CP",Mulder,Dr,male,CP,Mulder.jpg,8
-1715,"Maotwe, Ms OMC",Maotwe,Ms,female,OMC,2460.jpg,11
-599,"Masina, Mr MC",Masina,Mr,male,MC,Masina.jpg,1
-1411,"Gondwe, Dr M",Gondwe,Dr,female,M,Gondwe.jpg,2
-1084,"Gana, Mr M",Gana,Mr,male,M,gana_sm.jpg,22
-2021,"Maduna, Mr N",Maduna,Mr,male,N,N_Maduna.JPG,1
-262,"Makhubela, Ms LS",Makhubela,Ms,female,LS,makhubela...2.jpg,1
-238,"Kohler, Ms D",Kohler,Ms,female,D,Kohler_D.jpg,2
-362,"Ndabeni-Abrahams, Ms ST",Ndabeni-Abrahams,Ms,female,ST,ndabeni.jpg,1
-1424,"Munyai, Mr TB",Munyai,Mr,male,TB,munyai.jpg,1
-1776,"Zondo, Mr  S S",Zondo,Mr,male,SS,Zondo_S.jpg,4
-336,"Mncwango, Mr MA",Mncwango,Mr,male,MA,mncwango.jpg,4
-274,"Manamela, Mr KB",Manamela,Mr,male,KB,Manamela.jpg,1
-1265,"Hlongo, Ms AS",Hlongo,Ms,female,AS,Hlongo.jpg,1
-1266,"Majozi, Ms Z",Majozi,Ms,female,Z,ms_zandile_majozi.jpg,4
-368,"Motshekga, Ms MA",Motshekga,Ms,female,MA,Motshekga_MA.jpg,1
-1777,"Hadebe, Mr N",Hadebe,Mr,male,N,hadebbe.jpg,4
-711,"Mathys, Ms L",Mathys,Ms,female,L,MATHY.jpg,11
-419,"Nzimande, Dr BE",Nzimande,Dr,male,BE,nzimande.jpg,1
-278,"Dikgale, Ms MC",Dikgale,Ms,female,MC,Dikgale.jpg,1
-118,"Hlengwa, Mr M",Hlengwa,Mr,male,M,Hlengwa.jpg,4
-29,"Frolick, Mr CT",Frolick,Mr,male,CT,Frolick.jpg,1
-2120,"Reddy, Mr VG",Reddy,Mr,male,VG,reddy.jpg,19
-441,"Mileham, Mr K",Mileham,Mr,male,K,Mileham.jpg,2
-1443,"Aucamp, Mr W",Aucamp,Mr,male,W,aucamp.jpg,2
-454,"Kwankwa, Mr NL",Kwankwa,Mr,male,NL,Kwankwa.jpg,6
-475,"Bilankulu, Ms NK",Bilankulu,Ms,female,NK,Bilankulu.jpg,1
-465,"Bagraim, Mr M",Bagraim,Mr,male,M,bagraim.jpg,2
-445,"Mathale, Mr C",Mathale,Mr,male,C,Mathale_C.jpg,1
-1616,"Zikalala, Mr S",Zikalala,Mr,male,S,zikalala.jpg,1
-2121,"Rweqana, Ms M",Rweqana,Ms,female,M,rweqana.jpg,19
-473,"Bergman, Mr D",Bergman,Mr,male,D,Bergman.jpg,2
-471,"Basson, Mr LJ",Basson,Mr,male,LJ,basson.jpg,2
-797,"Dlamini, Mr MM",Dlamini,Mr,male,MM,marshall_dlamini.jpg,11
-829,"Hattingh, Mr C",Hattingh,Mr,male,C,1/hattingh.jpg,2
-1248,"Sithole, Ms RJ",Sithole,Ms,female,RJ,sithole.jpg,2
-1366,"Van Staden, Mr PA",Van Staden,Mr,male,PA,Van_Staden_PA.jpg,8
-52,"Gina, Ms N",Gina,Ms,female,N,Gina.jpg,1
-1276,"Motaung, Ms NE",Motaung,Ms,female,NE,Motaung_NE.jpg,1
-2122,"Selepe, Mr HD",Selepe,Mr,male,HD,selepe.jpg,19
-740,"McGluwa, Mr JJ",McGluwa,Mr,male,JJ,Mc_Gluwa.jpg,2
-957,"Mrara, Mr M",Mrara,Mr,male,M,1/mrara.jpg,1
-1344,"Mathafa, Mr OM",Mathafa,Mr,male,OM,Mathafa.jpg,1
-658,"Mahambehlala, Ms T",Mahambehlala,Ms,female,T,1/Mahambehlala.jpg,1
-1100,"Magagula, Ms TE",Magagula,Ms,female,TE,Magagula.jpg,1
-1070,"Creecy, Ms B",Creecy,Ms,female,B,Creecy.jpg,1
-2123,"Skosana, Mr DM",Skosana,Mr,male,DM,d_skosana.jpg,19
-1143,"Moraka, Ms AT",Moraka,Ms,female,AT,moraka.jpg,1
-1144,"Lekganyane, Mr MS",Lekganyane,Mr,male,MS,Lekganyane.jpg,1
-1444,"Christians, Dr. DC",Christians,Dr.,female,DC,1/Christians.jpg,2
-1363,"Powell, Ms EL",Powell,Ms,female,EL,1/311.jpg,2
-1699,"Managa, Dr L",Managa,Dr,female,L,Managa.jpg,11
-1404,"Mohlala, Ms MR",Mohlala,Ms,female,MR,mohlala_resized.jpg,11
-2124,"Themba, Mr AT",Themba,Mr,male,AT,themba.jpg,19
-961,"Ndamase, Mr P",Ndamase,Mr,male,P,1/ndamase.jpg,1
-1421,"Montwedi, Mr Mk",Montwedi,Mr,male,Mk,montwedi.jpg,11
-1296,"Letsie, Mr WT",Letsie,Mr,male,WT,Letsie.jpg,1
-1426,"Gwarube, Ms S",Gwarube,Ms,female,S,Gwarube.jpg,2
-1316,"Maneli, Mr BM",Maneli,Mr,male,BM,1/maneli.jpg,1
-1682,"Selamolela, Mr S",Selamolela,Mr,male,S,Selamolela.jpg,1
-1532,"Ntshalintshali, Ms LL",Ntshalintshali,Ms,female,LL,ntshalihali.jpg,1
-1708,"Weber, Ms AMM",Weber,Ms,female,AMM,ms_annerie_maria_magdalena_weber.jpg,2
-1300,"Luthuli, Mr BN",Luthuli,Mr,male,BN,inkosi_bhrkizizwe_nivard_luthuli.jpg,4
-1371,"De Villiers, Mr JN",De Villiers,Mr,male,JN,1/De_Villiers_JN.jpg,2
-2128,"Zuma-Sambudla, Ms D",Zuma-Sambudla,Ms,female,D,1/zuma_ds.jpg,19
-1494,"Meth, Ms N",Meth,Ms,female,N,Meth.jpg,1
-1368,"Ngcobo, Mr SL",Ngcobo,Mr,male,SL,1/Ngcobo_S.jpg,4
-1361,"Phiri, Ms CM",Phiri,Ms,female,CM,Phiri.jpg,1
-60,"Groenewald, Dr PJ",Groenewald,Dr,male,PJ,groenewald.jpg,8
-1312,"Spies, Ms ERJ",Spies,Ms,female,ERJ,spies.jpg,2
-374,"Nel, Mr AC",Nel,Mr,male,AC,4161.jpg,1
-769,"Mokwele, Ms T",Mokwele,Ms,female,T,mokwele_resized.jpg,11
-1334,"Mulder, Mr FJ",Mulder,Mr,male,FJ,Mulder_FJ.jpg,8
-1293,"Siweya, Ms RT",Siweya,Ms,female,RT,1/siweya.jpg,1
-1375,"Roos, Mr AC",Roos,Mr,male,AC,roos.jpg,2
-1077,"Clarke, Ms M",Clarke,Ms,female,M,clarke.jpg,2
-1429,"Nhanha, Mr M",Nhanha,Mr,male,M,nanha.jpg,2
-1304,"Mphithi, Mr L",Mphithi,Mr,male,L,mphiti.jpg,2
-1288,"Lamola, Mr RO",Lamola,Mr,male,RO,Lamola_RO.jpg,1
-291,"Marais, Mr EJ",Marais,Mr,male,EJ,Marais_EJ.jpg,2
-482,"Mbatha, Mr MS",Mbatha,Mr,male,MS,Mbatha.jpg,19
-1570,"Hlabisa, Mr VF",Hlabisa,Mr,male,VF,Hlabisa.jpg,4
-911,"Wessels, Mr W",Wessels,Mr,male,W,1/wessels.jpg,8
-1341,"Masondo, Dr D",Masondo,Dr,male,D,Masondo.jpg,1
-1302,"Mabhena, Mr TB",Mabhena,Mr,male,TB,Mabhena.jpg,2
-1464,"Madikizela, Mr BS",Madikizela,Mr,male,BS,Madikizela_B.jpg,2
-1290,"Langa, Mr TM",Langa,Mr,male,TM,lan.jpg,4
-1374,"Direko, Ms DR",Direko,Ms,female,DR,DR_Direko.JPG,1
-1377,"Dhlomo, Dr SM",Dhlomo,Dr,male,SM,Dhlomo.jpg,1
-185,"Xaba-Ntshaba, Ms PP",Xaba-Ntshaba,Ms,female,PP,xaba_n.jpg,1
-1378,"Schreiber, Dr LA",Schreiber,Dr,male,LA,schrieber.jpg,2
-1376,"Sarupen, Mr AN",Sarupen,Mr,male,AN,sarupen.jpg,2
-2131,"Khubeka, Mr TTS",Khubeka,Mr,male,TTS,Khubeka.jpg,19
-1379,"Mchunu, Ms TVB",Mchunu,Ms,female,TVB,Mchunu_TVB.jpg,1
-2132,"Madlala, Mr KB",Madlala,Mr,male,KB,KB_Madlala.jpg,19
-1380,"Seitlholo, Mr IS",Seitlholo,Mr,male,IS,Seitlholo.jpg,2
-496,"Capa, Ms RN",Capa,Ms,female,RN,capa.jpg,1
-1160,"Sekoati, Mr SC",Sekoati,Mr,male,SC,Sekoati.jpg,1
-517,"Hunsinger, Dr CH",Hunsinger,Dr,male,CH,94.jpg,2
-640,"Mashabela, Ms N",Mashabela,Ms,female,N,mashabela.jpg,11
-2133,"Msezane, Mr MP",Msezane,Mr,male,MP,msezane.jpg,19
-1385,"Mgweba, Ms T",Mgweba,Ms,female,T,Mgweba.jpg,1
-529,"Khawula, Ms MS",Khawula,Ms,female,MS,Khawula.jpg,11
-516,"Horn, Mr W",Horn,Mr,male,W,Horn.jpg,2
-494,"Breytenbach, Adv G",Breytenbach,Adv,female,G,1/Breytenbach.jpg,2
-583,"Maimane, Mr MA",Maimane,Mr,male,MA,Maimane.jpg,23
-596,"Shelembe, Mr ML",Shelembe,Mr,male,ML,Shelembe_L.jpg,2
-2134,"Taaibosch, Mr G",Taaibosch,Mr,male,G,taaib.jpg,19
-491,"Mnganga-Gcabashe, Ms LA",Mnganga-Gcabashe,Ms,female,LA,mnganga.jpg,1
-1272,"Denner, Ms H",Denner,Ms,female,H,1/Denner.jpg,8
-1351,"Pambo, Mr V",Pambo,Mr,male,V,Pambo.jpg,11
-621,"Xego, Ms ST",Xego,Ms,female,ST,1/xego.jpg,1
-2135,"Douglas, Mr WM",Douglas,Mr,male,WM,Marshall_Douglas.JPG,19
-1719,"Mathulelwa, Ms B",Mathulelwa,Ms,female,B,Mathulelwa.jpg,11
-712,"Masango, Ms B",Masango,Ms,female,B,Masango.jpg,2
-692,"Malema, Mr J",Malema,Mr,male,J,Malema.jpg,11
-594,"Malatsi, Mr MS",Malatsi,Mr,male,MS,Malatsi.jpg,2
-725,"Holomisa, Mr BH",Holomisa,Mr,male,BH,1/Holomisa.jpg,6
-732,"Chetty, Mr M",Chetty,Mr,male,M,Chetty.jpg,2
-813,"Cebekhulu, Inkosi RN",Cebekhulu,Inkosi,male,RN,Cebekhulu_N.jpg,4
-638,"Van Der Walt, Ms D",Van Der Walt,Ms,female,D,1/van_der_walt.jpg,2
-728,"Mabe, Ms BP",Mabe,Ms,female,BP,mabe_resized.jpg,1
-746,"Smit, Mr CF",Smit,Mr,male,CF,1/423.jpg,2
-1401,"Gantsho, Ms N",Gantsho,Ms,female,N,Gantsho.jpg,1
-1880,"Letlape, Ms MS",Letlape,Ms,female,MS,Letlape_s.jpg,11
-1397,"Nodada, Mr BB",Nodada,Mr,male,BB,nodada.jpg,2
-966,"Nkopane, Ms NS",Nkopane,Ms,female,NS,nkopane.jpg,1
-2025,"Letsike, Ms MSE",Letsike,Ms,female,MSE,1/Letsike.jpg,1
-818,"Mngxitama, Mr A",Mngxitama,Mr,male,A,1/mngxitama.jpg,19
-512,"George, Dr DT",George,Dr,male,DT,George_DT.jpg,2
-1412,"Nyhontso, Mr M",Nyhontso,Mr,male,M,nyhontso.jpg,10
-1729,"Tambo, Mr S",Tambo,Mr,male,S,tambo.jpg,11
-1328,"Boshoff, Dr WJ",Boshoff,Dr,male,WJ,Boshoff.jpg,8
-1127,"Aphiri, Ms MJ",Aphiri,Ms,female,MJ,aphiri.jpg,1
-2022,"Sangoni, Ms KLN",Sangoni,Ms,female,KLN,sangoni.jpg,1
-1753,"Ramolobeng, Ms A",Ramolobeng,Ms,female,A,ramolobeng.jpg,1
-1738,"Burns-Ncamashe, Prince Z",Burns-Ncamashe,Prince,male,Z,1/Burns.jpg,1
-762,"Essack, Mr F",Essack,Mr,male,F,Essack_F.jpg,2
-1750,"Peach, Mr WD",Peach,Mr,male,WD,W_Peach.JPG,2
-1763,"Myburgh, Mr NG",Myburgh,Mr,male,NG,Myburgh_ng.jpg,2
-559,"Mente-Nkuna, Ms NV",Mente-Nkuna,Ms,female,NV,Mente.jpg,11
-1759,"Godongwana, Mr E",Godongwana,Mr,male,E,godongwana....jpg,1
-1326,"Mahumapelo, Mr S",Mahumapelo,Mr,male,S,Mahumapelo.jpg,1
-1080,"Engelbrecht, Mr J",Engelbrecht,Mr,male,J,1/Engelbrecht.jpg,2
-1803,"Dlamini, Ms M",Dlamini,Ms,female,M,Mbali_Dlamini.jpg,11
-1275,"Abrahams, Ms ALA",Abrahams,Ms,female,ALA,abrahams.jpg,2
-1064,"Bodlani, Ms T",Bodlani,Ms,female,T,1/bodlani.jpg,2
-1758,"Simelane, Ms T",Simelane,Ms,female,T,simelane.jpg,1
-1844,"Mthethwa, Mr E",Mthethwa,Mr,male,E,E_Mthethwa_EFF.jpg,11
-1726,"Nkosi, Ms NE",Nkosi,Ms,female,NE,ethel.jpg,1
-1843,"Shikwambana, Mr M",Shikwambana,Mr,male,M,Shikwambana_M.jpg,11
-1623,"Ramokgopa, Mr  KD",Ramokgopa,Mr,male,KD,1/ramokgopa.jpg,1
-1515,"Khakhau, Ms KL",Khakhau,Ms,female,KL,Khakau.jpg,2
-1839,"Moore, Mr S J",Moore,Mr,male,SJ,Moore.jpg,2
-313,"Dunjwa, Ms ML",Dunjwa,Ms,female,ML,Dunjwa.jpg,1
-287,"Dlakude, Ms DE",Dlakude,Ms,female,DE,dlakude.jpg,1
-1714,"Tafeni, Ms N",Tafeni,Ms,female,N,tafen_resized.jpg,11
-1012,"Sibiya, Mr J",Sibiya,Mr,male,J,1/sibiya.jpg,1
-1842,"Mhlongo, Ms N",Mhlongo,Ms,female,N,N_Mhlongo.jpg,11
-1642,"Hassan, Ms F",Hassan,Ms,female,F,Hassan.jpg,1
-1853,"Baptie, Mr E",Baptie,Mr,male,E,bPATIE.jpg,2
+id,member,profile_pic,party_id,ID_y,gender,date_of_death,date_of_birth,slug,legal_name,updated,created,title,family_name,given_name
+1357,"Zungula, Mr V",zungula.jpg,15,10504,male,,1987-08-28,vuyolwethu-zungula,Vuyolwethu Zungula,"August 22, 2024, 9:09 AM","May 21, 2019, 7:19 PM",Mr,Zungula,Vuyolwethu
+1967,"Petersen, Ms JS",Petersen_JS.jpg,20,27175,female,,2002-03-05,jasmine-shanon-petersen,Jasmine Shanon Petersen,"July 17, 2024, 1:42 PM","June 18, 2024, 8:00 AM",Ms,Petersen,Jasmine Shanon
+2026,"Sokanyile, Ms T",sokanyile.jpg,1,26642,female,,1963-04-19,thokozile-sokanyile,Thokozile Sokanyile,"October 10, 2024, 9:23 AM","June 18, 2024, 7:58 AM",Ms,Sokanyile,Thokozile
+708,"Michalakis, Mr G",Michalakis.jpg,2,6260,male,,1988-01-06,george-michalakis,George Michalakis,"May 16, 2025, 10:32 AM","May 3, 2014, 12:15 AM",Mr,Michalakis,George
+504,"Didiza, Ms AT",images/committee-members/resize/didiza_ms_at-didiza_angela_thokozile.jpg,1,4174,female,,1965-06-02,angela-thokozile-didiza,Angela Thokozile Didiza,"August 12, 2024, 11:59 AM","May 2, 2014, 4:39 PM",Ms,Didiza,Angela Thokozile
+1387,"Nkabane, Dr NP",ms_nobuhle_pamela_nkabane.jpg,1,13745,female,,1979-08-01,nobuhle-pamela-nkabane,Nobuhle Pamela Nkabane,"October 10, 2025, 11:20 AM","May 21, 2019, 7:28 PM",Dr,Nkabane,Nobuhle Pamela
+421,"Mazzone, Ms NW",Mazzone.jpg,2,785,female,,1979-05-09,natasha-wendy-anita-michael,Natasha Wendy Anita Mazzone,"August 14, 2024, 11:36 AM","July 31, 2013, 11:49 PM",Ms,Mazzone,Natasha Wendy Anita
+1807,"Alexander, Ms W",1/alex.jpg,2,13470,female,,1979-06-25,wendy-robyn-alexander,Wendy Robyn Alexander,"October 7, 2025, 8:15 AM","May 21, 2019, 7:27 PM",Ms,Alexander,Wendy Robyn
+2367,"Cachalia, Prof F",firoz-cachalia_0_1.jpg,1,27516,male,,1958-07-22,firoz-cachalia,Firoz Cachalia,"October 20, 2025, 9:38 AM","October 1, 2025, 10:20 AM",Professor,,
+2361,"Hendricks, Mr E",e_hendricks.jpg,20,21404,male,,1979-07-21,ernest-hendricks,Ernest Hendricks,"November 10, 2025, 2:53 PM","June 18, 2024, 6:19 AM",Mr,Hendricks,Ernest
+2324,"Nkosi, Mr V A",Vusumuzi_Alfred_Nkosi.jpg,1,26703,male,,1985-03-09,vusumuzi-alfred-nkosi,Vusumuzi Alfred Nkosi,"September 4, 2024, 11:23 AM","June 18, 2024, 7:58 AM",Mr,Nkosi,Vusumuzi Alfred
+2345,"Matiwane, Mr C",matiwane.jpg,11,20896,male,,1987-09-26,chumani-matiwane,Chumani Matiwane,"November 3, 2025, 10:15 AM","June 18, 2024, 6:18 AM",,Matiwane,Chumani
+2355,"Mtolo, Mr J B",mtolo_JB.jpg,19,21987,male,,1968-08-05,jeffrey-bhekumndeni-mtolo,Jeffrey Bhekumndeni Mtolo,"November 9, 2025, 6:18 PM","June 18, 2024, 6:21 AM",Mr,Mtolo,Jeffrey Bhekumndeni
+2334,"Mbiko, Ms F",fez.jpg,2,6044,female,,1958-06-18,fezeka-mbiko,Fezeka Mbiko,"September 5, 2025, 1:18 PM","May 3, 2014, 12:14 AM",,Mbiko,Fezeka
+2336,"Lonzi, Mr S",lonzi.jpg,11,20869,male,,1997-12-02,sihle-lonzi,Sihle Lonzi,"November 3, 2025, 8:42 AM","June 18, 2024, 6:18 AM",,Lonzi,Sihle
+2342,"Nchabeleng, Mr A",nchabeleng.png,19,10336,male,,1974-08-30,adil-nchabeleng,Adil Nchabeleng,"July 8, 2025, 1:08 PM","May 21, 2019, 7:19 PM",,Nchabeleng,Adil
+2341,"Segede, Mr M",1-88966aa6.png,1,27503,male,,1968-11-11,michael-segede,Michael Segede,"March 6, 2025, 8:51 AM","December 7, 2024, 12:09 PM",Mr,,
+1968,"Blose, Mr MB",Blose_Mzwikayise.jpeg,11,20876,male,,1986-10-24,mazwikayise-brian-blose,Mazwikayise Brian Blose,"November 3, 2025, 8:34 AM","June 18, 2024, 6:18 AM",Mr,Blose,Mazwikayise Brian
+619,"Whitfield, Mr AG",whitfield.jpg,2,6199,male,,1982-11-24,andrew-grant-whitfield,Andrew Grant Whitfield,"July 10, 2025, 9:35 AM","May 3, 2014, 12:15 AM",Mr,Whitfield,Andrew Grant
+2369,"Ngobese, Mr A K",ngobese.jpg,4,27043,male,,,alco-kufakwezwe-ngobese,Alco Kufakwezwe Ngobese,"October 31, 2025, 7:56 AM","June 18, 2024, 8:00 AM",Mr,Ngobese,Alco Kufakwezwe
+2027,"Ismail-Moosa, Mr I",moose.jpg,17,26878,male,,1961-06-15,imraan-ismail-moosa,Imraan Ismail-Moosa,"November 24, 2025, 9:03 AM","June 18, 2024, 7:59 AM",,Ismail-Moosa,Imraan
+2356,"Cele, Mr Z K A",zk_cele.jpg,19,27507,male,,1966-02-24,zibuse-khayelihle-abednego-cele,Zibuse Khayelihle Abednego Cele,"November 3, 2025, 10:09 AM","June 27, 2025, 4:51 AM",Mr,,
+1908,"Niehaus, Mr CG",neihaus.jpg,11,20870,male,,1959-12-25,carl-gerhardus-niehaus,Carl Gerhardus Niehaus,"June 23, 2025, 1:14 PM","June 18, 2024, 6:18 AM",Mr,Niehaus,Carl Gerhardus
+651,"Atkinson, Mr P",aTKINSON.jpg,2,6230,male,,1961-09-25,patrick-george-atkinson,Patrick George Atkinson,"August 5, 2024, 9:11 AM","May 3, 2014, 12:15 AM",Mr,Atkinson,Patrick George
+2325,"Seate, Ms M O",Makithing_Olga_Seate.jpg,1,19961,female,,1991-06-10,makithing-olga-seate,Makithing Olga Seate,"April 2, 2025, 8:33 AM","June 18, 2024, 6:15 AM",Ms,Seate,Makithing Olga
+2359,"Buthelezi, Ms N",1/buthelezi.jpg,19,27509,female,,1989-07-15,noma-buthelezi,Noma Buthelezi,"November 3, 2025, 10:11 AM","June 27, 2025, 5:13 AM",Ms,,
+2330,"Kobane, Mr G E",penny_penny.jpg,19,27496,male,,1962-03-15,gezani-eric-kobane,Gezani Eric Kobane,"February 15, 2025, 11:32 AM","August 29, 2024, 7:12 AM",Mr,Kobane,Gezani Eric
+2338,"Daniels, Mr M V",dd.jpg,20,27502,male,,1967-12-23,marlon-daniels,Marlon Daniels,"July 10, 2025, 1:39 PM","November 28, 2024, 11:32 AM",Mr,Daniels,Marlon Vivienne
+2320,"Hlophe, Mr C R",hlophe_R.jpg,1,19963,male,,1959-07-07,conduct-richard-hlophe,Richard Hlophe,"October 29, 2024, 10:04 AM","June 18, 2024, 6:15 AM",Mr,Hlophe,Conduct Richard
+2343,"Makhubele, Ms C",1/makhubele.png,19,21680,female,,1979-03-30,tshikani-colleen-makhubele,Tshikani Colleen Makhubele,"November 6, 2025, 7:25 AM","June 18, 2024, 6:20 AM",,Makhubele,Tshikani Colleen
+1929,"Mtolo, Ms NE",1/Mtolo.jpg,1,26681,female,,1981-09-06,nombuso-elizabeth-mtolo,Nombuso Elizabeth Mtolo,"September 4, 2024, 11:17 AM","June 18, 2024, 7:58 AM",Ms,Mtolo,Nombuso Elizabeth
+2331,"Gama, Mr S I",gama.jpg,19,27495,male,,1967-05-19,siyabonga-gama,Siyabonga Innocent Gama,"April 4, 2025, 12:47 PM","August 29, 2024, 7:09 AM",Mr,Gama,Siyabonga Innocent
+843,"Tolashe, Ms N G",1/tolashe.jpg,1,9648,female,,1959-12-21,nokuzola-gladys-tolashe,Nokuzola Gladys Tolashe,"October 21, 2025, 1:44 PM","September 8, 2016, 8:24 AM",Ms,Tolashe,Nokuzola Gladys
+2036,"Singh, Ms S",1/singh.jpg,2,11195,female,,1964-06-27,shara-singh,Shara Singh,"October 6, 2025, 11:47 AM","May 21, 2019, 7:21 PM",Ms,Singh,Shara
+1909,"Gcilishe, Ms S",Gclishe.jpg,11,11389,female,,1983-08-29,sixolisa-gcilishe,Sixolisa Gcilishe,"February 23, 2025, 5:49 AM","May 21, 2019, 7:22 PM",,Gcilishe,Sixolisa
+2371,"Khoza, Mr M",khoza.png,11,27514,male,,1995-03-08,muzi-khoza,Muzi Khoza,"November 3, 2025, 8:40 AM","September 23, 2025, 11:05 AM",Mr,,
+2339,"Mathopa, Ms M L",mil.jpg,20,25463,female,,1975-04-07,millicent-lorato-mathopa,Millicent Lorato Mathopa,"October 20, 2025, 10:06 AM","June 18, 2024, 6:36 AM",,Mathopa,Millicent Lorato
+2178,"Trollip, Mr A",1/trollip.jpg,21,975,male,,1964-03-12,roland-athol-price-trollip,Roland Athol Price Trollip,"February 10, 2025, 4:10 PM","August 1, 2013, 12:14 AM",Mr,Trollip,Roland Athol Price
+959,"Mvana, Ms NQ",mvana.jpg,1,1541,female,,1960-02-12,nonkosi-mvana,Nonkosi Queenie Mvana,"January 23, 2025, 6:46 PM","November 13, 2013, 3:29 PM",Ms,Mvana,Nonkosi Queenie
+2357,"Mkhize, Mr S W",mkhize.......jpg,19,27508,male,,1980-06-06,siphetho-witness-mkhize,Siphetho Witness Mkhize,"November 9, 2025, 6:46 PM","June 27, 2025, 4:56 AM",Mr,,
+2375,"Ntuli, Ms D R",3/ntuli.jpg,1,26683,female,,1969-05-14,dipuo-rosina-ntuli,Dipuo Rosina Ntuli,"December 1, 2025, 9:17 AM","June 18, 2024, 7:58 AM",,Ntuli,Dipuo Rosina
+2376,"Radebe, Ms HM",RADEBE.png,19,27403,female,,1972-01-27,harriet-makhosazana-radebe,Harriet Makhosazana Radebe,"December 12, 2025, 11:57 AM","June 18, 2024, 8:01 AM",Ms,Radebe,Harriet Makhosazana
+2358,"Motaung, Mr G",motaung_Gift.jpg,19,21867,male,,1981-05-12,gift-motaung,Gift Motaung,"November 9, 2025, 6:19 PM","June 18, 2024, 6:20 AM",,Motaung,Gift
+1970,"Machi, Ms BE",1/Machi.jpg,4,27049,female,,1959-12-29,busaphi-eleonor-machi,Busaphi Eleonor Machi,"November 25, 2025, 12:15 PM","June 18, 2024, 8:00 AM",Ms,Machi,Busaphi Eleonor
+1930,"Subrathie, Mr SI",1/Subrathie.jpg,1,26682,male,,1970-03-06,shaik-imraan-subrathie,Shaik Imraan Subrathie,"April 3, 2025, 3:22 PM","June 18, 2024, 7:58 AM",Mr,Subrathie,Shaik Imraan
+2377,"Kubukeli, Mr P",KUBUKI.png,19,21920,male,,1966-09-28,pumlani-kubukeli,Pumlani Kubukeli,"December 12, 2025, 11:54 AM","June 18, 2024, 6:21 AM",Mr,Kubukeli,Pumlani
+2327,"Shongwe, Mr C V",shongwe....cv.jpg,19,15866,male,,1983-03-10,crossby-vusi-shongwe,Crossby Vusi Shongwe,"July 16, 2025, 9:35 AM","May 24, 2019, 1:35 PM",Mr,Shongwe,Crossby Vusi
+1799,"Mogale, Mr T",2/mogale.jpg,11,19149,male,,1982-11-09,thapelo-mogale,Thapelo Mogale,"November 3, 2025, 8:45 AM","August 17, 2022, 11:53 AM",Mr,,
+2028,"Hala, Mr MM",Hala.jpg,1,26643,male,,1959-02-15,mzimasi-mike-hala,Mzimasi Mike Hala,"October 10, 2024, 9:24 AM","June 18, 2024, 7:58 AM",Mr,Hala,Mzimasi Mike
+1845,"Manyi, Mr M",man.jpg,19,19179,male,,1964-06-20,mzwanele-jimmy-manyi,Mzwanele Manyi,"July 14, 2025, 1:57 PM","June 8, 2023, 12:11 PM",Mr,,
+2332,"Gamede, Mr T I",gamede.jpg,19,21962,male,,1985-01-17,thulani-innocent-gamede,Thulani Innocent Gamede,"July 8, 2025, 1:35 PM","June 18, 2024, 6:21 AM",Mr,Gamede,Thulani Innocent
+2340,"van Wyk, Mr SHM",saintes-harry-mclove-van-wyk.jpg,20,21426,male,,1979-03-09,saintes-harry-mclove-van-wyk,Saintes Harry Mclove Van Wyk,"May 5, 2025, 10:13 AM","June 18, 2024, 6:19 AM",Mr,Van Wyk,Saintes Harry Mclove
+1414,"Nzuza, Mr NB",nzuza.jpg,1,13739,male,,1982-02-20,njabulo-bheka-nzuza,Njabulo Bheka Nzuza,"October 8, 2025, 11:13 AM","May 21, 2019, 7:28 PM",Mr,Nzuza,Njabulo Bheka
+1910,"Mailola, Ms PR",poppy.jpg,11,11374,female,,1984-07-17,poppy-raisibe-mailola,Poppy Raisibe Mailola,"June 20, 2025, 9:17 AM","May 21, 2019, 7:22 PM",Ms,Mailola,Poppy Raisibe
+770,"Labuschagne, Ms C",Labuscaghne.jpg,2,6668,female,,1958-09-08,cathleen-labuschagne,Cathlene Labuschagne,"January 23, 2025, 6:18 PM","May 3, 2014, 12:16 AM",Ms,Labuschagne,Cathlene
+2031,"Kumbaca, Ms AN",Kumbaca.jpg,1,26644,female,,1992-09-03,andisiwe-nangamso-kumbaca,Andisiwe Nangamso Kumbaca,"February 15, 2025, 11:24 AM","June 18, 2024, 7:58 AM",Ms,Kumbaca,Andisiwe Nangamso
+683,"Macpherson, Mr DW",Macpherson.jpg,2,6235,male,,1985-02-02,dean-william-macpherson,Dean William Macpherson,"October 7, 2025, 1:02 PM","May 3, 2014, 12:15 AM",Mr,Macpherson,Dean William
+2029,Hlazo-Webster Ms NL,webster.jpg,23,20611,female,,1982-04-03,nobuntu-lindumusa-webster,Nobuntu Lindumusa Hlazo-Webster,"September 23, 2025, 7:25 AM","June 18, 2024, 6:17 AM",Ms,Webster,Nobuntu Lindumusa
+2032,"Smith, Mr R",SmithR.jpg,2,20824,male,,1990-04-30,ryan-smith,Ryan Smith,"November 17, 2025, 10:42 AM","June 18, 2024, 6:17 AM",Mr,Smith,Ryan
+2034,"Linde, Ms E",Linde.jpg,2,6258,female,,1971-01-09,elmarie-linde,Elmarie Linde,"January 24, 2025, 10:59 AM","May 3, 2014, 12:15 AM",Ms,Linde,Elmarie
+2360,"Shezi, Mr N N",shezi.jpg,19,27510,male,,1976-03-22,ntandoyenkosi-nkosentsha-shezi,Ntandoyenkosi Nkosentsha Shezi,"October 29, 2025, 12:28 PM","June 27, 2025, 5:17 AM",Mr,,
+2378,"Zuma, Ms B E S",zuma_bu.jpg,19,27520,female,,1993-05-21,brumelda-esserina-sharon-renee-zuma,Brumelda Esserina Sharon-Renee Zuma,"December 12, 2025, 5:23 PM","December 11, 2025, 10:21 AM",Ms,,
+1971,"Buthelezi, Inkosi NZ",N_Buthelezi.jpg,4,21113,male,,1955-01-16,ntuthukoyezwe-zuzifa-buthelezi,Ntuthukoyezwe Zuzifa Buthelezi,"March 18, 2025, 10:02 AM","June 18, 2024, 6:18 AM",Inkosi,Buthelezi,Ntuthukoyezwe Zuzifa
+1972,"Mhlongo, Ms NH",mhlongo_nompumelelo.jpg,4,27050,female,,1961-01-15,nompumelelo-happiness-mhlongo,Nompumelelo Happiness Mhlongo,"October 20, 2025, 10:05 AM","June 18, 2024, 8:00 AM",Ms,Mhlongo,Nompumelelo Happiness
+1940,"Mhlauli, Ms NB",Mhalauli.jpg,1,19947,female,,1990-06-03,nonceba-bianca-mhlauli,Nonceba Bianca Mhlauli,"October 17, 2025, 8:16 AM","June 18, 2024, 6:15 AM",,Mhlauli,Nonceba Bianca
+327,"Meshoe, Rev KR",Meshoe.jpg,3,780,male,,1954-01-18,kenneth-raselabe-joseph-meshoe,Kenneth Raselabe Joseph Meshoe,"September 5, 2025, 1:52 PM","July 31, 2013, 11:49 PM",Rev,Meshoe,Kenneth Raselabe Joseph
+2030,"Dithebe, Mr SL",Dithebe.jpg,1,26651,male,,1967-12-07,sello-leon-dithebe,Sello Leon Dithebe,"August 20, 2024, 11:38 AM","June 18, 2024, 7:58 AM",Mr,Dithebe,Sello Leon
+2362,"Basson, Ms J A",1/basson.jpg,20,27511,female,,1982-06-16,juliet-adileen-basson,Juliet Adileen Basson,"October 29, 2025, 12:27 PM","June 27, 2025, 5:30 AM",Ms,,
+2130,"Hlophe, Dr J",hlophe_dr.jpg,19,27473,male,,1959-01-01,mandlakayise-john-hlope,Mandlakayise John Hlope,"July 8, 2025, 10:11 AM","June 26, 2024, 7:29 AM",Dr,Hlope,Mandlakayise John
+2039,"Frenchman, Ms S",Frenchman.jpg,24,21132,female,,1974-09-17,sakiena-frenchman,Sakiena Frenchman,"March 17, 2025, 2:08 PM","June 18, 2024, 6:18 AM",Ms,Frenchman,Sakiena
+2354,"Jama, Ms SP",jama.jpg,1,19962,female,,1996-10-10,sisipho-palomina-jama,Sisipho Palomino Jama,"November 3, 2025, 10:01 AM","June 18, 2024, 6:15 AM",,Jama,Sisipho Palomino
+2363,"Mkhize, Ms P",mkhize_p.jpg,19,21868,female,,2001-08-30,philasande-mkhize,Philasande Mkhize,"November 3, 2025, 10:13 AM","June 18, 2024, 6:20 AM",Ms,Mkhize,Philasande
+1441,"Izaks, Ms SE",Izaks.jpg,1,4566,female,,1964-04-22,sylvia-elizabeth-lucas,Sylvia Elizabeth Izaks,"October 8, 2025, 8:54 AM","May 2, 2014, 4:40 PM",Ms,Lucas,Sylvia Elizabeth
+295,"Mashatile, Mr SP",Mashatile.jpg,1,749,male,,1961-10-21,shipokosa-paul-mashatile,Paul Mashatile,"October 20, 2025, 10:08 AM","July 31, 2013, 11:45 PM",Mr,Mashatile,Shipokasa Paulus
+810,"Maswanganyi, Mr MJ",Maswanganyi.jpg,1,4493,male,,1966-04-14,mkhacani-joseph-maswanganyi,Mkhacani Joseph Maswanganyi,"October 21, 2025, 1:49 PM","May 2, 2014, 4:40 PM",Mr,Maswanganyi,Mkhacani Joseph
+2038,"Bateman, Mr AG",Bateman.jpg,2,20826,male,,1973-12-20,andrew-gordon-bateman,Andrew Gordon Bateman,"September 5, 2025, 1:47 PM","June 18, 2024, 6:17 AM",Mr,Bateman,Andrew Gordon
+1798,"Van Zyl, Ms A M",Van_Zyl.jpg,2,19151,female,,1982-11-26,anna-maria-van-zyl,Anna Maria Van Zyl,"February 7, 2025, 6:48 PM","August 17, 2022, 12:10 PM",Ms,,
+1991,"Makgato, Ms MP",Makgato.jpg,1,26695,female,,1963-12-01,moyagabo-paulina-makgato,Moyagabo Paulina Makgato,"November 21, 2025, 1:42 PM","June 18, 2024, 7:58 AM",Ms,Makgato,Moyagabo Paulina
+2040,"Mofokeng, Ms ML",mofokeng.jpg,1,26650,female,,1970-11-30,masetshego-lenah-mofokeng,Masetshego Lenah Mofokeng,"June 12, 2025, 7:14 AM","June 18, 2024, 7:58 AM",Ms,Mofokeng,Masetshego Lenah
+1718,"Mkhonto, Ms C N",Mkhonto.jpg,11,11376,female,,1965-10-26,constance-nonhlanhla-mkhonto,Constance Nonhlanhla Mkhonto,"February 25, 2025, 1:53 PM","May 21, 2019, 7:22 PM",Ms,Mkhonto,Constance Nonhlanhla
+838,"Mchunu, Mr ES",Mchunu.jpg,1,1882,male,,1958-04-21,es-mchunu,Edward Senzo Mchunu,"October 21, 2025, 2:00 PM","December 11, 2013, 3:57 PM",Mr,Mchunu,Edward
+1413,"Graham-Maré, Ms SJ",Graham.jpg,2,11149,female,,1969-05-27,samantha-jane-graham,Samantha Jane Graham,"August 19, 2025, 10:30 AM","May 21, 2019, 7:21 PM",Ms,Graham,Samantha Jane
+249,"Kubayi, Ms M",Kubayi.jpg,1,689,female,,1978-05-08,mmamoloko-tryphosa-kubayi,Mmamoloko Kubayi,"October 7, 2025, 11:34 AM","July 31, 2013, 11:39 PM",Ms,Kubayi,Mmamoloko Tryphosa
+1938,"Letlape, Dr TKS",letlape.jpg,21,19301,male,,1959-04-14,tebogo-kgosietsile-solomon-letlape,Tebogo Kgosietsile Solomon Letlape,"October 10, 2025, 10:39 AM","June 18, 2024, 6:14 AM",Dr,Letlape,Tebogo Kgosietsile Solomon
+580,"Mahlobo, Mr MD",Mahlobo_MB.jpg,1,4185,male,,1972-01-14,mbangiseni-david-mahlobo,Mbangiseni David Mahlobo,"October 17, 2025, 10:26 AM","May 2, 2014, 4:39 PM",Mr,Mahlobo,Mbangiseni David
+2043,"James, Ms DE",James_de.jpg,21,19313,female,,1976-07-09,dereleen-elana-james,Dereleen Elana James,"September 3, 2025, 11:14 AM","June 18, 2024, 6:14 AM",Ms,James,Dereleen Elana
+1942,"Nalumango, Ms RS",naumango.jpg,1,14865,female,,1978-09-27,ronalda-schivonne-nalumango,Ronalda Schivonne Nalumango,"June 19, 2025, 9:13 AM","May 21, 2019, 7:32 PM",Ms,Nalumango,Ronalda Schivonne
+1935,"Chauke-Adonis, Ms TM",TM_Chauke.jpg,1,19944,female,,1992-09-04,tshehofatso-meagan-chauke,Tshehofatso Meagan Chauke,"November 26, 2024, 7:26 AM","June 18, 2024, 6:15 AM",Ms,Chauke,Tshehofatso Meagan
+1941,"Mgcina, Ms PS",Phumzile_Mgcina.jpg,1,19948,female,,1990-08-08,phumzile-sinclatia-mgcina,Phumzile Sinclatia Mgcina,"October 8, 2025, 11:25 AM","June 18, 2024, 6:15 AM",,Mgcina,Phumzile Sinclatia
+1914,"Mc Kenzie, Mr G",mckenzie.jpg,20,15669,male,,1974-03-10,gayton-mc-kenzie,Gayton Mc Kenzie,"October 7, 2025, 1:15 PM","May 24, 2019, 1:34 PM",Mr,Mc Kenzie,Gayton
+1937,"Beesley, Mr AD",Alan_Beesley.JPG,21,19302,male,,1967-05-28,alan-david-beesley,Alan David Beesley,"February 10, 2025, 4:07 PM","June 18, 2024, 6:14 AM",Mr,Beesley,Alan David
+1936,"Kobe, Ms MP",Kobe.jpg,21,19303,female,,1991-08-18,malebo-patricia-kobe,malebo Patricia Kobe,"February 15, 2025, 11:30 AM","June 18, 2024, 6:14 AM",Ms,Kobe,malebo Patricia
+1939,"Godlimpi, Mr Z",zuko.JPG,1,19946,male,,1992-03-21,zuko-godlimpi,Zuko Godlimpi,"August 19, 2025, 12:04 PM","June 18, 2024, 6:15 AM",,Godlimpi,Zuko
+2044,"Tshotetsi, Mr NT",Mr_Noble_Tshiamo_Tshotetsi.JPG,1,17776,male,,1988-10-26,noble-tshiamo-tshotetsi,Noble Tshiamo Tshotetsi,"November 19, 2024, 7:17 AM","May 24, 2019, 1:42 PM",Mr,Tshotetsi,Noble Tshiamo
+2075,"Gasa, Mr MM",Gasa_mkp.jpg,19,21833,male,,1976-12-24,musawenkosi-mhlabuhlangene-gasa,Musawenkosi Mhlabuhlangene Gasa,"July 8, 2025, 1:33 PM","June 18, 2024, 6:20 AM",,Gasa,Musawenkosi Mhlabuhlangene
+1982,"Pholwane, Ms MB",1/Pholwane.jpg,1,26691,female,,1964-12-23,maakgalake-beneilwe-pholwane,Maakgalake Beneilwe Pholwane,"October 7, 2025, 8:25 AM","June 18, 2024, 7:58 AM",Ms,Pholwane,Maakgalake Beneilwe
+1983,"Moela, Mr MS",Moela.jpg,1,26692,male,,1987-07-04,mogodu-samuel-moela,Mogodu Samuel Moela,"November 28, 2024, 11:59 AM","June 18, 2024, 7:58 AM",Mr,Moela,Mogodu Samuel
+51,"Gigaba, Dr M",Gigaba.jpg,1,639,male,,1971-08-30,knowledge-malusi-nkanyezi-gigaba,Knowledge Malusi Nkanyezi Gigaba,"September 23, 2025, 6:37 AM","July 31, 2013, 11:32 PM",Dr,Gigaba,Knowledge Malusi Nkanyezi
+2244,"Ligaraba, Ms LE",Ligraba.jpg,1,26693,female,,1971-07-26,livhuwani-ethel-ligaraba,Livhuwani Ethel Ligaraba,"August 23, 2024, 8:50 AM","June 18, 2024, 7:58 AM",Ms,Ligaraba,Livhuwani Ethel
+951,"Marawu, Ms TL",Marawu_TL.jpg,15,1597,female,,1960-11-04,thandiswa-marawu,Thandiswa Linnen Marawu,"January 23, 2025, 6:27 PM","November 13, 2013, 3:29 PM",Ms,Marawu,Thandiswa Linnen
+1943,"Ntuli, Mr M",2/ntuli.jpg,1,19949,male,,1979-03-05,mdumiseni-ntuli,Mdumiseni Ntuli,"February 10, 2025, 8:01 AM","June 18, 2024, 6:15 AM",Mr,Ntuli,Mdumiseni
+2046,"Mmolotsane, Ms ML",mmolotsane.jpg,1,26652,female,,1971-04-20,matsholo-liesbet-mmolotsane,Matsholo Liesbet Mmolotsane,"August 22, 2024, 1:59 PM","June 18, 2024, 7:58 AM",Ms,Mmolotsane,Matsholo Liesbet
+2268,"Peters, Ms SM",peters.jpg,20,25389,female,,1972-03-24,sheila-mary-peters,Sheila Mary Peters,"November 3, 2025, 10:08 AM","June 18, 2024, 6:36 AM",Ms,Peters,Sheila Mary
+492,"Boshielo, Ms SP",Boshielo.jpg,1,4316,female,,1971-02-26,shela-paulina-boshielo,Shela Paulina Boshielo,"July 2, 2024, 2:45 PM","May 2, 2014, 4:40 PM",Ms,Boshielo,Shela Paulina
+2077,"Abader, Ms ZS",Zelna_Abader.JPG,19,27329,female,,1968-03-19,zelna-saira-abader,Zelna Saira Abader,"July 24, 2025, 11:54 AM","June 18, 2024, 8:01 AM",Ms,Abader,Zelna Saira
+1944,"Maimela, Ms KJ",Maimela.jpg,1,19950,female,,1988-06-09,khomotjo-joy-maimela,Khomotjo Joy Maimela,"March 10, 2025, 8:43 AM","June 18, 2024, 6:15 AM",Ms,Maimela,Khomotjo Joy
+2081,"Madlala, Mr E",Madlala.jpg,19,21912,male,,1987-07-23,emerald-kwenzokuhle-madlala,Emerald Kwenzokuhle Madlala,"July 8, 2025, 11:58 AM","June 18, 2024, 6:21 AM",,Madlala,Emerald Kwenzokuhle
+1985,"Ramaila, Mr KS",Ramaila.jpg,1,20000,male,,1961-03-22,keamotseng-stanley-ramaila,Keamotseng Stanley Ramaila,"August 27, 2024, 10:39 AM","June 18, 2024, 6:15 AM",Mr,Ramaila,Keamotseng Stanley
+2047,"Bath, Mr EM",bath.jpg,2,20817,male,,1990-01-27,edwin-macrae-bath,Edwin Macrae Bath,"February 15, 2025, 11:26 AM","June 18, 2024, 6:17 AM",Mr,Bath,Edwin Macrae
+2078,"Gcwabaza, Rev NB",Gcwabaza.jpg,19,13857,male,,1980-04-02,nhlanhla-bernard-gcwabaza,Nhlanhla Bernard Gcwabaza,"July 8, 2025, 2:58 PM","May 21, 2019, 7:28 PM",Rev,Gcwabaza,Nhlanhla Bernard
+1945,"Neale-May, Ms HE",Neale-May.jpg,1,19951,female,,1957-10-26,helen-elizabeth-nealemay,Helen Elizabeth Neale‐May,"March 6, 2025, 8:45 AM","June 18, 2024, 6:15 AM",Ms,Neale‐May,Helen Elizabeth
+2163,"Cloete, Mr EA",Erald_Cloete.JPG,1,26715,male,,1995-10-08,erald-alzano-cloete,Erald Alzano Cloete,"July 26, 2024, 12:08 PM","June 18, 2024, 7:58 AM",Mr,Cloete,Erald Alzano
+2048,"Komane, Mr LM",Komane.jpg,11,11344,male,,1972-07-10,lencel-mashidika-komane,Lencel Mashidika Komane,"December 6, 2024, 1:25 PM","May 21, 2019, 7:21 PM",,Komane,Lencel Mashidika
+1989,"Sauls, Mr A",1/sauls.jpg,20,21390,male,,1983-06-24,ashley-sauls,Ashley !Qhoeke Sauls I,"August 14, 2025, 1:22 PM","June 18, 2024, 6:19 AM",Mr,Sauls,Ashley
+2049,"Jordaan, Ms C",Jordaan.jpg,2,11177,female,,1991-10-22,ciska-jordaan,Ciska Jordaan,"February 27, 2025, 10:45 AM","May 21, 2019, 7:21 PM",Ms,Jordaan,Ciska
+1134,"Masemola, Dr ND",Masemola.jpg,1,1480,male,,1968-01-11,mr-masemola-namane-dickson,Namane Dickson Masemola,"August 14, 2024, 8:29 AM","November 13, 2013, 3:29 PM",Mr,Masemola,Namane Dickson
+2085,"Matutu, Mr MJ",Mandlenkosi_James_Matutu.JPG,19,21831,male,,1981-06-06,mandlenkosi-james-matutu,Mandlenkosi James Matutu,"July 8, 2025, 1:04 PM","June 18, 2024, 6:20 AM",,Matutu,Mandlenkosi James
+390,"Muthambi, Ms AF",muthambi.jpg,1,836,female,,1974-02-19,azwihangwisi-faith-muthambi,Azwihangwisi Faith Muthambi,"November 25, 2025, 12:18 PM","July 31, 2013, 11:56 PM",Ms,Muthambi,Azwihangwisi Faith
+1423,"Hendricks, Mr MGE",Hendricks_MGE.jpg,17,5491,male,,1949-09-14,mogamad-ganief-ebrahim-hendricks,Mogamad Ganief Ebrahim Hendricks,"February 12, 2025, 11:35 PM","May 2, 2014, 4:42 PM",Mr,Hendricks,Mogamad Ganief Ebrahim
+2082,"Mafagane, Ms MC",Mafagane.jpg,19,11416,female,,1983-09-13,mokgaetji-carol-mafagane,Mokgaetji Carol Mafagane,"July 11, 2025, 10:29 AM","May 21, 2019, 7:22 PM",,Mafagane,Mokgaetji Carol
+2050,"Nontenja, Ms TC",Christobel_Thandiwe_Nontenja.JPG,6,9015,female,,1956-02-03,christobel-thandiwe-nontenja,Christobel Thandiwe Nontenja,"April 24, 2025, 10:46 AM","May 3, 2014, 12:21 AM",Ms,Nontenja,Christobel Thandiwe
+1990,"Bila, Ms TJ",Bila.jpg,1,26694,female,,1966-04-06,tintswalo-joyce-bila,Tintswalo Joyce Bila,"October 7, 2025, 8:15 AM","June 18, 2024, 7:58 AM",Ms,Bila,Tintswalo Joyce
+1946,"Govana, Ms Y",Yanga_Govana.JPG,1,19952,female,,1989-09-15,yanga-govana,Yanga Govana,"August 23, 2024, 1:05 PM","June 18, 2024, 6:15 AM",Ms,Govana,Yanga
+1948,"Mkutu, Mr L",Mkutu.jpg,1,19953,male,,1992-05-22,lufefe-mkutu,Lufefe Mkutu,"January 23, 2025, 6:39 PM","June 18, 2024, 6:15 AM",Mr,Mkutu,Lufefe
+2083,"Malinga, Mr JS",Malinga.jpg,19,21966,male,,1978-11-10,japhta-sihle-malinga,Japhta Sihle Malinga,"July 8, 2025, 2:40 PM","June 18, 2024, 6:21 AM",,Malinga,Japhta Sihle
+1947,"Shiviti, Ms TG",Tsakani_Goodness_Shiviti.JPG,1,10333,female,,1991-05-12,tsakani-goodness-shiviti,Tsakani Goodness Shiviti,"October 20, 2025, 9:45 AM","May 21, 2019, 7:19 PM",,Shiviti,Tsakani Goodness
+2052,"Christie, Ms KA",christie.jpg,2,11155,female,,1968-08-12,katherine-alexandra-christie,Katherine Alexandra Christie,"November 1, 2024, 9:05 AM","May 21, 2019, 7:21 PM",Ms,Christie,Katherine Alexandra
+1995,"Adams, Mr. F",adams.jpg,24,21133,male,,1976-06-14,fadiel-adams,Fadiel Adams,"July 24, 2024, 7:28 AM","June 18, 2024, 6:18 AM",Mr,Adams,Fadiel
+2087,"Mchunu, Ms G",Mchunu_G.jpg,19,27365,female,,1973-10-30,gugulethu-mchunu,Gugulethu Mchunu,"July 8, 2025, 12:56 PM","June 18, 2024, 8:01 AM",,Mchunu,Gugulethu
+2086,"Mbele, Ms H",Mbele.jpg,19,21836,female,,1961-09-11,hazel-htombenhle-mbele,Hazel Htombenhle Mbele,"July 8, 2025, 2:08 PM","June 18, 2024, 6:20 AM",,Mbele,Hazel Htombenhle
+1177,"Diale, Ms B",1/Diale.jpg,11,6734,female,,1970-06-16,betty-kedisaletse-diale,Betty Kedisaletse Diale,"November 3, 2025, 8:47 AM","May 3, 2014, 12:16 AM",Ms,Diale,Betty Kedisaletse
+2098,"Motubatse, Mr MP",motubatse.jpg,19,21837,male,,1969-06-17,moshome-patrick-motubatse,Moshome Patrick Motubatse,"April 2, 2025, 9:09 AM","June 18, 2024, 6:20 AM",,Motubatse,Moshome Patrick
+1994,"Mahlangu, Mr S",S_MAHLANGU.png,1,26700,male,,1988-03-30,sipho-mahlangu,Sipho Mahlangu,"October 20, 2025, 10:12 AM","June 18, 2024, 7:58 AM",Mr,Mahlangu,Sipho
+2058,"Maeco, Mr SM",Maeco.jpg,1,26658,male,,1975-11-21,sello-meshack-maeco,Sello Meshack Maeco,"July 16, 2024, 10:46 AM","June 18, 2024, 7:58 AM",,Maeco,Sello Meshack
+2002,"Khumalo, Ms JQ",Juliet_Queen_Khumalo.JPG,1,26702,female,,1962-10-19,juliet-queen-khumalo,Juliet Queen Khumalo,"October 6, 2024, 11:27 AM","June 18, 2024, 7:58 AM",Ms,Khumalo,Juliet Queen
+1350,"Cuthbert, Mr MJ",Cuthbert_MJ.jpg,2,11138,male,,1993-09-21,mathew-john-cuthbert,Mathew John Cuthbert,"June 19, 2024, 1:32 PM","May 21, 2019, 7:21 PM",Mr,Cuthbert,Mathew John
+2091,"Mjadu, TS",mjadu.jpg,19,27497,male,,1975-05-07,thembisile-siboniso-mjadu,Thembinkosi Siboniso Mjadu,"July 7, 2025, 3:01 PM","August 29, 2024, 7:20 AM",Mr,Mjadu,Thembisile Siboniso
+2108,"Shangase, LG",Lungisani_Graduate_Shangase.JPG,19,21849,male,,1972-02-25,lungisani-graduate-shangase,Lungisani Graduate Shangase,"July 9, 2025, 10:11 AM","June 18, 2024, 6:20 AM",Mr,Shangase,Lungisani Graduate
+462,"Matiase, Mr NS",Matiase.jpg,11,6687,male,,1973-05-14,nthako-sam-matiase,Nthako Sam Matiase,"June 20, 2025, 9:12 AM","May 3, 2014, 12:16 AM",Mr,Matiase,Nthako Sam
+2001,"Mahlatsi, Mr LW",Mahlatsi.jpg,25,21998,male,,1982-12-08,lehlohonolo-wonderboy-mahlatsi,Lehlohonolo Wonderboy Mahlatsi,"August 13, 2024, 7:06 AM","June 18, 2024, 6:21 AM",Mr,Mahlatsi,Lehlohonolo Wonderboy
+1998,"Shabangu, Ms FL",Fisani_Lillian_Shabangu.JPG,1,26701,female,,1960-01-01,fisani-lillian-shabangu,Fisani Lillian Shabangu,"August 23, 2024, 7:46 AM","June 18, 2024, 7:58 AM",Ms,Shabangu,Fisani Lillian
+1480,"Dlelanga, Mr M",Dlelanga.jpg,1,4365,male,,1979-03-29,mluleki-dlelanga,Mluleki Dlelanga,"August 22, 2024, 10:03 AM","May 2, 2014, 4:40 PM",Mr,Dlelanga,Mluleki
+1999,"Zibi, Mr SS",zibi.jpg,22,21472,male,,1975-12-27,songezo-siphiwo-zibi,Songezo Siphiwo Zibi,"June 24, 2025, 7:57 AM","June 18, 2024, 6:19 AM",Mr,Zibi,Songezo Siphiwo
+2093,"Mkhize, Mr SP",1/Mkhize.jpg,19,25998,male,,1970-02-22,siyabonga-percival-mkhize,Siyabonga Percival Mkhize,"February 3, 2025, 2:39 PM","June 18, 2024, 6:38 AM",,Mkhize,Siyabonga Percival
+909,"Khanyile, Ms AT",khanyile.png,2,6864,female,,1982-08-12,thembisile-angel-khanyile,Thembisile Angel Khanyile,"March 5, 2025, 7:19 AM","May 3, 2014, 12:16 AM",Ms,Khanyile,Thembisile Angel
+2063,"Gcaleka-Mazibuko, Ms NA",molwele.jpg,1,13290,female,,1963-08-04,nonceba-agnes-molwele,Nonceba Agnes Molwele,"February 19, 2025, 9:16 AM","May 21, 2019, 7:27 PM",Ms,Molwele,Nonceba Agnes
+2059,"Ngobeni, Ms LM",ngbeni.jpg,21,19310,female,,1979-07-27,lerato-mikateko-ngobeni,Lerato Mikateko Ngobeni,"November 7, 2024, 8:17 AM","June 18, 2024, 6:14 AM",Ms,Ngobeni,Lerato Mikateko
+2000,"Mokoena, Ms JL",Mokoena_JL.jpg,1,17286,female,,1972-08-03,julian-leseletsi-mokoena,Julian Leseletsi Mokoena,"June 25, 2025, 10:16 AM","May 24, 2019, 1:40 PM",Ms,Mokoena,Julian Leseletsi
+1321,"Mahlaule, Mr MG",Mahlaule.jpg,1,10277,male,,1984-04-04,mikateko-golden-mahlaule,Mikateko Golden Mahlaule,"July 10, 2024, 8:56 AM","May 21, 2019, 7:19 PM",Mr,Mahlaule,Mikateko Golden
+2060,"Wakelin, Mr KS",wakelin.jpg,2,16001,male,,1968-12-27,kingsleys-hope-wakelin,Kingsley's Hope Wakelin,"May 26, 2025, 9:59 AM","May 24, 2019, 1:36 PM",Mr,Wakelin,Kingsley'S Hope
+2105,"Ngubane, Mr JS",ngubane.jpg,19,21826,male,,1972-05-13,joel-sihle-ngubane,Joel Sihle Ngubane,"August 4, 2025, 9:45 AM","June 18, 2024, 6:20 AM",,Ngubane,Joel Sihle
+2100,"Mtshweni, Ms NA",mtshweni.jpg,19,27368,female,,1965-12-05,nokwethemba-antonia-mtshweni,Nokwethemba Antonia Mtshweni,"July 7, 2025, 2:56 PM","June 18, 2024, 8:01 AM",Ms,Mtshweni,Nokwethemba Antonia
+2095,"Moodley, Mr SR",moodley.jpg,19,21842,male,,1957-02-10,shunmugam-ramsamy-moodley,Shunmugam Ramsamy Moodley,"September 5, 2024, 2:02 PM","June 18, 2024, 6:20 AM",Mr,Moodley,Shunmugam Ramsamy
+2061,"Potgieter, Ms LR",Leah_Ruth.JPG,2,11204,female,,1983-02-28,leah-ruth-potgieter,Leah Ruth Potgieter,"September 29, 2025, 8:53 AM","May 21, 2019, 7:21 PM",Ms,Potgieter,Leah Ruth
+2003,"Klopper, Mr DD",Klopper.jpg,2,20829,male,,1984-12-27,damien-dominic-klopper,Damien Dominic Klopper,"October 14, 2025, 7:38 AM","June 18, 2024, 6:17 AM",Mr,Klopper,Damien Dominic
+2007,"Sompa-Masiu, Ms NS",Sompa-Masiu.jpg,1,26709,female,,1977-02-06,nombiselo-suzan-sompa-masiu,Nombiselo Suzan Sompa-Masiu,"June 12, 2025, 7:16 AM","June 18, 2024, 7:58 AM",Ms,Sompa-Masiu,Nombiselo Suzan
+2065,"Mbiyo, Ms IM",Mbiyo.jpg,1,13297,female,,1990-06-18,inathi-mirranda-mbiyo,Inathi Mirranda Mbiyo,"November 7, 2024, 8:39 AM","May 21, 2019, 7:27 PM",Ms,Mbiyo,Inathi Mirranda
+2062,"Ramongalo, Mr TR",Ramongalo.jpg,2,11200,male,,1986-02-28,tumelo-robert-ramongalo,Tumelo Robert Ramongalo,"May 18, 2025, 4:30 PM","May 21, 2019, 7:21 PM",Mr,Ramongalo,Tumelo Robert
+1959,"Mdluli, Mr MM",Mdluli.jpg,2,20819,male,,1998-03-25,mlondi-mveli-mdluli,Mlondi Mveli Mdluli,"June 23, 2025, 7:31 AM","June 18, 2024, 6:17 AM",Mr,Mdluli,Mlondi Mveli
+2004,"Kegakilwe, Ms BM",Kegakilwe.jpg,1,26706,female,,1967-10-05,betty-motebele-kegakilwe,Betty Motebele Kegakilwe,"November 3, 2025, 10:21 AM","June 18, 2024, 7:58 AM",Ms,Kegakilwe,Betty Motebele
+2104,"Ndhlela, Mr N",ndlela.jpg,19,21839,male,,1981-09-04,nhlamulo-ndhlela,Nhlamulo Ndhlela,"July 8, 2025, 1:06 PM","June 18, 2024, 6:20 AM",,Ndhlela,Nhlamulo
+2107,"Nomvalo, Mr S",nomvalo.jpg,19,21910,male,,1989-12-24,sibonelo-nomvalo,Sibonelo Nomvalo,"October 10, 2024, 9:53 AM","June 18, 2024, 6:20 AM",Mr,Nomvalo,Sibonelo
+2005,"Legoete, Mr MD",Legoete.jpg,1,26707,male,,1972-06-01,molefi-david-legoete,Molefi David Legoete,"July 16, 2024, 9:53 AM","June 18, 2024, 7:58 AM",Mr,Legoete,Molefi David
+2008,"Kgabo, Mr GD",kgg.jpg,1,26710,male,,1986-04-03,gaolatlhe-david-kgabo,Gaolatlhe David Kgabo,"August 22, 2024, 1:08 PM","June 18, 2024, 7:58 AM",Mr,Kgabo,Gaolatlhe David
+701,"Chance, Mr T",chance.jpg,2,6229,male,,1960-05-08,roger-william-tobias-chance,Roger William Tobias Chance,"August 14, 2024, 11:12 AM","May 3, 2014, 12:15 AM",Mr,Chance,Roger William Tobias
+2102,"Mwali, Mr SG",mwali.jpg,19,27364,male,,1993-06-22,sanele-greegory-mwali,Sanele Greegory Mwali,"February 22, 2025, 2:42 PM","June 18, 2024, 8:01 AM",Mr,Mwali,Sanele Greegory
+2099,"Mthethwa, Mr ZE",1/mthethwa.jpg,19,10137,male,,1978-09-08,zwelakhe-elija-mthethwa,Zwelakhe Elija Mthethwa,"July 8, 2025, 1:02 PM","May 21, 2019, 7:18 PM",,Mthethwa,Zwelakhe Elija
+1273,"Morolong, Mr IK",mr_itiseng_kenneth_morolong.jpg,1,14598,male,,1982-02-17,itiseng-kenneth-morolong,Itiseng Kenneth Morolong,"October 17, 2025, 8:20 AM","May 21, 2019, 7:31 PM",Mr,Morolong,Itiseng Kenneth
+2066,"de Blocq van Scheltinga, Mr AD",Andrew_Dirk_de_Blocq_van_Scheltinga.JPG,2,20841,male,,1992-01-22,andrew-dirk-de-blocq-van-scheltinga,Andrew Dirk de Blocq van Scheltinga,"May 6, 2025, 8:09 AM","June 18, 2024, 6:18 AM",Mr,De Blocq Van Scheltinga,Andrew Dirk
+1962,"Zondi, Mr S",Zondi.jpg,2,20828,male,,1994-11-17,sphesihle-zondi,Sphesihle Zondi,"February 16, 2025, 5:14 PM","June 18, 2024, 6:17 AM",Mr,Zondi,Sphesihle
+2101,"Muhammad, Ms MB",muhammed.jpg,19,27328,female,,1969-06-09,mariam-be-be-muhammad,Mariam Be Be Muhammad,"July 8, 2025, 10:23 AM","June 18, 2024, 8:01 AM",,Muhammad,Mariam Be Be
+2006,"Tlhong, Ms KC",Tlhong.jpg,1,26708,female,,1980-06-22,kerileng-christina-tlhong,Kerileng Christina Tlhong,"June 5, 2025, 1:18 PM","June 18, 2024, 7:58 AM",Ms,Tlhong,Kerileng Christina
+2009,"Senne, Ms MM",Senne.jpg,1,26711,female,,1981-07-09,masello-maatlawa-senne,Masello Maatlawa Senne,"August 23, 2024, 11:09 AM","June 18, 2024, 7:58 AM",Ms,Senne,Masello Maatlawa
+536,"Kruger, Mr HC",kruger.jpg,2,6219,male,,1962-05-06,hendrik-christiaan-crafford-kruger,Hendrik Christiaan Crafford Krüger,"February 21, 2025, 11:43 AM","May 3, 2014, 12:15 AM",Mr,Krüger,Hendrik Christiaan Crafford
+2103,"Mngadi, Ms PP",ncube.jpg,19,27366,female,,1983-05-04,pinky-pearlgene-ncube,Pinky Pearlgene Mngadi,"July 7, 2025, 3:25 PM","June 18, 2024, 8:01 AM",,Ncube,Pinky Pearlgene
+2109,"Ntshingila, Mr EM",ntshitgila.jpg,19,21846,male,,1982-06-08,edward-mzikayise-ntshingila,Edward Mzikayise Ntshingila,"July 8, 2025, 12:23 PM","June 18, 2024, 6:20 AM",Mr,Ntshingila,Edward Mzikayise
+481,"Mkhaliphi, Ms HO",Mkhaliphi.jpg,11,6678,female,,1973-10-31,hlengiwe-octavia-hlophe,Hlengiwe Octavia Mkhaliphi,"October 1, 2025, 7:21 AM","May 3, 2014, 12:16 AM",Ms,Mkalipi,Hlengiwe Octavia
+2010,"Mosikatsi, Ms S",Mokiatsi.jpg,1,17552,female,,1970-02-27,sofia-mosikatsi,Sofia Mosikatsi,"April 2, 2025, 8:35 AM","May 24, 2019, 1:41 PM",Ms,Mosikatsi,Sofia
+2110,"Ntshaba, Ms D",ntshaba.jpg,19,21973,female,,1957-08-29,delisile-ntshaba,Delisile Ntshaba,"July 8, 2025, 12:43 PM","June 18, 2024, 6:21 AM",,Ntshaba,Delisile
+2011,"Schickerling, Ms LM",Schickerling.jpg,2,26965,female,,1976-10-08,lisa-mare-schickerling,Lisa-Maré Schickerling,"October 14, 2025, 7:36 AM","June 18, 2024, 8:00 AM",Ms,Schickerling,Lisa-Maré
+2111,"Nxumalo, Mr NI",nxumalo.jpg,19,21964,male,,1972-12-25,nkosinathi-innocent-nxumalo,Nkosinathi Innocent Nxumalo,"July 8, 2025, 8:26 AM","June 18, 2024, 6:21 AM",,Nxumalo,Nkosinathi Innocent
+2012,"Makasi, Ms N",Makasi.jpg,1,26717,female,,1976-04-19,noluthando-makasi,Noluthando Makasi,"November 12, 2025, 9:07 AM","June 18, 2024, 7:58 AM",Ms,Makasi,Noluthando
+925,"Mantashe, Mr G",Mantashe.jpg,1,9672,male,,1955-06-21,gwede-mantashe,Gwede Mantashe,"October 7, 2025, 11:42 AM","February 27, 2018, 2:33 PM",Mr,Mantashe,Gwede
+1900,"Vilakazi, Mr S G",1/vilakazi.jpg,2,19189,male,,1967-10-08,sibongeseni-gerald-vilakazi,S'bongiseni Gerald Vilakazi,"September 5, 2025, 1:15 PM","March 18, 2024, 7:56 AM",Mr,,
+926,"Seabi, Mr M A",Seabi.jpg,1,9684,male,,1962-09-21,albert-mammoga-seabi,Albert Mammoga Seabi,"June 26, 2024, 9:55 AM","August 24, 2018, 1:42 PM",Mr,Seabi,Albert Mammoga
+1966,"Bollman, Ms NJ",bollman...jpg,2,20832,female,,1974-05-29,nicole-jane-bollman,Nicole Jane Bollman,"February 15, 2025, 11:35 AM","June 18, 2024, 6:17 AM",Ms,Bollman,Nicole Jane
+982,"Tikana-Gxothiwe, Ms W",tikana.jpg,1,4360,female,,1967-11-03,weziwe-tikana,Weziwe Tikana-Gxothiwe,"September 11, 2024, 5:11 PM","May 2, 2014, 4:40 PM",Ms,Tikana-Gxothiwe,Weziwe
+2013,"Plaatjies, Mr WTD",Plaatjies.jpg,1,26718,male,,1975-03-01,windy-timotheus-david-plaatjies,Windy Timotheus David Plaatjies,"October 20, 2025, 10:00 AM","June 18, 2024, 7:58 AM",Mr,Plaatjies,Windy Timotheus David
+1897,"Poole, Mr C",poole.jpg,2,11151,male,,1967-02-12,conrad-james-poole,Conrad James Poole,"August 12, 2024, 1:01 PM","May 21, 2019, 7:21 PM",Mr,Poole,Conrad James
+1396,"Modise-Mpya, Ms M",Mofise-Mpya.jpg,1,10272,female,,1984-09-02,moleboheng-modise,Moleboheng Modise,"August 22, 2024, 2:02 PM","May 21, 2019, 7:19 PM",Ms,Modise,Moleboheng
+1324,"Swarts, Ms B",swarts.jpg,1,13278,female,,1972-02-19,bernice-swarts,Bernice Swarts,"October 8, 2025, 11:03 AM","May 21, 2019, 7:27 PM",Ms,Swarts,Bernice
+1338,"Chabane, Mr MS",Chabane.jpg,1,14183,male,,1978-08-08,mosa-steve-chabane,Mosa Steve Chabane,"September 4, 2024, 12:07 PM","May 21, 2019, 7:29 PM",Mr,Chabane,Mosa Steve
+918,"Maseko, Ms M",Maseko_LM.jpg,2,6665,female,,1969-07-29,letta-matlhodi-maseko,Letta Matlhodi Maseko,"September 5, 2025, 11:54 AM","May 3, 2014, 12:16 AM",Ms,Maseko,Letta Matlhodi
+1816,"Ramokgopa, Ms M",Ms_Ramokgopa.jpg,1,19943,female,,1979-12-31,maropene-lydia-ramokgopa,Maropene Lydia Ramokgopa,"October 7, 2025, 11:44 AM","June 18, 2024, 6:15 AM",Ms,Ramokgopa,Maropene Lydia
+2014,"Sapo, Ms L",Lindelwa_Sapo.JPG,1,26641,female,,1991-03-23,lindelwa-sapo,Lindelwa Sapo,"August 23, 2024, 8:47 AM","June 18, 2024, 7:58 AM",Ms,Sapo,Lindelwa
+861,"Molefe, Mr B",molefe.jpg,19,9653,male,,1966-12-28,brian-molefe,Brian Molefe,"October 20, 2025, 10:03 AM","March 2, 2017, 7:55 AM",Mr,Molefe,Brian
+1343,"Chirwa-Mpungose, Ms NN",Naledi_Chirwa.JPG,11,11295,female,,1993-07-22,naledi-nokukhanya-chirwa,Naledi Nokukhanya Chirwa Mpungose,"October 10, 2025, 11:31 AM","May 21, 2019, 7:21 PM",,Chirwa,Naledi Nokukhanya
+880,"Nolutshungu, Ms N",nolutshungu.jpg,11,9670,female,,1959-09-13,nontando-nolutshungu,Nontando Nolutshungu,"November 6, 2025, 9:03 AM","February 7, 2018, 3:39 PM",Ms,Nolutshungu,Nontando
+868,"Adams, Ms R C",R_aDAMS.jpg,1,4211,female,,1963-08-09,rachel-cecilia-adams,Rachel Cecilia Adams,"October 7, 2025, 8:37 AM","May 2, 2014, 4:39 PM",Ms,Adams,Rachel Cecilia
+1126,"Ndalane, Ms NA",Ndalane.jpg,1,1513,female,,1963-06-01,ms-ndalane-nanda-anna,Nanda Annah Ndalane,"September 2, 2024, 10:10 AM","November 13, 2013, 3:29 PM",Ms,Ndalane,Nanda Annah
+879,"Skosana, Mr GJ",Skosana.jpg,1,9667,male,,1978-09-09,gijimani-jim-skosana,Gijimani Jim Skosana,"November 11, 2024, 2:19 PM","November 23, 2017, 11:20 AM",Mr,Skosana,Gijimani Jim
+919,"Davids, Ms S",1/Davids.jpg,1,4595,female,,1967-01-11,sharon-winona-davids,Sharon Winona Davids,"October 7, 2025, 8:17 AM","May 2, 2014, 4:40 PM",Ms,Davids,Sharon Winona
+543,"Ntlangwini, Ms EN",Ntlangwini.jpg,11,6684,female,,1983-10-01,elsabe-natasha-louw,Elsabe Natasha Ntlangwini,"November 6, 2025, 9:08 AM","May 3, 2014, 12:16 AM",Ms,Ntlangwini,Elsabe Natasha
+949,"Majodina, Ms PC",Majodina.jpg,1,1558,female,,1968-12-24,pemmy-majodina,Pemmy Castelina Pamela Majodina,"October 7, 2025, 1:26 PM","November 13, 2013, 3:29 PM",Ms,Majodina,Pemmy Castelina Pamela
+1329,"Tito, Ms LF",Tito.jpg,11,11298,female,,1979-06-22,lorato-florence-tito,Lorato Florence Tito,"November 3, 2025, 8:41 AM","May 21, 2019, 7:21 PM",Ms,Tito,Lorato Florence
+527,"Kekana, Ms PS",Kekana_PS.jpg,1,4312,female,,1966-07-14,pinky-sharon-kekana,Pinky Sharon Kekana,"October 17, 2025, 8:23 AM","May 2, 2014, 4:40 PM",Ms,Kekana,Pinky Sharon
+855,"Thembekwayo, Dr S",1/thembekwayo.jpg,11,5350,female,,1955-03-07,sophie-suzan-thembekwayo,Sophie Suzan Thembekwayo,"March 5, 2025, 7:27 AM","May 2, 2014, 4:42 PM",Dr,Thembekwayo,Sophie Suzan
+133,"Lotriet, Prof  A",1/Lotriet.jpg,2,700,female,,1960-06-08,annelie-lotriet,Annelie Lotriet,"October 7, 2025, 8:19 AM","July 31, 2013, 11:40 PM",Dr,Lotriet,Annelie
+804,"Paulsen, Mr N M",Paulsen.jpg,11,7006,male,,1967-01-02,mogamad-nazier-paulsen,Mogamad Nazier Paulsen,"December 6, 2024, 1:31 PM","May 3, 2014, 12:16 AM",Mr,Paulsen,Mogamad Nazier
+841,"Gungubele, Mr M",gungubele.jpg,1,649,male,,1957-02-01,m-gungubele,Mondli Gungubele,"October 8, 2025, 10:06 AM","July 31, 2013, 11:33 PM",Mr,Gungubele,Mondli
+2015,"Sokopo, Mr MM",Sokopo.jpg,1,26719,male,,1974-02-23,mzwanele-major-sokopo,Mzwanele Major Sokopo,"September 2, 2024, 10:22 AM","June 18, 2024, 7:58 AM",Mr,Sokopo,Mzwanele Major
+1362,"De Lille, Ms P",Lille_resized.jpg,16,1014,female,,1951-01-17,patricia-de-lille,Patricia de Lille,"October 7, 2025, 1:19 PM","August 1, 2013, 12:18 AM",Ms,de Lille,Patricia
+878,"Buthelezi, Mr EM",1/Buthelezi_EM.jpg,4,7457,male,,1977-02-16,elphas-mfakazeleni-buthelezi,Elphas Mfakazeleni Buthelezi,"October 7, 2025, 12:25 PM","May 3, 2014, 12:17 AM",Inkosi,Buthelezi,Elphas Mfakazeleni
+903,"Mhaule, Dr R",1/Mhaule.jpg,1,4528,female,,1961-12-01,makgabo-reginah-mhaule,Makgabo Reginah Mhaule,"November 21, 2025, 2:02 PM","May 2, 2014, 4:40 PM",Dr.,Mhaule,Makgabo Reginah
+906,"Botes, Mr A",21.jpg,1,4567,male,,1973-09-09,alvin-botes,Alvin Botes,"October 8, 2025, 11:16 AM","May 2, 2014, 4:40 PM",Mr,Botes,Alvin
+916,"Dugmore, Mr C",dugmore...jpg,1,4593,male,,1963-09-16,cameron-muir-dugmore,Cameron Muir Dugmore,"October 10, 2024, 10:46 AM","May 2, 2014, 4:40 PM",Mr,Dugmore,Cameron Muir
+2017,"Le Roux, Dr KW",Le_Roux.jpg,2,20844,male,,1974-12-01,karl-willem-du-pre-le-roux,Karl Willem Du Pré Le Roux,"August 12, 2024, 1:04 PM","June 18, 2024, 6:18 AM",Dr,Le Roux,Karl Willem Du Pré
+1400,"Nontsele, Mr M",notsele.jpg,1,12700,male,,1959-06-01,mncedisi-nontsele,Mncedisi Nontsele,"August 23, 2024, 11:03 AM","May 21, 2019, 7:25 PM",Mr,Nontsele,Mncedisi
+2024,"Louw, Mr T",louw.jpg,1,19958,male,,1990-08-02,sedukanelo-tshepo-david-louw,Sedukanelo Tshepo David Louw,"September 2, 2024, 10:18 AM","June 18, 2024, 6:15 AM",Mr,Louw,Sedukanelo Tshepo David
+370,"Motsoaledi, Dr PA",motsoaledi.jpg,1,822,male,,1958-08-07,pakishe-aaron-motsoaledi,Pakishe Aaron Motsoaledi,"October 7, 2025, 11:20 AM","July 31, 2013, 11:54 PM",Dr,Motsoaledi,Pakishe Aaron
+904,"Mkhize, Dr Z",Dr_Z_Mkhize.jpg,1,9671,male,,1956-02-02,zwelini-lawrence-mkhize,Zwelini Lawrence Mkhize,"August 22, 2024, 1:53 PM","February 27, 2018, 2:03 PM",Dr,Mkhize,Zwelini Lawrence
+2018,"Kgobisa-Ngcaba, Ms K",1/Kgobisa-Ngcaba.jpg,2,26967,female,,1988-12-10,kabelo-kgobisa-ngcaba,Kabelo Kgobisa-Ngcaba,"November 3, 2025, 10:22 AM","June 18, 2024, 8:00 AM",Ms,Kgobisa-Ngcaba,Kabelo
+1132,"Mathabatha, Mr CS",Mathabatha.jpg,1,1484,male,,1957-01-21,mr-mathabatha-stanley-chupu,Chupu Stanley Mathabatha,"October 8, 2025, 11:22 AM","November 13, 2013, 3:29 PM",Mr,Mathabatha,Chupu Stanley
+17,"Phaahla, Dr JM",1/Phaahla.jpg,1,889,male,,1957-01-11,mathume-joseph-phaahla,Mathume Joseph Phaahla,"October 8, 2025, 11:06 AM","August 1, 2013, 12:08 AM",Dr,Phaahla,Mathume Joseph
+1709,"Tau, Mr P",Tau.jpg,1,15791,male,,1970-07-06,mpho-parks-franklyn-tau,Mpho Parks Franklyn Tau,"October 7, 2025, 1:21 PM","May 24, 2019, 1:35 PM",Mr,Tau,Mpho Parks Franklyn
+99,"Steenhuisen, Mr JH",1/steenhuisen.jpg,2,954,male,,1976-03-25,john-henry-steenhuisen,John Henry Steenhuisen,"October 7, 2025, 10:00 AM","August 1, 2013, 12:12 AM",Mr,Steenhuisen,John Henry
+1402,"Nqola, Mr X",nqola.jpg,1,12698,male,,1986-08-12,xola-nqola,Xola Nqola,"October 18, 2024, 2:14 PM","May 21, 2019, 7:25 PM",Mr,Nqola,Xola
+2019,"Cameron, Mr I",Cameron.jpg,2,26968,male,,1990-05-18,ian-cameron,Ian Cameron,"May 27, 2025, 11:54 AM","June 18, 2024, 8:00 AM",Mr,Cameron,Ian
+65,"Lorimer, Mr JR",Lorimer_JR.jpg,2,699,male,,1962-02-19,james-robert-bourne-lorimer,James Robert Bourne Lorimer,"July 25, 2024, 1:58 PM","July 31, 2013, 11:39 PM",Mr,Lorimer,James Robert Bourne
+108,"Swart, Mr SN",1/swart.jpg,3,964,male,,1959-02-08,steven-nicholas-swart,Steven Nicholas Swart,"November 11, 2024, 11:14 AM","August 1, 2013, 12:13 AM",Mr,Swart,Steven Nicholas
+98,"Sotyu, Ms MM",sotyu.jpg,1,951,female,,1957-05-28,makhotso-magdeline-sotyu,Makhotso Magdeline Sotyu,"October 17, 2025, 8:53 AM","August 1, 2013, 12:11 AM",Ms,Sotyu,Makhotso Magdeline
+83,"Singh, Mr N",n_singh.jpg,4,933,male,,1954-09-05,narend-singh,Narend Singh,"October 8, 2025, 11:01 AM","August 1, 2013, 12:10 AM",Mr,Singh,Narend
+25,"Pule, Ms DD",1/pule.jpg,1,896,female,,1960-07-19,dina-deliwe-pule,Dina Deliwe Pule,"August 23, 2024, 7:22 AM","August 1, 2013, 12:09 AM",Ms,Pule,Dina Deliwe
+1406,"Ntshavheni, Ms KPS",289.jpg,1,10273,female,,1977-01-30,khumbudzo-phophi-silence-ntshavheni,Khumbudzo Phophi Silence Ntshavheni,"October 7, 2025, 1:17 PM","May 21, 2019, 7:19 PM",Ms,Ntshavheni,Khumbudzo Phophi Silence
+150,"van der Merwe, Ms LL",L_van_der_Merwe.jpg,4,1016,female,,1980-10-01,liezl-linda-van-der-merwe,Liezl Linda van der Merwe,"May 5, 2025, 10:10 AM","August 1, 2013, 12:18 AM",Ms,van der Merwe,Liezl Linda
+444,"Thring, Mr WM",thring.jpg,3,1333,male,,1963-02-01,wayne-maxim-thring,Wayne Maxim Thring,"November 11, 2024, 11:17 AM","October 15, 2013, 1:26 PM",Mr,Thring,Wayne Maxim
+438,"Mohai, Mr S",mohai.jpg,1,800,male,,1966-11-08,seiso-joel-mohai,Seiso Joel Mohai,"April 1, 2025, 12:58 PM","July 31, 2013, 11:51 PM",Mr,Mohai,Seiso Joel
+1268,"Ismail, Ms H",1/Ismail.jpg,2,11122,female,,1969-11-09,haseena-ismail,Haseena Ismail,"December 11, 2025, 11:15 AM","May 21, 2019, 7:21 PM",Ms,Ismail,Haseenabanu
+134,"Nemadzinga-Tshabalala, Ms J",1/tshabalala.jpg,1,979,female,,1982-03-30,judith-tshabalala,Judith Tshabalala,"October 8, 2025, 10:52 AM","August 1, 2013, 12:14 AM",Ms,Tshabalala,Judith
+1775,"malematja, Mr C N",malematja.jpg,1,13286,male,,1972-09-04,cristopher-nakampe-malematja,Cristopher Nakampe malematja,"August 22, 2024, 1:35 PM","May 21, 2019, 7:27 PM",Mr,malematja,Cristopher Nakampe
+163,"Van Rooyen, Mr DD",van_rooyen.jpg,19,989,male,,1968-10-20,david-douglas-van-rooyen,David Douglas Des Van Rooyen,"November 6, 2025, 7:27 AM","August 1, 2013, 12:15 AM",Mr,Van Rooyen,David Douglas
+1774,"Marais, Ms P",1/Marais_P.jpg,11,19014,female,,1967-09-27,paulnita-marais,Paulnita Marais,"December 6, 2024, 1:06 PM","January 27, 2022, 1:59 PM",Ms,Marais,Paulnita
+239,"Koornhof, Dr GW",Koornhof.jpg,1,683,male,,1952-07-03,gerhardus-willem-koornhof,Gerhardus Willem Koornhof,"August 22, 2024, 1:10 PM","July 31, 2013, 11:38 PM",Dr,Koornhof,Gerhardus Willem
+2020,"Burke, Dr MJ",Burke.jpg,2,20846,male,,1989-09-18,mark-john-burke,Mark John Burke,"July 28, 2025, 11:04 AM","June 18, 2024, 6:18 AM",Dr,Burke,Mark John
+386,"Mulder, Dr CP",Mulder.jpg,8,834,male,,1956-07-27,cornelius-petrus-mulder,Cornelius Petrus Mulder,"August 14, 2025, 2:19 PM","July 31, 2013, 11:55 PM",Dr,Mulder,Cornelius Petrus
+248,"Chikunga, Ms LS",Chikunga.jpg,1,578,female,,1958-11-09,lydia-sindisiwe-chikunga,Lydia Sindisiwe Chikunga,"October 7, 2025, 1:29 PM","July 31, 2013, 11:25 PM",Ms,Chikunga,Lydia Sindisiwe
+1715,"Maotwe, Ms OMC",2460.jpg,11,6690,female,,1981-06-05,omphile-mankoba-confidence-maotwe,Omphile Mankoba Confidence Maotwe,"October 10, 2024, 9:18 AM","May 3, 2014, 12:16 AM",Ms,Maotwe,Omphile Mankoba Confidence
+599,"Masina, Mr MC",Masina.jpg,1,4197,male,,1974-09-02,mzwandile-collen-masina,Mzwandile Collen Masina,"November 4, 2025, 1:05 PM","May 2, 2014, 4:39 PM",Mr,Masina,Mzwandile Collen
+1411,"Gondwe, Dr M",Gondwe.jpg,2,11121,female,,1977-02-07,mimmy-martha-gondwe,Mimmy Martha Gondwe,"October 8, 2025, 11:11 AM","May 21, 2019, 7:21 PM",Dr,Gondwe,Mimmy Martha
+1084,"Gana, Mr M",gana_sm.jpg,22,3859,male,,1983-08-11,makashule-gana,Stanford Makashule Gana,"July 3, 2025, 11:58 AM","April 24, 2014, 8:32 AM",Mr,Gana,Stanford Makashule
+2021,"Maduna, Mr N",N_Maduna.JPG,1,19955,male,,1992-05-29,ntando-maduna,Ntando Maduna,"November 14, 2024, 6:26 PM","June 18, 2024, 6:15 AM",Mr,Maduna,Ntando
+262,"Makhubela, Ms LS",makhubela...2.jpg,1,728,female,,1978-08-16,lusizo-sharon-makhubela-mashele,Lusizo Sharon Makhubela,"March 18, 2025, 9:53 AM","July 31, 2013, 11:41 PM",Ms,Makhubela-Mashele,Lusizo Sharon
+238,"Kohler, Ms D",Kohler_D.jpg,2,681,female,,1955-12-02,dianne-kohler-barnard,Dianne Kohler,"September 11, 2024, 1:34 PM","July 31, 2013, 11:38 PM",Ms,Kohler,Dianne
+362,"Ndabeni-Abrahams, Ms ST",ndabeni.jpg,1,4258,female,,1978-06-30,stella-tembisa-ndabeni-abrahams,Stella Tembisa Ndabeni-Abrahams,"October 21, 2025, 1:43 PM","May 2, 2014, 4:39 PM",Ms,Ndabeni-Abrahams,Stella Tembisa
+1776,"Zondo, Mr  S S",Zondo_S.jpg,4,19021,male,,1992-03-26,sanele-sethembeni-zondo,Sanele Sethembeni Zondo,"March 24, 2025, 11:37 AM","February 15, 2022, 11:33 AM",Mr,Zondo,Sanele Sethembeni
+336,"Mncwango, Mr MA",mncwango.jpg,4,794,male,,1953-08-19,mangaqa-albert-mncwango,Mangaqa Albert Mncwango,"September 10, 2024, 8:31 AM","July 31, 2013, 11:50 PM",Mr,Mncwango,Mangaqa Albert
+274,"Manamela, Mr KB",Manamela.jpg,1,735,male,,1979-07-10,kgwaridi-buti-manamela,Kgwaridi Buti Manamela,"October 21, 2025, 1:48 PM","July 31, 2013, 11:43 PM",Mr,Manamela,Kgwaridi Buti
+1265,"Hlongo, Ms AS",Hlongo.jpg,1,14408,female,,1991-11-15,altia-sthembile-hlongo,Altia Sthembile Hlongo,"October 21, 2025, 1:52 PM","May 21, 2019, 7:30 PM",Ms,Hlongo,Altia Sthembile
+1424,"Munyai, Mr TB",Munyai.jpg,1,13267,male,,1970-11-23,tshilidzi-bethuel-munyai,Tshilidzi Bethuel Munyai,"August 22, 2024, 2:26 PM","May 21, 2019, 7:27 PM",Mr,Munyai,Tshilidzi Bethuel
+1266,"Majozi, Ms Z",ms_zandile_majozi.jpg,4,7449,female,,1985-05-09,zandile-majozi,Zandile Majozi,"June 30, 2025, 9:33 AM","May 3, 2014, 12:17 AM",Ms,Majozi,Zandile
+368,"Motshekga, Ms MA",Motshekga_MA.jpg,1,821,female,,1955-06-19,matsie-angelina-motshekga,Matsie Angelina Motshekga,"October 21, 2025, 1:50 PM","July 31, 2013, 11:54 PM",Mrs,Motshekga,Matsie Angelina
+1777,"Hadebe, Mr N",hadebbe.jpg,4,19022,male,,1972-10-10,nhlanhla-hadebe,Nhlanhla Hadebe,"June 20, 2025, 9:00 AM","February 15, 2022, 12:06 PM",Mr,,
+711,"Mathys, Ms L",MATHY.jpg,11,6676,female,,1972-08-13,leigh-ann-mathys,Leigh-Ann Mathys,"November 5, 2025, 10:55 AM","May 3, 2014, 12:16 AM",Ms,Mathys,Leigh-Ann
+419,"Nzimande, Dr BE",nzimande.jpg,1,878,male,,1958-04-14,bonginkosi-emmanuel-nzimande,Bonginkosi Emmanuel (Blade) Nzimande,"October 21, 2025, 1:53 PM","August 1, 2013, 12:08 AM",Dr,Nzimande,Bonginkosi Emmanuel
+278,"Dikgale, Ms MC",Dikgale.jpg,1,9523,female,,1964-03-23,masefako-clarah-dikgale,Masefako Clarah Dikgale,"June 3, 2025, 11:17 AM","June 6, 2014, 5:28 PM",Ms,Dikgale,Masefako Clarah
+118,"Hlengwa, Mr M",Hlengwa.jpg,4,657,male,,1987-06-12,mkhuleko-hlengwa,Mkhuleko Hlengwa,"October 17, 2025, 10:23 AM","July 31, 2013, 11:34 PM",Mr,Hlengwa,Mkhuleko
+29,"Frolick, Mr CT",Frolick.jpg,1,629,male,,1967-01-20,cedric-thomas-frolick,Cedric Thomas Frolick,"August 12, 2024, 11:42 AM","July 31, 2013, 11:28 PM",Mr,Frolick,Cedric Thomas
+2120,"Reddy, Mr VG",reddy.jpg,19,21825,male,,1970-12-07,visvin-gopal-reddy,Visvin Gopal Reddy,"July 8, 2025, 1:41 PM","June 18, 2024, 6:20 AM",Mr,Reddy,Visvin Gopal
+441,"Mileham, Mr K",Mileham.jpg,2,786,male,,1971-04-23,kevin-john-mileham,Kevin John Mileham,"July 16, 2024, 10:30 AM","July 31, 2013, 11:49 PM",Mr,Mileham,Kevin John
+1443,"Aucamp, Mr W",aucamp.jpg,2,11215,male,,1972-02-26,willem-abraham-stephanus-aucamp,Willem Abraham Stephanus Aucamp,"November 13, 2025, 9:28 AM","May 21, 2019, 7:21 PM",Mr,Aucamp,Willem Abraham Stephanus
+454,"Kwankwa, Mr NL",Kwankwa.jpg,6,1331,male,,1980-08-23,nqabayomzi-lawrence-kwankwa,Nqabayomzi Lawrence Saziso Kwankwa,"April 24, 2025, 10:43 AM","October 15, 2013, 1:26 PM",Mr,Kwankwa,Nqabayomzi Lawrence
+475,"Bilankulu, Ms NK",Bilankulu.jpg,1,4311,female,,1966-02-14,nkhensani-kate-bilankulu,Nkhensani Kate Bilankulu,"July 7, 2025, 8:00 AM","May 2, 2014, 4:40 PM",Ms,Bilankulu,Nkhensani Kate
+465,"Bagraim, Mr M",bagraim.jpg,2,6224,male,,1956-10-09,michael-bagraim,Michael Bagraim,"December 1, 2025, 9:49 AM","May 3, 2014, 12:15 AM",Mr,Bagraim,Michael
+445,"Mathale, Mr C",Mathale_C.jpg,1,1332,male,,1961-01-23,cassel-charlie-mathale,Cassel Charlie Mathale,"August 23, 2024, 7:04 AM","October 15, 2013, 1:26 PM",Mr,Mathale,Cassel Charlie
+1616,"Zikalala, Mr S",zikalala.jpg,1,16353,male,,1973-08-06,sihle-zikalala,Sihle Zikalala,"October 7, 2025, 8:32 AM","May 24, 2019, 1:37 PM",Mr,Zikalala,Sihle
+473,"Bergman, Mr D",Bergman.jpg,2,6216,male,,1977-10-18,darren-bergman,Darren Bergman,"August 14, 2024, 11:08 AM","May 3, 2014, 12:15 AM",Mr,Bergman,Darren
+471,"Basson, Mr LJ",basson.jpg,2,6202,male,,1960-04-08,leonard-jones-basson,Leonard Jones Basson,"August 14, 2024, 11:06 AM","May 3, 2014, 12:15 AM",Mr,Basson,Leonard Jones
+829,"Hattingh, Mr C",1/hattingh.jpg,2,1359,male,,1948-06-02,chris-hattingh,Chris Hattingh,"January 23, 2025, 6:14 PM","November 13, 2013, 3:28 PM",Mr,Hattingh,
+658,"Mahambehlala, Ms T",Mahambehlela.jpg,1,4341,female,,1973-01-16,tandi-mahambehlala,Tandi Mahambehlala,"July 2, 2024, 6:46 PM","May 2, 2014, 4:40 PM",Ms,Mahambehlala,Tandi
+1276,"Motaung, Ms NE",Motaung.jpg,1,10268,female,,1986-06-08,nomasonto-evelyn-motaung,Nomasonto Evelyn Motaung,"August 20, 2024, 12:21 PM","May 21, 2019, 7:19 PM",Ms,Motaung,Nomasonto Evelyn
+1248,"Sithole, Ms RJ",sithole.jpg,2,6580,female,,1970-08-23,raesetja-jane-sithole,Raesetja Jane Sithole,"October 17, 2025, 8:41 AM","May 3, 2014, 12:15 AM",Ms,Sithole,Raesetja Jane
+2122,"Selepe, Mr LD",Selepe.jpg,19,12269,male,,1979-11-24,hlonono-daniel-selepe,Lehlohonolo Daniel Selepe,"July 8, 2025, 1:25 PM","May 21, 2019, 7:24 PM",Mr,Selepe,Lehlohonolo Daniel
+1366,"Van Staden, Mr PA",Van_Staden_PA.jpg,8,9275,male,,1975-12-05,philippus-adriaan-van-staden,Philippus Adriaan Van Staden,"August 14, 2025, 2:25 PM","May 3, 2014, 12:21 AM",Mr,Van Staden,Philippus Adriaan
+52,"Gina, Ms N",Gina.jpg,1,640,female,,1969-10-25,nomalungelo-gina,Nomalungelo Gina,"October 21, 2025, 1:57 PM","July 31, 2013, 11:32 PM",Ms,Gina,Nomalungelo
+740,"McGluwa, Mr JJ",Mc_Gluwa.jpg,2,774,male,,1963-08-23,joseph-job-mcgluwa,Joseph Job McGluwa,"July 26, 2024, 7:52 AM","July 31, 2013, 11:48 PM",Mr,McGluwa,Joseph Job
+957,"Mrara, Mr M",1/mrara.jpg,1,1523,male,,1960-05-29,mzoleli-mrara,Mzoleli Mrara,"August 22, 2024, 2:24 PM","November 13, 2013, 3:29 PM",Mr,Mrara,Mzoleli
+1344,"Mathafa, Mr OM",Mathafa.jpg,1,13273,male,,1975-12-20,oscar-masarona-mathafa,Oscar Masarona Mathafa,"December 11, 2024, 6:22 PM","May 21, 2019, 7:27 PM",Mr,Mathafa,Oscar Masarona
+1100,"Magagula, Ms TE",Magagula.jpg,1,1600,female,,1956-08-23,thokozile-magagula,Thokozile Elizabeth Magagula,"August 27, 2024, 10:36 AM","November 13, 2013, 3:29 PM",Ms,Magagula,Thokozile Elizabeth
+1070,"Creecy, Ms B",Creecy.jpg,1,1367,female,,1958-06-17,creecy-barbara,Barbara Dallas Creecy,"September 2, 2025, 9:10 AM","November 13, 2013, 3:28 PM",Ms,Creecy,Barbara Dallas
+2123,"Skosana, Mr DM",d_skosana.jpg,19,21830,male,,1963-07-11,david-mandla-skosana,David Mandla Skosana,"April 24, 2025, 10:39 AM","June 18, 2024, 6:20 AM",,Skosana,David Mandla
+1143,"Moraka, Ms AT",moraka.jpg,1,1512,female,,1983-10-15,ms-moraka-anna-thandi,Anna Thandi Moraka,"October 8, 2025, 11:18 AM","November 13, 2013, 3:29 PM",Ms,Moraka,Anna Thandi
+1144,"Lekganyane, Mr MS",Lekganyane.jpg,1,4510,male,,1974-04-18,molapi-soviet-lekganyane,Molapi Soviet Lekganyane,"December 11, 2025, 11:15 AM","May 2, 2014, 4:40 PM",,Lekganyane,Molapi Soviet
+1444,"Christians, Dr. DC",1/Christians.jpg,2,11186,female,,1968-10-25,delmaine-chesley-christians,Delmaine Chelsey Christians,"September 23, 2025, 11:34 AM","May 21, 2019, 7:21 PM",Dr,Christians,Delmaine Chesley
+1563,"Dube-Ncube, Ms N",246f104623cfa75273ab8a323bc9c7d6.jpg,1,4458,,,,nomsa-dube-ncube,Nomsa Ncube,"May 2, 2014, 4:40 PM","May 2, 2014, 4:40 PM",,Ncube,Nomsa
+1363,"Powell, Ms EL",1/311.jpg,2,14996,female,,1987-04-15,emma-louise-powell,Emma Louise Powell,"September 29, 2025, 10:23 AM","May 21, 2019, 7:32 PM",Ms,Powell,Emma Louise
+1699,"Managa, Dr L",Managa.jpg,11,17042,female,,1975-09-01,lilian-managa,Lilian Managa,"October 7, 2025, 8:21 AM","May 24, 2019, 1:39 PM",Dr,Managa,Lilian
+1404,"Mohlala, Ms MR",mohlala_resized.jpg,11,11293,female,,1977-01-24,mathibe-rebecca-mohlala,Mathibe Rebecca Mohlala,"February 23, 2025, 5:31 AM","May 21, 2019, 7:21 PM",Ms,Mohlala,Mathibe Rebecca
+2124,"Themba, Mr AT",themba.jpg,19,27402,male,,1983-06-01,albert-tshepo-themba,Albert Tshepo Themba,"July 7, 2025, 3:19 PM","June 18, 2024, 8:01 AM",,Themba,Albert Tshepo
+961,"Ndamase, Mr P",1/ndamase.jpg,1,4229,male,,1965-07-03,pumelele-ndamase,Pumelele Ndamase,"September 2, 2024, 10:25 AM","May 2, 2014, 4:39 PM",Mr,Ndamase,Pumelele
+1296,"Letsie, Mr WT",Letsie.jpg,1,13276,male,,1982-10-14,walter-tebogo-letsie,Walter Tebogo Letsie,"February 11, 2025, 11:23 AM","May 21, 2019, 7:27 PM",Mr,Letsie,Walter Tebogo
+1426,"Gwarube, Ms S",Gwarube.jpg,2,11127,female,,1989-07-14,siviwe-gwarube,Siviwe Gwarube,"October 7, 2025, 10:13 AM","May 21, 2019, 7:21 PM",Ms,Gwarube,Siviwe
+1316,"Maneli, Mr BM",1/maneli.jpg,1,13268,male,,1974-03-20,boyce-makhosonke-maneli,Boyce Makhosonke Maneli,"March 3, 2025, 11:13 AM","May 21, 2019, 7:27 PM",Mr,Maneli,Boyce Makhosonke
+1682,"Selamolela, Mr S D",Selamolela.jpg,1,16838,male,,1985-01-27,selelo-donald-selamolela,Selelo Donald Selamolela,"October 10, 2024, 8:52 AM","May 24, 2019, 1:39 PM",Mr,Selamolela,Selelo Donald
+1532,"Ntshalintshali, Ms LL",ntshalihali.jpg,1,17279,female,,1977-04-11,leonah-lindiwe-ntshalintshali,Leonah Lindiwe Ntshalintshali,"October 8, 2025, 10:13 AM","May 24, 2019, 1:40 PM",Ms,Ntshalintshali,Leonah Lindiwe
+1300,"Luthuli, Mr BN",inkosi_bhrkizizwe_nivard_luthuli.jpg,4,7414,male,,1954-02-18,bhekizizwe-nivard-luthuli,Bhekizizwe Nivard Luthuli,"September 10, 2024, 8:46 AM","May 3, 2014, 12:17 AM",Mr,Luthuli,Bhekizizwe Nivard
+1371,"De Villiers, Mr JN",1/De_Villiers_JN.jpg,2,14997,male,,1980-03-06,jan-naude-de-villiers,Jan Naudé De Villiers,"August 12, 2024, 12:39 PM","May 21, 2019, 7:32 PM",Mr,De Villiers,Jan Naudé
+1494,"Meth, Ms N",Meth.jpg,1,15106,female,,1966-07-01,nomakhosazana-meth,Nomakhosazana Meth,"May 7, 2025, 10:31 AM","May 24, 2019, 1:32 PM",Ms,Meth,Nomakhosazana
+1292,"Arries, Ms LH",arries.jpg,11,11309,female,,1970-02-06,laetitia-heloise-arries,Laetitia Heloise Arries,"September 23, 2025, 8:46 AM","May 21, 2019, 7:21 PM",Ms,Arries,Laetitia Heloise
+1312,"Spies, Ms ERJ",Spies.jpg,2,14993,female,,1971-07-09,eleanore-rochelle-jacquelene-spies,Eleanore Rochelle Jacquelene Spies,"September 23, 2025, 11:41 AM","May 21, 2019, 7:32 PM",Ms,Spies,Eleanore Rochelle Jacquelene
+1368,"Ngcobo, Mr SL",1/Ngcobo_S.jpg,4,14027,male,,1964-11-16,siphosethu-lindinkosi-ngcobo,Siphosethu Lindinkosi Ngcobo,"February 11, 2025, 1:46 PM","May 21, 2019, 7:29 PM",Mr,Ngcobo,Siphosethu Lindinkosi
+1361,"Phiri, Ms CM",Phiri.jpg,1,14181,female,,1984-04-22,carol-mokgadi-phiri,Carol Mokgadi Phiri,"March 3, 2025, 11:06 AM","May 21, 2019, 7:29 PM",Ms,Phiri,Carol Mokgadi
+60,"Groenewald, Dr PJ",groenewald.jpg,8,647,male,,1955-08-27,petrus-johannes-groenewald,Petrus Johannes Groenewald,"October 7, 2025, 10:40 AM","July 31, 2013, 11:33 PM",Dr,Groenewald,Petrus Johannes
+374,"Nel, Mr AC",4161.jpg,1,844,male,,1965-10-02,andries-carl-nel,Andries Carl Nel,"October 8, 2025, 11:20 AM","July 31, 2013, 11:57 PM",Mr,Nel,Andries Carl
+769,"Mokwele, Ms T",mokwele_resized.jpg,11,6682,female,,1976-02-18,tebogo-josephine-mokwele,Tebogo Josephine Mokwele,"February 2, 2025, 9:43 AM","May 3, 2014, 12:16 AM",Ms,Mokwele,Tebogo Josephine
+1288,"Lamola, Mr RO",Lamola.jpg,1,4237,male,,1983-11-21,ronald-ozzy-lamola,Ronald Lamola,"October 7, 2025, 11:32 AM","May 2, 2014, 4:39 PM",Mr,Lamola,Ronald Ozzy
+291,"Marais, Mr EJ",Marais.jpg,2,743,male,,1961-09-08,erik-johannes-marais,Erik Johannes Marais,"September 23, 2025, 11:38 AM","July 31, 2013, 11:44 PM",Mr,Marais,Erik Johannes
+1293,"Siweya, Ms RT",1/siweya.jpg,1,10260,female,,1982-01-06,rhulani-thembi-siweya,Rhulani Thembi Siweya,"August 23, 2024, 11:19 AM","May 21, 2019, 7:19 PM",Ms,Siweya,Rhulani Thembi
+1375,"Roos, Mr AC",roos.jpg,2,11153,male,,1976-02-18,adrian-christopher-roos,Adrian Christopher Roos,"August 14, 2024, 11:48 AM","May 21, 2019, 7:21 PM",Mr,Roos,Adrian Christopher
+1077,"Clarke, Ms M",clarke.jpg,2,6473,female,,1963-07-15,michele-odette-clarke,Michéle Odette Clarke,"October 10, 2024, 9:14 AM","May 3, 2014, 12:15 AM",Ms,Clarke,Michéle Odette
+1429,"Nhanha, Mr M",nanha.jpg,2,856,male,,1969-07-03,mlindi-advent-nhanha,Mlindi Advent Nhanha,"January 23, 2025, 6:50 PM","July 31, 2013, 11:59 PM",Mr,Nhanha,Mlindi Advent
+1304,"Mphithi, Mr L",mphiti.jpg,2,11123,male,,1992-09-01,luyolo-mphithi,Luyolo Mphithi,"February 24, 2025, 1:40 PM","May 21, 2019, 7:21 PM",Mr,Mphithi,Luyolo
+482,"Mbatha, Mr MS",Mbatha.jpg,19,6689,male,,1970-08-30,moses-sipho-mbatha,Moses Sipho Mbatha,"July 10, 2025, 9:28 AM","May 3, 2014, 12:16 AM",Mr,Mbatha,Moses Sipho
+1570,"Hlabisa, Mr VF",Hlabisa.jpg,4,16673,male,,1965-01-04,velenkosini-fiki-hlabisa,Velenkosini Fiki Hlabisa,"October 7, 2025, 10:33 AM","May 24, 2019, 1:38 PM",Mr,Hlabisa,Velenkosini Fiki
+911,"Wessels, Mr W",1/wessels.jpg,8,9267,male,,1985-03-18,wouter-wynand-wessels,Wouter Wynand Wessels,"March 12, 2025, 8:31 AM","May 3, 2014, 12:21 AM",Mr,Wessels,Wouter Wynand
+1341,"Masondo, Dr D",Masondo.jpg,1,1483,male,,1974-11-14,mr-masondo-david,David Masondo,"August 23, 2024, 7:14 AM","November 13, 2013, 3:29 PM",Dr,Masondo,David
+1302,"Mabhena, Mr TB",Mabhena.jpg,2,11130,male,,1990-06-01,thamsanqa-bhekokwakhe-mabhena,Thamsanqa Bhekokwakhe Mabhena,"March 17, 2025, 10:30 AM","May 21, 2019, 7:21 PM",Mr,Mabhena,Thamsanqa Bhekokwakhe
+1464,"Madikizela, Mr BS",Madikizela_B.jpg,2,6655,male,,1975-03-15,bonginkosi-success-madikizela,Bonginkosi Success Madikizela,"September 5, 2025, 1:00 PM","May 3, 2014, 12:16 AM",Mr,Madikizela,Bonginkosi Success
+1290,"Langa, Mr TM",Langa.jpg,4,11297,male,,1978-05-24,thokozani-makhosonke-langa,Thokozani Makhosonke Langa,"February 10, 2025, 5:19 PM","May 21, 2019, 7:21 PM",,Langa,Thokozani Makhosonke
+1374,"Direko, Ms DR",DR_Direko.JPG,1,13062,female,,1985-04-28,dikeledi-rosemary-direko,Dikeledi Rosemary Direko,"September 10, 2024, 7:22 AM","May 21, 2019, 7:26 PM",Ms,Direko,Dikeledi Rosemary
+2131,"Kubheka, Mr TTS",Khubeka.jpg,19,27474,male,,1982-11-21,thalente-thuthukani-sakhike-khubeka,Thalente Thuthukani Sakhike Khubeka,"February 4, 2025, 1:37 PM","June 26, 2024, 7:33 AM",,,
+185,"Xaba-Ntshaba, Ms PP",xaba_n.jpg,1,10261,female,,1963-01-20,phindisile-pretty-xaba-ntshaba,Phindisile Pretty Xaba-Ntshaba,"November 28, 2024, 12:09 PM","May 21, 2019, 7:19 PM",Ms,Xaba-Ntshaba,Phindisile Pretty
+1378,"Schreiber, Dr LA",schrieber.jpg,2,14998,male,,1988-09-11,leon-amos-schreiber,Leon Amos Schreiber,"October 7, 2025, 11:27 AM","May 21, 2019, 7:32 PM",Dr,Schreiber,Leon Amos
+1376,"Sarupen, Mr AN",sarupen.jpg,2,6465,male,,1988-07-01,ashor-nick-sarupen,Ashor Nick Sarupen,"October 8, 2025, 10:58 AM","May 3, 2014, 12:15 AM",Mr,Sarupen,Ashor Nick
+1379,"Mchunu, Ms TVB",Mchunu_TVB.jpg,1,13738,female,,1968-01-31,thembeka-vuyisile-buyisile-mchunu,Thembeka Vuyisile Buyisile Mchunu,"February 19, 2025, 9:28 AM","May 21, 2019, 7:28 PM",Ms,Mchunu,Thembeka Vuyisile Buyisile
+2132,"Madlala, Mr KB",KB_Madlala.jpg,19,26020,male,,1992-09-01,khayelihle-blessing-madlala,Khayelihle Blessing Madlala,"July 8, 2025, 1:49 PM","June 18, 2024, 6:38 AM",Mr,Madlala,Khayelihle Blessing
+1383,"Sharif, Ms NK",1/sharif.jpg,2,11140,female,,1990-05-18,nazley-khan-sharif,Nazley Khan Sharif,"November 3, 2025, 10:07 AM","May 21, 2019, 7:21 PM",,Sharif,Nazley Khan
+1380,"Seitlholo, Mr IS",Seitlholo.jpg,2,11170,male,,1989-09-09,isaac-sello-seitlholo,Isaac Sello Seitlholo,"October 17, 2025, 10:29 AM","May 21, 2019, 7:21 PM",Mr,Seitlholo,Isaac Sello
+496,"Capa, Ms RN",capa.jpg,1,4180,female,,1952-10-24,rosemary-nokuzola-capa,Rosemary Nokuzola Capa,"October 21, 2025, 1:39 PM","May 2, 2014, 4:39 PM",Ms,Capa,Rosemary Nokuzola
+583,"Maimane, Dr MA",1/Maimane.jpg,23,6349,male,,1980-06-06,mmusi-aloysias-maimane,Mmusi Aloysias Maimane,"August 14, 2025, 2:11 PM","May 3, 2014, 12:15 AM",Dr,Maimane,Mmusi Aloysias
+1160,"Sekoati, Mr SC",Sekoati.jpg,1,1495,male,,1967-06-28,mr-sekoati-charles-seaparo,Seaparo Charles Sekoati,"August 5, 2024, 2:03 PM","November 13, 2013, 3:29 PM",Mr,Sekoati,Seaparo Charles
+517,"Hunsinger, Dr CH",94.jpg,2,6231,male,,1962-10-23,christian-hans-heinrich-hunsinger,Christian Hans Heinrich Hunsinger,"October 10, 2024, 9:12 AM","May 3, 2014, 12:15 AM",Dr,Hunsinger,Christian Hans Heinrich
+640,"Mashabela, Ms N",mashabela.jpg,11,6969,female,,1966-03-25,ngwanamakwetle-reneiloe-mashabela,Ngwanamakwetle Reneiloe Mashabela,"December 6, 2024, 1:14 PM","May 3, 2014, 12:16 AM",Ms,Mashabela,Ngwanamakwetle Reneiloe
+2133,"Msezane, Mr MP",msezane.jpg,19,27475,male,,1989-10-23,mnqobi-prince-msezane,Mnqobi Prince Msezane,"July 8, 2025, 2:49 PM","June 26, 2024, 8:05 AM",Mr,,
+1385,"Mgweba, Ms T",Mgweba.jpg,1,13269,female,,1974-05-25,teliswa-mgweba,Teliswa Mgweba,"January 23, 2025, 6:31 PM","May 21, 2019, 7:27 PM",Ms,Mgweba,Teliswa
+529,"Khawula, Ms MS",Khawula.jpg,11,6721,female,,1954-12-07,makoti-sibongile-khawula,Makoti Sibongile Khawula,"November 3, 2025, 8:46 AM","May 3, 2014, 12:16 AM",Ms,Khawula,Makoti Sibongile
+516,"Horn, Mr W",Horn.jpg,2,6206,male,,1970-05-12,werner-horn,Werner Horn,"August 12, 2024, 11:39 AM","May 3, 2014, 12:15 AM",Mr,Horn,Werner
+494,"Breytenbach, Adv G",1/Breytenbach.jpg,2,6208,female,,1960-08-09,glynnis-breytenbach,Glynnis Breytenbach,"July 9, 2025, 9:16 AM","May 3, 2014, 12:15 AM",Adv,Breytenbach,Glynnis
+596,"Shelembe, Mr ML",Shelembe_L.jpg,2,7761,male,,1968-10-12,maliyakhe-lymon-shelembe,Maliyakhe Lymon Shelembe,"October 10, 2024, 9:28 AM","May 3, 2014, 12:18 AM",Mr,Shelembe,Maliyakhe Lymon
+2134,"Taaibosch, Mr G",taaib.jpg,19,21852,male,,1963-08-23,glen-taaibosch,Glen Taaibosch,"July 8, 2025, 12:31 PM","June 18, 2024, 6:20 AM",,Taaibosch,Glen
+1272,"Denner, Ms H",1/Denner.jpg,8,12400,female,,1985-12-06,heloise-denner,Heloise Denner,"August 14, 2025, 2:21 PM","May 21, 2019, 7:24 PM",Ms,Denner,Heloise
+1351,"Pambo, Mr V",Pambo.jpg,11,11296,male,,1989-08-12,vuyani-pambo,Vuyani Pambo,"November 3, 2025, 8:27 AM","May 21, 2019, 7:21 PM",Mr,Pambo,Vuyani
+621,"Xego, Ms ST",1/xego.jpg,1,4260,female,,1960-08-01,sheilla-tembalam-xego-sovita,Sheilla Tembalam Xego,"October 21, 2025, 1:45 PM","May 2, 2014, 4:39 PM",Ms,Xego-Sovita,Sheilla Tembalam
+1719,"Mathulelwa, Ms B",1/Mathulelwa.jpg,11,18952,female,,1991-01-15,babalwa-mathulelwa,Babalwa Mathulelwa,"August 5, 2024, 8:44 AM","June 22, 2020, 4:05 PM",Ms,,Babalwa Mathulelwa
+2135,"Douglas, Mr WM",Marshall_Douglas.JPG,19,21853,male,,1974-05-18,wesley-marshall-douglas,Wesley Marshall Douglas,"July 9, 2025, 9:22 AM","June 18, 2024, 6:20 AM",Mr,Douglas,Wesley Marshall
+712,"Masango, Ms B",Masango.jpg,2,6239,female,,1962-02-23,bridget-staff-masango,Bridget Staff Masango,"July 26, 2024, 7:42 AM","May 3, 2014, 12:15 AM",Ms,Masango,Bridget Staff
+692,"malema, Mr J",malema.jpg,11,6674,male,,1981-03-03,julius-sello-malema,Julius Sello malema,"October 10, 2024, 10:34 AM","May 3, 2014, 12:16 AM",Mr,malema,Julius Sello
+594,"Malatsi, Mr MS",Malatsi.jpg,2,6197,male,,1985-12-22,mmoba-solomon-seshoka,Mmoba Solomon Malatsi,"October 7, 2025, 10:29 AM","May 3, 2014, 12:15 AM",Mr,Malatsi,Mmoba Solomon
+725,"Holomisa, Mr BH",1/Holomisa.jpg,6,659,male,,1955-07-25,bantubonke-harrington-holomisa,Bantubonke Harrington Holomisa,"July 2, 2024, 6:22 PM","July 31, 2013, 11:34 PM",Mr,Holomisa,Bantubonke Harrington
+732,"Chetty, Mr M",Chetty.jpg,2,6282,male,,1968-01-17,mergan-chetty,Mergan Chetty,"September 5, 2025, 1:12 PM","May 3, 2014, 12:15 AM",Mr,Chetty,Mergan
+817,"Litchfield-Tshabalala, Dr K",2/tshabalala.jpg,19,6896,female,,1962-08-02,khanyisile-litchfield-tshabalala,Khanyisile Litchfield-Tshabalala,"November 3, 2025, 10:03 AM","May 3, 2014, 12:16 AM",Dr,Litchfield-Tshabalala,Khanyisile
+813,"Cebekhulu, Inkosi RN",Cebekhulu_N.jpg,4,574,male,,1958-03-23,russel-nsikayezwe-cebekhulu,Russel Nsikayezwe Cebekhulu,"October 10, 2024, 9:34 AM","July 31, 2013, 11:25 PM",Inkosi,Cebekhulu,Russel Nsikayezwe
+638,"Van Der Walt, Ms D",1/van_der_walt.jpg,2,1017,female,,1956-04-20,d-van-der-walt,Désirée Van Der Walt,"September 1, 2025, 3:14 PM","August 1, 2013, 12:18 AM",Ms,Van Der Walt,Désirée
+728,"Mabe, Ms BP",mabe_resized.jpg,1,1037,female,,1976-09-18,bertha-peace-mabe,Bertha Peace Mabe,"October 17, 2025, 8:47 AM","August 1, 2013, 12:31 AM",Ms,Mabe,Bertha Peace
+746,"Smit, Mr CF",1/423.jpg,2,6371,male,,1980-05-17,christiaan-frederik-beyers-smit,Christiaan Frederik Beyers Smit,"February 11, 2025, 1:01 PM","May 3, 2014, 12:15 AM",Mr,Smit,Christiaan Frederik Beyers
+698,"Mkongi, Mr B",mkongi.jpg,19,4342,male,,1971-03-09,bongani-michael-mkongi,Bongani Michael Mkongi,"December 12, 2025, 12:03 PM","May 2, 2014, 4:40 PM",Mr,Mkongi,Bongani Michael
+1401,"Gantsho, Ms N",Gantsho.jpg,1,12699,female,,1980-01-11,nqabisa-gantsho,Nqabisa Gantsho,"October 20, 2025, 9:24 AM","May 21, 2019, 7:25 PM",Ms,Gantsho,Nqabisa
+1880,"Letlape, Ms MS",Letlape_s.jpg,11,11379,female,,1994-09-24,molebogeng-sharon-letlape,Molebogeng Sharon Letlape,"October 7, 2025, 8:19 AM","May 21, 2019, 7:22 PM",Ms,Letlape,Molebogeng Sharon
+2025,"Letsike, Ms MSE",2/Letsike.jpg,1,19959,female,,1986-03-30,mmapaseka-steve-emily-letsike,Mmapaseka Steve Emily Letsike,"October 17, 2025, 10:37 AM","June 18, 2024, 6:15 AM",,Letsike,Mmapaseka Steve Emily
+1397,"Nodada, Mr BB",nodada.jpg,2,11136,male,,1992-04-02,baxolile-babongile-nodada,Baxolile Babongile Nodada,"October 10, 2024, 8:55 AM","May 21, 2019, 7:21 PM",Mr,Nodada,Baxolile Babongile
+966,"Nkopane, Ms NS",nkopane.jpg,1,4362,female,,1962-01-01,ntombovuyo-silberose-nkopane,Ntombovuyo Silberose Nkopane,"September 4, 2024, 11:31 AM","May 2, 2014, 4:40 PM",Ms,Nkopane,Ntombovuyo Silberose
+818,"Mngxitama, Mr A",1/mngxitama.jpg,19,6683,male,,1969-07-07,john-andile-mngxitama,Andile Mngxitama,"July 9, 2025, 9:11 AM","May 3, 2014, 12:16 AM",Mr,Mngxitama,John Andile
+512,"George, Dr DT",George_DT.jpg,2,638,male,,1966-05-26,dion-travers-george,Dion Travers George,"November 13, 2025, 8:32 AM","July 31, 2013, 11:31 PM",Dr,George,Dion Travers
+1412,"Nyhontso, Mr M",nyhontso.jpg,10,12023,male,,1973-09-08,mzwanele-nyhontso,Mzwanele Nyhontso,"October 7, 2025, 11:37 AM","May 21, 2019, 7:23 PM",Mr,Nyhontso,Mzwanele
+1328,"Boshoff, Dr WJ",Boshoff.jpg,8,9269,male,,1970-05-26,wynand-johannes-boshoff,Wynand Johannes Boshoff,"August 13, 2024, 12:53 PM","May 3, 2014, 12:21 AM",Dr,Boshoff,Wynand Johannes
+1127,"Aphiri, Ms MJ",aphiri.jpg,1,4515,female,,1962-05-15,mokgadi-johanna-aphiri,Mokgadi Johanna Aphiri,"August 21, 2024, 9:44 AM","May 2, 2014, 4:40 PM",Ms,Aphiri,Mokgadi Johanna
+1729,"Thambo, Mr S",tambo.jpg,11,18968,male,,1996-06-02,sinawo-tambo,Sinawo Thambo,"November 3, 2025, 8:38 AM","October 22, 2020, 9:49 AM",Mr,,
+2022,"Sangoni, Ms KLN",sangoni.jpg,1,10301,female,,1978-12-03,khusela-lwandlekazi-nobatembu-sangoni,Khusela Lwandlekazi Nobatembu Sangoni,"February 11, 2025, 2:29 PM","May 21, 2019, 7:19 PM",Ms,Sangoni,Khusela Lwandlekazi Nobatembu
+1753,"Ramolobeng, Ms A",ramolobeng.jpg,1,13285,female,,1985-09-05,anthea-ramolobeng,Kgomotso Ramolobeng,"October 31, 2025, 7:53 AM","May 21, 2019, 7:27 PM",Ms,Ramolobeng,Anthea
+1738,"Burns-Ncamashe, Prince Z",1/Burns.jpg,1,12705,male,,1965-09-13,zolile-burns-ncamashe,Zolile Burns-Ncamashe,"October 8, 2025, 10:10 AM","May 21, 2019, 7:25 PM",Prince,Burns-Ncamashe,Zolile
+762,"Essack, Mr F",Essack_F.jpg,2,6254,male,,1959-05-12,farhat-essack,Farhat Essack,"August 12, 2024, 12:41 PM","May 3, 2014, 12:15 AM",Mr,Essack,Farhat
+1750,"Peach, Mr WD",W_Peach.JPG,2,11159,male,,1982-11-20,wildri-dennis-peach,Wildri Dennis Peach,"July 16, 2024, 11:08 AM","May 21, 2019, 7:21 PM",Mr,Peach,Wildri Dennis
+1763,"Myburgh, Mr NG",Myburgh_ng.jpg,2,11142,male,,1964-11-14,nicholas-georg-myburgh,Nicholas George Myburgh,"March 5, 2025, 7:30 AM","May 21, 2019, 7:21 PM",Mr,Myburgh,Nicholas Georg
+559,"Mente-Nkuna, Ms NV",Mente.jpg,11,6692,female,,1978-09-24,ntombovuyo-veronica-nqweniso,Ntombovuyo Veronica Mente,"September 16, 2024, 3:27 PM","May 3, 2014, 12:16 AM",Ms,Mente,Ntombovuyo Veronica
+1759,"Godongwana, Mr E",godongwana....jpg,1,642,male,,1957-06-09,e-godongwana,Enoch Godongwana,"August 23, 2024, 7:42 AM","July 31, 2013, 11:32 PM",Mr,Godongwana,E
+1326,"Mahumapelo, Mr S",Mahumapelo.jpg,1,1582,male,,1968-06-07,supra-mahumapelo,Supra Obakeng Ramoeletsi Mahumapelo,"August 22, 2024, 1:25 PM","November 13, 2013, 3:29 PM",Mr,Mahumapelo,Supra Obakeng Ramoeletsi
+1080,"Engelbrecht, Mr J",1/Engelbrecht.jpg,2,6472,male,,1972-11-25,janho-engelbrecht,Janho Engelbrecht,"February 11, 2025, 1:18 PM","May 3, 2014, 12:15 AM",Mr,Engelbrecht,Janho
+1803,"Dlamini, Ms M",Mbali_Dlamini.jpg,11,19152,female,,1993-01-17,mbali-dlamini,Mbali Dlamini,"October 7, 2025, 8:18 AM","September 19, 2022, 10:38 AM",Ms,,
+1275,"Abrahams, Ms ALA",abrahams.jpg,2,14995,female,,1986-07-13,alexandra-lilian-amelia-abrahams,Alexandra Lilian Amelia Abrahams,"November 13, 2025, 9:25 AM","May 21, 2019, 7:32 PM",Ms,Abrahams,Alexandra Lilian Amelia
+1064,"Bodlani, Ms T",1/bodlani.jpg,2,6488,female,,1981-06-20,tsholofelo-katlego-motshidi,Tsholofelo Katlego Motshidi-Bodlani,"August 14, 2025, 1:25 PM","May 3, 2014, 12:15 AM",Ms,Motshidi,Tsholofelo Katlego
+1758,"Simelane, Ms T",simelane.jpg,1,18974,female,,1973-02-10,thembisile-nkadimeng,Thembisile Nkadimeng,"October 7, 2025, 11:30 AM","August 6, 2021, 6:48 AM",Ms,,
+1726,"Nkosi, Ms NE",ethel.jpg,1,18969,female,,1967-05-06,nomgqibelo-ethel-nkosi,Nomgqibelo Ethel Nkosi,"August 21, 2024, 9:26 AM","January 20, 2021, 5:43 AM",Ms,,Nomgqibelo Ethel Nkosi
+1843,"Shikwambana, Mr M",Shikwambana_M.jpg,11,19177,male,,1980-01-30,mandla-shikwambana,Mandla Shikwambana,"December 12, 2024, 2:16 PM","June 8, 2023, 11:57 AM",Mr,,
+1844,"Mthethwa, Mr E",2/mthethwa.jpg,11,19178,male,,1967-10-05,eugene-mthethwa,Eugene Mthethwa,"November 3, 2025, 10:12 AM","June 8, 2023, 12:06 PM",Mr,Mthethwa,Eugene
+1842,"Mhlongo, Ms N",mhlongo_n.jpg,11,16016,,,1989-02-06,nqobile-matilda-mhlongo,Nqobile Matilda Mhlongo,"November 3, 2025, 10:14 AM","May 24, 2019, 1:36 PM",,Mhlongo,Nqobile Matilda
+1515,"Khakhau, Ms KL",Khakau.jpg,2,13136,female,,1997-06-27,karabo-lerato-khakhau,Karabo Lerato Khakhau,"September 23, 2025, 11:33 AM","May 21, 2019, 7:26 PM",Ms,Khakhau,Karabo Lerato
+1839,"Moore, Mr S J",Moore.jpg,2,6475,male,,1983-09-18,stephen-james-moore,Stephen James Moore,"August 12, 2024, 12:54 PM","May 3, 2014, 12:15 AM",Mr,Moore,Stephen James
+287,"Mpapane, Ms DE",dlakude.jpg,1,602,female,,1969-08-16,dorris-eunice-dlakude,Dorris Eunice Mpapane,"July 23, 2025, 10:49 AM","July 31, 2013, 11:26 PM",Ms,Dlakude,Dorries Eunice
+313,"Dunjwa, Ms ML",Dunjwa.jpg,1,617,female,,1949-12-15,mary-ann-lindelwa-dunjwa,Mary-Ann Lindelwa Dunjwa,"April 2, 2025, 8:30 AM","July 31, 2013, 11:27 PM",Ms,Dunjwa,Mary-Ann Lindelwa
+1623,"Ramokgopa, Mr  KD",Ramokgopa.jpg,1,15793,male,,1975-01-25,kgosientso-david-ramokgopa,Kgosientsho David Ramokgopa,"October 7, 2025, 10:48 AM","May 24, 2019, 1:35 PM",Dr,Ramokgopa,Kgosientso David
+1714,"Tafeni, Ms N",tafen_resized.jpg,11,18950,female,,1981-11-05,noluvuyo-tafeni,Noluvuyo Tafeni,"December 6, 2024, 1:11 PM","May 9, 2020, 11:33 AM",Ms,,
+1012,"Sibiya, Mr J",1/sibiya.jpg,1,4465,male,,1977-02-12,ntuthuko-mbongiseni-sibiya,Ntuthuko Mbongiseni Jomo Sibiya,"October 8, 2025, 10:49 AM","May 2, 2014, 4:40 PM",Mr,Sibiya,Ntuthuko Mbongiseni
+1642,"Hassan, Ms F",Hassan.jpg,1,15811,female,,1993-11-26,fasiha-hassan,Fasiha Hassan,"October 6, 2024, 10:10 AM","May 24, 2019, 1:35 PM",Ms,Hassan,Fasiha
+1853,"Baptie, Mr E",bPATIE.jpg,2,6255,male,,1957-01-15,edwin-victor-baptie,Edwin Victor Baptie,"August 5, 2024, 9:12 AM","May 3, 2014, 12:15 AM",Mr,Baptie,Edwin Victor

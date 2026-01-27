@@ -157,6 +157,17 @@ function Overview() {
     data: []
   });
 
+  const [block_AttendanceByAge, setBlock_AttendanceByAge] = useState({
+    ageGroups: {
+      '18-24': { total: 0, avg: 0, meetings: 0, present: 0 },
+      '25-34': { total: 0, avg: 0, meetings: 0, present: 0 },
+      '35-49': { total: 0, avg: 0, meetings: 0, present: 0 },
+      '50-64': { total: 0, avg: 0, meetings: 0, present: 0 },
+      '65-80': { total: 0, avg: 0, meetings: 0, present: 0 }
+    },
+    overallAvg: 0
+  });
+
   const [block_QuestionsToMinisters, setBlock_QuestionsToMinisters] = useState({
     total: 0,
     data: []
@@ -1264,10 +1275,23 @@ function Overview() {
   }
 
   function block_attendance_by_gender() {
-    let attendance_by_gender = {
-      male: [],
-      female: []
+    // Get total MP counts by gender from the full members list
+    let totalMpsByGender = {
+      male: 0,
+      female: 0,
+      other: 0, // for blank or other values
     };
+
+    membersData.forEach(member => {
+      const gender = member.gender?.toLowerCase().trim();
+      if (gender === 'male') {
+        totalMpsByGender.male++;
+      } else if (gender === 'female') {
+        totalMpsByGender.female++;
+      } else {
+        totalMpsByGender.other++;
+      }
+    });
 
     let grouped_attendance_members = {};
 
@@ -1275,13 +1299,16 @@ function Overview() {
       let { member_id, attendance: status, meeting_id } = attendance;
 
       if (!grouped_attendance_members[member_id]) {
+        const member = membersData.find(m => m.id === member_id);
+        const gender = member?.gender?.toLowerCase().trim() || "unknown";
+        
         grouped_attendance_members[member_id] = {
           member_id: member_id,
           meetings: new Set(),
           attended: 0,
           absent: 0,
           percentage: 0,
-          gender: membersData.find(m => m.id === member_id)?.gender || "unknown"
+          gender: gender
         };
       }
 
@@ -1294,33 +1321,166 @@ function Overview() {
       grouped_attendance_members[member_id].meetings.add(meeting_id);
     });
 
-    let maleTotal = 0, maleCount = 0, femaleTotal = 0, femaleCount = 0;
+    // Calculate totals by gender
+    let genderStats = {
+      male: { totalMeetings: 0, totalPresent: 0, memberCount: 0 },
+      female: { totalMeetings: 0, totalPresent: 0, memberCount: 0 },
+      other: { totalMeetings: 0, totalPresent: 0, memberCount: 0 }
+    };
 
     Object.keys(grouped_attendance_members).forEach(member => {
-      let { attended, absent, gender } = grouped_attendance_members[member];
+      let { attended, absent, gender, meetings } = grouped_attendance_members[member];
       let total = attended + absent;
-      let percentage = total > 0 ? parseFloat((attended / total) * 100).toFixed(2) : 0;
-      grouped_attendance_members[member].percentage = parseFloat(percentage);
+      
+      const genderKey = (gender === "male" || gender === "female") ? gender : "other";
+      
+      genderStats[genderKey].totalMeetings += total;
+      genderStats[genderKey].totalPresent += attended;
+      genderStats[genderKey].memberCount++;
+    });
 
-      if (gender === "male") {
-        attendance_by_gender.male.push(grouped_attendance_members[member]);
-        maleTotal += grouped_attendance_members[member].percentage;
-        maleCount++;
-      } else if (gender === "female") {
-        attendance_by_gender.female.push(grouped_attendance_members[member]);
-        femaleTotal += grouped_attendance_members[member].percentage;
-        femaleCount++;
+    // Calculate percentages
+    const malePercentage = genderStats.male.totalMeetings > 0 
+      ? parseFloat((genderStats.male.totalPresent / genderStats.male.totalMeetings * 100).toFixed(2)) 
+      : 0;
+    
+    const femalePercentage = genderStats.female.totalMeetings > 0 
+      ? parseFloat((genderStats.female.totalPresent / genderStats.female.totalMeetings * 100).toFixed(2)) 
+      : 0;
+    
+    const otherPercentage = genderStats.other.totalMeetings > 0 
+      ? parseFloat((genderStats.other.totalPresent / genderStats.other.totalMeetings * 100).toFixed(2)) 
+      : 0;
+
+    setBlock_AttendanceByGender({
+      male_total_mps: totalMpsByGender.male,
+      male_meetings: genderStats.male.totalMeetings,
+      male_present: genderStats.male.totalPresent,
+      male_avg: malePercentage,
+      female_total_mps: totalMpsByGender.female,
+      female_meetings: genderStats.female.totalMeetings,
+      female_present: genderStats.female.totalPresent,
+      female_avg: femalePercentage,
+      other_total_mps: totalMpsByGender.other,
+      other_meetings: genderStats.other.totalMeetings,
+      other_present: genderStats.other.totalPresent,
+      other_avg: otherPercentage
+    });
+  }
+
+  function block_attendance_by_age() {
+    // Don't calculate if we don't have the necessary data
+    if (!filteredData || filteredData.length === 0 || !membersData || membersData.length === 0) {
+      return;
+    }
+
+    // Helper function to calculate age from date of birth
+    function calculateAge(dateOfBirth) {
+      const today = new Date();
+      const birthDate = new Date(dateOfBirth);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      
+      return age;
+    }
+
+    // Helper function to determine age group
+    function getAgeGroup(age) {
+      if (age >= 18 && age <= 24) return '18-24';
+      if (age >= 25 && age <= 34) return '25-34';
+      if (age >= 35 && age <= 49) return '35-49';
+      if (age >= 50 && age <= 64) return '50-64';
+      if (age >= 65 && age <= 80) return '65-80';
+      return null; // For ages outside our ranges
+    }
+
+    let grouped_attendance_members = {};
+
+    // Group attendance data by member
+    filteredData.forEach(attendance => {
+      let { member_id, attendance: status, meeting_id } = attendance;
+
+      if (!grouped_attendance_members[member_id]) {
+        const member = membersData.find(m => parseInt(m.id) === parseInt(member_id));
+        const dateOfBirth = member?.date_of_birth;
+        const age = dateOfBirth ? calculateAge(dateOfBirth) : null;
+        const ageGroup = age ? getAgeGroup(age) : null;
+
+        grouped_attendance_members[member_id] = {
+          member_id: member_id,
+          meetings: new Set(),
+          attended: 0,
+          absent: 0,
+          percentage: 0,
+          age: age,
+          ageGroup: ageGroup
+        };
+      }
+
+      if (['P', 'DE', 'L', 'LDE'].includes(status)) {
+        grouped_attendance_members[member_id].attended += 1;
+      } else {
+        grouped_attendance_members[member_id].absent += 1;
+      }
+
+      grouped_attendance_members[member_id].meetings.add(meeting_id);
+    });
+
+    // Initialize age group data
+    let ageGroupData = {
+      '18-24': { total: 0, avgSum: 0, members: 0, totalMeetings: 0, totalPresent: 0 },
+      '25-34': { total: 0, avgSum: 0, members: 0, totalMeetings: 0, totalPresent: 0 },
+      '35-49': { total: 0, avgSum: 0, members: 0, totalMeetings: 0, totalPresent: 0 },
+      '50-64': { total: 0, avgSum: 0, members: 0, totalMeetings: 0, totalPresent: 0 },
+      '65-80': { total: 0, avgSum: 0, members: 0, totalMeetings: 0, totalPresent: 0 }
+    };
+
+    // Calculate attendance percentage for each member and group by age
+    Object.keys(grouped_attendance_members).forEach(member => {
+      let { attended, absent, ageGroup } = grouped_attendance_members[member];
+      let total = attended + absent;
+      let percentage = total > 0 ? parseFloat((attended / total) * 100) : 0;
+      
+      grouped_attendance_members[member].percentage = percentage;
+
+      if (ageGroup && ageGroupData[ageGroup]) {
+        ageGroupData[ageGroup].avgSum += percentage;
+        ageGroupData[ageGroup].members += 1;
+        ageGroupData[ageGroup].totalMeetings += total;
+        ageGroupData[ageGroup].totalPresent += attended;
       }
     });
 
-    let maleAvg = maleCount > 0 ? parseFloat((maleTotal / maleCount).toFixed(2)) : 0;
-    let femaleAvg = femaleCount > 0 ? parseFloat((femaleTotal / femaleCount).toFixed(2)) : 0;
+    // Calculate final averages for each age group
+    let finalAgeGroups = {};
+    let totalMembers = 0;
+    let totalAvgSum = 0;
 
-    setBlock_AttendanceByGender({
-      male_avg: maleAvg,
-      male_total: maleCount,
-      female_avg: femaleAvg,
-      female_total: femaleCount
+    Object.keys(ageGroupData).forEach(ageGroup => {
+      const data = ageGroupData[ageGroup];
+      finalAgeGroups[ageGroup] = {
+        total: data.members,
+        avg: data.members > 0 ? parseFloat((data.avgSum / data.members).toFixed(2)) : 0,
+        meetings: data.totalMeetings,
+        present: data.totalPresent
+      };
+      
+      if (data.members > 0) {
+        totalMembers += data.members;
+        totalAvgSum += data.avgSum;
+      }
+    });
+
+    // Calculate overall average across all age groups
+    const overallAvg = totalMembers > 0 ? parseFloat((totalAvgSum / totalMembers).toFixed(2)) : 0;
+
+    setBlock_AttendanceByAge({
+      ageGroups: finalAgeGroups,
+      overallAvg: overallAvg
     });
   }
 
@@ -1376,7 +1536,7 @@ function Overview() {
     })
 
     grouped_questions = Object.keys(grouped_questions).map(member => {
-      let member_name = membersData.find(m => m.id === member)?.surname + ', ' + membersData.find(m => m.id === member)?.initial;
+      let member_name = membersData.find(m => m.id === member)?.member;
       let profile_pic = membersData.find(m => m.id === member)?.profile_pic;
       let party_id = membersData.find(m => m.id === member)?.party_id;
 
@@ -1435,6 +1595,7 @@ function Overview() {
     block_parties_with_best_attendance();
     block_members_with_best_attendance();
     block_attendance_by_gender();
+    block_attendance_by_age();
   }, [filteredData])
 
   useEffect(() => {
@@ -2078,7 +2239,7 @@ function Overview() {
                               block_membersWithBestAttendance.members.map((member, index) =>
                                 <tr key={index}>
                                   <td>{index + 1}</td>
-                                  <td><Badge pic={membersData.find(c => c.id === member.member)?.profile_pic} />{membersData.find(c => c.id === member.member)?.surname}, {membersData.find(c => c.id === member.member)?.initial}</td>
+                                  <td><Badge pic={membersData.find(c => c.id === member.member)?.profile_pic} />{membersData.find(c => c.id === member.member)?.member}</td>
                                   <td>{partiesData.find(c => c.id === membersData.find(m => m.id === member.member)?.party_id)?.party}</td>
                                   <td>{member.meeting_count}</td>
                                   <td>{member.attended}</td>
@@ -2113,25 +2274,41 @@ function Overview() {
                         <Table className="sticky-header-table">
                           <thead>
                             <tr>
-                              <th style={{ width: '60%' }}>Gender</th>
-                              <th style={{ width: '20%' }}>Member Count</th>
-                              <th style={{ width: '10%' }}>Present</th>
-                              <th></th>
+                              <th style={{ width: '40%' }}>Gender</th>
+                              <th style={{ width: '15%' }}>No of MPs</th>
+                              <th style={{ width: '15%' }}>Meetings</th>
+                              <th style={{ width: '15%' }}>Present</th>
+                              <th style={{ width: '10%' }}>%</th>
+                              <th style={{ width: '5%' }}></th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
                               <td>Female</td>
-                              <td>{block_AttendanceByGender.female_total}</td>
+                              <td>{block_AttendanceByGender.female_total_mps}</td>
+                              <td>{block_AttendanceByGender.female_meetings}</td>
+                              <td>{block_AttendanceByGender.female_present}</td>
                               <td>{parseInt(block_AttendanceByGender.female_avg)}%</td>
                               <td></td>
                             </tr>
                             <tr>
                               <td>Male</td>
-                              <td>{block_AttendanceByGender.male_total}</td>
+                              <td>{block_AttendanceByGender.male_total_mps}</td>
+                              <td>{block_AttendanceByGender.male_meetings}</td>
+                              <td>{block_AttendanceByGender.male_present}</td>
                               <td>{parseInt(block_AttendanceByGender.male_avg)}%</td>
                               <td></td>
                             </tr>
+                            {block_AttendanceByGender.other_total_mps > 0 && (
+                              <tr>
+                                <td>Other/Unknown</td>
+                                <td>{block_AttendanceByGender.other_total_mps}</td>
+                                <td>{block_AttendanceByGender.other_meetings}</td>
+                                <td>{block_AttendanceByGender.other_present}</td>
+                                <td>{parseInt(block_AttendanceByGender.other_avg)}%</td>
+                                <td></td>
+                              </tr>
+                            )}
                           </tbody>
 
                         </Table>
@@ -2148,12 +2325,13 @@ function Overview() {
 
                   <CardContent>
                     <CardHelp metric="attendanceByAge" />
-                    <div className="scroll-area mt-4" style={{ opacity: 0.4 }}>
+                    <div className="scroll-area mt-4">
                       <Scrollbars style={{ height: "250px" }}>
                         <Table className="sticky-header-table">
                           <thead>
                             <tr>
-                              <th style={{ width: '40%' }}>Age range</th>
+                              <th style={{ width: '30%' }}>Age range</th>
+                              <th>Members</th>
                               <th>Meetings</th>
                               <th>Present</th>
                               <th>%</th>
@@ -2162,47 +2340,23 @@ function Overview() {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>18-24</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                            </tr>
-                            <tr>
-                              <td>25-34</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                            </tr>
-                            <tr>
-                              <td>35-49</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                            </tr>
-                            <tr>
-                              <td>50-64</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                            </tr>
-                            <tr>
-                              <td>65-80</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                              <td>-</td>
-                            </tr>
-
+                            {Object.entries(block_AttendanceByAge.ageGroups).map(([ageRange, data]) => (
+                              <tr key={ageRange}>
+                                <td>{ageRange}</td>
+                                <td>{data.total.toLocaleString()}</td>
+                                <td>{data.meetings.toLocaleString()}</td>
+                                <td>{data.present.toLocaleString()}</td>
+                                <td>{data.total > 0 ? `${Math.round(data.avg)}%` : '-'}</td>
+                                <td>
+                                  {data.total > 0 ? (
+                                    <CardBar value={Math.round(data.avg)} avg={block_AttendanceByAge.overallAvg} />
+                                  ) : (
+                                    '-'
+                                  )}
+                                </td>
+                                <td></td>
+                              </tr>
+                            ))}
                           </tbody>
 
                         </Table>
