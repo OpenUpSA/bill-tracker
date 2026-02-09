@@ -666,10 +666,10 @@ function Attendance() {
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {Object.keys(lookup.parliamentsAttendance).map(
-                          (parliament, index) => {
+                          (parliament) => {
                             return (
                               <Dropdown.Item
-                                key={lookup.parliamentsAttendance[parliament].name}
+                                key={parliament}
                                 onClick={() =>
                                   setSelectedParliament(parliament)
                                 }
@@ -775,7 +775,7 @@ function Attendance() {
 
                             {allParties.map((party, index) => (
                               <Dropdown.Item
-                                key={party}
+                                key={`party-${index}-${party}`}
                                 onClick={() =>
                                   setFilteredByParties(
                                     filteredByParties.includes(party)
@@ -836,7 +836,7 @@ function Attendance() {
 
                               {allCommittees.map((committee, index) => (
                                 <Dropdown.Item
-                                  key={committee}
+                                  key={`committee-${index}-${committee}`}
                                   onClick={() =>
                                     setFilteredByCommittees(
                                       filteredByCommittees.includes(committee)
@@ -897,9 +897,9 @@ function Attendance() {
                                 All Houses
                               </Dropdown.Item>
 
-                              {allHouses.map((house) => (
+                              {allHouses.map((house, index) => (
                                 <Dropdown.Item
-                                  key={house}
+                                  key={`house-${index}-${house}`}
                                   onClick={() =>
                                     setFilteredByHouses(
                                       filteredByHouses.includes(house)
@@ -1034,10 +1034,10 @@ function Attendance() {
                             </Row>
                           </Dropdown.Toggle>
                           <Dropdown.Menu>
-                            {Object.keys(ChartTypes).map((chartType, index) => {
+                            {Object.keys(ChartTypes).map((chartType) => {
                               return (
                                 <Dropdown.Item
-                                  key={index}
+                                  key={chartType}
                                   onClick={() =>
                                     setSelectedChartType(chartType)
                                   }
