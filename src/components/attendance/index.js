@@ -406,6 +406,34 @@ function Attendance() {
       });
     }
 
+    // Filter by selected committees - only include attendance records for those committees
+    if (filteredByCommittees.length > 0) {
+      activeAttendance.forEach((row) => {
+        row["attendance"] = row["attendance"]?.filter(
+          (attendance) => {
+            // Check if any of the filtered committees are in this attendance record's committees
+            return attendance.committees && attendance.committees.some(
+              (committee) => filteredByCommittees.includes(committee)
+            );
+          }
+        );
+      });
+    }
+
+    // Filter by selected houses - only include attendance records for those houses
+    if (filteredByHouses.length > 0) {
+      activeAttendance.forEach((row) => {
+        row["attendance"] = row["attendance"]?.filter(
+          (attendance) => {
+            // Check if any of the filtered houses are in this attendance record's houses
+            return attendance.houses && attendance.houses.some(
+              (house) => filteredByHouses.includes(house)
+            );
+          }
+        );
+      });
+    }
+
 
     // filter out empty activeAttendance.attendance
     activeAttendance = activeAttendance.filter(
@@ -538,15 +566,13 @@ function Attendance() {
 
   useEffect(() => {
     setupData();
-  }, [selectedParliament, grouping, includeAlternates, includePermanents, filteredByCurrent]);
+  }, [selectedParliament, grouping, includeAlternates, includePermanents, filteredByCurrent, filteredByCommittees, filteredByHouses]);
 
   useEffect(() => {
     filterAndSortAttendanceData(dataAttendance);
   }, [
     dataAttendance,
     filteredByParties,
-    filteredByCommittees,
-    filteredByHouses,
     filteredByCurrent,
     memberSearch,
     sortedField,
@@ -566,23 +592,6 @@ function Attendance() {
           filteredByParties.length === 0 ||
           filteredByParties.includes(row.party)
         );
-      })
-      .filter((row) => {
-        return (
-          filteredByCommittees.length === 0 ||
-          filteredByCommittees.some((committee) =>
-            row.committees.includes(committee)
-          )
-        );
-      })
-      .filter((row) => {
-        if (grouping === "members") {
-          return (
-            filteredByHouses.length === 0 ||
-            filteredByHouses.some((house) => row.houses.includes(house))
-          )
-        }
-        return true;
       })
       .filter((row) => {
         if (grouping === "members") {
