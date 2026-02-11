@@ -170,7 +170,7 @@ const processAttendanceData = (parliament = "7th-parliament", groupingType = "me
         }))
       });
     });
-  } else if (groupingType === "parties") {
+  } else if (groupingType === "party") {
     // Group by party
     const partyGroups = {};
     
@@ -221,6 +221,28 @@ const processAttendanceData = (parliament = "7th-parliament", groupingType = "me
       
       const attendancePercentage = (stats.attendedCount / stats.possibleMeetings) * 100;
       
+      // Build attendance array from statusCounts
+      const attendance = Object.entries(stats.statusCounts).map(([state, count]) => ({
+        state,
+        count
+      }));
+      
+      // Build grouped-attendance from statusCounts
+      const groupedAttendance = Object.entries(
+        attendance.reduce((acc, record) => {
+          const stateConfig = attendanceStates[record.state];
+          if (!stateConfig) return acc;
+          const group = stateConfig.group;
+          if (!acc[group]) acc[group] = 0;
+          acc[group] += record.count || 0;
+          return acc;
+        }, {})
+      ).map(([group, count]) => ({
+        group,
+        count,
+        percentage: (count / stats.possibleMeetings) * 100
+      }));
+      
       data.push({
         label: party,
         party: party,
@@ -230,6 +252,8 @@ const processAttendanceData = (parliament = "7th-parliament", groupingType = "me
         "possible-meetings": stats.possibleMeetings,
         "member-count": stats.memberCount,
         statusCounts: stats.statusCounts,
+        attendance: attendance,
+        "grouped-attendance": groupedAttendance,
       });
     });
   } else if (groupingType === "committees") {
@@ -284,6 +308,28 @@ const processAttendanceData = (parliament = "7th-parliament", groupingType = "me
       
       const attendancePercentage = (stats.attendedCount / stats.possibleMeetings) * 100;
       
+      // Build attendance array from statusCounts
+      const attendance = Object.entries(stats.statusCounts).map(([state, count]) => ({
+        state,
+        count
+      }));
+      
+      // Build grouped-attendance from statusCounts
+      const groupedAttendance = Object.entries(
+        attendance.reduce((acc, record) => {
+          const stateConfig = attendanceStates[record.state];
+          if (!stateConfig) return acc;
+          const group = stateConfig.group;
+          if (!acc[group]) acc[group] = 0;
+          acc[group] += record.count || 0;
+          return acc;
+        }, {})
+      ).map(([group, count]) => ({
+        group,
+        count,
+        percentage: (count / stats.possibleMeetings) * 100
+      }));
+      
       data.push({
         label: committee,
         "attendance-count": stats.possibleMeetings,
@@ -291,6 +337,8 @@ const processAttendanceData = (parliament = "7th-parliament", groupingType = "me
         "attendance-percentage": attendancePercentage,
         "possible-meetings": stats.possibleMeetings,
         statusCounts: stats.statusCounts,
+        attendance: attendance,
+        "grouped-attendance": groupedAttendance,
       });
     });
   }
@@ -578,6 +626,8 @@ function Attendance() {
   }, [
     dataAttendance,
     filteredByParties,
+    filteredByCommittees,
+    filteredByHouses,
     filteredByCurrent,
     memberSearch,
     sortedField,
@@ -597,6 +647,28 @@ function Attendance() {
           filteredByParties.length === 0 ||
           filteredByParties.includes(row.party)
         );
+      })
+      .filter((row) => {
+        if (grouping === "members") {
+          // Filter by committees - member must be in at least one of the selected committees
+          if (filteredByCommittees.length > 0) {
+            return row.committees && row.committees.some(committee => 
+              filteredByCommittees.includes(committee)
+            );
+          }
+        }
+        return true;
+      })
+      .filter((row) => {
+        if (grouping === "members") {
+          // Filter by houses - member must be in at least one of the selected houses
+          if (filteredByHouses.length > 0) {
+            return row.houses && row.houses.some(house => 
+              filteredByHouses.includes(house)
+            );
+          }
+        }
+        return true;
       })
       .filter((row) => {
         if (grouping === "members") {
