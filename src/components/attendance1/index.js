@@ -21,7 +21,7 @@ import {
   faSliders
 } from "@fortawesome/free-solid-svg-icons";
 
-import "../attendance/index.scss";
+import "./index.scss";
 
 import SortedColumn from "../sortedColumn";
 
@@ -29,6 +29,8 @@ import * as lookup from "../../data/lookup.json";
 
 import PMHeader from "../pmheader";
 import PMTabs from "../pmtabs";
+
+import * as data from "../../data/attendance/all-time.json";
 
 const ChartTypes = {
   "numeric-simple": {
@@ -63,74 +65,14 @@ const ChartTypes = {
   },
 };
 
-// Dummy attendance states for legend
-const attendanceStates = {
-  "P": { label: "Present", group: "attended", exclude: false, alternate: false, legend: true },
-  "AP": { label: "Apologies", group: "missed", exclude: false, alternate: false, legend: true },
-  "A": { label: "Absent", group: "missed", exclude: false, alternate: false, legend: true },
-  "AP-AM": { label: "Apologies (Alternate)", group: "missed-am", exclude: false, alternate: true, legend: true },
-  "P-AM": { label: "Present (Alternate)", group: "attended-am", exclude: false, alternate: true, legend: true },
-};
-
-// Generate dummy data
-const generateDummyData = (count = 20, type = "members") => {
-  const parties = ["African National Congress (ANC)", "Democratic Alliance (DA)", "Economic Freedom Fighters (EFF)", "Inkatha Freedom Party (IFP)", "Freedom Front Plus (FF+)"];
-  const committees = ["Committee on Finance", "Committee on Health", "Committee on Education", "Committee on Justice"];
-  const houses = ["National Assembly", "National Council of Provinces"];
-  
-  const data = [];
-  
-  for (let i = 0; i < count; i++) {
-    const party = parties[i % parties.length];
-    const attendanceCount = Math.floor(Math.random() * 100) + 50;
-    
-    // Generate attendance breakdown that adds up to attendanceCount
-    const presentCount = Math.floor(attendanceCount * (Math.random() * 0.6 + 0.2)); // 20-80% present
-    const presentAlternateCount = Math.floor((attendanceCount - presentCount) * (Math.random() * 0.2)); // Some alternate attendance
-    const apologiesCount = Math.floor((attendanceCount - presentCount - presentAlternateCount) * (Math.random() * 0.5)); // Some apologies
-    const absentCount = attendanceCount - presentCount - presentAlternateCount - apologiesCount; // Remainder is absent
-    
-    const attendedCount = presentCount + presentAlternateCount;
-    const attendancePercentage = (attendedCount / attendanceCount) * 100;
-    
-    const item = {
-      label: type === "party" ? party : `Member ${i + 1}`,
-      party: party,
-      current: Math.random() > 0.2,
-      "member-count": type === "party" ? Math.floor(Math.random() * 30) + 5 : undefined,
-      "committees-count": type === "members" ? Math.floor(Math.random() * 5) + 1 : undefined,
-      committees: [committees[i % committees.length], committees[(i + 1) % committees.length]],
-      houses: [houses[i % houses.length]],
-      "attendance-count": attendanceCount,
-      "attended-count": attendedCount,
-      "attendance-percentage": attendancePercentage,
-      attendance: [
-        { state: "P", count: presentCount, committees: [committees[i % committees.length]], houses: [houses[i % houses.length]] },
-        { state: "P-AM", count: presentAlternateCount, committees: [committees[i % committees.length]], houses: [houses[i % houses.length]] },
-        { state: "AP", count: apologiesCount, committees: [committees[i % committees.length]], houses: [houses[i % houses.length]] },
-        { state: "A", count: absentCount, committees: [committees[i % committees.length]], houses: [houses[i % houses.length]] },
-      ],
-      "grouped-attendance": [
-        { group: "attended", count: presentCount, percentage: (presentCount / attendanceCount) * 100 },
-        { group: "attended-am", count: presentAlternateCount, percentage: (presentAlternateCount / attendanceCount) * 100 },
-        { group: "missed", count: apologiesCount + absentCount, percentage: ((apologiesCount + absentCount) / attendanceCount) * 100 },
-      ]
-    };
-    
-    data.push(item);
-  }
-  
-  return data;
-};
-
-function Attendance2() {
+function Attendance() {
   const settings = loadSettings();
   const [selectedParliament, setSelectedParliament] = useState("7th-parliament");
   const [filteredAttendance, setFilteredAttendance] = useState([]);
 
-  const [allParties, setAllParties] = useState(["African National Congress (ANC)", "Democratic Alliance (DA)", "Economic Freedom Fighters (EFF)", "Inkatha Freedom Party (IFP)", "Freedom Front Plus (FF+)"]);
-  const [allCommittees, setAllCommittees] = useState(["Committee on Finance", "Committee on Health", "Committee on Education", "Committee on Justice"]);
-  const [allHouses, setAllHouses] = useState(["National Assembly", "National Council of Provinces"]);
+  const [allParties, setAllParties] = useState([]);
+  const [allCommittees, setAllCommittees] = useState([]);
+  const [allHouses, setAllHouses] = useState([]);
 
   const [filteredByParties, setFilteredByParties] = useState([]);
   const [filteredByCommittees, setFilteredByCommittees] = useState([]);
@@ -143,8 +85,10 @@ function Attendance2() {
     setSelectedParliament(parliament);
   };
 
-  const [averageAttendance, setAverageAttendance] = useState(65);
-  const [maxAttendance, setMaxAttendance] = useState(150);
+  const attendanceStates = lookup["attendance-states"];
+
+  const [averageAttendance, setAverageAttendance] = useState(50);
+  const [maxAttendance, setMaxAttendance] = useState(0);
   const [dataAttendance, setDataAttendance] = useState([]);
   const [grouping, setGrouping] = useState("members");
   const [modalSettingsOpen, setModalSettingsOpen] = useState(false);
@@ -351,12 +295,329 @@ function Attendance2() {
     setIncludePermanents(settings.includePermanents);
   }
 
-  // Initialize with dummy data
+  const setupData = () => {
+    let partyAttendance = {};
+    let memberAttendance = {};
+
+    Object.keys(data).forEach((id) => {
+      // set memberAttendance by selectedParliament
+      // Deep copy the attendance array to avoid mutations from party grouping
+      memberAttendance[id] = {
+        label: data[id].name,
+        party: data[id].party,
+        current: data[id].current === 'true',
+        attendance: data[id]["parliamentary-record"][selectedParliament] 
+          ? JSON.parse(JSON.stringify(data[id]["parliamentary-record"][selectedParliament]))
+          : [],
+      };
+
+      // set partyAttendance by grouping memberAttenandance by party
+      if (!partyAttendance[data[id].party]) {
+        partyAttendance[data[id].party] = {
+          label: data[id].party,
+          party: data[id].party,
+          "member-count": 0,
+          attendance: [],
+          committees: [],
+          houses: [],
+        };
+      }
+
+      if ((!filteredByCurrent || (filteredByCurrent && data[id].current === 'true')) && (selectedParliament in data[id]['parliamentary-record'])) {
+        partyAttendance[data[id].party]["member-count"] += 1;
+
+        data[id]["parliamentary-record"][selectedParliament] &&
+          data[id]["parliamentary-record"][selectedParliament].forEach(
+            (attendance) => {
+              const recordIndex = partyAttendance[
+                data[id].party
+              ].attendance.findIndex((r) => r.state === attendance.state);
+              if (recordIndex > -1) {
+                partyAttendance[data[id].party].attendance[recordIndex].count +=
+                  attendance.count;
+                
+                // Accumulate committees and houses at the attendance record level
+                if (!partyAttendance[data[id].party].attendance[recordIndex].committees) {
+                  partyAttendance[data[id].party].attendance[recordIndex].committees = [];
+                }
+                if (!partyAttendance[data[id].party].attendance[recordIndex].houses) {
+                  partyAttendance[data[id].party].attendance[recordIndex].houses = [];
+                }
+                
+                partyAttendance[data[id].party].attendance[recordIndex].committees.push(...attendance.committees);
+                partyAttendance[data[id].party].attendance[recordIndex].committees = [
+                  ...new Set(partyAttendance[data[id].party].attendance[recordIndex].committees)
+                ];
+                
+                partyAttendance[data[id].party].attendance[recordIndex].houses.push(...attendance.houses);
+                partyAttendance[data[id].party].attendance[recordIndex].houses = [
+                  ...new Set(partyAttendance[data[id].party].attendance[recordIndex].houses)
+                ];
+                
+                // Also accumulate at the party level
+                // Spread to flatten and avoid creating nested arrays
+                partyAttendance[data[id].party].committees.push(
+                  ...attendance.committees
+                );
+                partyAttendance[data[id].party].committees = [
+                  ...new Set(partyAttendance[data[id].party].committees),
+                ];
+                partyAttendance[data[id].party]["committees-count"] =
+                  partyAttendance[data[id].party].committees.length;
+
+                partyAttendance[data[id].party].houses.push(...attendance.houses);
+                partyAttendance[data[id].party].houses = [
+                  ...new Set(partyAttendance[data[id].party].houses),
+                ];
+              } else {
+                partyAttendance[data[id].party].attendance.push({
+                  state: attendance.state,
+                  count: attendance.count,
+                  committees: [...attendance.committees],
+                  houses: [...attendance.houses],
+                });
+                // Create a copy instead of reference
+                partyAttendance[data[id].party].committees = [...attendance.committees];
+                partyAttendance[data[id].party].houses = [...attendance.houses];
+                partyAttendance[data[id].party]["committees-count"] =
+                  partyAttendance[data[id].party].committees.length;
+              }
+            }
+          );
+      }
+    });
+
+    let activeAttendance = [];
+
+    // Push partyAttendance hash into activeAttendance array
+    if (grouping === "party") {
+      activeAttendance = Object.values(partyAttendance);
+    } else {
+      activeAttendance = Object.values(memberAttendance);
+    }
+
+    // Extract committees and houses from ALL attendance records BEFORE any filtering
+    // This ensures committee/house memberships are counted regardless of attendance state
+    activeAttendance.forEach((item) => {
+      // Only extract for members - parties already have committees/houses from grouping loop
+      if (grouping === "members") {
+        item["committees"] = [];
+        item["houses"] = [];
+        
+        // Extract all committees and houses from all attendance records
+        if (item.attendance) {
+          item.attendance.forEach((attendance) => {
+            if (attendance.committees) {
+              item["committees"].push(...attendance.committees);
+            }
+            if (attendance.houses) {
+              item["houses"].push(...attendance.houses);
+            }
+          });
+        }
+        
+        // Deduplicate
+        item["committees"] = [...new Set(item["committees"])];
+        item["committees-count"] = item["committees"].length;
+        item["houses"] = [...new Set(item["houses"])];
+      }
+      // For parties, committees and houses were already accumulated during party grouping
+      // Just ensure they have the count
+      else {
+        if (!item["committees-count"]) {
+          item["committees-count"] = item.committees?.length || 0;
+        }
+      }
+    });
+
+    // Filter out excluded attendance states e.g. Unknown (U)
+    activeAttendance.forEach((row) => {
+      row["attendance"] = row["attendance"]?.filter(
+        (attendance) => !attendanceStates[attendance.state].exclude
+      );
+    });
+
+    console.log("After excluded filter:", activeAttendance.length, "parties/members");
+
+    if (!includeAlternates) {
+      // Filter out alternate data
+      activeAttendance.forEach((row) => {
+        row["attendance"] = row["attendance"]?.filter(
+          (attendance) => !attendanceStates[attendance.state].alternate
+        );
+      });
+    }
+
+    if (!includePermanents) {
+      // Filter out permanent data
+      activeAttendance.forEach((row) => {
+        row["attendance"] = row["attendance"]?.filter(
+          (attendance) => attendanceStates[attendance.state].alternate
+        );
+      });
+    }
+
+    // Filter by selected committees - only include attendance records for those committees
+    if (filteredByCommittees.length > 0) {
+      activeAttendance.forEach((row) => {
+        row["attendance"] = row["attendance"]?.filter(
+          (attendance) => {
+            // Check if any of the filtered committees are in this attendance record's committees
+            return attendance.committees && attendance.committees.some(
+              (committee) => filteredByCommittees.includes(committee)
+            );
+          }
+        );
+      });
+    }
+
+    // Filter by selected houses - only include attendance records for those houses
+    if (filteredByHouses.length > 0) {
+      activeAttendance.forEach((row) => {
+        row["attendance"] = row["attendance"]?.filter(
+          (attendance) => {
+            // Check if any of the filtered houses are in this attendance record's houses
+            return attendance.houses && attendance.houses.some(
+              (house) => filteredByHouses.includes(house)
+            );
+          }
+        );
+      });
+    }
+
+
+
+
+    // filter out empty activeAttendance.attendance
+    activeAttendance = activeAttendance.filter(
+      (row) => row["attendance"]?.length > 0
+    );
+
+    console.log("After filtering empty attendance:", activeAttendance.length, "parties/members");
+    console.log("Grouping mode:", grouping);
+
+    activeAttendance.forEach((item) => {
+      // Total attendance.count for each item as attendance-count
+      item["attendance-count"] = item.attendance.reduce(
+        (total, attendance) => total + attendance.count,
+        0
+      );
+
+      // Debug logging for member Maimane
+      if (item.label && item.label.includes("Maimane")) {
+        console.log("DEBUG Maimane:", {
+          label: item.label,
+          attendanceRecords: item.attendance.length,
+          committeesAfterDedup: item["committees"],
+          finalCount: item["committees-count"]
+        });
+      }
+
+      // Committees and houses were already extracted before filtering
+      // No need to extract again here
+
+      // Group and total item.attendance by attendanceStates.group ib item.grouped-attendance[{state: STATE, count: COUNT}]
+      item["grouped-attendance"] = item.attendance.reduce(
+        (grouped, attendance) => {
+          if (grouped[attendanceStates[attendance.state].group]) {
+            grouped[attendanceStates[attendance.state].group].count +=
+              attendance.count;
+          } else {
+            grouped[attendanceStates[attendance.state].group] = {
+              state: attendanceStates[attendance.state].group,
+              count: attendance.count,
+              group: attendanceStates[attendance.state].group,
+            };
+          }
+          return grouped;
+        },
+        {}
+      );
+
+      // Calculate grouped-percentage of attendance-count
+      Object.keys(item["grouped-attendance"]).forEach((key) => {
+        item["grouped-attendance"][key].percentage =
+          (item["grouped-attendance"][key].count / item["attendance-count"]) *
+          100;
+        if (item["grouped-attendance"][key].group === "attended") {
+          item["attendance-percentage"] =
+            item["grouped-attendance"][key].percentage;
+          item["attended-count"] = item["grouped-attendance"][key].count;
+        }
+      });
+
+      if (!item["attendance-percentage"]) {
+        item["attendance-percentage"] = 0;
+      }
+
+      if (!item["attended-count"]) {
+        item["attended-count"] = 0;
+      }
+
+      // Calculate grouped-percentage of attendance-count
+      Object.keys(item["grouped-attendance"]).forEach((key) => {
+        item["grouped-attendance"][key].percentage =
+          (item["grouped-attendance"][key].count / item["attendance-count"]) *
+          100;
+        if (item["grouped-attendance"][key].group === "attended") {
+          item["attendance-percentage"] =
+            item["grouped-attendance"][key].percentage;
+        }
+      });
+
+      // Make grouped-attendance an array
+      item["grouped-attendance"] = Object.values(item["grouped-attendance"]);
+    });
+
+    // Sort activeAttendance by sortedField (default)
+    activeAttendance = activeAttendance.sort((a, b) => {
+      return b[sortedField] - a[sortedField];
+    });
+
+    setDataAttendance(activeAttendance);
+
+    // Calculate average attendance from item.attendance-percentage
+    let totalAttendance = 0;
+    let totalItems = 0;
+    activeAttendance.forEach((item) => {
+      totalAttendance += item["attendance-percentage"];
+      totalItems += 1;
+    });
+    setAverageAttendance(totalAttendance / totalItems);
+
+    // Calculate max attendance overall
+    setMaxAttendance(
+      activeAttendance.reduce((max, item) => {
+        return item["attendance-count"] > max ? item["attendance-count"] : max;
+      }, 0)
+    );
+
+    const allPartiesSet = new Set(activeAttendance.map((r) => r.party).sort());
+    setAllParties(Array.from(allPartiesSet));
+
+    const allCommitteesSet = new Set(
+      activeAttendance.map((r) => r.committees).flat(Infinity)
+    );
+    setAllCommittees(Array.from(allCommitteesSet).sort());
+
+    const allHousesSet = new Set(
+      activeAttendance
+        .map((r) => r.houses)
+        .flat(Infinity)
+        .filter((r) => r)
+    );
+
+    setAllHouses(Array.from(allHousesSet).sort());
+  };
+
+  const getDifferentToAveragePercentage = (attendancePercentage) => {
+    // Set difference between average and item.attendance-percentage
+    return attendancePercentage - averageAttendance;
+  };
+
   useEffect(() => {
-    const dummyData = generateDummyData(20, grouping);
-    setDataAttendance(dummyData);
-    setFilteredAttendance(dummyData);
-  }, [grouping, selectedParliament, includeAlternates, includePermanents]);
+    setupData();
+  }, [selectedParliament, grouping, includeAlternates, includePermanents, filteredByCurrent, filteredByCommittees, filteredByHouses]);
 
   useEffect(() => {
     filterAndSortAttendanceData(dataAttendance);
@@ -417,26 +678,24 @@ function Attendance2() {
     setSortedDirection(sortedDirection === "desc" ? "asc" : "desc");
   };
 
-  const getDifferentToAveragePercentage = (attendancePercentage) => {
-    return attendancePercentage - averageAttendance;
-  };
-
   return (
     <Fragment>
       <PMHeader />
 
-      <PMTabs active="attendance-tracker-2" />
+      <PMTabs active="attendance-tracker" />
       <Container fluid className="py-4">
         <div className="bill-tracker-container">
           <Row className="mb-4">
             <Col>
-              <h1>Overall recorded meeting attendance (v2)</h1>
+              <h1>Overall recorded meeting attendance</h1>
             </Col>
             <Col xs="auto">
               <div className="badge text-bg-dark py-1 px-2">Data till 3 Feb 2026</div>
             </Col>
           </Row>
           <Row>
+
+
             <Col
               style={{
                 display: "flex",
@@ -445,6 +704,7 @@ function Attendance2() {
               }}
             >
               <Stack direction="horizontal" gap={3}>
+
                 <Form.Group as={Row}>
                   <Form.Label column md="auto" className="mt-1">
                     Parliament:
@@ -505,7 +765,9 @@ function Attendance2() {
                   <FontAwesomeIcon icon={faSliders} className="mx-2" />
                   Settings
                 </button>
+
               </Stack>
+
             </Col>
           </Row>
           <Row className="mt-3">
@@ -534,7 +796,6 @@ function Attendance2() {
                               type="text"
                               placeholder="Filter by name..."
                               className="form-input"
-                              value={memberSearch}
                               onChange={(e) => setMemberSearch(e.target.value)}
                             />
                           </div>
@@ -738,6 +999,7 @@ function Attendance2() {
                           <label className="pt-2 fs-7" htmlFor="onlyCurrentMPs">Only Current Members</label>
                         </Stack>
 
+
                         <Button variant="link" onClick={clearFilters}>
                           Clear all
                         </Button>
@@ -851,8 +1113,8 @@ function Attendance2() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredAttendance.map((row, index) => (
-                    <tr key={`${row.label}-${index}`}>
+                  {filteredAttendance.map((row) => (
+                    <tr key={row.label}>
                       <td className="no-word-break">{row.label}</td>
                       <td className="no-word-break">
                         {grouping === "party"
@@ -1020,7 +1282,13 @@ function Attendance2() {
                                       : ""
                                     }`}
                                   style={{
-                                    width: `${(attendance.count / row["attendance-count"]) * 100}%`,
+                                    width: `${(attendance.count /
+                                      (ChartTypes[selectedChartType]
+                                        .percentage
+                                        ? row["attendance-count"]
+                                        : maxAttendance)) *
+                                      100
+                                      }%`,
                                   }}
                                 >
                                   {ChartTypes[selectedChartType].percentage
@@ -1148,4 +1416,4 @@ function Attendance2() {
   );
 }
 
-export default Attendance2;
+export default Attendance;

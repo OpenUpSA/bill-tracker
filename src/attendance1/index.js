@@ -1,12 +1,12 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 
-import Attendance2 from "../components/attendance2";
+import Attendance from "../components/attendance";
 
 import "../app.scss";
 
 function App() {
-  return <Attendance2 />;
+  return <Attendance />;
 }
 
 const container = document.getElementById("root");

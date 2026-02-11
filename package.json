@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel src/index.html src/attendance/index.html src/attendance2/index.html src/bill-tracker/index.html src/overview/index.html && npm run copy",
-    "build": "parcel build src/index.html src/attendance/index.html src/attendance2/index.html src/bill-tracker/index.html src/overview/index.html && npm run copy",
+    "dev": "parcel src/index.html src/attendance/index.html src/bill-tracker/index.html src/overview/index.html && npm run copy",
+    "build": "parcel build src/index.html src/attendance/index.html src/bill-tracker/index.html src/overview/index.html && npm run copy",
     "deploy": "netlify deploy",
     "copy": "cp -r src/data dist && cp -r src/assets dist",
     "attendance:update": "node utils/update-attendance-data.js"
