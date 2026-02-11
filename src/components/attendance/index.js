@@ -1315,7 +1315,9 @@ function Attendance() {
                                       : ""
                                   }`}
                                   style={{
-                                    width: `${(attendance.count / row["attendance-count"]) * 100}%`,
+                                    width: ChartTypes[selectedChartType].percentage
+                                      ? `${(attendance.count / row["attendance-count"]) * 100}%`
+                                      : `${(attendance.count / maxAttendance) * 100}%`,
                                   }}
                                 >
                                   {ChartTypes[selectedChartType].percentage
