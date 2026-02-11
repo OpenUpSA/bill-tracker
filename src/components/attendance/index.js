@@ -941,7 +941,7 @@ function Attendance() {
                           </Dropdown>
                         )}
 
-                        <Stack direction="horizontal" gap={3}>
+                        {/* <Stack direction="horizontal" gap={3}>
                           <div className="status-toggle">
                             <Form.Check
                               id="onlyCurrentMPs"
@@ -951,7 +951,7 @@ function Attendance() {
                             />
                           </div>
                           <label className="pt-2 fs-7" htmlFor="onlyCurrentMPs">Only Current Members</label>
-                        </Stack>
+                        </Stack> */}
 
                         <Button variant="link" onClick={clearFilters}>
                           Clear all
@@ -1207,33 +1207,41 @@ function Attendance() {
                                 : "grouped-attendance"
                             ]
                               .sort((a, b) => {
-                                return ChartTypes[selectedChartType].detailed
-                                  ? b.state.localeCompare(a.state)
-                                  : a.state.localeCompare(b.state);
+                                if (ChartTypes[selectedChartType].detailed) {
+                                  return b.state.localeCompare(a.state);
+                                } else {
+                                  // For grouped-attendance, sort by group
+                                  return a.group.localeCompare(b.group);
+                                }
                               })
                               .map((attendance) => (
                                 <div
-                                  key={attendance.state}
+                                  key={ChartTypes[selectedChartType].detailed ? attendance.state : attendance.group}
                                   onMouseEnter={() =>
-                                    setTooltipAttendanceState(attendance.state)
+                                    setTooltipAttendanceState(
+                                      ChartTypes[selectedChartType].detailed ? attendance.state : attendance.group
+                                    )
                                   }
                                   onMouseLeave={() =>
                                     setTooltipAttendanceState("")
                                   }
                                   onClick={() =>
                                     toggleHighlightedAttendanceState(
-                                      attendance.state
+                                      ChartTypes[selectedChartType].detailed ? attendance.state : attendance.group
                                     )
                                   }
-                                  className={`bar state-${attendance.state
-                                    } state-grouping-${ChartTypes[selectedChartType].detailed
+                                  className={`bar state-${
+                                    ChartTypes[selectedChartType].detailed ? attendance.state : attendance.group
+                                  } state-grouping-${
+                                    ChartTypes[selectedChartType].detailed
                                       ? attendanceStates[attendance.state].group
                                       : attendance.group
-                                    } ${highlightedAttendanceState ===
-                                      attendance.state
+                                  } ${
+                                    highlightedAttendanceState ===
+                                      (ChartTypes[selectedChartType].detailed ? attendance.state : attendance.group)
                                       ? "state-highlighted"
                                       : ""
-                                    }`}
+                                  }`}
                                   style={{
                                     width: `${(attendance.count / row["attendance-count"]) * 100}%`,
                                   }}
