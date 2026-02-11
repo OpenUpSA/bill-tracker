@@ -23,6 +23,12 @@ function PMTabs(props) {
             Attendance Tracker
           </a>
           <a
+            className={`tab ${active === "attendance-tracker-2" ? "active" : ""}`}
+            href="/attendance2"
+          >
+            Attendance Tracker v2
+          </a>
+          <a
             className={`tab ${active === "bill-tracker" ? "active" : ""}`}
             href="/bill-tracker"
           >
