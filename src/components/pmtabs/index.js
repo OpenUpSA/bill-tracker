@@ -17,7 +17,7 @@ function PMTabs(props) {
             Overview
           </a>
           <a
-            className={`tab ${active === "attendance-tracker" ? "active" : ""}`}
+            className={`tab ${active === "attendance-tracker-2" ? "active" : ""}`}
             href="/attendance"
           >
             Attendance Tracker

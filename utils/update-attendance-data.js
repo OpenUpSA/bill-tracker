@@ -197,3 +197,4 @@ function processCsvAndExportJson(csvFilePath) {
 }
 
 exportAttendanceAndProcess();
+
