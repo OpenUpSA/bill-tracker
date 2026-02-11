@@ -301,11 +301,14 @@ function Attendance() {
 
     Object.keys(data).forEach((id) => {
       // set memberAttendance by selectedParliament
+      // Deep copy the attendance array to avoid mutations from party grouping
       memberAttendance[id] = {
         label: data[id].name,
         party: data[id].party,
         current: data[id].current === 'true',
-        attendance: data[id]["parliamentary-record"][selectedParliament],
+        attendance: data[id]["parliamentary-record"][selectedParliament] 
+          ? JSON.parse(JSON.stringify(data[id]["parliamentary-record"][selectedParliament]))
+          : [],
       };
 
       // set partyAttendance by grouping memberAttenandance by party
@@ -315,6 +318,8 @@ function Attendance() {
           party: data[id].party,
           "member-count": 0,
           attendance: [],
+          committees: [],
+          houses: [],
         };
       }
 
@@ -330,40 +335,50 @@ function Attendance() {
               if (recordIndex > -1) {
                 partyAttendance[data[id].party].attendance[recordIndex].count +=
                   attendance.count;
+                
+                // Accumulate committees and houses at the attendance record level
+                if (!partyAttendance[data[id].party].attendance[recordIndex].committees) {
+                  partyAttendance[data[id].party].attendance[recordIndex].committees = [];
+                }
+                if (!partyAttendance[data[id].party].attendance[recordIndex].houses) {
+                  partyAttendance[data[id].party].attendance[recordIndex].houses = [];
+                }
+                
+                partyAttendance[data[id].party].attendance[recordIndex].committees.push(...attendance.committees);
+                partyAttendance[data[id].party].attendance[recordIndex].committees = [
+                  ...new Set(partyAttendance[data[id].party].attendance[recordIndex].committees)
+                ];
+                
+                partyAttendance[data[id].party].attendance[recordIndex].houses.push(...attendance.houses);
+                partyAttendance[data[id].party].attendance[recordIndex].houses = [
+                  ...new Set(partyAttendance[data[id].party].attendance[recordIndex].houses)
+                ];
+                
+                // Also accumulate at the party level
+                // Spread to flatten and avoid creating nested arrays
                 partyAttendance[data[id].party].committees.push(
-                  attendance.committees
+                  ...attendance.committees
                 );
                 partyAttendance[data[id].party].committees = [
-                  ...new Set(
-                    partyAttendance[data[id].party].committees.flat(Infinity)
-                  ),
+                  ...new Set(partyAttendance[data[id].party].committees),
                 ];
                 partyAttendance[data[id].party]["committees-count"] =
                   partyAttendance[data[id].party].committees.length;
-                partyAttendance[data[id].party].committees.push(
-                  attendance.committees
-                );
-                partyAttendance[data[id].party].committees = [
-                  ...new Set(
-                    partyAttendance[data[id].party].committees.flat(Infinity)
-                  ),
-                ];
 
-                partyAttendance[data[id].party].houses.push(attendance.houses);
+                partyAttendance[data[id].party].houses.push(...attendance.houses);
                 partyAttendance[data[id].party].houses = [
-                  ...new Set(
-                    partyAttendance[data[id].party].houses.flat(Infinity)
-                  ),
+                  ...new Set(partyAttendance[data[id].party].houses),
                 ];
               } else {
                 partyAttendance[data[id].party].attendance.push({
                   state: attendance.state,
                   count: attendance.count,
+                  committees: [...attendance.committees],
+                  houses: [...attendance.houses],
                 });
-                partyAttendance[data[id].party].committees =
-                  attendance.committees;
-
-                partyAttendance[data[id].party].houses = attendance.houses;
+                // Create a copy instead of reference
+                partyAttendance[data[id].party].committees = [...attendance.committees];
+                partyAttendance[data[id].party].houses = [...attendance.houses];
                 partyAttendance[data[id].party]["committees-count"] =
                   partyAttendance[data[id].party].committees.length;
               }
@@ -381,12 +396,48 @@ function Attendance() {
       activeAttendance = Object.values(memberAttendance);
     }
 
+    // Extract committees and houses from ALL attendance records BEFORE any filtering
+    // This ensures committee/house memberships are counted regardless of attendance state
+    activeAttendance.forEach((item) => {
+      // Only extract for members - parties already have committees/houses from grouping loop
+      if (grouping === "members") {
+        item["committees"] = [];
+        item["houses"] = [];
+        
+        // Extract all committees and houses from all attendance records
+        if (item.attendance) {
+          item.attendance.forEach((attendance) => {
+            if (attendance.committees) {
+              item["committees"].push(...attendance.committees);
+            }
+            if (attendance.houses) {
+              item["houses"].push(...attendance.houses);
+            }
+          });
+        }
+        
+        // Deduplicate
+        item["committees"] = [...new Set(item["committees"])];
+        item["committees-count"] = item["committees"].length;
+        item["houses"] = [...new Set(item["houses"])];
+      }
+      // For parties, committees and houses were already accumulated during party grouping
+      // Just ensure they have the count
+      else {
+        if (!item["committees-count"]) {
+          item["committees-count"] = item.committees?.length || 0;
+        }
+      }
+    });
+
     // Filter out excluded attendance states e.g. Unknown (U)
     activeAttendance.forEach((row) => {
       row["attendance"] = row["attendance"]?.filter(
         (attendance) => !attendanceStates[attendance.state].exclude
       );
     });
+
+    console.log("After excluded filter:", activeAttendance.length, "parties/members");
 
     if (!includeAlternates) {
       // Filter out alternate data
@@ -435,10 +486,15 @@ function Attendance() {
     }
 
 
+
+
     // filter out empty activeAttendance.attendance
     activeAttendance = activeAttendance.filter(
       (row) => row["attendance"]?.length > 0
     );
+
+    console.log("After filtering empty attendance:", activeAttendance.length, "parties/members");
+    console.log("Grouping mode:", grouping);
 
     activeAttendance.forEach((item) => {
       // Total attendance.count for each item as attendance-count
@@ -447,23 +503,18 @@ function Attendance() {
         0
       );
 
-      item["committees"] = [];
+      // Debug logging for member Maimane
+      if (item.label && item.label.includes("Maimane")) {
+        console.log("DEBUG Maimane:", {
+          label: item.label,
+          attendanceRecords: item.attendance.length,
+          committeesAfterDedup: item["committees"],
+          finalCount: item["committees-count"]
+        });
+      }
 
-      item.attendance.map((attendance) =>
-        item["committees"].push(attendance.committees)
-      );
-
-      item["committees"] = [...new Set(item["committees"].flat(Infinity))];
-
-      item["committees-count"] = item["committees"].length;
-
-      item["houses"] = [];
-
-      item.attendance.map((attendance) =>
-        item["houses"].push(attendance.houses)
-      );
-
-      item["houses"] = [...new Set(item["houses"].flat(Infinity))];
+      // Committees and houses were already extracted before filtering
+      // No need to extract again here
 
       // Group and total item.attendance by attendanceStates.group ib item.grouped-attendance[{state: STATE, count: COUNT}]
       item["grouped-attendance"] = item.attendance.reduce(
