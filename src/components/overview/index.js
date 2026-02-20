@@ -36,6 +36,7 @@ import { SparklinesLine } from "@lueton/react-sparklines";
 import LineChart from "../charts/LineChart";
 import BubbleChart from "../charts/BubbleChart";
 import StackedBarChart from "../charts/StackedBarChart";
+import BarChart from "../charts/BarChart";
 
 import DateRangePicker from 'rsuite/DateRangePicker';
 import 'rsuite/DateRangePicker/styles/index.css';
@@ -166,6 +167,13 @@ function Overview() {
       '65-80': { total: 0, avg: 0, meetings: 0, present: 0 }
     },
     overallAvg: 0
+  });
+
+  const [block_MembershipsPerMember, setBlock_MembershipsPerMember] = useState({
+    avg: 0,
+    overall_avg: 0,
+    histogram_all: [],
+    histogram_party: []
   });
 
   const [block_QuestionsToMinisters, setBlock_QuestionsToMinisters] = useState({
@@ -1560,6 +1568,56 @@ function Overview() {
     });
   }
 
+  function block_memberships_per_member() {
+    if (membersData.length === 0) return;
+
+    const withCount = membersData.filter(m => m.memberships_Count && parseInt(m.memberships_Count, 10) > 0);
+
+    const allCounts = withCount.map(m => parseInt(m.memberships_Count, 10));
+    const overall_avg = allCounts.length > 0
+      ? allCounts.reduce((a, b) => a + b, 0) / allCounts.length
+      : 0;
+
+    const partyMembers = party !== "All"
+      ? withCount.filter(m => m.party_id === party)
+      : [];
+    const party_avg = partyMembers.length > 0
+      ? partyMembers.map(m => parseInt(m.memberships_Count, 10)).reduce((a, b) => a + b, 0) / partyMembers.length
+      : 0;
+
+    const buckets = {};
+    for (let i = 1; i <= 10; i++) {
+      buckets[i] = { all: 0, party: 0 };
+    }
+
+    withCount.forEach(m => {
+      const bucket = Math.min(parseInt(m.memberships_Count, 10), 10);
+      buckets[bucket].all++;
+    });
+
+    partyMembers.forEach(m => {
+      const bucket = Math.min(parseInt(m.memberships_Count, 10), 10);
+      buckets[bucket].party++;
+    });
+
+    const histogram_all = Object.keys(buckets).map(k => ({
+      category: k === '10' ? '10+' : k,
+      all: buckets[k].all
+    }));
+
+    const histogram_party = party !== "All" ? Object.keys(buckets).map(k => ({
+      category: k === '10' ? '10+' : k,
+      set2: buckets[k].party
+    })) : [];
+
+    setBlock_MembershipsPerMember({
+      avg: parseFloat(party === "All" ? overall_avg.toFixed(1) : party_avg.toFixed(1)),
+      overall_avg: parseFloat(overall_avg.toFixed(1)),
+      histogram_all,
+      histogram_party
+    });
+  }
+
   // UseEffects //////////////////
   useEffect(() => {
     loadData(members_data_csv);
@@ -1609,6 +1667,10 @@ function Overview() {
 
   useEffect(() => {
   }, [historicalData]);
+
+  useEffect(() => {
+    block_memberships_per_member();
+  }, [membersData, party]);
 
   return (
     <Fragment>
@@ -2259,7 +2321,7 @@ function Overview() {
               </Col>
             </Row>
             <Row className="mt-4">
-              <Col md={12} lg={6} className="mb-sm-4 mb-lg-0">
+              <Col md={12} lg={4} className="mb-sm-4 mb-lg-0">
                 <DashboardCard>
                   <CardTitle>Attendance by gender</CardTitle>
                   <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
@@ -2317,7 +2379,7 @@ function Overview() {
                   </CardContent>
                 </DashboardCard>
               </Col>
-              <Col md={12} lg={6}>
+              <Col md={12} lg={4} className="mb-sm-4 mb-lg-0">
                 <DashboardCard>
                   <CardTitle>Attendance by age</CardTitle>
                   <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
@@ -2365,6 +2427,46 @@ function Overview() {
                   </CardContent>
                 </DashboardCard>
 
+              </Col>
+              <Col md={12} lg={4}>
+                <DashboardCard>
+                  <CardTitle>Avg. committee memberships per member</CardTitle>
+                  <CardParty><PartyPill party={party}>{partyName}</PartyPill></CardParty>
+                  <CardSubtitle>
+                    <Row className="justify-content-between">
+                      <Col>
+                        <span className="card-big-text">{block_MembershipsPerMember.avg}</span>
+                      </Col>
+                      <Col xs="auto" className="d-flex align-items-center">
+                        {party !== "All" && block_MembershipsPerMember.overall_avg > 0 && (
+                          <div className="card-badge">{vs_avg(block_MembershipsPerMember.avg, block_MembershipsPerMember.overall_avg)}</div>
+                        )}
+                      </Col>
+                    </Row>
+                  </CardSubtitle>
+                  <CardContent>
+                    <div className="seperator my-3"></div>
+                    <h4 className="mb-0">Committee memberships per member</h4>
+                    {block_MembershipsPerMember.histogram_all.length > 0 && (
+                      <BarChart
+                        data={block_MembershipsPerMember.histogram_all}
+                        data2={block_MembershipsPerMember.histogram_party}
+                        x_scale={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"]}
+                        x_label=""
+                        y_label=""
+                        party={party !== "All" ? partyName : null}
+                      />
+                    )}
+                    {party !== "All" && (
+                      <div className="chart-legend mt-2">
+                        <div className="legend-item">
+                          <div className="legend-color" style={{ backgroundColor: '#fb9905', width: '12px', height: '12px', borderRadius: '2px', display: 'inline-block', marginRight: '6px' }}></div>
+                          <div className="legend-label">{partyName}</div>
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </DashboardCard>
               </Col>
             </Row>
           </section>
