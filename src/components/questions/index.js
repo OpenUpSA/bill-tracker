@@ -501,12 +501,12 @@ function QuestionsExplorer() {
             <a href="#register">Questions explorer</a>
             <a href="#ministers">By minister</a>
             <a href="#members">By member</a>
-            <button
+            {/* <button
               onClick={() => setShowSourceAnalysis(v => !v)}
               style={{ background: "none", border: "none", padding: 0, cursor: "pointer", font: "inherit", color: "inherit" }}
             >
               Data sources
-            </button>
+            </button> */}
           </div>
 
           {/* ══ Source analysis accordion (hidden by default) ════════════════ */}
