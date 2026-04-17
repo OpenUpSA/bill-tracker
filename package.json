@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "npm run copy & parcel src/index.html src/attendance/index.html src/bill-tracker/index.html src/overview/index.html src/questions/index.html",
-    "build": "parcel build src/index.html src/attendance/index.html src/bill-tracker/index.html src/overview/index.html src/questions/index.html && npm run copy",
+    "dev": "npm run copy & parcel src/index.html src/attendance/index.html src/bill-tracker/index.html src/overview/index.html src/questions/index.html src/brrr/index.html",
+    "build": "parcel build src/index.html src/attendance/index.html src/bill-tracker/index.html src/overview/index.html src/questions/index.html src/brrr/index.html && npm run copy",
     "deploy": "netlify deploy",
     "copy": "cp -r src/data dist && cp -r src/assets dist",
     "attendance:update": "node utils/update-attendance-data.js"
@@ -31,6 +31,8 @@
     "@visx/voronoi": "^3.12.0",
     "axios": "^1.11.0",
     "bootstrap": "^5.3.8",
+    "chart.js": "^4.5.1",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "d3": "^7.9.0",
     "global": "^4.4.0",
     "papaparse": "^5.5.3",
