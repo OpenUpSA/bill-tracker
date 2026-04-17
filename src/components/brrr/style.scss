@@ -1,0 +1,554 @@
+
+$general_sans_400: 'General Sans Regular', sans-serif;
+$general_sans_500: 'General Sans Medium', sans-serif;
+$general_sans_600: 'General Sans Semibold', sans-serif;
+$general_sans_700: 'General Sans Bold', sans-serif;
+
+// ─── BRRR Dashboard Styles ──────────────────────────────────────────────────
+
+.brrr-dashboard {
+  background: #f3f3f3;
+  min-height: 100vh;
+  padding-bottom: 60px;
+
+  .page-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 0;
+    font-family: $general_sans_400 !important;
+    line-height: 1.6;
+  }
+
+  // ── Dashboard Nav (sticky filters like Overview) ──
+  .dashboard-nav {
+    position: sticky;
+    top: 0;
+    background-color: #f3f3f3;
+    z-index: 999;
+
+    .dropdown-menu {
+      max-height: 400px;
+      overflow-y: auto;
+      overflow-x: visible;
+      width: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .form-label {
+    font-size: 12px;
+    font-family: $general_sans_500 !important;
+    margin-bottom: 0;
+  }
+
+  .filter-input {
+    font-size: 12px;
+    padding: 10px 15px;
+    border-radius: 35px;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000;
+    outline: none;
+    font-family: $general_sans_400 !important;
+    width: 100%;
+
+    &::placeholder {
+      color: #999;
+    }
+
+    &:focus {
+      background-color: #fafafa;
+    }
+  }
+
+  .btn-reset {
+    height: 36px;
+    padding: 0 20px;
+    background: #000;
+    border: none;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: $general_sans_500 !important;
+
+    &:hover {
+      background: #fb9905;
+    }
+  }
+
+  .filter-count {
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+    font-family: $general_sans_400 !important;
+
+    strong {
+      color: #000;
+      font-family: $general_sans_600 !important;
+    }
+  }
+
+  // ── Section Header (matching brrr-dashboard-final-styled.html) ──
+  .section-header {
+    margin: 32px 0 16px;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    background: #ebebeb;
+    border-radius: 18px;
+    overflow: hidden;
+    min-height: 170px;
+  }
+
+  .section-header-img-wrap {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    flex: 0 0 50%;
+    height: 170px;
+    background-color: #fb9905;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 28px;
+
+    .header-bg-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-size: cover;
+      background-position: center;
+      filter: grayscale(1);
+      mix-blend-mode: multiply;
+      opacity: 0.5;
+    }
+
+    h2 {
+      color: #fff;
+      font-size: 22px;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+      line-height: 1.2;
+      text-align: left;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+      font-family: $general_sans_700 !important;
+      margin: 0;
+    }
+  }
+
+  .section-intro {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555;
+    display: flex;
+    align-items: center;
+    padding: 20px 28px;
+    font-family: $general_sans_400 !important;
+  }
+
+  // ── Cards (matching Overview dashboard-card) ──
+  .dashboard-card {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+    height: 100%;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-family: $general_sans_500 !important;
+    font-size: 16px;
+    margin: 0 0 8px 0;
+    color: #000;
+  }
+
+  .card-meta {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 16px;
+    font-family: $general_sans_400 !important;
+  }
+
+  // ── Scorecards ──
+  .scorecards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .scorecard {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    position: relative;
+
+    .sc-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #999;
+      margin-bottom: 12px;
+      font-family: $general_sans_500 !important;
+    }
+
+    .sc-value {
+      font-size: 32px;
+      font-weight: 500;
+      color: #000;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      font-family: $general_sans_500 !important;
+    }
+
+    .sc-sub {
+      font-size: 11px;
+      color: #999;
+      margin-top: 8px;
+      font-family: $general_sans_400 !important;
+    }
+  }
+
+  // ── Grid Layouts ──
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .grid-65-35 {
+    display: grid;
+    grid-template-columns: 65fr 35fr;
+    gap: 16px;
+
+    @media (max-width: 900px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // ── Separator ──
+  .seperator {
+    border-top: 1px solid #eeeeee;
+    margin: 14px 0;
+  }
+
+  // ── Table ──
+  .scroll-area {
+    overflow: auto;
+    max-height: 360px;
+    border-radius: 8px;
+    position: relative;
+
+    &.tall {
+      max-height: 480px;
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      height: 20px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.06) 100%);
+      pointer-events: none;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    font-family: $general_sans_400 !important;
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      border-bottom: 1px solid #dee2e6;
+      padding: 10px 12px;
+      font-weight: 500;
+      font-size: 12px;
+      color: #000;
+      white-space: nowrap;
+      z-index: 2;
+      cursor: pointer;
+      user-select: none;
+      font-family: $general_sans_500 !important;
+      text-align: left;
+
+      &:hover {
+        background-color: #f9f9f9;
+      }
+
+      &.sorted-asc::after {
+        content: ' ↑';
+        color: #fb9905;
+      }
+
+      &.sorted-desc::after {
+        content: ' ↓';
+        color: #fb9905;
+      }
+    }
+
+    tbody tr:hover {
+      background: #f9f9f9;
+    }
+
+    tbody td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      color: #333;
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  // ── Chips ──
+  .chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    font-family: $general_sans_500 !important;
+
+    &.chip-new {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    &.chip-ongoing {
+      background: #e7e7e7;
+      color: #666;
+    }
+
+    &.chip-high {
+      background: #b7eb9f;
+      color: #276220;
+    }
+
+    &.chip-medium {
+      background: #ffc794;
+      color: #92400e;
+    }
+
+    &.chip-low {
+      background: #ffa694;
+      color: #991b1b;
+    }
+  }
+
+  .mono {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #666;
+  }
+
+  // ── Text Cell ──
+  .text-cell {
+    max-width: 320px;
+
+    span {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.4;
+    }
+  }
+
+  .entities-cell {
+    max-width: 180px;
+    font-size: 11px;
+    color: #666;
+  }
+
+  // ── Chart Containers ──
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+
+    canvas {
+      max-height: 280px;
+    }
+  }
+
+  .chart-wrap-donut canvas {
+    max-height: 220px;
+  }
+
+  // ── Pagination ──
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #666;
+    font-family: $general_sans_400 !important;
+  }
+
+  .page-btns {
+    display: flex;
+    gap: 4px;
+  }
+
+  .page-btn {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border: none;
+    border-radius: 8px;
+    background: #e7e7e7;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: $general_sans_500 !important;
+    color: #000;
+
+    &:hover {
+      background: #dbdbdb;
+    }
+
+    &.active {
+      background: #000;
+      color: #fff;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      
+      &:hover {
+        background: #e7e7e7;
+      }
+    }
+  }
+
+  // ── Legend ──
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    font-size: 12px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #797979;
+    font-family: $general_sans_500 !important;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  // ── Notice ──
+  .notice {
+    background: #fff7ed;
+    border: 1.5px solid #ffc794;
+    border-radius: 16px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #666;
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    font-family: $general_sans_400 !important;
+    line-height: 1.6;
+
+    strong {
+      font-family: $general_sans_600 !important;
+      color: #000;
+    }
+  }
+
+  .notice-icon {
+    color: #f97316;
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  // ── Loading / Empty States ──
+  .loading-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-family: $general_sans_400 !important;
+    font-size: 14px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #bbb;
+    font-size: 12px;
+    font-family: $general_sans_400 !important;
+  }
+
+  // ── Card Helpers ──
+  .card-big-text {
+    font-size: 24px;
+    font-family: $general_sans_500 !important;
+    display: inline-block;
+  }
+
+  .card-subtext {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 0 0.8em;
+    display: inline-block;
+    font-family: $general_sans_400 !important;
+  }
+
+  .card-badge {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 400;
+    display: inline-block;
+    border-radius: 8px;
+    font-family: $general_sans_400 !important;
+  }
+}

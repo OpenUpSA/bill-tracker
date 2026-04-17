@@ -28,6 +28,12 @@ function PMTabs(props) {
           >
             Bill Tracker
           </a>
+          <a
+            className={`tab ${active === "brrr" ? "active" : ""}`}
+            href="/brrr"
+          >
+            BRRR Analysis
+          </a>
           {/* <a
             className={`tab ${active === "questions" ? "active" : ""}`}
             href="/questions"
