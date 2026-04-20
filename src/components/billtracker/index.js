@@ -411,35 +411,37 @@ function BillTracker() {
 			>
 				<h2 className="mb-4">{hoveredBill.title}</h2>
 				<table className="w-100">
-					<tr>
-						<th>Bill type:</th>
-						<td>{lookup.type[hoveredBill.type]}</td>
-					</tr>
-					<tr>
-						<th>Introduced by:</th>
-						<td>{hoveredBill.introduced_by}</td>
-					</tr>
-					<tr>
-						<th>Currently before:</th>
-						<td>{lookup.status[hoveredBill.status]}</td>
-					</tr>
-					<tr>
-						<th>Days in parliament:</th>
-						<td>{hoveredBill.total_days}</td>
-					</tr>
-					<tr>
-						<th>Committee Meetings (total):</th>
-						<td>{hoveredBill.total_commitee_meetings}</td>
-					</tr>
-					<tr>
-						<th>Days since last event:</th>
-						<td>
-							{getDateDifferenceInDays(
-								hoveredBill.events[hoveredBill.events.length - 1]?.date,
-								new Date()
-							)}
-						</td>
-					</tr>
+					<tbody>
+						<tr>
+							<th>Bill type:</th>
+							<td>{lookup.type[hoveredBill.type]}</td>
+						</tr>
+						<tr>
+							<th>Introduced by:</th>
+							<td>{hoveredBill.introduced_by}</td>
+						</tr>
+						<tr>
+							<th>Currently before:</th>
+							<td>{lookup.status[hoveredBill.status]}</td>
+						</tr>
+						<tr>
+							<th>Days in parliament:</th>
+							<td>{hoveredBill.total_days}</td>
+						</tr>
+						<tr>
+							<th>Committee Meetings (total):</th>
+							<td>{hoveredBill.total_commitee_meetings}</td>
+						</tr>
+						<tr>
+							<th>Days since last event:</th>
+							<td>
+								{getDateDifferenceInDays(
+									hoveredBill.events[hoveredBill.events.length - 1]?.date,
+									new Date()
+								)}
+							</td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 		);
@@ -466,20 +468,22 @@ function BillTracker() {
 						<div className="mb-3">{hoveredEvent.title}</div>
 
 						<table className="w-100">
-							<tr>
-								<th>Date:</th>
-								<td>{formatDate(hoveredEvent.date)}</td>
-							</tr>
-							<tr>
-								<th>House:</th>
-								<td>{lookup.house[hoveredEvent.house]}</td>
-							</tr>
-							<tr>
-								<th>Days since event:</th>
-								<td>
-									{getDateDifferenceInDays(hoveredEvent.date, new Date())}
-								</td>
-							</tr>
+							<tbody>
+								<tr>
+									<th>Date:</th>
+									<td>{formatDate(hoveredEvent.date)}</td>
+								</tr>
+								<tr>
+									<th>House:</th>
+									<td>{lookup.house[hoveredEvent.house]}</td>
+								</tr>
+								<tr>
+									<th>Days since event:</th>
+									<td>
+										{getDateDifferenceInDays(hoveredEvent.date, new Date())}
+									</td>
+								</tr>
+							</tbody>
 						</table>
 					</Fragment>
 				)}
