@@ -1684,7 +1684,7 @@ function Overview() {
               <h1>Parliamentary overview</h1>
             </Col>
             <Col xs="auto">
-              <div className="badge text-bg-dark py-1 px-2">Data till 31 January 2026</div>
+              <div className="badge text-bg-dark py-1 px-2">Data till 31 March 2026</div>
             </Col>
           </Row>
         </div>
