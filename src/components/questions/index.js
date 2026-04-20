@@ -10,6 +10,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
+import Dropdown from "react-bootstrap/Dropdown";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 
@@ -21,6 +22,7 @@ import {
   faMagnifyingGlass,
   faCircleInfo,
   faTriangleExclamation,
+  faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Scrollbars } from "react-custom-scrollbars";
@@ -148,6 +150,9 @@ function QuestionsExplorer() {
   const [page, setPage] = useState(1);
   const [sortKey, setSortKey] = useState("pubDate");
   const [sortDir, setSortDir] = useState("desc");
+  const [selectedYear, setSelectedYear] = useState(2025);
+
+  const years = [2025];
 
 
   // ─── Load data ──────────────────────────────────────────────────────────────
@@ -488,6 +493,9 @@ function QuestionsExplorer() {
             <Col>
               <h1>Questions Explorer</h1>
             </Col>
+            <Col xs="auto">
+              <div className="badge text-bg-dark py-1 px-2">Questions for {selectedYear}</div>
+            </Col>
           </Row>
         </div>
       </Container>
@@ -497,16 +505,38 @@ function QuestionsExplorer() {
 
           {/* ── Sticky section nav ── */}
           <div className="qs-nav">
-            <a href="#status">Response status</a>
-            <a href="#register">Questions explorer</a>
-            <a href="#ministers">By minister</a>
-            <a href="#members">By member</a>
-            {/* <button
-              onClick={() => setShowSourceAnalysis(v => !v)}
-              style={{ background: "none", border: "none", padding: 0, cursor: "pointer", font: "inherit", color: "inherit" }}
-            >
-              Data sources
-            </button> */}
+            <div>
+              <a href="#status">Response status</a>
+              <a href="#register">Questions explorer</a>
+              <a href="#ministers">By minister</a>
+              <a href="#members">By member</a>
+              {/* <button
+                onClick={() => setShowSourceAnalysis(v => !v)}
+                style={{ background: "none", border: "none", padding: 0, cursor: "pointer", font: "inherit", color: "inherit" }}
+              >
+                Data sources
+              </button> */}
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span className="form-label">Year:</span>
+              <Dropdown className="dropdown-select">
+                <Dropdown.Toggle>
+                  <Row>
+                    <Col>{selectedYear}</Col>
+                    <Col xs="auto">
+                      <FontAwesomeIcon icon={faChevronDown} />
+                    </Col>
+                  </Row>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  {years.map((year, index) => (
+                    <Dropdown.Item key={index} onClick={() => setSelectedYear(year)}>
+                      {year}
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
           </div>
 
           {/* ══ Source analysis accordion (hidden by default) ════════════════ */}
@@ -771,19 +801,19 @@ function QuestionsExplorer() {
               {/* Table */}
               <div className="scroll-area">
                 <Scrollbars style={{ height: 420 }}>
-                  <Table className="sticky-header-table explorer-table" hover>
+                  <Table className="sticky-header-table explorer-table" hover style={{ tableLayout: 'fixed' }}>
                     <thead>
                       <tr>
-                        <th style={{ width: 30 }}>#</th>
-                        <SortTh col="ACC No" label="Code" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 80 }} />
-                        <SortTh col="Member asking" label="Member" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 130 }} />
-                        <SortTh col="PARTY" label="Party" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 80 }} />
-                        <SortTh col="Executive" label="Minister / Executive" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 160 }} />
-                        <SortTh col="pubDate" label="Published" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 100 }} />
-                        <SortTh col="daysToReply" label="Days" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 55 }} />
-                        <SortTh col="displayStatus" label="Status" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 80 }} />
-                        <th style={{ minWidth: 50 }}>PMG</th>
-                        <th style={{ minWidth: 90 }}>Notes</th>
+                        <th style={{ width: 40 }}>#</th>
+                        <SortTh col="ACC No" label="Code" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 90 }} />
+                        <SortTh col="Member asking" label="Member" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 150 }} />
+                        <SortTh col="PARTY" label="Party" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 90 }} />
+                        <SortTh col="Executive" label="Minister / Executive" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 200 }} />
+                        <SortTh col="pubDate" label="Published" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 120 }} />
+                        <SortTh col="daysToReply" label="Days" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 65 }} />
+                        <SortTh col="displayStatus" label="Status" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 90 }} />
+                        <th style={{ width: 70 }}>PMG</th>
+                        <th style={{ width: 100 }}>Notes</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -872,7 +902,6 @@ function QuestionsExplorer() {
                 <Col className="d-flex align-items-center">
                   <div className="section-intro">
                     Which ministers face the most scrutiny? Which members are most active in holding the executive to account?
-                    Based on PMG's questions database of {pmgData.length.toLocaleString()} records.
                   </div>
                 </Col>
               </Row>
@@ -1063,7 +1092,8 @@ function QuestionsExplorer() {
                             const byMin = {};
                             registerData.forEach(row => {
                               const exec = (row["Executive"] || "").trim();
-                              if (!exec || row.daysToReply === null || isNaN(row.daysToReply)) return;
+                              // Only include valid positive days (can't reply before question was published)
+                              if (!exec || row.daysToReply === null || isNaN(row.daysToReply) || row.daysToReply < 0) return;
                               if (!byMin[exec]) byMin[exec] = { total: 0, sumDays: 0 };
                               byMin[exec].total++;
                               byMin[exec].sumDays += row.daysToReply;
