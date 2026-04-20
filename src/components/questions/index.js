@@ -32,7 +32,7 @@ import Papa from "papaparse";
 
 const PAGE_SIZE = 75;
 
-const PMG_BASE = "https://pmg.org.za/question/";
+const PMG_BASE = "https://pmg.org.za/committee-question/";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
