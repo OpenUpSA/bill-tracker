@@ -12,6 +12,10 @@ if (!connectionString) {
   process.exit(1);
 }
 
+// Get end date from command line argument or use default
+const endDate = process.argv[2] || '2026-03-31';
+console.log(`📅 Filtering data up to: ${endDate}`);
+
 const client = new Client({
   connectionString,
   ssl: {
@@ -71,11 +75,13 @@ async function exportAttendanceAndProcess() {
         LEFT JOIN "public"."party" AS "Party" ON "Member"."party_id" = "Party"."id"
         LEFT JOIN "public"."committee" AS "Committee" ON "Event - Meeting"."committee_id" = "Committee"."id"
         LEFT JOIN "public"."house" AS "House" ON "Member"."house_id" = "House"."id"
+      WHERE
+        "Event - Meeting"."date" <= $1
       ORDER BY
         "Committee"."name" ASC;
     `;
 
-    const result = await client.query(query);
+    const result = await client.query(query, [endDate]);
 
     const csvPath = './data/member-attendance-all-time.csv';
     const ws = fs.createWriteStream(csvPath, { encoding: 'utf8' });
