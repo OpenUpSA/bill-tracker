@@ -1497,7 +1497,11 @@ function Overview() {
     let grouped_questions = {};
 
     filteredQuestionsData.forEach(question => {
-      let { minister_id, minister_name } = question;
+      let minister_id = question["Minister → ID"];
+      let minister_name = question["Minister → Name"];
+
+      // Skip if minister data is missing
+      if (!minister_id || !minister_name) return;
 
       if (!grouped_questions[minister_id]) {
         grouped_questions[minister_id] = {
@@ -1516,7 +1520,9 @@ function Overview() {
         minister_id: minister_id,
         count: grouped_questions[minister_id].count
       };
-    }).sort((a, b) => b.count - a.count);
+    })
+    .filter(q => q.minister) // Filter out entries with blank minister names
+    .sort((a, b) => b.count - a.count);
 
     // work out avg
     let total = grouped_questions.reduce((sum, q) => sum + q.count, 0);
@@ -1555,7 +1561,9 @@ function Overview() {
         party_id,
         count: grouped_questions[member]
       };
-    }).sort((a, b) => b.count - a.count);
+    })
+    .filter(q => q.member_name) // Filter out entries where member wasn't found
+    .sort((a, b) => b.count - a.count);
 
     // work out avg
     let total = grouped_questions.reduce((sum, q) => sum + q.count, 0);
