@@ -64,5 +64,5 @@
     "util": "^0.12.5"
   },
   "proxy": "https://api.pmg.org.za",
-  "packageManager": "yarn@4.10.3"
+  "packageManager": "npm@10.9.2"
 }

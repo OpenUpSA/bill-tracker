@@ -1,5 +1,6 @@
 dist
 .vscode
+yarn.lock
 .parcel-cache
 node_modules
 .cache
