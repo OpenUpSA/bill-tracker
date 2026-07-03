@@ -27,6 +27,7 @@ import SortedColumn from "../sortedColumn";
 
 import * as lookup from "../../data/lookup.json";
 import * as allTimeData from "../../data/attendance/all-time.json";
+import { DATA_CUTOFF_LABEL } from "../../data/data-cutoff";
 
 import PMHeader from "../pmheader";
 import PMTabs from "../pmtabs";
@@ -720,7 +721,7 @@ function Attendance() {
               <h1>Overall recorded meeting attendance</h1>
             </Col>
             <Col xs="auto">
-              <div className="badge text-bg-dark py-1 px-2">Data till 30 June 2026</div>
+              <div className="badge text-bg-dark py-1 px-2">Data till {DATA_CUTOFF_LABEL}</div>
             </Col>
           </Row>
           <Row>

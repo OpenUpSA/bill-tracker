@@ -6,6 +6,7 @@ import PMTabs from "../pmtabs";
 import "./style.scss";
 
 import * as lookup from "../../data/lookup.json";
+import { DATA_CUTOFF_MONTH, DATA_CUTOFF_YEAR, DATA_CUTOFF_LABEL } from "../../data/data-cutoff";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -190,8 +191,8 @@ function Overview() {
   const [party, setParty] = useState("All");
   const [partyName, setPartyName] = useState("All")
 
-  const [selectedMonth, setSelectedMonth] = useState(6);
-  const [selectedYear, setSelectedYear] = useState(2026);
+  const [selectedMonth, setSelectedMonth] = useState(DATA_CUTOFF_MONTH);
+  const [selectedYear, setSelectedYear] = useState(DATA_CUTOFF_YEAR);
 
   const months = [
     { month: 1, name: "January" },
@@ -1692,7 +1693,7 @@ function Overview() {
               <h1>Parliamentary overview</h1>
             </Col>
             <Col xs="auto">
-              <div className="badge text-bg-dark py-1 px-2">Data till 30 June 2026</div>
+              <div className="badge text-bg-dark py-1 px-2">Data till {DATA_CUTOFF_LABEL}</div>
             </Col>
           </Row>
         </div>
