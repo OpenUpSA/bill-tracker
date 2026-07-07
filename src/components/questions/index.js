@@ -88,6 +88,10 @@ function sortData(data, key, dir) {
   return [...data].sort((a, b) => {
     const av = a[key] ?? "";
     const bv = b[key] ?? "";
+    // Date columns
+    if (av instanceof Date && bv instanceof Date) {
+      return dir === "asc" ? av - bv : bv - av;
+    }
     if (typeof av === "number" && typeof bv === "number") {
       return dir === "asc" ? av - bv : bv - av;
     }
@@ -95,6 +99,30 @@ function sortData(data, key, dir) {
       ? String(av).localeCompare(String(bv))
       : String(bv).localeCompare(String(av));
   });
+}
+
+// ── Generic sortable table for summary sections ───────────────────────────────
+
+function useSimpleSort(initialKey, initialDir = "desc") {
+  const [sortKey, setSortKey] = useState(initialKey);
+  const [sortDir, setSortDir] = useState(initialDir);
+  const onSort = (col) => {
+    if (sortKey === col) setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else { setSortKey(col); setSortDir("desc"); }
+  };
+  return { sortKey, sortDir, onSort };
+}
+
+function SimpleSortTh({ col, label, sortKey, sortDir, onSort, style }) {
+  const cls =
+    sortKey === col
+      ? sortDir === "asc" ? "sorted-asc" : "sorted-desc"
+      : "";
+  return (
+    <th className={cls} style={style} onClick={() => onSort(col)}>
+      {label}
+    </th>
+  );
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -111,6 +139,22 @@ function DaysChip({ days }) {
       {days}d
     </span>
   );
+}
+
+function Badge(props) {
+  if (props.party) {
+    let pic = props.pic;
+    if (props.pic == 'Al Jama-ah') {
+      pic = 'ALJ';
+    } else if (props.pic == 'RISE Mzansi') {
+      pic = 'RISE';
+    } else if (props.pic == 'Action SA') {
+      pic = 'ASA';
+    }
+    return <div className="party_member_badge" style={{ backgroundImage: `url(/assets/party-logos/${pic}.png)` }}></div>;
+  }
+  if (!props.pic) return null;
+  return <div className="party_member_badge" style={{ backgroundImage: `url(https://static.pmg.org.za/${props.pic})` }}></div>;
 }
 
 function CardBar({ value, avg }) {
@@ -141,6 +185,8 @@ function SortTh({ col, label, sortKey, sortDir, onSort, style }) {
 function QuestionsExplorer() {
   // ── Data state ──
   const [questionsData, setQuestionsData] = useState([]);
+  const [membersData, setMembersData] = useState([]);
+  const [partiesData, setPartiesData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // ── Explorer state ──
@@ -154,6 +200,13 @@ function QuestionsExplorer() {
   const [sortDir, setSortDir] = useState("desc");
   const [selectedYear, setSelectedYear] = useState("All");
 
+  // ── Summary-table sort states ──
+  const minSort = useSimpleSort("count", "desc");
+  const memberSort = useSimpleSort("count", "desc");
+  const partySort = useSimpleSort("count", "desc");
+  const lateSort = useSimpleSort("late", "desc");
+  const fastSort = useSimpleSort("avg", "asc");
+
 
   // ─── Load data ──────────────────────────────────────────────────────────────
 
@@ -165,9 +218,41 @@ function QuestionsExplorer() {
       complete: (res) => { setQuestionsData(res.data); setLoading(false); },
       error: () => setLoading(false)
     });
+    Papa.parse("/data/members-parties.csv", {
+      download: true, header: true, skipEmptyLines: true,
+      delimiter: ",",
+      transformHeader: h => h.trim(),
+      complete: (res) => setMembersData(res.data),
+      error: () => {}
+    });
+    Papa.parse("/data/parties.csv", {
+      download: true, header: true, skipEmptyLines: true,
+      delimiter: ",",
+      transformHeader: h => h.trim(),
+      complete: (res) => setPartiesData(res.data),
+      error: () => {}
+    });
   }, []);
 
   // ─── Enriched dataset ───────────────────────────────────────────────────────
+
+  // ─── Member lookup (id → member info) ──────────────────────────────────────
+  const memberLookup = useMemo(() => {
+    const map = {};
+    membersData.forEach(m => {
+      if (m.id) map[m.id] = m;
+    });
+    return map;
+  }, [membersData]);
+
+  // ─── Party lookup (id → party name) ────────────────────────────────────────
+  const partyLookup = useMemo(() => {
+    const map = {};
+    partiesData.forEach(p => {
+      if (p.id) map[p.id] = p.party;
+    });
+    return map;
+  }, [partiesData]);
 
   const enrichedData = useMemo(() => {
     if (!questionsData.length) return [];
@@ -181,6 +266,8 @@ function QuestionsExplorer() {
       // Guard against nonsensical negative values (bad dates / parsing)
       const safeDays = (daysToReply !== null && daysToReply >= 0) ? daysToReply : null;
       const pmgId = (row["pmg_id"] || "").trim();
+      const memberId = (row["member_id"] || "").trim();
+      const memberInfo = memberLookup[memberId];
       return {
         ...row,
         displayStatus,
@@ -189,9 +276,10 @@ function QuestionsExplorer() {
         daysToReply: safeDays,
         typeLabel: TYPE_LABELS[(row["type"] || "").trim()] || row["type"] || "",
         pmgUrl: pmgId ? `${PMG_BASE}${pmgId}/` : null,
+        profile_pic: memberInfo?.profile_pic || null,
       };
     });
-  }, [questionsData]);
+  }, [questionsData, memberLookup]);
 
   // ─── Years (derived from data) ──────────────────────────────────────────────
 
@@ -233,8 +321,21 @@ function QuestionsExplorer() {
       const exec = (row["Executive"] || row["department"] || "").trim();
       if (exec) byMinister[exec] = (byMinister[exec] || 0) + 1;
 
-      const mem = (row["Member asking"] || "").trim();
-      if (mem) byMember[mem] = (byMember[mem] || 0) + 1;
+      const memName = (row["Member asking"] || "").trim();
+      const memId = (row["member_id"] || "").trim();
+      const memKey = memId || memName;
+      if (memKey) {
+        if (!byMember[memKey]) {
+          const memInfo = memberLookup[memId];
+          byMember[memKey] = {
+            member: memName,
+            count: 0,
+            profile_pic: memInfo?.profile_pic || null,
+            party: memInfo?.party_id ? partyLookup[memInfo.party_id] || null : null,
+          };
+        }
+        byMember[memKey].count++;
+      }
     });
 
     const topParties = Object.entries(byParty)
@@ -246,8 +347,8 @@ function QuestionsExplorer() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 30);
 
-    const topMembers = Object.entries(byMember)
-      .map(([member, count]) => ({ member, count }))
+    const topMembers = Object.values(byMember)
+      .map(m => ({ member: m.member, count: m.count, profile_pic: m.profile_pic, party: m.party }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 30);
 
@@ -620,17 +721,15 @@ function QuestionsExplorer() {
                         <SortTh col="daysToReply" label="Days" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 65 }} />
                         <SortTh col="displayStatus" label="Status" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 90 }} />
                         <th style={{ width: 70 }}>PMG</th>
-                        <th style={{ width: 100 }}>Notes</th>
                       </tr>
                     </thead>
                     <tbody>
                       {pagedData.length === 0 ? (
-                        <tr><td colSpan={11} className="empty-state">No questions match your filters</td></tr>
+                        <tr><td colSpan={10} className="empty-state">No questions match your filters</td></tr>
                       ) : (
                         pagedData.map((row, i) => {
                           const rowNum = (page - 1) * PAGE_SIZE + i + 1;
                           const status = (row.displayStatus || "").trim();
-                          const notes = (row["NOTES"] || "").trim();
                           const pub = row["Date of publication"] || "";
                           const pubShort = pub ? pub.replace(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), /, "") : "—";
                           const member = (row["Member asking"] || "").trim();
@@ -645,7 +744,7 @@ function QuestionsExplorer() {
                               <td>
                                 <span className="type-pill">{row.typeLabel || "—"}</span>
                               </td>
-                              <td>{member || "—"}</td>
+                              <td>{member ? <><Badge pic={row.profile_pic} />{member}</> : "—"}</td>
                               <td>
                                 {(row["PARTY"] || "").trim() ? (
                                   <span className="party-pill" style={{ fontSize: 9 }}>
@@ -662,19 +761,6 @@ function QuestionsExplorer() {
                                   <a href={row.pmgUrl} target="_blank" rel="noopener noreferrer" className="pmg-link">
                                     View <FontAwesomeIcon icon={faExternalLinkAlt} style={{ fontSize: 9 }} />
                                   </a>
-                                ) : <span style={{ color: "#ddd" }}>—</span>}
-                              </td>
-                              <td style={{ maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                                {notes ? (
-                                  <OverlayTrigger
-                                    placement="left"
-                                    overlay={<Tooltip style={{ maxWidth: 300 }}>{notes}</Tooltip>}
-                                  >
-                                    <span style={{ cursor: "help", color: "#d97706" }}>
-                                      <FontAwesomeIcon icon={faTriangleExclamation} className="me-1" />
-                                      {notes.substring(0, 30)}{notes.length > 30 ? "…" : ""}
-                                    </span>
-                                  </OverlayTrigger>
                                 ) : <span style={{ color: "#ddd" }}>—</span>}
                               </td>
                             </tr>
@@ -716,17 +802,17 @@ function QuestionsExplorer() {
                   <div className="card-subtext">total questions</div>
                   <div className="scroll-area mt-3">
                     <Scrollbars style={{ height: 300 }}>
-                      <Table className="sticky-header-table">
+                      <Table className="sticky-header-table sortable-summary">
                         <thead>
                           <tr>
                             <th></th>
-                            <th style={{ width: "75%" }}>Minister</th>
-                            <th>Questions</th>
+                            <SimpleSortTh col="minister" label="Minister" sortKey={minSort.sortKey} sortDir={minSort.sortDir} onSort={minSort.onSort} style={{ width: "55%" }} />
+                            <SimpleSortTh col="count" label="Questions" sortKey={minSort.sortKey} sortDir={minSort.sortDir} onSort={minSort.onSort} />
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
-                          {(stats?.topMinisters || []).map((m, i) => (
+                          {sortData(stats?.topMinisters || [], minSort.sortKey, minSort.sortDir).map((m, i) => (
                             <tr key={i}>
                               <td>{i + 1}</td>
                               <td>{m.minister}</td>
@@ -750,20 +836,26 @@ function QuestionsExplorer() {
                   <div className="card-subtext">questions by top 30 members</div>
                   <div className="scroll-area mt-3">
                     <Scrollbars style={{ height: 300 }}>
-                      <Table className="sticky-header-table">
+                      <Table className="sticky-header-table sortable-summary">
                         <thead>
                           <tr>
                             <th></th>
-                            <th style={{ width: "75%" }}>Member</th>
-                            <th>Questions</th>
+                            <SimpleSortTh col="member" label="Member" sortKey={memberSort.sortKey} sortDir={memberSort.sortDir} onSort={memberSort.onSort} style={{ width: "55%" }} />
+                            <SimpleSortTh col="party" label="Party" sortKey={memberSort.sortKey} sortDir={memberSort.sortDir} onSort={memberSort.onSort} />
+                            <SimpleSortTh col="count" label="Questions" sortKey={memberSort.sortKey} sortDir={memberSort.sortDir} onSort={memberSort.onSort} />
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
-                          {(stats?.topMembers || []).map((m, i) => (
+                          {sortData(stats?.topMembers || [], memberSort.sortKey, memberSort.sortDir).map((m, i) => (
                             <tr key={i}>
                               <td>{i + 1}</td>
-                              <td>{m.member}</td>
+                              <td><Badge pic={m.profile_pic} />{m.member}</td>
+                              <td>
+                                {m.party ? (
+                                  <span className="party-pill" style={{ fontSize: 9 }}>{m.party}</span>
+                                ) : <span style={{ color: "#ddd" }}>—</span>}
+                              </td>
                               <td>{m.count}</td>
                               <td style={{ minWidth: 80 }}>
                                 <CardBar value={(m.count / maxMemberCount) * 100} avg={50} />
@@ -788,25 +880,28 @@ function QuestionsExplorer() {
                   </p>
                   <div className="scroll-area mt-3">
                     <Scrollbars style={{ height: 220 }}>
-                      <Table className="sticky-header-table">
+                      <Table className="sticky-header-table sortable-summary">
                         <thead>
                           <tr>
                             <th></th>
-                            <th style={{ width: "40%" }}>Party</th>
-                            <th>Questions</th>
-                            <th>% of total</th>
+                            <SimpleSortTh col="party" label="Party" sortKey={partySort.sortKey} sortDir={partySort.sortDir} onSort={partySort.onSort} style={{ width: "40%" }} />
+                            <SimpleSortTh col="count" label="Questions" sortKey={partySort.sortKey} sortDir={partySort.sortDir} onSort={partySort.onSort} />
+                            <SimpleSortTh col="pct" label="% of total" sortKey={partySort.sortKey} sortDir={partySort.sortDir} onSort={partySort.onSort} />
                             <th style={{ minWidth: 120 }}></th>
                           </tr>
                         </thead>
                         <tbody>
-                          {(stats?.topParties || []).map((p, i) => (
+                          {sortData(
+                            (stats?.topParties || []).map(p => ({ ...p, pct: (p.count / (stats?.total || 1)) * 100 })),
+                            partySort.sortKey, partySort.sortDir
+                          ).map((p, i) => (
                             <tr key={i}>
                               <td>{i + 1}</td>
                               <td>
                                 <span className="party-pill">{p.party}</span>
                               </td>
                               <td>{p.count}</td>
-                              <td>{((p.count / (stats?.total || 1)) * 100).toFixed(1)}%</td>
+                              <td>{p.pct.toFixed(1)}%</td>
                               <td>
                                 <CardBar
                                   value={(p.count / (stats?.topParties[0]?.count || 1)) * 100}
@@ -831,14 +926,14 @@ function QuestionsExplorer() {
                   <p style={{ fontSize: 12, color: "#777", marginTop: 4 }}>Based on response status data</p>
                   <div className="scroll-area mt-3">
                     <Scrollbars style={{ height: 260 }}>
-                      <Table className="sticky-header-table">
+                      <Table className="sticky-header-table sortable-summary">
                         <thead>
                           <tr>
                             <th></th>
-                            <th style={{ width: "60%" }}>Executive</th>
-                            <th>Late</th>
-                            <th>Total</th>
-                            <th>%</th>
+                            <SimpleSortTh col="minister" label="Executive" sortKey={lateSort.sortKey} sortDir={lateSort.sortDir} onSort={lateSort.onSort} style={{ width: "50%" }} />
+                            <SimpleSortTh col="late" label="Late" sortKey={lateSort.sortKey} sortDir={lateSort.sortDir} onSort={lateSort.onSort} />
+                            <SimpleSortTh col="total" label="Total" sortKey={lateSort.sortKey} sortDir={lateSort.sortDir} onSort={lateSort.onSort} />
+                            <SimpleSortTh col="pct" label="%" sortKey={lateSort.sortKey} sortDir={lateSort.sortDir} onSort={lateSort.onSort} />
                           </tr>
                         </thead>
                         <tbody>
@@ -852,20 +947,20 @@ function QuestionsExplorer() {
                               const s = (row.displayStatus || "").toUpperCase().trim();
                               if (s === "LATE") byMin[exec].late++;
                             });
-                            return Object.entries(byMin)
-                              .map(([m, d]) => ({ minister: m, ...d, pct: d.total > 0 ? (d.late / d.total) * 100 : 0 }))
-                              .filter(d => d.late > 0)
-                              .sort((a, b) => b.pct - a.pct)
-                              .slice(0, 20)
-                              .map((d, i) => (
-                                <tr key={i}>
-                                  <td>{i + 1}</td>
-                                  <td>{d.minister}</td>
-                                  <td style={{ color: "#dc2626", fontFamily: "'General Sans Semibold', sans-serif" }}>{d.late}</td>
-                                  <td>{d.total}</td>
-                                  <td>{d.pct.toFixed(0)}%</td>
-                                </tr>
-                              ));
+                            return sortData(
+                              Object.entries(byMin)
+                                .map(([m, d]) => ({ minister: m, ...d, pct: d.total > 0 ? (d.late / d.total) * 100 : 0 }))
+                                .filter(d => d.late > 0),
+                              lateSort.sortKey, lateSort.sortDir
+                            ).slice(0, 20).map((d, i) => (
+                              <tr key={i}>
+                                <td>{i + 1}</td>
+                                <td>{d.minister}</td>
+                                <td style={{ color: "#dc2626", fontFamily: "'General Sans Semibold', sans-serif" }}>{d.late}</td>
+                                <td>{d.total}</td>
+                                <td>{d.pct.toFixed(0)}%</td>
+                              </tr>
+                            ));
                           })()}
                         </tbody>
                       </Table>
@@ -879,13 +974,13 @@ function QuestionsExplorer() {
                   <p style={{ fontSize: 12, color: "#777", marginTop: 4 }}>Average days to reply (answered questions only)</p>
                   <div className="scroll-area mt-3">
                     <Scrollbars style={{ height: 260 }}>
-                      <Table className="sticky-header-table">
+                      <Table className="sticky-header-table sortable-summary">
                         <thead>
                           <tr>
                             <th></th>
-                            <th style={{ width: "60%" }}>Executive</th>
-                            <th>Avg days</th>
-                            <th>Questions</th>
+                            <SimpleSortTh col="minister" label="Executive" sortKey={fastSort.sortKey} sortDir={fastSort.sortDir} onSort={fastSort.onSort} style={{ width: "50%" }} />
+                            <SimpleSortTh col="avg" label="Avg days" sortKey={fastSort.sortKey} sortDir={fastSort.sortDir} onSort={fastSort.onSort} />
+                            <SimpleSortTh col="count" label="Questions" sortKey={fastSort.sortKey} sortDir={fastSort.sortDir} onSort={fastSort.onSort} />
                           </tr>
                         </thead>
                         <tbody>
@@ -898,21 +993,21 @@ function QuestionsExplorer() {
                               byMin[exec].total++;
                               byMin[exec].sumDays += row.daysToReply;
                             });
-                            return Object.entries(byMin)
-                              .map(([m, d]) => ({ minister: m, count: d.total, avg: d.total > 0 ? Math.round(d.sumDays / d.total) : 999 }))
-                              .filter(d => d.count >= 3)
-                              .sort((a, b) => a.avg - b.avg)
-                              .slice(0, 20)
-                              .map((d, i) => (
-                                <tr key={i}>
-                                  <td>{i + 1}</td>
-                                  <td>{d.minister}</td>
-                                  <td>
-                                    <DaysChip days={d.avg} />
-                                  </td>
-                                  <td>{d.count}</td>
-                                </tr>
-                              ));
+                            return sortData(
+                              Object.entries(byMin)
+                                .map(([m, d]) => ({ minister: m, count: d.total, avg: d.total > 0 ? Math.round(d.sumDays / d.total) : 999 }))
+                                .filter(d => d.count >= 3),
+                              fastSort.sortKey, fastSort.sortDir
+                            ).slice(0, 20).map((d, i) => (
+                              <tr key={i}>
+                                <td>{i + 1}</td>
+                                <td>{d.minister}</td>
+                                <td>
+                                  <DaysChip days={d.avg} />
+                                </td>
+                                <td>{d.count}</td>
+                              </tr>
+                            ));
                           })()}
                         </tbody>
                       </Table>
