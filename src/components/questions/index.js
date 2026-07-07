@@ -20,7 +20,6 @@ import {
   faChevronLeft,
   faChevronRight,
   faMagnifyingGlass,
-  faCircleInfo,
   faTriangleExclamation,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
@@ -34,23 +33,37 @@ const PAGE_SIZE = 75;
 
 const PMG_BASE = "https://pmg.org.za/committee-question/";
 
+const TYPE_LABELS = {
+  written: "Written",
+  oral: "Oral",
+  president: "President",
+  deputy_president: "Deputy President",
+};
+
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function parseRegisterDate(str) {
+function parseDate(str) {
   if (!str || typeof str !== "string") return null;
-  // e.g. "Thursday, February 06, 2025" or "Friday, March 07, 2025"
+  // Handles "Thursday, February 06, 2026" and "2026-02-27"
+  const cleaned = str.replace(/^[A-Za-z]+,\s*/, "").trim();
+  // If it looks like ISO (YYYY-MM-DD), parse directly — some browsers
+  // mis-parse DD-MM-YYYY or treat it as UTC causing off-by-one issues.
+  const iso = cleaned.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (iso) {
+    const d = new Date(parseInt(iso[1]), parseInt(iso[2]) - 1, parseInt(iso[3]));
+    return isNaN(d) ? null : d;
+  }
   try {
-    const d = new Date(str.replace(/^[A-Za-z]+, /, ""));
+    const d = new Date(cleaned);
     return isNaN(d) ? null : d;
   } catch {
     return null;
   }
 }
 
-function daysBetween(a, b) {
-  if (!a || !b) return null;
-  const diff = (b - a) / (1000 * 60 * 60 * 24);
-  return Math.round(diff);
+function yearFromDate(str) {
+  const d = parseDate(str);
+  return d ? d.getFullYear() : null;
 }
 
 function statusClass(status) {
@@ -85,14 +98,6 @@ function sortData(data, key, dir) {
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
-
-function SourceBadge({ has, label }) {
-  return (
-    <span className={`source-badge ${has ? `source-${label.toLowerCase()}` : "source-missing"}`}>
-      {label}
-    </span>
-  );
-}
 
 function StatusPill({ status }) {
   const label = status || "—";
@@ -135,174 +140,81 @@ function SortTh({ col, label, sortKey, sortDir, onSort, style }) {
 
 function QuestionsExplorer() {
   // ── Data state ──
-  const [masterData, setMasterData] = useState([]);
-  const [registerData, setRegisterData] = useState([]);
-  const [pmgData, setPmgData] = useState([]);
+  const [questionsData, setQuestionsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showSourceAnalysis, setShowSourceAnalysis] = useState(false);
 
   // ── Explorer state ──
   const [filterParty, setFilterParty] = useState("All");
   const [filterMinister, setFilterMinister] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
-  const [filterSource, setFilterSource] = useState("All");
+  const [filterType, setFilterType] = useState("All");
   const [searchText, setSearchText] = useState("");
   const [page, setPage] = useState(1);
   const [sortKey, setSortKey] = useState("pubDate");
   const [sortDir, setSortDir] = useState("desc");
-  const [selectedYear, setSelectedYear] = useState(2025);
-
-  const years = [2025];
+  const [selectedYear, setSelectedYear] = useState("All");
 
 
   // ─── Load data ──────────────────────────────────────────────────────────────
 
   useEffect(() => {
-    let loaded = 0;
-    const check = () => { loaded++; if (loaded === 3) setLoading(false); };
-
-    Papa.parse("/data/questions/master_sheet.csv", {
+    Papa.parse("/data/questions/questions.csv", {
       download: true, header: true, skipEmptyLines: true,
       delimiter: ",",
       transformHeader: h => h.trim(),
-      complete: (res) => { setMasterData(res.data); check(); },
-      error: () => check()
-    });
-
-    Papa.parse("/data/questions/register.csv", {
-      download: true, header: true, skipEmptyLines: true,
-      delimiter: ",",
-      transformHeader: h => h.trim(),
-      complete: (res) => {
-        const enriched = res.data.map(row => {
-          const pub = parseRegisterDate(row["Date of publication"]);
-          const replied = parseRegisterDate(row["Date replied to"]);
-          // "Response" col = Timeous/Late/LAPSED/R146(1) — use for display
-          // "Status" col = A/L/R146(1) — abbreviation codes, skip
-          const displayStatus = (row["Response"] || "").trim();
-          return {
-            ...row,
-            displayStatus,
-            pubDate: pub,
-            repliedDate: replied,
-            daysToReply: daysBetween(pub, replied)
-          };
-        });
-        setRegisterData(enriched);
-        check();
-      },
-      error: () => check()
-    });
-
-    Papa.parse("/data/questions/questions-pmg.csv", {
-      download: true, header: true, skipEmptyLines: true,
-      delimiter: ",",
-      transformHeader: h => h.trim(),
-      complete: (res) => { setPmgData(res.data); check(); },
-      error: () => check()
+      complete: (res) => { setQuestionsData(res.data); setLoading(false); },
+      error: () => setLoading(false)
     });
   }, []);
 
-  // ─── Merged dataset (Register + PMG) ────────────────────────────────────────
+  // ─── Enriched dataset ───────────────────────────────────────────────────────
 
-  const mergedData = useMemo(() => {
-    if (!registerData.length && !pmgData.length) return [];
-
-    // Normalize code: "NW1E" → "NW1", "NW4309" stays "NW4309"
-    const normalize = code => (code || "").trim().replace(/E$/, "");
-
-    // Build PMG lookup by normalized code
-    const pmgByCode = new Map();
-    pmgData.forEach(row => {
-      const code = normalize(row["Code"]);
-      if (code) pmgByCode.set(code, row);
-    });
-
-    const matched = new Set();
-
-    // Process register rows — enrich with PMG link where code matches
-    const registerRows = registerData.map(row => {
-      const accNo = (row["ACC No"] || "").trim();
-      const code = normalize(accNo);
-      const pmgRow = pmgByCode.get(code);
-      if (pmgRow) matched.add(code);
-      const pmgId = pmgRow ? pmgRow["ID"] : null;
+  const enrichedData = useMemo(() => {
+    if (!questionsData.length) return [];
+    return questionsData.map(row => {
+      const pub = parseDate(row["Date of publication"]);
+      const replied = parseDate(row["Date replied to"]);
+      const displayStatus = (row["Response"] || "").trim();
+      const daysToReply = (pub && replied)
+        ? Math.round((replied - pub) / (1000 * 60 * 60 * 24))
+        : null;
+      // Guard against nonsensical negative values (bad dates / parsing)
+      const safeDays = (daysToReply !== null && daysToReply >= 0) ? daysToReply : null;
+      const pmgId = (row["pmg_id"] || "").trim();
       return {
         ...row,
-        _code: code,
-        _source: pmgRow ? "both" : "register",
+        displayStatus,
+        pubDate: pub,
+        repliedDate: replied,
+        daysToReply: safeDays,
+        typeLabel: TYPE_LABELS[(row["type"] || "").trim()] || row["type"] || "",
         pmgUrl: pmgId ? `${PMG_BASE}${pmgId}/` : null,
-        pmgIntro: pmgRow ? (pmgRow["Intro"] || "").trim() : "",
       };
     });
+  }, [questionsData]);
 
-    // PMG-only rows (not matched to any register entry)
-    const pmgOnlyRows = [];
-    pmgData.forEach(pmgRow => {
-      const code = normalize(pmgRow["Code"]);
-      if (matched.has(code)) return;
-      const pmgId = pmgRow["ID"];
-      const pmgDateStr = (pmgRow["Date"] || "").trim();
-      pmgOnlyRows.push({
-        _code: code,
-        _source: "pmg",
-        "ACC No": pmgRow["Code"] || "",
-        "Member asking": (pmgRow["Asked By Name"] || "").trim(),
-        "PARTY": "",
-        "Executive": (pmgRow["Question To Name"] || "").trim(),
-        "Date of publication": pmgDateStr,
-        "Due Date": "",
-        "Date replied to": "",
-        "Response": "",
-        "Status": "",
-        "NOTES": "",
-        displayStatus: "",
-        pubDate: pmgDateStr ? new Date(pmgDateStr) : null,
-        repliedDate: null,
-        daysToReply: null,
-        pmgUrl: pmgId ? `${PMG_BASE}${pmgId}/` : null,
-        pmgIntro: (pmgRow["Intro"] || "").trim(),
-      });
+  // ─── Years (derived from data) ──────────────────────────────────────────────
+
+  const years = useMemo(() => {
+    const s = new Set();
+    enrichedData.forEach(row => {
+      if (row.pubDate) s.add(row.pubDate.getFullYear());
     });
+    return Array.from(s).sort((a, b) => b - a);  // newest first
+  }, [enrichedData]);
 
-    return [...registerRows, ...pmgOnlyRows];
-  }, [registerData, pmgData]);
+  // ─── Stats ──────────────────────────────────────────────────────────────────
 
-  // ─── Coverage stats (master_sheet) ──────────────────────────────────────────
-
-  const coverage = useMemo(() => {
-    if (!masterData.length) return null;
-    const total = masterData.length;
-    let pmg = 0, reg = 0, scrape = 0, all3 = 0, two = 0, one = 0, none = 0;
-
-    masterData.forEach(row => {
-      const p = Number(row.PMG) === 1;
-      const r = Number(row.Register) === 1;
-      const s = Number(row.Scrape) === 1;
-      if (p) pmg++;
-      if (r) reg++;
-      if (s) scrape++;
-      const count = [p, r, s].filter(Boolean).length;
-      if (count === 3) all3++;
-      else if (count === 2) two++;
-      else if (count === 1) one++;
-      else none++;
-    });
-
-    return { total, pmg, reg, scrape, all3, two, one, none };
-  }, [masterData]);
-
-  // ─── Register stats ─────────────────────────────────────────────────────────
-
-  const registerStats = useMemo(() => {
-    if (!registerData.length) return null;
+  const stats = useMemo(() => {
+    if (!enrichedData.length) return null;
     let timeous = 0, late = 0, lapsed = 0, r146 = 0, other = 0;
     let totalDays = 0, countWithDays = 0;
 
     const byParty = {};
     const byMinister = {};
+    const byMember = {};
 
-    registerData.forEach(row => {
+    enrichedData.forEach(row => {
       const status = (row.displayStatus || "").toUpperCase().trim();
       if (status === "TIMEOUS") timeous++;
       else if (status === "LATE") late++;
@@ -318,42 +230,16 @@ function QuestionsExplorer() {
       const party = (row["PARTY"] || "").trim();
       if (party) byParty[party] = (byParty[party] || 0) + 1;
 
-      const exec = (row["Executive"] || "").trim();
+      const exec = (row["Executive"] || row["department"] || "").trim();
       if (exec) byMinister[exec] = (byMinister[exec] || 0) + 1;
+
+      const mem = (row["Member asking"] || "").trim();
+      if (mem) byMember[mem] = (byMember[mem] || 0) + 1;
     });
 
     const topParties = Object.entries(byParty)
       .map(([party, count]) => ({ party, count }))
       .sort((a, b) => b.count - a.count);
-
-    const topMinisters = Object.entries(byMinister)
-      .map(([minister, count]) => ({ minister, count }))
-      .sort((a, b) => b.count - a.count);
-
-    return {
-      total: registerData.length,
-      timeous, late, lapsed, r146, other,
-      avgDays: countWithDays > 0 ? Math.round(totalDays / countWithDays) : null,
-      topParties,
-      topMinisters
-    };
-  }, [registerData]);
-
-  // ─── PMG stats ──────────────────────────────────────────────────────────────
-
-  const pmgStats = useMemo(() => {
-    if (!pmgData.length) return null;
-
-    const byMinister = {};
-    const byMember = {};
-
-    pmgData.forEach(row => {
-      const min = (row["Question To Name"] || "").trim();
-      if (min) byMinister[min] = (byMinister[min] || 0) + 1;
-
-      const mem = (row["Asked By Name"] || "").trim();
-      if (mem) byMember[mem] = (byMember[mem] || 0) + 1;
-    });
 
     const topMinisters = Object.entries(byMinister)
       .map(([minister, count]) => ({ minister, count }))
@@ -365,64 +251,82 @@ function QuestionsExplorer() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 30);
 
-    return { total: pmgData.length, topMinisters, topMembers };
-  }, [pmgData]);
+    return {
+      total: enrichedData.length,
+      timeous, late, lapsed, r146, other,
+      avgDays: countWithDays > 0 ? Math.round(totalDays / countWithDays) : null,
+      topParties,
+      topMinisters,
+      topMembers,
+    };
+  }, [enrichedData]);
 
   // ─── Filter options ─────────────────────────────────────────────────────────
 
   const parties = useMemo(() => {
-    const s = new Set(registerData.map(r => (r["PARTY"] || "").trim()).filter(Boolean));
+    const s = new Set(enrichedData.map(r => (r["PARTY"] || "").trim()).filter(Boolean));
     return ["All", ...Array.from(s).sort()];
-  }, [registerData]);
+  }, [enrichedData]);
 
   const ministers = useMemo(() => {
     const s = new Set();
-    registerData.forEach(r => { const v = (r["Executive"] || "").trim(); if (v) s.add(v); });
-    pmgData.forEach(r => { const v = (r["Question To Name"] || "").trim(); if (v) s.add(v); });
+    enrichedData.forEach(r => {
+      const v = (r["Executive"] || r["department"] || "").trim();
+      if (v) s.add(v);
+    });
     return ["All", ...Array.from(s).sort()];
-  }, [registerData, pmgData]);
+  }, [enrichedData]);
 
   const statuses = useMemo(() => {
     const s = new Set(
-      registerData.map(r => (r.displayStatus || "").trim()).filter(Boolean)
+      enrichedData.map(r => (r.displayStatus || "").trim()).filter(Boolean)
     );
     return ["All", ...Array.from(s).sort()];
-  }, [registerData]);
+  }, [enrichedData]);
 
-  // ─── Filtered + sorted merged data ──────────────────────────────────────────
+  const questionTypes = useMemo(() => {
+    const s = new Set(enrichedData.map(r => (r["type"] || "").trim()).filter(Boolean));
+    return ["All", ...Array.from(s).sort()];
+  }, [enrichedData]);
 
-  const filteredRegister = useMemo(() => {
-    let data = mergedData;
+  // ─── Filtered + sorted data ─────────────────────────────────────────────────
+
+  const filteredData = useMemo(() => {
+    let data = enrichedData;
+
+    if (selectedYear !== "All")
+      data = data.filter(r => r.pubDate && r.pubDate.getFullYear() === selectedYear);
+
+    if (filterType !== "All")
+      data = data.filter(r => (r["type"] || "").trim() === filterType);
 
     if (filterParty !== "All")
       data = data.filter(r => (r["PARTY"] || "").trim() === filterParty);
 
     if (filterMinister !== "All")
-      data = data.filter(r => (r["Executive"] || "").trim() === filterMinister);
+      data = data.filter(r => {
+        const exec = (r["Executive"] || r["department"] || "").trim();
+        return exec === filterMinister;
+      });
 
     if (filterStatus !== "All")
       data = data.filter(r => (r.displayStatus || "").trim() === filterStatus);
-
-    if (filterSource === "PMG only") data = data.filter(r => r._source === "pmg");
-    else if (filterSource === "Register only") data = data.filter(r => r._source === "register");
-    else if (filterSource === "Both") data = data.filter(r => r._source === "both");
 
     if (searchText.trim()) {
       const q = searchText.trim().toLowerCase();
       data = data.filter(r =>
         (r["ACC No"] || "").toLowerCase().includes(q) ||
         (r["Member asking"] || "").toLowerCase().includes(q) ||
-        (r["Executive"] || "").toLowerCase().includes(q) ||
-        (r["PARTY"] || "").toLowerCase().includes(q) ||
-        (r._code || "").toLowerCase().includes(q)
+        (r["Executive"] || r["department"] || "").toLowerCase().includes(q) ||
+        (r["PARTY"] || "").toLowerCase().includes(q)
       );
     }
 
     return sortData(data, sortKey, sortDir);
-  }, [mergedData, filterParty, filterMinister, filterStatus, filterSource, searchText, sortKey, sortDir]);
+  }, [enrichedData, selectedYear, filterType, filterParty, filterMinister, filterStatus, searchText, sortKey, sortDir]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredRegister.length / PAGE_SIZE));
-  const pagedRegister = filteredRegister.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const totalPages = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
+  const pagedData = filteredData.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   function handleSort(col) {
     if (sortKey === col) setSortDir(d => d === "asc" ? "desc" : "asc");
@@ -434,7 +338,7 @@ function QuestionsExplorer() {
     setFilterParty("All");
     setFilterMinister("All");
     setFilterStatus("All");
-    setFilterSource("All");
+    setFilterType("All");
     setSearchText("");
     setPage(1);
   }
@@ -478,15 +382,15 @@ function QuestionsExplorer() {
     );
   }
 
-  const maxMinstCount = (registerStats?.topMinisters || []).slice(0, 1)[0]?.count || 1;
-  const maxMemberCount = (pmgStats?.topMembers || []).slice(0, 1)[0]?.count || 1;
+  const maxMinstCount = (stats?.topMinisters || []).slice(0, 1)[0]?.count || 1;
+  const maxMemberCount = (stats?.topMembers || []).slice(0, 1)[0]?.count || 1;
 
   return (
     <Fragment>
       <PMHeader />
       <PMTabs active="questions" />
 
-      {/* ══ Page title — plain h1 like overview page ═════════════════════════ */}
+      {/* ══ Page title ═════════════════════════════════════════════════════════ */}
       <Container fluid className="pt-4">
         <div className="overview-container">
           <Row className="align-items-center">
@@ -494,7 +398,9 @@ function QuestionsExplorer() {
               <h1>Questions Explorer</h1>
             </Col>
             <Col xs="auto">
-              <div className="badge text-bg-dark py-1 px-2">Questions for {selectedYear}</div>
+              <div className="badge text-bg-dark py-1 px-2">
+                {stats?.total.toLocaleString() || "…"} questions
+              </div>
             </Col>
           </Row>
         </div>
@@ -510,12 +416,6 @@ function QuestionsExplorer() {
               <a href="#register">Questions explorer</a>
               <a href="#ministers">By minister</a>
               <a href="#members">By member</a>
-              {/* <button
-                onClick={() => setShowSourceAnalysis(v => !v)}
-                style={{ background: "none", border: "none", padding: 0, cursor: "pointer", font: "inherit", color: "inherit" }}
-              >
-                Data sources
-              </button> */}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <span className="form-label">Year:</span>
@@ -529,6 +429,7 @@ function QuestionsExplorer() {
                   </Row>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => setSelectedYear("All")}>All</Dropdown.Item>
                   {years.map((year, index) => (
                     <Dropdown.Item key={index} onClick={() => setSelectedYear(year)}>
                       {year}
@@ -539,102 +440,7 @@ function QuestionsExplorer() {
             </div>
           </div>
 
-          {/* ══ Source analysis accordion (hidden by default) ════════════════ */}
-          <section id="source-analysis" style={{
-            maxHeight: showSourceAnalysis ? 800 : 0,
-            overflow: "hidden",
-            transition: "max-height 0.4s ease",
-            marginBottom: showSourceAnalysis ? "1.5rem" : 0
-          }}>
-            <Row className="mb-4">
-              <Col md={6} className="mb-4 mb-md-0">
-                <div className="dashboard-card h-100">
-                  <h3>Coverage by source</h3>
-                  <p style={{ fontSize: 12, color: "#777", marginTop: 4 }}>
-                    How many questions appear in each source out of {coverage?.total.toLocaleString()} tracked
-                  </p>
-                  {coverage && (
-                    <div className="mt-3">
-                      {[
-                        { label: "PMG", fill: "fill-pmg", count: coverage.pmg },
-                        { label: "Parliament Register", fill: "fill-reg", count: coverage.reg },
-                        { label: "Parliament Website", fill: "fill-scrape", count: coverage.scrape },
-                      ].map(({ label, fill, count }) => (
-                        <div className="coverage-bar-wrap" key={label}>
-                          <span className="coverage-label">{label}</span>
-                          <div className="coverage-bar-track">
-                            <div
-                              className={`coverage-bar-fill ${fill}`}
-                              style={{ width: `${((count / coverage.total) * 100).toFixed(1)}%` }}
-                            />
-                          </div>
-                          <span className="coverage-pct">{((count / coverage.total) * 100).toFixed(1)}%</span>
-                          <span className="coverage-count">{count.toLocaleString()}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  <div className="seperator mt-3 mb-3" />
-                  <p style={{ fontSize: 11, color: "#999" }}>
-                    <FontAwesomeIcon icon={faCircleInfo} className="me-1" />
-                    Coverage gaps indicate questions that exist in one source but are missing from others — a measure of data completeness across the three platforms.
-                  </p>
-                </div>
-              </Col>
-
-              <Col md={6}>
-                <div className="dashboard-card h-100">
-                  <h3>How many sources per question?</h3>
-                  <p style={{ fontSize: 12, color: "#777", marginTop: 4 }}>
-                    Cross-source matching tells us how well the three platforms talk to each other
-                  </p>
-                  {coverage && (
-                    <>
-                      <div className="overlap-grid mt-3">
-                        <div className="overlap-cell overlap-all">
-                          <div className="overlap-count">{coverage.all3.toLocaleString()}</div>
-                          <div className="overlap-pct">{((coverage.all3 / coverage.total) * 100).toFixed(1)}%</div>
-                          <div className="overlap-label">In all 3 sources</div>
-                        </div>
-                        <div className="overlap-cell overlap-two">
-                          <div className="overlap-count">{coverage.two.toLocaleString()}</div>
-                          <div className="overlap-pct">{((coverage.two / coverage.total) * 100).toFixed(1)}%</div>
-                          <div className="overlap-label">In 2 sources</div>
-                        </div>
-                        <div className="overlap-cell overlap-one">
-                          <div className="overlap-count">{coverage.one.toLocaleString()}</div>
-                          <div className="overlap-pct">{((coverage.one / coverage.total) * 100).toFixed(1)}%</div>
-                          <div className="overlap-label">In 1 source only</div>
-                        </div>
-                        <div className="overlap-cell overlap-none">
-                          <div className="overlap-count">{coverage.none.toLocaleString()}</div>
-                          <div className="overlap-pct">{((coverage.none / coverage.total) * 100).toFixed(1)}%</div>
-                          <div className="overlap-label">Unmatched</div>
-                        </div>
-                      </div>
-                      <div className="seperator mt-3 mb-3" />
-                      <div style={{ fontSize: 11 }} className="d-flex gap-3 flex-wrap">
-                        <div className="stat-highlight stat-blue flex-fill">
-                          <div className="stat-number">{coverage.pmg.toLocaleString()}</div>
-                          <div className="stat-label">PMG questions</div>
-                        </div>
-                        <div className="stat-highlight stat-green flex-fill">
-                          <div className="stat-number">{coverage.reg.toLocaleString()}</div>
-                          <div className="stat-label">Register questions</div>
-                        </div>
-                        <div className="stat-highlight stat-amber flex-fill">
-                          <div className="stat-number">{coverage.scrape.toLocaleString()}</div>
-                          <div className="stat-label">Parl website</div>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </Col>
-            </Row>
-          </section>
-
-          {/* ══ Section: Response status (from register) ══════════════════════ */}
+          {/* ══ Section: Response status ══════════════════════════════════════ */}
           <section id="status">
             <div className="section-header mt-2 mb-4">
               <Row>
@@ -656,21 +462,21 @@ function QuestionsExplorer() {
                 <div className="dashboard-card h-100">
                   <h3>Response status</h3>
                   <p style={{ fontSize: 12, color: "#777", marginTop: 4 }}>
-                    From Parliament's Questions Register — {registerStats?.total.toLocaleString()} questions tracked
+                    {stats?.total.toLocaleString()} questions tracked
                   </p>
-                  {registerStats && (
+                  {stats && (
                     <>
                       <div className="status-summary-row mt-3">
                         {[
-                          { key: "timeous", label: "Timeous", count: registerStats.timeous, cls: "ss-timeous" },
-                          { key: "late", label: "Late", count: registerStats.late, cls: "ss-late" },
-                          { key: "lapsed", label: "Lapsed", count: registerStats.lapsed, cls: "ss-lapsed" },
-                          { key: "r146", label: "Rule 146", count: registerStats.r146, cls: "ss-r146" },
-                          { key: "other", label: "Other", count: registerStats.other, cls: "ss-other" },
+                          { key: "timeous", label: "Timeous", count: stats.timeous, cls: "ss-timeous" },
+                          { key: "late", label: "Late", count: stats.late, cls: "ss-late" },
+                          { key: "lapsed", label: "Lapsed", count: stats.lapsed, cls: "ss-lapsed" },
+                          { key: "r146", label: "Rule 146", count: stats.r146, cls: "ss-r146" },
+                          { key: "other", label: "Other", count: stats.other, cls: "ss-other" },
                         ].map(({ key, label, count, cls }) => (
                           <div key={key} className={`status-summary-item ${cls}`}>
                             <div className="ss-count">{count.toLocaleString()}</div>
-                            <div className="ss-pct">{((count / registerStats.total) * 100).toFixed(1)}%</div>
+                            <div className="ss-pct">{((count / stats.total) * 100).toFixed(1)}%</div>
                             <div className="ss-label">{label}</div>
                           </div>
                         ))}
@@ -679,17 +485,17 @@ function QuestionsExplorer() {
                       <div>
                         <h4 className="mb-1">On-time response rate</h4>
                         <div style={{ fontSize: 28, fontFamily: "'General Sans Semibold', sans-serif" }}>
-                          {((registerStats.timeous / registerStats.total) * 100).toFixed(1)}%
+                          {((stats.timeous / stats.total) * 100).toFixed(1)}%
                         </div>
                         <div className="response-time-bar mt-1">
                           <div
                             className="rt-fill rt-timeous"
-                            style={{ width: `${((registerStats.timeous / registerStats.total) * 100).toFixed(1)}%` }}
+                            style={{ width: `${((stats.timeous / stats.total) * 100).toFixed(1)}%` }}
                           />
                         </div>
                         <div style={{ fontSize: 11, color: "#999", marginTop: 6 }}>
-                          {registerStats.avgDays !== null
-                            ? `Average ${registerStats.avgDays} days to reply · 14-day rule requirement`
+                          {stats.avgDays !== null
+                            ? `Average ${stats.avgDays} days to reply · 14-day rule requirement`
                             : "Response timing data limited"}
                         </div>
                       </div>
@@ -701,7 +507,7 @@ function QuestionsExplorer() {
               <Col md={7}>
                 <div className="dashboard-card h-100">
                   <h3>Ministers receiving the most questions</h3>
-                  <p style={{ fontSize: 12, color: "#777", marginTop: 4 }}>From Parliament's Questions Register</p>
+                  <p style={{ fontSize: 12, color: "#777", marginTop: 4 }}>Across all question types</p>
                   <div className="scroll-area mt-3">
                     <Scrollbars style={{ height: 260 }}>
                       <Table className="sticky-header-table">
@@ -714,7 +520,7 @@ function QuestionsExplorer() {
                           </tr>
                         </thead>
                         <tbody>
-                          {(registerStats?.topMinisters || []).slice(0, 30).map((m, i) => (
+                          {(stats?.topMinisters || []).slice(0, 30).map((m, i) => (
                             <tr key={i}>
                               <td>{i + 1}</td>
                               <td>{m.minister}</td>
@@ -733,7 +539,7 @@ function QuestionsExplorer() {
             </Row>
           </section>
 
-          {/* ══ Section: Questions Explorer (merged Register + PMG) ══════════ */}
+          {/* ══ Section: Questions Explorer ══════════════════════════════════ */}
           <section id="register">
             <div className="section-header mt-2 mb-4">
               <Row>
@@ -745,9 +551,9 @@ function QuestionsExplorer() {
                 </Col>
                 <Col className="d-flex align-items-center">
                   <div className="section-intro">
-                    Browse {mergedData.length.toLocaleString()} written questions combining Parliament's Questions
-                    Register and PMG's database. PMG links open the full question on pmg.org.za.
-                    Filter by party, minister, status, or source. Click column headers to sort.
+                    Browse {enrichedData.length.toLocaleString()} questions from Parliament's Questions Register.
+                    Where available, PMG links open the full question on pmg.org.za.
+                    Filter by type, party, minister, or status. Click column headers to sort.
                   </div>
                 </Col>
               </Row>
@@ -767,6 +573,13 @@ function QuestionsExplorer() {
                   />
                 </div>
 
+                <select value={filterType} onChange={e => { setFilterType(e.target.value); setPage(1); }}>
+                  <option value="All">All types</option>
+                  {questionTypes.filter(t => t !== "All").map(t => (
+                    <option key={t} value={t}>{TYPE_LABELS[t] || t}</option>
+                  ))}
+                </select>
+
                 <select value={filterParty} onChange={e => { setFilterParty(e.target.value); setPage(1); }}>
                   <option value="All">All parties</option>
                   {parties.filter(p => p !== "All").map(p => <option key={p}>{p}</option>)}
@@ -782,19 +595,12 @@ function QuestionsExplorer() {
                   {statuses.filter(s => s !== "All").map(s => <option key={s}>{s}</option>)}
                 </select>
 
-                <select value={filterSource} onChange={e => { setFilterSource(e.target.value); setPage(1); }}>
-                  <option value="All">All sources</option>
-                  <option value="Both">In both sources</option>
-                  <option value="Register only">Register only</option>
-                  <option value="PMG only">PMG only</option>
-                </select>
-
-                {(filterParty !== "All" || filterMinister !== "All" || filterStatus !== "All" || filterSource !== "All" || searchText) && (
+                {(filterParty !== "All" || filterMinister !== "All" || filterStatus !== "All" || filterType !== "All" || searchText) && (
                   <button className="filter-reset" onClick={resetFilters}>Reset filters</button>
                 )}
 
                 <span className="filter-label ms-auto">
-                  {filteredRegister.length.toLocaleString()} questions
+                  {filteredData.length.toLocaleString()} questions
                 </span>
               </div>
 
@@ -806,6 +612,7 @@ function QuestionsExplorer() {
                       <tr>
                         <th style={{ width: 40 }}>#</th>
                         <SortTh col="ACC No" label="Code" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 90 }} />
+                        <SortTh col="type" label="Type" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 90 }} />
                         <SortTh col="Member asking" label="Member" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 150 }} />
                         <SortTh col="PARTY" label="Party" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 90 }} />
                         <SortTh col="Executive" label="Minister / Executive" sortKey={sortKey} sortDir={sortDir} onSort={handleSort} style={{ width: 200 }} />
@@ -817,34 +624,28 @@ function QuestionsExplorer() {
                       </tr>
                     </thead>
                     <tbody>
-                      {pagedRegister.length === 0 ? (
-                        <tr><td colSpan={10} className="empty-state">No questions match your filters</td></tr>
+                      {pagedData.length === 0 ? (
+                        <tr><td colSpan={11} className="empty-state">No questions match your filters</td></tr>
                       ) : (
-                        pagedRegister.map((row, i) => {
+                        pagedData.map((row, i) => {
                           const rowNum = (page - 1) * PAGE_SIZE + i + 1;
                           const status = (row.displayStatus || "").trim();
                           const notes = (row["NOTES"] || "").trim();
                           const pub = row["Date of publication"] || "";
                           const pubShort = pub ? pub.replace(/^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), /, "") : "—";
                           const member = (row["Member asking"] || "").trim();
-                          const intro = row.pmgIntro || "";
+                          const exec = (row["Executive"] || row["department"] || "").trim();
 
                           return (
-                            <tr key={i} style={row._source === "pmg" ? { color: "#999" } : {}}>
+                            <tr key={i}>
                               <td style={{ color: "#bbb" }}>{rowNum}</td>
-                              <td style={{ fontFamily: "'General Sans Medium', sans-serif", color: row._source === "pmg" ? "#aaa" : "#333" }}>
+                              <td style={{ fontFamily: "'General Sans Medium', sans-serif", color: "#333" }}>
                                 {row["ACC No"] || "—"}
                               </td>
                               <td>
-                                {intro ? (
-                                  <OverlayTrigger
-                                    placement="right"
-                                    overlay={<Tooltip style={{ maxWidth: 340 }}>{intro.substring(0, 200)}{intro.length > 200 ? "…" : ""}</Tooltip>}
-                                  >
-                                    <span style={{ cursor: "help" }}>{member || "—"}</span>
-                                  </OverlayTrigger>
-                                ) : member || "—"}
+                                <span className="type-pill">{row.typeLabel || "—"}</span>
                               </td>
+                              <td>{member || "—"}</td>
                               <td>
                                 {(row["PARTY"] || "").trim() ? (
                                   <span className="party-pill" style={{ fontSize: 9 }}>
@@ -852,10 +653,10 @@ function QuestionsExplorer() {
                                   </span>
                                 ) : <span style={{ color: "#ddd" }}>—</span>}
                               </td>
-                              <td>{(row["Executive"] || "").trim() || "—"}</td>
+                              <td>{exec || "—"}</td>
                               <td style={{ whiteSpace: "nowrap", color: "#666" }}>{pubShort || "—"}</td>
-                              <td>{row._source !== "pmg" ? <DaysChip days={row.daysToReply} /> : <span style={{ color: "#ddd" }}>—</span>}</td>
-                              <td>{row._source !== "pmg" ? <StatusPill status={status} /> : <span style={{ color: "#ddd" }}>—</span>}</td>
+                              <td><DaysChip days={row.daysToReply} /></td>
+                              <td><StatusPill status={status} /></td>
                               <td>
                                 {row.pmgUrl ? (
                                   <a href={row.pmgUrl} target="_blank" rel="noopener noreferrer" className="pmg-link">
@@ -885,11 +686,11 @@ function QuestionsExplorer() {
                 </Scrollbars>
               </div>
 
-              <Pagination current={page} total={totalPages} onChange={p => setPage(p)} count={filteredRegister.length} />
+              <Pagination current={page} total={totalPages} onChange={p => setPage(p)} count={filteredData.length} />
             </div>
           </section>
 
-          {/* ══ Section: By minister + By member (from overview) ═════════════ */}
+          {/* ══ Section: By minister + By member ════════════════════════════ */}
           <section id="ministers">
             <div className="section-header mt-2 mb-4">
               <Row>
@@ -910,9 +711,9 @@ function QuestionsExplorer() {
             <Row className="mb-4" id="members">
               <Col md={6} className="mb-4 mb-md-0">
                 <div className="dashboard-card h-100">
-                  <h3>Written questions sent to ministers</h3>
-                  <div className="card-big-text mt-2">{pmgStats?.total.toLocaleString()}</div>
-                  <div className="card-subtext">total written questions (PMG)</div>
+                  <h3>Questions sent to ministers</h3>
+                  <div className="card-big-text mt-2">{stats?.total.toLocaleString()}</div>
+                  <div className="card-subtext">total questions</div>
                   <div className="scroll-area mt-3">
                     <Scrollbars style={{ height: 300 }}>
                       <Table className="sticky-header-table">
@@ -925,13 +726,13 @@ function QuestionsExplorer() {
                           </tr>
                         </thead>
                         <tbody>
-                          {(pmgStats?.topMinisters || []).map((m, i) => (
+                          {(stats?.topMinisters || []).map((m, i) => (
                             <tr key={i}>
                               <td>{i + 1}</td>
                               <td>{m.minister}</td>
                               <td>{m.count}</td>
                               <td style={{ minWidth: 80 }}>
-                                <CardBar value={(m.count / (pmgStats?.topMinisters[0]?.count || 1)) * 100} avg={50} />
+                                <CardBar value={(m.count / maxMinstCount) * 100} avg={50} />
                               </td>
                             </tr>
                           ))}
@@ -944,8 +745,8 @@ function QuestionsExplorer() {
 
               <Col md={6}>
                 <div className="dashboard-card h-100">
-                  <h3>Members who submitted the most written questions</h3>
-                  <div className="card-big-text mt-2">{(pmgStats?.topMembers.reduce((s, m) => s + m.count, 0) || 0).toLocaleString()}</div>
+                  <h3>Members who submitted the most questions</h3>
+                  <div className="card-big-text mt-2">{(stats?.topMembers.reduce((s, m) => s + m.count, 0) || 0).toLocaleString()}</div>
                   <div className="card-subtext">questions by top 30 members</div>
                   <div className="scroll-area mt-3">
                     <Scrollbars style={{ height: 300 }}>
@@ -959,7 +760,7 @@ function QuestionsExplorer() {
                           </tr>
                         </thead>
                         <tbody>
-                          {(pmgStats?.topMembers || []).map((m, i) => (
+                          {(stats?.topMembers || []).map((m, i) => (
                             <tr key={i}>
                               <td>{i + 1}</td>
                               <td>{m.member}</td>
@@ -981,9 +782,9 @@ function QuestionsExplorer() {
             <Row className="mb-4">
               <Col md={12}>
                 <div className="dashboard-card">
-                  <h3>Questions asked by party (Register)</h3>
+                  <h3>Questions asked by party</h3>
                   <p style={{ fontSize: 12, color: "#777", marginTop: 4 }}>
-                    How many questions each party submitted in Parliament's Questions Register
+                    How many questions each party submitted
                   </p>
                   <div className="scroll-area mt-3">
                     <Scrollbars style={{ height: 220 }}>
@@ -998,18 +799,18 @@ function QuestionsExplorer() {
                           </tr>
                         </thead>
                         <tbody>
-                          {(registerStats?.topParties || []).map((p, i) => (
+                          {(stats?.topParties || []).map((p, i) => (
                             <tr key={i}>
                               <td>{i + 1}</td>
                               <td>
                                 <span className="party-pill">{p.party}</span>
                               </td>
                               <td>{p.count}</td>
-                              <td>{((p.count / (registerStats?.total || 1)) * 100).toFixed(1)}%</td>
+                              <td>{((p.count / (stats?.total || 1)) * 100).toFixed(1)}%</td>
                               <td>
                                 <CardBar
-                                  value={(p.count / (registerStats?.topParties[0]?.count || 1)) * 100}
-                                  avg={100 / (registerStats?.topParties.length || 1)}
+                                  value={(p.count / (stats?.topParties[0]?.count || 1)) * 100}
+                                  avg={100 / (stats?.topParties.length || 1)}
                                 />
                               </td>
                             </tr>
@@ -1027,7 +828,7 @@ function QuestionsExplorer() {
               <Col md={6} className="mb-4 mb-md-0">
                 <div className="dashboard-card h-100">
                   <h3>Ministers with most late responses</h3>
-                  <p style={{ fontSize: 12, color: "#777", marginTop: 4 }}>Based on Register data</p>
+                  <p style={{ fontSize: 12, color: "#777", marginTop: 4 }}>Based on response status data</p>
                   <div className="scroll-area mt-3">
                     <Scrollbars style={{ height: 260 }}>
                       <Table className="sticky-header-table">
@@ -1043,8 +844,8 @@ function QuestionsExplorer() {
                         <tbody>
                           {(() => {
                             const byMin = {};
-                            registerData.forEach(row => {
-                              const exec = (row["Executive"] || "").trim();
+                            enrichedData.forEach(row => {
+                              const exec = (row["Executive"] || row["department"] || "").trim();
                               if (!exec) return;
                               if (!byMin[exec]) byMin[exec] = { total: 0, late: 0 };
                               byMin[exec].total++;
@@ -1090,9 +891,8 @@ function QuestionsExplorer() {
                         <tbody>
                           {(() => {
                             const byMin = {};
-                            registerData.forEach(row => {
-                              const exec = (row["Executive"] || "").trim();
-                              // Only include valid positive days (can't reply before question was published)
+                            enrichedData.forEach(row => {
+                              const exec = (row["Executive"] || row["department"] || "").trim();
                               if (!exec || row.daysToReply === null || isNaN(row.daysToReply) || row.daysToReply < 0) return;
                               if (!byMin[exec]) byMin[exec] = { total: 0, sumDays: 0 };
                               byMin[exec].total++;
@@ -1122,28 +922,6 @@ function QuestionsExplorer() {
               </Col>
             </Row>
           </section>
-
-          {/* ── Data note ── */}
-          <Row className="mb-4">
-            <Col>
-              <div className="dashboard-card" style={{ background: "#fffbeb", border: "1.5px solid #fde68a" }}>
-                <Row className="align-items-center">
-                  <Col xs="auto">
-                    <FontAwesomeIcon icon={faTriangleExclamation} style={{ fontSize: 20, color: "#d97706" }} />
-                  </Col>
-                  <Col>
-                    <strong style={{ fontSize: 13 }}>About this data</strong>
-                    <p style={{ fontSize: 12, margin: "4px 0 0", color: "#666" }}>
-                      Questions are tracked across three sources: <strong>PMG</strong> (Parliamentary Monitoring Group),
-                      Parliament's <strong>Questions Register</strong>, and Parliament's own <strong>website scrape</strong>.
-                      Each source has different coverage, update frequency, and data fields — which is itself a transparency concern.
-                      The <em>master_sheet</em> tracks cross-source matching. Source code for this dashboard is open.
-                    </p>
-                  </Col>
-                </Row>
-              </div>
-            </Col>
-          </Row>
 
         </div>
       </Container>

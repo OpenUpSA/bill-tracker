@@ -1,0 +1,42 @@
+PMG Questions Match Report
+==========================
+
+Total rows: 4065
+  pmg_code        : 2498
+  pmg_code_name   : 16
+  member_name     : 1504
+  manual          : 19
+  ambiguous       : 0
+  no_match        : 28
+  empty_member    : 0
+
+--- Rows needing review (28) ---
+
+NO_MATCH   [written] Q1225 ACC=NW1373E  'Mr G E Kobane' -> no member found
+NO_MATCH   [written] Q1771 ACC=NW1949E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q1905 ACC=NW2116E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q2409 ACC=NW2323E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q2413 ACC=NW2330E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [written] Q2495 ACC=NW2574E  'Ms J S Petersen' -> no member found
+NO_MATCH   [written] Q2593 ACC=NW2677E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q2806 ACC=NW2892E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q3473 ACC=NW3675E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q3522 ACC=NW3733E  'Ms N I Nkosi' -> no member found
+NO_MATCH   [written] Q3686 ACC=NW3898E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q3700 ACC=NW3912E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q3702 ACC=NW3915E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q3806 ACC=NW4025E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q3807 ACC=NW4026E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q3808 ACC=NW4027E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q3981 ACC=NW4220E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q3982 ACC=NW4221E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q3983 ACC=NW4222E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [oral] Q300 ACC=NO1632E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [oral] Q382 ACC=NO2329E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [oral] Q419 ACC=NO379E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [oral] Q422 ACC=NO1547E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q423 ACC=NO1548E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q424 ACC=NO1549E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q426 ACC=NO1924E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [oral] Q427 ACC=NO1941E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q502 ACC=NO3050E  'Mr W T D Plaatjes' -> no member found
