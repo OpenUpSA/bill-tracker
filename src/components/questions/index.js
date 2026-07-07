@@ -27,6 +27,8 @@ import {
 import { Scrollbars } from "react-custom-scrollbars";
 import Papa from "papaparse";
 
+import { DATA_CUTOFF_YEAR } from "../../data/data-cutoff";
+
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const PAGE_SIZE = 75;
@@ -198,7 +200,7 @@ function QuestionsExplorer() {
   const [page, setPage] = useState(1);
   const [sortKey, setSortKey] = useState("pubDate");
   const [sortDir, setSortDir] = useState("desc");
-  const [selectedYear, setSelectedYear] = useState("All");
+  const [selectedYear, setSelectedYear] = useState(DATA_CUTOFF_YEAR);
 
   // ── Summary-table sort states ──
   const minSort = useSimpleSort("count", "desc");
@@ -281,15 +283,9 @@ function QuestionsExplorer() {
     });
   }, [questionsData, memberLookup]);
 
-  // ─── Years (derived from data) ──────────────────────────────────────────────
+  // ─── Years (matches overview page) ─────────────────────────────────────────
 
-  const years = useMemo(() => {
-    const s = new Set();
-    enrichedData.forEach(row => {
-      if (row.pubDate) s.add(row.pubDate.getFullYear());
-    });
-    return Array.from(s).sort((a, b) => b - a);  // newest first
-  }, [enrichedData]);
+  const years = [2026];
 
   // ─── Stats ──────────────────────────────────────────────────────────────────
 
@@ -530,7 +526,6 @@ function QuestionsExplorer() {
                   </Row>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => setSelectedYear("All")}>All</Dropdown.Item>
                   {years.map((year, index) => (
                     <Dropdown.Item key={index} onClick={() => setSelectedYear(year)}>
                       {year}

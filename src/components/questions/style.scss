@@ -471,7 +471,7 @@ $general_sans_700: 'General Sans Bold', sans-serif;
   align-items: center;
   justify-content: space-between;
 
-  a {
+  > div:first-child a {
     display: inline-block;
     background-color: #e0e0e0;
     color: #000;
