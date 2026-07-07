@@ -96,7 +96,7 @@ $general_sans_700: 'General Sans Bold', sans-serif;
   }
 }
 
-// ─── Overlap grid ───────────────────────────────────────────────────────────
+// ─── Overlap grid (legacy, kept for potential reuse) ────────────────────────
 
 .overlap-grid {
   display: grid;
@@ -429,6 +429,21 @@ $general_sans_700: 'General Sans Bold', sans-serif;
   }
 }
 
+// ─── Sortable summary tables (shared sort styles) ───────────────────────────
+
+.sortable-summary {
+  th {
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    font-family: $general_sans_500 !important;
+
+    &:hover { background-color: #f0f0f0; }
+    &.sorted-asc::after  { content: " ↑"; color: #fb9905; }
+    &.sorted-desc::after { content: " ↓"; color: #fb9905; }
+  }
+}
+
 // ─── Days chip ───────────────────────────────────────────────────────────────
 
 .days-chip {
@@ -456,7 +471,7 @@ $general_sans_700: 'General Sans Bold', sans-serif;
   align-items: center;
   justify-content: space-between;
 
-  a {
+  > div:first-child a {
     display: inline-block;
     background-color: #e0e0e0;
     color: #000;
