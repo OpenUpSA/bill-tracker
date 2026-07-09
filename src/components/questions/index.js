@@ -27,8 +27,6 @@ import {
 import { Scrollbars } from "react-custom-scrollbars";
 import Papa from "papaparse";
 
-import { DATA_CUTOFF_YEAR } from "../../data/data-cutoff";
-
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const PAGE_SIZE = 75;
@@ -200,7 +198,7 @@ function QuestionsExplorer() {
   const [page, setPage] = useState(1);
   const [sortKey, setSortKey] = useState("pubDate");
   const [sortDir, setSortDir] = useState("desc");
-  const [selectedYear, setSelectedYear] = useState(DATA_CUTOFF_YEAR);
+  const [selectedYear, setSelectedYear] = useState("All");
 
   // ── Summary-table sort states ──
   const minSort = useSimpleSort("count", "desc");
@@ -283,14 +281,30 @@ function QuestionsExplorer() {
     });
   }, [questionsData, memberLookup]);
 
-  // ─── Years (matches overview page) ─────────────────────────────────────────
+  // ─── Years (derived from the loaded data) ──────────────────────────────────
 
-  const years = [2026];
+  const years = useMemo(() => {
+    const s = new Set();
+    enrichedData.forEach(r => {
+      const y = yearFromDate(r["Date of publication"]);
+      if (y) s.add(y);
+    });
+    return ["All", ...Array.from(s).sort((a, b) => b - a)];
+  }, [enrichedData]);
+
+  // ─── Year-filtered dataset ──────────────────────────────────────────────────
+  // All stats and summary tables below use this, so they reflect the selected
+  // year (or "All" for the combined dataset).
+
+  const yearData = useMemo(() => {
+    if (selectedYear === "All") return enrichedData;
+    return enrichedData.filter(r => r.pubDate && r.pubDate.getFullYear() === selectedYear);
+  }, [enrichedData, selectedYear]);
 
   // ─── Stats ──────────────────────────────────────────────────────────────────
 
   const stats = useMemo(() => {
-    if (!enrichedData.length) return null;
+    if (!yearData.length) return null;
     let timeous = 0, late = 0, lapsed = 0, r146 = 0, other = 0;
     let totalDays = 0, countWithDays = 0;
 
@@ -298,7 +312,7 @@ function QuestionsExplorer() {
     const byMinister = {};
     const byMember = {};
 
-    enrichedData.forEach(row => {
+    yearData.forEach(row => {
       const status = (row.displayStatus || "").toUpperCase().trim();
       if (status === "TIMEOUS") timeous++;
       else if (status === "LATE") late++;
@@ -349,50 +363,47 @@ function QuestionsExplorer() {
       .slice(0, 30);
 
     return {
-      total: enrichedData.length,
+      total: yearData.length,
       timeous, late, lapsed, r146, other,
       avgDays: countWithDays > 0 ? Math.round(totalDays / countWithDays) : null,
       topParties,
       topMinisters,
       topMembers,
     };
-  }, [enrichedData]);
+  }, [yearData, memberLookup, partyLookup]);
 
   // ─── Filter options ─────────────────────────────────────────────────────────
 
   const parties = useMemo(() => {
-    const s = new Set(enrichedData.map(r => (r["PARTY"] || "").trim()).filter(Boolean));
+    const s = new Set(yearData.map(r => (r["PARTY"] || "").trim()).filter(Boolean));
     return ["All", ...Array.from(s).sort()];
-  }, [enrichedData]);
+  }, [yearData]);
 
   const ministers = useMemo(() => {
     const s = new Set();
-    enrichedData.forEach(r => {
+    yearData.forEach(r => {
       const v = (r["Executive"] || r["department"] || "").trim();
       if (v) s.add(v);
     });
     return ["All", ...Array.from(s).sort()];
-  }, [enrichedData]);
+  }, [yearData]);
 
   const statuses = useMemo(() => {
     const s = new Set(
-      enrichedData.map(r => (r.displayStatus || "").trim()).filter(Boolean)
+      yearData.map(r => (r.displayStatus || "").trim()).filter(Boolean)
     );
     return ["All", ...Array.from(s).sort()];
-  }, [enrichedData]);
+  }, [yearData]);
 
   const questionTypes = useMemo(() => {
-    const s = new Set(enrichedData.map(r => (r["type"] || "").trim()).filter(Boolean));
+    const s = new Set(yearData.map(r => (r["type"] || "").trim()).filter(Boolean));
     return ["All", ...Array.from(s).sort()];
-  }, [enrichedData]);
+  }, [yearData]);
 
   // ─── Filtered + sorted data ─────────────────────────────────────────────────
 
   const filteredData = useMemo(() => {
-    let data = enrichedData;
-
-    if (selectedYear !== "All")
-      data = data.filter(r => r.pubDate && r.pubDate.getFullYear() === selectedYear);
+    let data = yearData;
 
     if (filterType !== "All")
       data = data.filter(r => (r["type"] || "").trim() === filterType);
@@ -420,7 +431,7 @@ function QuestionsExplorer() {
     }
 
     return sortData(data, sortKey, sortDir);
-  }, [enrichedData, selectedYear, filterType, filterParty, filterMinister, filterStatus, searchText, sortKey, sortDir]);
+  }, [yearData, filterType, filterParty, filterMinister, filterStatus, searchText, sortKey, sortDir]);
 
   const totalPages = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
   const pagedData = filteredData.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -647,7 +658,7 @@ function QuestionsExplorer() {
                 </Col>
                 <Col className="d-flex align-items-center">
                   <div className="section-intro">
-                    Browse {enrichedData.length.toLocaleString()} questions from Parliament's Questions Register.
+                    Browse {yearData.length.toLocaleString()} questions from Parliament's Questions Register.
                     Where available, PMG links open the full question on pmg.org.za.
                     Filter by type, party, minister, or status. Click column headers to sort.
                   </div>
@@ -934,7 +945,7 @@ function QuestionsExplorer() {
                         <tbody>
                           {(() => {
                             const byMin = {};
-                            enrichedData.forEach(row => {
+                            yearData.forEach(row => {
                               const exec = (row["Executive"] || row["department"] || "").trim();
                               if (!exec) return;
                               if (!byMin[exec]) byMin[exec] = { total: 0, late: 0 };
@@ -981,7 +992,7 @@ function QuestionsExplorer() {
                         <tbody>
                           {(() => {
                             const byMin = {};
-                            enrichedData.forEach(row => {
+                            yearData.forEach(row => {
                               const exec = (row["Executive"] || row["department"] || "").trim();
                               if (!exec || row.daysToReply === null || isNaN(row.daysToReply) || row.daysToReply < 0) return;
                               if (!byMin[exec]) byMin[exec] = { total: 0, sumDays: 0 };

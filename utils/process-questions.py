@@ -8,7 +8,15 @@ Usage:
     python3 utils/process-questions.py <register.xlsx> <pmg-export.csv> \
         [--members <current-members.csv>] [--out <output.csv>] [--report <report.txt>]
 
-Example:
+Example (2025):
+    python3 utils/process-questions.py \
+        "src/data/questions/2025/REGISTER 2025_cleaned.xlsx" \
+        "src/data/questions/2025/questions-2025.csv" \
+        --members "src/data/questions/current-members.csv" \
+        --out "src/data/questions/2025/questions-2025-all.csv" \
+        --report "src/data/questions/2025/questions-2025-match-report.txt"
+
+Example (2026):
     python3 utils/process-questions.py \
         "src/data/questions/2026/REGISTER 2026 RECONSTRUCTION_cleaned.xlsx" \
         "src/data/questions/2026/questions-2026.csv" \

@@ -1,0 +1,145 @@
+PMG Questions Match Report
+==========================
+
+Total rows: 8020
+  pmg_code        : 5641
+  pmg_code_name   : 190
+  member_name     : 2041
+  manual          : 17
+  ambiguous       : 0
+  no_match        : 131
+  empty_member    : 0
+
+--- Rows needing review (131) ---
+
+NO_MATCH   [written] Q884 ACC=NW976E  'Mr G E Kobane' -> no member found
+NO_MATCH   [written] Q1011 ACC=NW1117E  'Mr M J Cuthbert' -> no member found
+NO_MATCH   [written] Q1121 ACC=NW1240E  'Mr K P Sithole' -> no member found
+NO_MATCH   [written] Q1419 ACC=NW1576E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q1426 ACC=NW1583E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q1427 ACC=NW1584E  'Mr L C Jacobs' -> no member found
+NO_MATCH   [written] Q1486 ACC=NW1632E  'Mr K P Sithole' -> no member found
+NO_MATCH   [written] Q1489 ACC=NW1636E  'Mr K P Sithole' -> no member found
+NO_MATCH   [written] Q1712 ACC=NW1936E  'Mr T L Montana' -> no member found
+NO_MATCH   [written] Q1935 ACC=NW2244E  'Mr K P Sithole' -> no member found
+NO_MATCH   [written] Q2021 ACC=NW2335E  'Mr M J Cuthbert' -> no member found
+NO_MATCH   [written] Q2132 ACC=NW2466E  'Mr G E Kobane' -> no member found
+NO_MATCH   [written] Q2144 ACC=NW2133E  'Mr T L Montana' -> no member found
+NO_MATCH   [written] Q2162 ACC=NW2176E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q2171 ACC=NW2186E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [written] Q2195 ACC=NW2251E  'Mr K P Sithole' -> no member found
+NO_MATCH   [written] Q2197 ACC=NW2258E  'Mr K P Sithole' -> no member found
+NO_MATCH   [written] Q2210 ACC=NW2474E  'Mr K P Sithole' -> no member found
+NO_MATCH   [written] Q2378 ACC=NW2731E  'Mr C N Mkhonto' -> no member found
+NO_MATCH   [written] Q2677 ACC=NW3040E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [written] Q2982 ACC=NW3438E  'Mr K P Sithole' -> no member found
+NO_MATCH   [written] Q2988 ACC=NW3446E  'Mr K P Sithole' -> no member found
+NO_MATCH   [written] Q3088 ACC=NW3551E  'Ms C Makhubele' -> no member found
+NO_MATCH   [written] Q3446 ACC=NW3943E  'Mr L C Jacobs' -> no member found
+NO_MATCH   [written] Q3490 ACC=NW3993E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q3605 ACC=NW4100E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q5818 ACC=NW6489E  'Mr G E Kobane' -> no member found
+NO_MATCH   [written] Q6130 ACC=NW6858E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [written] Q6147 ACC=NW6875E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q6176 ACC=NW6906E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q6397 ACC=NW7170E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q6442 ACC=NW7217E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q6443 ACC=NW7218E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q6515 ACC=NW7298E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [written] Q6566 ACC=NW7355E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q6572 ACC=NW7362E  'Mr N N Shezi' -> no member found
+NO_MATCH   [written] Q6638 ACC=NW7433E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [written] Q6639 ACC=NW7434E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q6669 ACC=NW7465E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q6670 ACC=NW7466E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q6675 ACC=NW7472E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q6706 ACC=NW7499E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q6771 ACC=NW7568E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q6788 ACC=NW7586E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q6809 ACC=NW7607E  'Ms M Rweqana' -> no member found
+NO_MATCH   [written] Q6821 ACC=NW7620E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q6822 ACC=NW7621E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q6833 ACC=NW7632E  'Mr T L Montana' -> no member found
+NO_MATCH   [written] Q6855 ACC=NW7660E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q6856 ACC=NW7661E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [written] Q6859 ACC=NW7665E  'Mr T L Montana' -> no member found
+NO_MATCH   [written] Q6870 ACC=NW7681E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [written] Q6874 ACC=NW7687E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q6914 ACC=NW7740E  'Mr E M Ntshingila' -> no member found
+NO_MATCH   [written] Q6933 ACC=NW7763E  'Mr T L Montana' -> no member found
+NO_MATCH   [written] Q6946 ACC=NW7778E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [written] Q6947 ACC=NW7779E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [written] Q6991 ACC=NW7823E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q6992 ACC=NW7824E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q6993 ACC=NW7825E  'Mr K H Wakelin' -> no member found
+NO_MATCH   [written] Q6995 ACC=NW7827E  'Mr A G Whitfield' -> no member found
+NO_MATCH   [written] Q6996 ACC=NW7828E  'Mr A G Whitfield' -> no member found
+NO_MATCH   [written] Q6997 ACC=NW7829E  'Mr A G Whitfield' -> no member found
+NO_MATCH   [written] Q7006 ACC=NW7840E  'Ms M L Khakhau' -> no member found
+NO_MATCH   [written] Q7008 ACC=NW7842E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q7034 ACC=NW7869E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q7140 ACC=NW7994E  'Ms M Rweqana' -> no member found
+NO_MATCH   [written] Q7145 ACC=NW8001E  'Mr E M Ntshingila' -> no member found
+NO_MATCH   [written] Q7146 ACC=NW8002E  'Ms D Zuma-Sambudla' -> no member found
+NO_MATCH   [written] Q7200 ACC=NW8062E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [written] Q7225 ACC=NW8087E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q7226 ACC=NW8088E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q7227 ACC=NW8089E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q7247 ACC=NW8109E  'Mr T L Montana' -> no member found
+NO_MATCH   [written] Q7284 ACC=NW8147E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [written] Q7292 ACC=NW8056E  'Mr H Hattingh' -> no member found
+NO_MATCH   [written] Q7343 ACC=NW8207E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q7344 ACC=NW8208E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q7345 ACC=NW8209E  'Mr R W T Chance' -> no member found
+NO_MATCH   [written] Q7377 ACC=NW8241E  'Ms C N Mkhonto' -> no member found
+NO_MATCH   [written] Q7384 ACC=NW8249E  'Mr N N Shezi' -> no member found
+NO_MATCH   [written] Q7413 ACC=NW8284E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [written] Q7414 ACC=NW8285E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [written] Q7415 ACC=NW8286E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [oral] Q33 ACC=NO638E  'Ms M Rweqana' -> no member found
+NO_MATCH   [oral] Q26 ACC=NO631E  'Mr K P Sithole' -> no member found
+NO_MATCH   [oral] Q33 ACC=NO638E  'Ms M Rweqana' -> no member found
+NO_MATCH   [oral] Q250 ACC=NO1231E  'Ms M Rweqana' -> no member found
+NO_MATCH   [oral] Q311 ACC=NO1690E  'Ms S E Lucas' -> no member found
+NO_MATCH   [oral] Q332 ACC=NO1713E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [oral] Q351 ACC=NO783E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q362 ACC=NO2135E  'Mr J A Mngxitam' -> no member found
+NO_MATCH   [oral] Q414 ACC=NO2196E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q389 ACC=NO2165E  'Mr K P Sithole' -> no member found
+NO_MATCH   [oral] Q440 ACC=NO1084E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q444 ACC=NO1574E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q445 ACC=NO1576E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q449 ACC=NO1846E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [oral] Q450 ACC=NO1847E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [oral] Q451 ACC=NO1848E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q452 ACC=NO1849E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q453 ACC=NO1883E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q467 ACC=NO2586E  'Adv S Salie' -> no member found
+NO_MATCH   [oral] Q487 ACC=NO2612E  'Mr E M Ntshingila' -> no member found
+NO_MATCH   [oral] Q608 ACC=NO3224E  'Mr K P Sithole' -> no member found
+NO_MATCH   [oral] Q598 ACC=NO3214E  'Mr L C Jacobs' -> no member found
+NO_MATCH   [oral] Q701 ACC=NO3612E  'Adv S Salie' -> no member found
+NO_MATCH   [oral] Q725 ACC=NO2335E  'Mr M J Cuthbert' -> no member found
+NO_MATCH   [oral] Q726 ACC=NO2335E  'Mr M J Cuthbert' -> no member found
+NO_MATCH   [oral] Q736 ACC=NO4014E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [oral] Q878 ACC=NO5554E  'Mr T L Montana' -> no member found
+NO_MATCH   [oral] Q888 ACC=NO5564E  'Mr E M Ntshingila' -> no member found
+NO_MATCH   [oral] Q823 ACC=NO5488E  'Ms T G Shiviti' -> no member found
+NO_MATCH   [oral] Q1065 ACC=NO6702E  'Mr T L Montana' -> no member found
+NO_MATCH   [oral] Q1066 ACC=NO6703E  'Mr T L Montana' -> no member found
+NO_MATCH   [oral] Q1167 ACC=NO7079E  'Mr M K B Molefe' -> no member found
+NO_MATCH   [oral] Q1226 ACC=NO7686E  'Mr R W T Chance' -> no member found
+NO_MATCH   [oral] Q1188 ACC=NO7643E  'Ms T G Shiviti' -> no member found
+NO_MATCH   [oral] Q1220 ACC=NO7680E  'Mr H C C Krüger' -> no member found
+NO_MATCH   [oral] Q1207 ACC=NO7664E  'Mr T L Montana' -> no member found
+NO_MATCH   [oral] Q1066 ACC=NO6703E  'Mr T L Montana' -> no member found
+NO_MATCH   [oral] Q1321 ACC=NO7995E  'Ms M Rweqana' -> no member found
+NO_MATCH   [oral] Q1326 ACC=NO8000E  'Mr E M Ntshingila' -> no member found
+NO_MATCH   [president] Q3 ACC=NO694E  'The Leader of the Opposition' -> no member found
+NO_MATCH   [president] Q12 ACC=NO2896E  'The Leader of the Opposition' -> no member found
+NO_MATCH   [president] Q20 ACC=NO6996E  'The Leader of the Opposition' -> no member found
+NO_MATCH   [deputy_president] Q3 ACC=NO2169E  'The Leader of the Opposition' -> no member found
+NO_MATCH   [deputy_president] Q8 ACC=NO3646E  'Ms J S Petersen' -> no member found
+NO_MATCH   [deputy_president] Q11 ACC=NO3585E  'Ms S E Lucas' -> no member found
+NO_MATCH   [deputy_president] Q12 ACC=NO3630E  'The Leader of the Opposition' -> no member found
+NO_MATCH   [deputy_president] Q20 ACC=NO7118E  'The Leader of the Opposition' -> no member found
