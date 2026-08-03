@@ -398,6 +398,11 @@ function processMeetingsData(inputFile, outputFile) {
         let defaultFallbacks = 0;
         
         processedRows.forEach(row => {
+            // Backfill missing scheduled end times with actual end times
+            if (!row.scheduled_end_time && row.actual_end_time) {
+                row.scheduled_end_time = row.actual_end_time;
+            }
+
             // Calculate durations
             const durations = calculateDurations(row);
             row.actual_length = durations.actual_length;
