@@ -14,9 +14,11 @@ This document describes how to update the attendance and questions data for the 
 
 ---
 
-## 1. Export `meetings.csv` from Metabase
+## 1. Export `meetings.csv` from Metabase (or automate it)
 
-Export the attendance data from Metabase using the query below and save it as `data/meetings.csv`.
+> **Automated alternative:** `update-attendance-data.js` (step 3 below) now queries the meetings data **directly from the database**, so the manual Metabase download described in this step is no longer required. It generates `data/meetings.csv` and then runs the `process-meetings.js` logic (step 2) automatically to produce `src/data/attendance.csv`. You can skip steps 1–2 and just run step 3.
+
+To export manually (optional), use the query below and save it as `data/meetings.csv`.
 
 > **Metabase query — Meeting Attendance Export:**
 ```sql
@@ -111,6 +113,8 @@ node process-meetings.js
 
 This reads `meetings.csv`, applies column mappings, calculates meeting durations, and writes the processed output to `../src/data/attendance.csv`.
 
+> **Automated alternative:** `update-attendance-data.js` (step 3) runs this logic automatically after exporting the meetings data from the DB, so this step is normally not run manually.
+
 | Setting | Value |
 |---------|-------|
 | **Input** | `data/meetings.csv` |
@@ -120,26 +124,49 @@ This reads `meetings.csv`, applies column mappings, calculates meeting durations
 
 ## 3. Run `update-attendance-data.js`
 
-From the project root:
+First, set the data end date in `utils/update-attendance-data.js`:
 
-```bash
-node utils/update-attendance-data.js
+```js
+const DATA_END_DATE = '2026-08-31';   // ← set this to the last date of data
 ```
 
-This connects to the PMG PostgreSQL database, fetches attendance data (filtered up to a cutoff date), and exports it.
+Then, from the project root:
+
+```bash
+node utils/update-attendance-data.js [END_DATE]
+```
+
+This connects to the PMG PostgreSQL database, and does the following automatically:
+
+1. **Exports meetings data** (the same data as the step 1 Metabase query, filtered to `house_id = 3` and a date window of `2024-05-20` to `END_DATE`), writing it to `data/meetings.csv`.
+2. **Runs the `process-meetings.js` logic** to produce `src/data/attendance.csv`.
+3. **Exports the all-time attendance data** (filtered up to the cutoff date) to `data/member-attendance-all-time.csv` and `src/data/attendance/all-time.json`.
+4. **Exports questions data** (`2024-05-20` to `END_DATE`) to `src/data/questions.csv` in the overview schema (`Date`, `member_id`, `Minister → ID`, `Minister → Name`).
+5. **Updates the frontend data cutoff** in `src/data/data-cutoff.js` to the month/year of `END_DATE`.
 
 | Setting | Value |
 |---------|-------|
+| **Input** | `DATABASE_URL` from `.env` |
+| **Config** | `DATA_END_DATE` in `utils/update-attendance-data.js` (e.g. `'2026-08-31'`) |
+| **Optional arg** | `END_DATE` (overrides `DATA_END_DATE`; default `2026-08-31`) — used as the end boundary for the meetings, all-time, and questions exports |
+| **Output (meetings)** | `data/meetings.csv` |
+| **Output (attendance)** | `src/data/attendance.csv` |
 | **Output (CSV)** | `data/member-attendance-all-time.csv` |
 | **Output (JSON)** | `src/data/attendance/all-time.json` |
+| **Output (questions)** | `src/data/questions.csv` |
+| **Output (cutoff)** | `src/data/data-cutoff.js` (month/year set from `END_DATE`) |
 
 **Requires:** `.env` file with `DATABASE_URL` set.
 
+> **Note:** `data/meetings.csv` (with its raw `meeting_id`, `member_id`, `attendance`, etc. columns) is written as an intermediate file. The duration calculations (`actual_length`, `scheduled_length`) still go through the shared `process-meetings.js` logic, so the output format of `src/data/attendance.csv` is unchanged.
+
 ---
 
-## 4. Export Questions CSV from Metabase
+## 4. Export Questions CSV (automated)
 
-Export the questions data from Metabase using the query below and save it as `src/data/questions.csv`.
+> **Automated:** `update-attendance-data.js` (step 3) now queries the questions data **directly from the database** and writes `src/data/questions.csv` with the schema the overview page expects (`Date`, `member_id`, `Minister → ID`, `Minister → Name`). No manual Metabase download is required.
+
+To export manually (optional), use the query below and save it as `src/data/questions.csv`.
 
 > **Metabase query — Questions Export:**
 ```sql
@@ -171,20 +198,22 @@ LIMIT
 
 ---
 
-## 5. Update the data cutoff date
+## 5. Data cutoff date
+
+The frontend "Data till" date is **updated automatically** by `update-attendance-data.js` (step 3): it sets `DATA_CUTOFF_MONTH` / `DATA_CUTOFF_YEAR` in `src/data/data-cutoff.js` to the month/year of the end date you specified. No manual editing is normally required.
 
 All date references in the app are driven by a single config file:
 
 **`src/data/data-cutoff.js`**
 
 ```js
-export const DATA_CUTOFF_MONTH = 6;   // 1–12
+export const DATA_CUTOFF_MONTH = 8;   // 1–12
 export const DATA_CUTOFF_YEAR = 2026;
 ```
 
-Update these two values to match the last month of data in the export. The following are updated automatically:
+If you need to override it manually, update these two values to match the last month of data in the export. The following are updated automatically:
 
 - **`src/components/overview/index.js`** — default `selectedMonth`/`selectedYear` state and the "Data till" badge
 - **`src/components/attendance/index.js`** — the "Data till" badge
 
-The badge label (e.g. "30 June 2026") is generated from the month/year — the day is computed as the last calendar day of the month.
+The badge label (e.g. "31 August 2026") is generated from the month/year — the day is computed as the last calendar day of the month.

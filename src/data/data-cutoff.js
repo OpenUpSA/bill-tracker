@@ -2,7 +2,7 @@
 // Update these values when new data is imported.
 // The badge label and default month/year selections will follow automatically.
 
-export const DATA_CUTOFF_MONTH = 7;   // 1–12
+export const DATA_CUTOFF_MONTH = 8;   // 1–12
 export const DATA_CUTOFF_YEAR = 2026;
 
 const MONTH_NAMES = [
