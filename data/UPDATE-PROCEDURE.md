@@ -140,9 +140,10 @@ This connects to the PMG PostgreSQL database, and does the following automatical
 
 1. **Exports meetings data** (the same data as the step 1 Metabase query, filtered to `house_id = 3` and a date window of `2024-05-20` to `END_DATE`), writing it to `data/meetings.csv`.
 2. **Runs the `process-meetings.js` logic** to produce `src/data/attendance.csv`.
-3. **Exports the all-time attendance data** (filtered up to the cutoff date) to `data/member-attendance-all-time.csv` and `src/data/attendance/all-time.json`.
-4. **Exports questions data** (`2024-05-20` to `END_DATE`) to `src/data/questions.csv` in the overview schema (`Date`, `member_id`, `Minister → ID`, `Minister → Name`).
-5. **Updates the frontend data cutoff** in `src/data/data-cutoff.js` to the month/year of `END_DATE`.
+3. **Exports members + parties data** to `src/data/members-parties.csv` (via `utils/export-members-parties.js`). This keeps the overview page's member names, parties, profile pics and committee-membership counts in sync with the attendance data — without it, members who joined after the last manual export show up with blank names/parties in the "Members ordered by meetings attended" table.
+4. **Exports the all-time attendance data** (filtered up to the cutoff date) to `data/member-attendance-all-time.csv` and `src/data/attendance/all-time.json`.
+5. **Exports questions data** (`2024-05-20` to `END_DATE`) to `src/data/questions.csv` in the overview schema (`Date`, `member_id`, `Minister → ID`, `Minister → Name`).
+6. **Updates the frontend data cutoff** in `src/data/data-cutoff.js` to the month/year of `END_DATE`.
 
 | Setting | Value |
 |---------|-------|
@@ -151,6 +152,7 @@ This connects to the PMG PostgreSQL database, and does the following automatical
 | **Optional arg** | `END_DATE` (overrides `DATA_END_DATE`; default `2026-08-31`) — used as the end boundary for the meetings, all-time, and questions exports |
 | **Output (meetings)** | `data/meetings.csv` |
 | **Output (attendance)** | `src/data/attendance.csv` |
+| **Output (members)** | `src/data/members-parties.csv` |
 | **Output (CSV)** | `data/member-attendance-all-time.csv` |
 | **Output (JSON)** | `src/data/attendance/all-time.json` |
 | **Output (questions)** | `src/data/questions.csv` |
@@ -159,6 +161,8 @@ This connects to the PMG PostgreSQL database, and does the following automatical
 **Requires:** `.env` file with `DATABASE_URL` set.
 
 > **Note:** `data/meetings.csv` (with its raw `meeting_id`, `member_id`, `attendance`, etc. columns) is written as an intermediate file. The duration calculations (`actual_length`, `scheduled_length`) still go through the shared `process-meetings.js` logic, so the output format of `src/data/attendance.csv` is unchanged.
+
+> **Note on `members-parties.csv`:** the `member` table in the database does not contain `gender`, `date_of_birth`, `slug`, `legal_name`, `ID_y`, `updated`, `created`, `title`, `family_name` or `given_name`. `utils/export-members-parties.js` therefore **preserves those columns from the existing file** for members already present, and leaves them blank for newly added members. If you need gender/DOB for new members, update the file manually (or from the PMG website) after running the script.
 
 ---
 

@@ -5,6 +5,7 @@ const { format } = require('@fast-csv/format');
 const { parse } = require('csv-parse');
 const lookup = require('../src/data/lookup.json');
 const { processMeetingsData } = require('../data/process-meetings.js');
+const { exportMembersParties } = require('./export-members-parties.js');
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -387,6 +388,7 @@ function processCsvAndExportJson(csvFilePath) {
 (async () => {
   try {
     await exportMeetingsData();
+    await exportMembersParties();
     await exportAttendanceAndProcess();
     await exportQuestionsData();
     updateDataCutoff();
