@@ -21,7 +21,7 @@ if (!connectionString) {
 // (src/data/data-cutoff.js) will be set to this month/year.
 // Format: 'YYYY-MM-DD'
 // ══════════════════════════════════════════════════════════════
-const DATA_END_DATE = '2026-08-31';
+const DATA_END_DATE = '2026-09-30';
 
 // Optional CLI override: node utils/update-attendance-data.js 'YYYY-MM-DD'
 const endDate = process.argv[2] || DATA_END_DATE;
@@ -133,7 +133,7 @@ async function exportMeetingsData() {
         LEFT JOIN "public"."committee" AS "Committee" ON "Event - Meeting"."committee_id" = "Committee"."id"
       WHERE
         "Event - Meeting"."date" >= $1
-        AND "Event - Meeting"."date" < $2
+        AND "Event - Meeting"."date" < ($2::date + INTERVAL '1 day')
         AND "Committee"."house_id" = 3
       ORDER BY
         "Event - Meeting"."date" DESC;
@@ -258,7 +258,7 @@ async function exportAttendanceAndProcess() {
         LEFT JOIN "public"."committee" AS "Committee" ON "Event - Meeting"."committee_id" = "Committee"."id"
         LEFT JOIN "public"."house" AS "House" ON "Member"."house_id" = "House"."id"
       WHERE
-        "Event - Meeting"."date" <= $1
+        "Event - Meeting"."date" < ($1::date + INTERVAL '1 day')
       ORDER BY
         "Committee"."name" ASC;
     `;
