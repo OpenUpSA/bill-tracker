@@ -127,7 +127,7 @@ This reads `meetings.csv`, applies column mappings, calculates meeting durations
 First, set the data end date in `utils/update-attendance-data.js`:
 
 ```js
-const DATA_END_DATE = '2026-08-31';   // ← set this to the last date of data
+const DATA_END_DATE = '2026-10-31';   // ← set this to the last date of data
 ```
 
 Then, from the project root:
@@ -148,8 +148,8 @@ This connects to the PMG PostgreSQL database, and does the following automatical
 | Setting | Value |
 |---------|-------|
 | **Input** | `DATABASE_URL` from `.env` |
-| **Config** | `DATA_END_DATE` in `utils/update-attendance-data.js` (e.g. `'2026-08-31'`) |
-| **Optional arg** | `END_DATE` (overrides `DATA_END_DATE`; default `2026-08-31`) — used as the end boundary for the meetings, all-time, and questions exports |
+| **Config** | `DATA_END_DATE` in `utils/update-attendance-data.js` (e.g. `'2026-10-31'`) |
+| **Optional arg** | `END_DATE` (overrides `DATA_END_DATE`; default `2026-10-31`) — used as the end boundary for the meetings, all-time, and questions exports |
 | **Output (meetings)** | `data/meetings.csv` |
 | **Output (attendance)** | `src/data/attendance.csv` |
 | **Output (members)** | `src/data/members-parties.csv` |
@@ -211,7 +211,7 @@ All date references in the app are driven by a single config file:
 **`src/data/data-cutoff.js`**
 
 ```js
-export const DATA_CUTOFF_MONTH = 8;   // 1–12
+export const DATA_CUTOFF_MONTH = 10;   // 1–12
 export const DATA_CUTOFF_YEAR = 2026;
 ```
 
@@ -220,4 +220,4 @@ If you need to override it manually, update these two values to match the last m
 - **`src/components/overview/index.js`** — default `selectedMonth`/`selectedYear` state and the "Data till" badge
 - **`src/components/attendance/index.js`** — the "Data till" badge
 
-The badge label (e.g. "31 August 2026") is generated from the month/year — the day is computed as the last calendar day of the month.
+The badge label (e.g. "31 October 2026") is generated from the month/year — the day is computed as the last calendar day of the month.

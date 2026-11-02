@@ -278,7 +278,7 @@ ID_y,id,member,profile_pic,party_id,gender,date_of_death,date_of_birth,slug,lega
 6202,471,"Basson, Mr LJ",basson.jpg,2,male,,1960-04-08,leonard-jones-basson,Leonard Jones Basson,"August 14, 2024, 11:06 AM","May 3, 2014, 12:15 AM",Mr,Basson,Leonard Jones,1
 1359,829,"Hattingh, Mr C",1/hattingh.jpg,2,male,,1948-06-02,chris-hattingh,Chris Hattingh,"January 23, 2025, 6:14 PM","November 13, 2013, 3:28 PM",Mr,Hattingh,,2
 4341,658,"Mahambehlala, Ms T",Mahambehlela.jpg,1,female,,1973-01-16,tandi-mahambehlala,Tandi Mahambehlala,"July 2, 2024, 6:46 PM","May 2, 2014, 4:40 PM",Ms,Mahambehlala,Tandi,
-10268,1276,"Motaung, Ms NE",Motaung.jpg,1,female,,1986-06-08,nomasonto-evelyn-motaung,Nomasonto Evelyn Motaung,"August 20, 2024, 12:21 PM","May 21, 2019, 7:19 PM",Ms,Motaung,Nomasonto Evelyn,1
+10268,1276,"Motaung, Ms NE",Motaung.jpg,1,female,,1986-06-08,nomasonto-evelyn-motaung,Nomasonto Evelyn Motaung,"August 20, 2024, 12:21 PM","May 21, 2019, 7:19 PM",Ms,Motaung,Nomasonto Evelyn,2
 6580,1248,"Sithole, Ms RJ",sithole.jpg,2,female,,1970-08-23,raesetja-jane-sithole,Raesetja Jane Sithole,"October 17, 2025, 8:41 AM","May 3, 2014, 12:15 AM",Ms,Sithole,Raesetja Jane,
 12269,2122,"Selepe, Mr LD",Selepe.jpg,19,male,,1979-11-24,hlonono-daniel-selepe,Lehlohonolo Daniel Selepe,"July 8, 2025, 1:25 PM","May 21, 2019, 7:24 PM",Mr,Selepe,Lehlohonolo Daniel,2
 9275,1366,"Van Staden, Mr PA",Van_Staden_PA.jpg,8,male,,1975-12-05,philippus-adriaan-van-staden,Philippus Adriaan Van Staden,"August 14, 2025, 2:25 PM","May 3, 2014, 12:21 AM",Mr,Van Staden,Philippus Adriaan,2
@@ -451,7 +451,7 @@ ID_y,id,member,profile_pic,party_id,gender,date_of_death,date_of_birth,slug,lega
 ,1872,"Mkhwebane, Adv BJ",mhkwe.png,19,,,,,,,,,,,
 ,1873,"Gericke, Mr V",VIGIL.jpg,11,,,,,,,,,,,6
 ,1915,"Rorke, Ms FS",rorke.JPG,20,,,,,,,,,,,
-,1928,"Wessels, Mr D",Wessels_Dirk.jpg,2,,,,,,,,,,,12
+,1928,"Wessels, Mr D",Wessels_Dirk.jpg,2,,,,,,,,,,,13
 ,1931,"Phala, Mr P",Anthony_Phaala.JPG,1,,,,,,,,,,,3
 ,1934,"Mokwele, Mr F",mokwele.jpg,1,,,,,,,,,,,5
 ,1950,"Britz, Mr JHP",Pieter_Britz.JPG,2,,,,,,,,,,,5
@@ -507,3 +507,5 @@ ID_y,id,member,profile_pic,party_id,gender,date_of_death,date_of_birth,slug,lega
 ,2393,"Mlotshwa, Mr SN",Mlotshwa.png,19,,,,,,,,,,,2
 ,2395,"Jeyi, Ms T",Jeyi.png,20,,,,,,,,,,,
 ,2398,"Maphumulo, Mr NK",,19,,,,,,,,,,,4
+,1246,"Shongwe, Mr VR",SHONGWE_VUSUMUZI_ROBERT.JPG,1,,,,,,,,,,,
+,2394,"Ngobese, Mr WQ",ngobese.png,19,,,,,,,,,,,2

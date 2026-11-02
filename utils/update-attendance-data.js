@@ -21,7 +21,7 @@ if (!connectionString) {
 // (src/data/data-cutoff.js) will be set to this month/year.
 // Format: 'YYYY-MM-DD'
 // ══════════════════════════════════════════════════════════════
-const DATA_END_DATE = '2026-09-30';
+const DATA_END_DATE = '2026-10-31';
 
 // Optional CLI override: node utils/update-attendance-data.js 'YYYY-MM-DD'
 const endDate = process.argv[2] || DATA_END_DATE;
